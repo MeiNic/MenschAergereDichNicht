@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 
-public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
+public class GameBoardGui extends JFrame implements ActionListener{
     //Store hex-codes for different colors - yellow, green, blue, red, normal
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
@@ -200,30 +200,5 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 g.
             }
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }
