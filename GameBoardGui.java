@@ -208,10 +208,6 @@ public class GameBoardGui extends JFrame implements ActionListener{
         forEachloopPaintFields(g, house);
         forEachloopPaintFields(g, base);
         forEachloopPaintFields(g, gameField);
-        /*
-          Line below commented, until figures development is completed
-         */
-        //forEachloopPaintFigures(g, figures);
     }
 
     private void forEachloopPaintFields(Graphics g, Circle[] array) {
