@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class GameBoardGui extends JFrame implements ActionListener{
@@ -196,9 +197,6 @@ public class GameBoardGui extends JFrame implements ActionListener{
             g.fillOval(x, y, radiusHalf, radius);
             g.setColor(Color.BLACK);
             g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
-            if (oval.isButton()){
-                g.
-            }
         }
     }
 }
