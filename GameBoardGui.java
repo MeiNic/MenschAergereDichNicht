@@ -70,7 +70,22 @@ public class GameBoardGui extends JFrame implements ActionListener{
 
     //Button Action - Method
     public void actionPerformed(ActionEvent e) {
-        result.setText("Result: " + submitRandomNumber());
+        if (e.getSource() == rollDice){
+            //method below is just for testing, enter the method-call form the backend
+            result.setText("Result: " + submitRandomNumber());
+        }
+        else if (e.getSource() == inVisibleButtons[1]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[2]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[3]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[4]){
+
+        }
     }
 
     /*
