@@ -30,6 +30,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //user advice + button
     JLabel userAdvice;
     JButton rollDice;
+    JButton[] inVisibleButtons;
     JLabel result;
 
     public GameBoardGui(String currentPlayer) {
@@ -58,12 +59,18 @@ public class GameBoardGui extends JFrame implements ActionListener{
         //Implement JButton and JLabel
         userAdvice = new JLabel();
         rollDice = new JButton();
+        inVisibleButtons = new JButton[4];
         result = new JLabel();
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
         //display GUI
         adjustJFrameSetting();
+    }
+
+    //Button Action - Method
+    public void actionPerformed(ActionEvent e) {
+        result.setText("Result: " + submitRandomNumber());
     }
 
     /*
@@ -86,14 +93,18 @@ public class GameBoardGui extends JFrame implements ActionListener{
 
     public void setUserFigureOption(Figure[] input){
         for (int i = 0; i < input.length && i < figures.length; i++){
-            figures[i].setButton(input[i].isPlaceOption());
+            if (input[i].isPlaceOption()){
+                if (input[i].isInBase()){
+                    placeInvisibleButton(baseX[input[i].getField()], baseY[input[i].getField()]);
+                }
+                else if (input[i].isInHouse()){
+                    placeInvisibleButton(houseX[input[i].getField()], houseY[input[i].getField()]);
+                }
+                else {
+                    placeInvisibleButton(gameFieldX[input[i].getField()], houseY[input[i].getField()]);
+                }
+            }
         }
-    }
-
-
-    //Button Action - Method
-    public void actionPerformed(ActionEvent e) {
-        result.setText("Result: " + submitRandomNumber());
     }
 
     /* -- method only for testing the FrontEnd --
@@ -120,6 +131,23 @@ public class GameBoardGui extends JFrame implements ActionListener{
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+    }
+
+    /*
+        this method, sets all needed parameters to the next free JButton in the invisibleButton-Array
+        the method gets the coordinates for the button on its call
+     */
+    private void placeInvisibleButton(int x, int y){
+        int i = 0;
+        while (inVisibleButtons[i] != null){
+            i++;
+        }
+        inVisibleButtons[i].addActionListener(this);
+        inVisibleButtons[i].setBounds(x, y, 50, 50);
+        inVisibleButtons[i].setContentAreaFilled(false);
+        inVisibleButtons[i].setBorderPainted(false);
+        inVisibleButtons[i].setFocusPainted(false);
+        add(inVisibleButtons[i]);
     }
 
     /*
