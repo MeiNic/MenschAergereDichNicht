@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Landingpage extends JFrame implements ActionListener {
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
-
+    private JPanel contentPanel;
     private JScrollPane scrollPane;
     private JLabel head;
     private JLabel labelPlayerNumber;
@@ -15,11 +15,12 @@ public class Landingpage extends JFrame implements ActionListener {
 
     Landingpage(){
         //Declaration of all the J-components
-        scrollPane = new JScrollPane();
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         head = new JLabel("Mensch Ärgere Dich Nicht");
-        labelPlayerNumber = new JLabel();
+        labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
-        bots = new JCheckBox();
+        bots = new JCheckBox("Fill the round with bots" ,false);
         userNames = new JTextField[4];
 
         //Declaration of the colored circles
@@ -33,9 +34,20 @@ public class Landingpage extends JFrame implements ActionListener {
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
         head.setBounds(13, 5, 480, 70);
-        scrollPane.add(head);
+        contentPanel.add(head);
 
-        //Apply all setting for the
+        //Position the other j-components
+
+
+        //Add all the j-components to the contentPanel
+
+
+        //Set the JScrollPane
+        scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setPreferredSize(new Dimension(300, 400));
+
+        //Resets the values of all input-options for the user
+        resetUseroptions();
         //Apply all needed values for the JFrame
         adjustJFrameSetting();
     }
@@ -48,15 +60,16 @@ public class Landingpage extends JFrame implements ActionListener {
             jTextField.setText("");
         }
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
-
+        bots = new JCheckBox("Fill the round with bots" ,false);
     }
     private void adjustJFrameSetting() {
         setTitle("landingpage");
-        setSize(1400, 940);
+        setSize(300, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
         setResizable(true);
+        getContentPane().add(scrollPane);
         setVisible(true);
     }
 
