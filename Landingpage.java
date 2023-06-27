@@ -25,10 +25,10 @@ public class Landingpage extends JFrame implements ActionListener {
 
         //Declaration of the colored circles
         colorMarker = new Circle[4];
-        colorMarker[0] = new Circle(90, 183, 43, "#ffc957");
-        colorMarker[1] = new Circle(90, 246, 43, "#2a914e");
-        colorMarker[2] = new Circle(90, 309, 43, "#1e32ff");
-        colorMarker[3] = new Circle(90, 372, 43, "#cc0000");
+        colorMarker[0] = new Circle(40, 179, 43, "#ffc957");
+        colorMarker[1] = new Circle(40, 242, 43, "#2a914e");
+        colorMarker[2] = new Circle(40, 305, 43, "#1e32ff");
+        colorMarker[3] = new Circle(40, 368, 43, "#cc0000");
 
         //Apply all setting for the head
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
