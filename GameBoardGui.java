@@ -128,7 +128,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
      */
     private int submitRandomNumber(){
         Random rand = new Random();
-        return 1 + rand.nextInt(5);
+        return 1 + rand.nextInt(6);
     }
 
     /*
