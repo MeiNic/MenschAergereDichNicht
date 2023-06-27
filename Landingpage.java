@@ -37,7 +37,19 @@ public class Landingpage extends JFrame implements ActionListener {
         contentPanel.add(head);
 
         //Position the other j-components
+        labelPlayerNumber.setBounds(40, 80, 250, 32);
+        contentPanel.add(labelPlayerNumber);
 
+        playerNumber.setBounds(300, 80, 90, 32);
+        contentPanel.add(playerNumber);
+
+        bots.setBounds(40, 130, 180, 20);
+        contentPanel.add(bots);
+
+        userNames[0].setBounds(100, 185, 180, 32);
+        userNames[1].setBounds(100, 247, 180, 32);
+        userNames[2].setBounds(100, 309, 180, 32);
+        userNames[3].setBounds(100, 371, 180, 32);
 
         //Add all the j-components to the contentPanel
 
