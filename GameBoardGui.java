@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
+public class GameBoardGui extends JFrame implements ActionListener{
     //Store hex-codes for different colors - yellow, green, blue, red, normal
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
@@ -29,6 +30,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //user advice + button
     JLabel userAdvice;
     JButton rollDice;
+    JButton[] inVisibleButtons;
     JLabel result;
 
     public GameBoardGui(String currentPlayer) {
@@ -57,12 +59,33 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         //Implement JButton and JLabel
         userAdvice = new JLabel();
         rollDice = new JButton();
+        inVisibleButtons = new JButton[4];
         result = new JLabel();
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
         //display GUI
         adjustJFrameSetting();
+    }
+
+    //Button Action - Method
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == rollDice){
+            //method below is just for testing, enter the method-call form the backend
+            result.setText("Result: " + submitRandomNumber());
+        }
+        else if (e.getSource() == inVisibleButtons[1]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[2]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[3]){
+
+        }
+        else if (e.getSource() == inVisibleButtons[4]){
+
+        }
     }
 
     /*
@@ -85,14 +108,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void setUserFigureOption(Figure[] input){
         for (int i = 0; i < input.length && i < figures.length; i++){
-            figures[i].setButton(input[i].isPlaceOption());
+            if (input[i].isPlaceOption()){
+                if (input[i].isInBase()){
+                    placeInvisibleButton(baseX[input[i].getField()], baseY[input[i].getField()]);
+                }
+                else if (input[i].isInHouse()){
+                    placeInvisibleButton(houseX[input[i].getField()], houseY[input[i].getField()]);
+                }
+                else {
+                    placeInvisibleButton(gameFieldX[input[i].getField()], houseY[input[i].getField()]);
+                }
+            }
         }
-    }
-
-
-    //Button Action - Method
-    public void actionPerformed(ActionEvent e) {
-        result.setText("Result: " + submitRandomNumber());
     }
 
     /* -- method only for testing the FrontEnd --
@@ -119,6 +146,23 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+    }
+
+    /*
+        this method, sets all needed parameters to the next free JButton in the invisibleButton-Array
+        the method gets the coordinates for the button on its call
+     */
+    private void placeInvisibleButton(int x, int y){
+        int i = 0;
+        while (inVisibleButtons[i] != null){
+            i++;
+        }
+        inVisibleButtons[i].addActionListener(this);
+        inVisibleButtons[i].setBounds(x, y, 50, 50);
+        inVisibleButtons[i].setContentAreaFilled(false);
+        inVisibleButtons[i].setBorderPainted(false);
+        inVisibleButtons[i].setFocusPainted(false);
+        add(inVisibleButtons[i]);
     }
 
     /*
@@ -164,10 +208,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         forEachloopPaintFields(g, house);
         forEachloopPaintFields(g, base);
         forEachloopPaintFields(g, gameField);
-        /*
-          Line below commented, until figures development is completed
-         */
-        //forEachloopPaintFigures(g, figures);
     }
 
     private void forEachloopPaintFields(Graphics g, Circle[] array) {
@@ -196,34 +236,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             g.fillOval(x, y, radiusHalf, radius);
             g.setColor(Color.BLACK);
             g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
-            if (oval.isButton()){
-                g.
-            }
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }
