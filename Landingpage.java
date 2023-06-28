@@ -12,6 +12,7 @@ public class Landingpage extends JFrame implements ActionListener {
     private JCheckBox bots;
     private Circle[] colorMarker;
     private JTextField[] userNames;
+    private JButton startGame;
 
     Landingpage(){
         //Declaration of all the J-components
@@ -22,6 +23,7 @@ public class Landingpage extends JFrame implements ActionListener {
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNames = new JTextField[4];
+        startGame = new JButton("start game");
 
         //Declaration of the colored circles
         colorMarker = new Circle[4];
@@ -38,21 +40,25 @@ public class Landingpage extends JFrame implements ActionListener {
 
         //Position the other j-components
         labelPlayerNumber.setBounds(40, 80, 250, 32);
-        contentPanel.add(labelPlayerNumber);
-
         playerNumber.setBounds(300, 80, 90, 32);
-        contentPanel.add(playerNumber);
-
         bots.setBounds(40, 130, 180, 20);
-        contentPanel.add(bots);
 
         userNames[0].setBounds(100, 185, 180, 32);
         userNames[1].setBounds(100, 247, 180, 32);
         userNames[2].setBounds(100, 309, 180, 32);
         userNames[3].setBounds(100, 371, 180, 32);
 
-        //Add all the j-components to the contentPanel
+        startGame.setBounds(345, 425, 120, 32);
 
+        //Add all the j-components to the contentPanel
+        contentPanel.add(labelPlayerNumber);
+        contentPanel.add(playerNumber);
+        contentPanel.add(bots);
+        contentPanel.add(userNames[0]);
+        contentPanel.add(userNames[1]);
+        contentPanel.add(userNames[2]);
+        contentPanel.add(userNames[3]);
+        contentPanel.add(startGame);
 
         //Set the JScrollPane
         scrollPane = new JScrollPane(contentPanel);
@@ -102,7 +108,7 @@ public class Landingpage extends JFrame implements ActionListener {
             g.setColor(color);
             g.fillOval(x, y, radius, radius);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+            g.d   rawOval(x - 1, y - 1, radius + 1, radius + 1);
         }
     }
 }
