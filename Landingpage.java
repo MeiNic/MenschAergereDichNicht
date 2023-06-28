@@ -108,7 +108,7 @@ public class Landingpage extends JFrame implements ActionListener {
             g.setColor(color);
             g.fillOval(x, y, radius, radius);
             g.setColor(Color.BLACK);
-            g.d   rawOval(x - 1, y - 1, radius + 1, radius + 1);
+            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
         }
     }
 }
