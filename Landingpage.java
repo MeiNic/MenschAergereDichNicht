@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Landingpage extends JFrame implements ActionListener {
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
-    private JPanel contentPanel;
-    private JScrollPane scrollPane;
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -16,13 +14,15 @@ public class Landingpage extends JFrame implements ActionListener {
 
     Landingpage(){
         //Declaration of all the J-components
-        contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNames = new JTextField[4];
+        userNames[0] = new JTextField();
+        userNames[1] = new JTextField();
+        userNames[2] = new JTextField();
+        userNames[3] = new JTextField();
         startGame = new JButton("start game");
 
         //Declaration of the colored circles
@@ -36,7 +36,7 @@ public class Landingpage extends JFrame implements ActionListener {
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
         head.setBounds(13, 5, 480, 70);
-        contentPanel.add(head);
+        add(head);
 
         //Position the other j-components
         labelPlayerNumber.setBounds(40, 80, 250, 32);
@@ -49,20 +49,17 @@ public class Landingpage extends JFrame implements ActionListener {
         userNames[3].setBounds(100, 371, 180, 32);
 
         startGame.setBounds(345, 425, 120, 32);
+        startGame.addActionListener(this);
 
         //Add all the j-components to the contentPanel
-        contentPanel.add(labelPlayerNumber);
-        contentPanel.add(playerNumber);
-        contentPanel.add(bots);
-        contentPanel.add(userNames[0]);
-        contentPanel.add(userNames[1]);
-        contentPanel.add(userNames[2]);
-        contentPanel.add(userNames[3]);
-        contentPanel.add(startGame);
-
-        //Set the JScrollPane
-        scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setPreferredSize(new Dimension(300, 400));
+        add(labelPlayerNumber);
+        add(playerNumber);
+        add(bots);
+        add(userNames[0]);
+        add(userNames[1]);
+        add(userNames[2]);
+        add(userNames[3]);
+        add(startGame);
 
         //Resets the values of all input-options for the user
         resetUseroptions();
@@ -70,7 +67,7 @@ public class Landingpage extends JFrame implements ActionListener {
         adjustJFrameSetting();
     }
     public void actionPerformed(ActionEvent e) {
-
+        setVisible(false);
     }
 
     private void resetUseroptions(){
@@ -82,12 +79,11 @@ public class Landingpage extends JFrame implements ActionListener {
     }
     private void adjustJFrameSetting() {
         setTitle("landingpage");
-        setSize(300, 400);
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
         setResizable(true);
-        getContentPane().add(scrollPane);
         setVisible(true);
     }
 
