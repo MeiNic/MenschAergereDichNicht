@@ -9,6 +9,7 @@ public class Landingpage extends JFrame implements ActionListener {
     private JSpinner playerNumber;
     private JCheckBox bots;
     private Circle[] colorMarker;
+    private JLabel userNameAdvice;
     private JTextField[] userNames;
     private JButton startGame;
 
@@ -18,6 +19,7 @@ public class Landingpage extends JFrame implements ActionListener {
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the round with bots" ,false);
+        userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
         userNames = new JTextField[4];
         userNames[0] = new JTextField();
         userNames[1] = new JTextField();
@@ -27,10 +29,10 @@ public class Landingpage extends JFrame implements ActionListener {
 
         //Declaration of the colored circles
         colorMarker = new Circle[4];
-        colorMarker[0] = new Circle(40, 179, 43, "#ffc957");
-        colorMarker[1] = new Circle(40, 242, 43, "#2a914e");
-        colorMarker[2] = new Circle(40, 305, 43, "#1e32ff");
-        colorMarker[3] = new Circle(40, 368, 43, "#cc0000");
+        colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
+        colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
+        colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
+        colorMarker[3] = new Circle(40, 397, 43, "#cc0000");
 
         //Apply all setting for the head
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
@@ -40,8 +42,9 @@ public class Landingpage extends JFrame implements ActionListener {
 
         //Position the other j-components
         labelPlayerNumber.setBounds(40, 80, 250, 32);
-        playerNumber.setBounds(300, 80, 90, 32);
-        bots.setBounds(40, 130, 180, 20);
+        playerNumber.setBounds(250, 80, 90, 32);
+        bots.setBounds(35, 110, 180, 20);
+        userNameAdvice.setBounds(40, 140, 350, 32);
 
         userNames[0].setBounds(100, 185, 180, 32);
         userNames[1].setBounds(100, 247, 180, 32);
@@ -50,11 +53,13 @@ public class Landingpage extends JFrame implements ActionListener {
 
         startGame.setBounds(345, 425, 120, 32);
         startGame.addActionListener(this);
+        startGame.setBackground(Color.green);
 
         //Add all the j-components to the contentPanel
         add(labelPlayerNumber);
         add(playerNumber);
         add(bots);
+        add(userNameAdvice);
         add(userNames[0]);
         add(userNames[1]);
         add(userNames[2]);
