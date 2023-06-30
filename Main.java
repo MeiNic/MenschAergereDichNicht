@@ -7,6 +7,8 @@ public class Main {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             new GameBoardGui("test");
 
+            new Landingpage();
+
         } catch (ClassNotFoundException | InstantiationException |
                  IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
