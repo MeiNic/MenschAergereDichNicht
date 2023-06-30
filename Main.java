@@ -9,11 +9,9 @@ public class Main {
 
             new Landingpage();
 
-        } catch (ClassNotFoundException | InstantiationException |
-                IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
+        
         }
-
-
     }
 }

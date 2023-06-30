@@ -122,13 +122,22 @@ public class GameBoardGui extends JFrame implements ActionListener{
         }
     }
 
+    /*
+    method sets the given player-name to the userAdvice-JLabel and resets the result jLabel
+     */
+    public void setActivePlayer(String newPlayer){
+        userAdvice.setText("Player " + newPlayer + " is on the turn, click this button");
+        result.setText("");
+        repaint();
+    }
+
     /* -- method only for testing the FrontEnd --
       method does less than the normal method in the BackEnd (generating a random number, processing it instantly, returning the random number to the FrontEnd
       -- method only for testing the FrontEnd --
      */
     private int submitRandomNumber(){
         Random rand = new Random();
-        return 1 + rand.nextInt(5);
+        return 1 + rand.nextInt(6);
     }
 
     /*
@@ -179,7 +188,6 @@ public class GameBoardGui extends JFrame implements ActionListener{
         setResizable(true);
         setVisible(true);
     }
-
 
     /*
      -- methods only used in constructor DON'T use out of the constructor! --
