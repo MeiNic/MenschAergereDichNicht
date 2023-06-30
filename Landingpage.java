@@ -13,6 +13,8 @@ public class Landingpage extends JFrame implements ActionListener {
     private JTextField[] userNames;
     private JButton startGame;
 
+
+
     Landingpage(){
         //Declaration of all the J-components
         head = new JLabel("Mensch Ärgere Dich Nicht");
@@ -72,6 +74,7 @@ public class Landingpage extends JFrame implements ActionListener {
         adjustJFrameSetting();
     }
     public void actionPerformed(ActionEvent e) {
+        BackEnd game = new BackEnd();
         setVisible(false);
     }
 
