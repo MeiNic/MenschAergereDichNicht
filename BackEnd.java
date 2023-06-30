@@ -18,7 +18,18 @@ public class BackEnd {
         new GameBoardGui("test");
     }
 
-    //move the given figure by the given nummber
+    //move the given figure by the given number
+    private void moveFigure(int figureNumber, int stepLength){
+        int numberOld = figures[figureNumber].getField();
+        int numberNew = numberOld + stepLength;
+        int figureColor = figures[figureNumber].getColor();
+        if (numberOld < figureColor && numberNew >= figureColor * 10){
+            figures[figureNumber].setInHouse(true);
+            numberNew -= figureColor * 10;
+            numberNew += figureColor * 4;
+        }
+        figures[figureNumber].setField(numberNew);
+    }
 
     //move the given figure to the base
 
