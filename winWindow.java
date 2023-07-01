@@ -31,7 +31,7 @@ public class winWindow implements ActionListener {
      */
     private void setClose(){
         close.setText("close");
-        close.setBounds(40, 50, 100, 32);
+        close.setBounds(95, 50, 100, 32);
         close.addActionListener(this);
     }
 
@@ -40,7 +40,7 @@ public class winWindow implements ActionListener {
      */
     private void setMessage(String player){
         message.setText("Congratulations! Player " + player + "has won this round.");
-        message.setBounds(10, 10, 300, 32);
+        message.setBounds(10, 10, 295, 32);
     }
 
     /*
@@ -48,7 +48,7 @@ public class winWindow implements ActionListener {
      */
     private void adjustJFrameSetting() {
         frame.setTitle("congratulations");
-        frame.setSize(400, 400);
+        frame.setSize(315, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setResizable(true);
