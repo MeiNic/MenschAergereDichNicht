@@ -4,7 +4,7 @@ public class BackEnd {
     Landingpage startpage;
     String[] usernames;
 
-    BackEnd(){
+    BackEnd(Landingpage landingpage){
         figures = new Figure[16];
         for (int i = 0; i < figures.length; i++){
             figures[i] = new Figure(i, 0);
@@ -16,7 +16,7 @@ public class BackEnd {
         }
 
         //progress input from landingpage
-        startpage = new Landingpage();
+        startpage = landingpage;
         usernames[4] = startpage.getName();
 
         new GameBoardGui("test");
