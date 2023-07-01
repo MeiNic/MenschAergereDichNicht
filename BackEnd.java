@@ -38,6 +38,14 @@ public class BackEnd {
     //move the given figure to the base
 
     //check if a player has won (return true/false)
+    private boolean finished(){
+        for (int i = 0; i < 4; i++){
+            if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     //check which player has won
 
