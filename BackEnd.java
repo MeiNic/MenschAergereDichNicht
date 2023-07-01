@@ -1,6 +1,8 @@
 import java.util.Random;
 public class BackEnd {
     Figure[] figures;
+    Landingpage startpage;
+    String[] usernames;
 
     BackEnd(){
         figures = new Figure[16];
@@ -13,8 +15,10 @@ public class BackEnd {
             figures[i + 12].setColor(3);
         }
 
-        //progress input from langpage
-        
+        //progress input from landingpage
+        startpage = new Landingpage();
+        usernames[4] = startpage.getName();
+
         new GameBoardGui("test");
     }
 
