@@ -58,13 +58,12 @@ public class BackEnd {
             if (cache != 99) {
                 if (i == 15 || i == 11 || i == 7 || i == 3) {
                     figures[cache].setFinished(true);
-                }
-            }
-            else {
-                int figureDeeper = figureOnHouseField(i + 1);
-                if (figureDeeper != 99){
-                    if (figures[figureDeeper].isFinished()){
-                        figures[cache].setFinished(true);
+                } else {
+                    int figureDeeper = figureOnHouseField(i + 1);
+                    if (figureDeeper != 99) {
+                        if (figures[figureDeeper].isFinished()) {
+                            figures[cache].setFinished(true);
+                        }
                     }
                 }
             }
