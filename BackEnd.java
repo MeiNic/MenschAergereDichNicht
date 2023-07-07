@@ -77,6 +77,15 @@ public class BackEnd {
         }
     }
 
+    //check which figure is on the normal field
+    private int figureOnField(int fieldNumber){
+        for (int i = 0; i < figures.length; i++){
+            if (figures[i].getField() == fieldNumber){
+                return i;
+            }
+        }
+        return 99;
+    }
 
     //check which figure is on the house field
     private int figureOnHouseField(int fieldNumber){
