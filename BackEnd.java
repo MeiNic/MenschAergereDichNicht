@@ -52,4 +52,16 @@ public class BackEnd {
     //generate random number (copy from frontend)
 
     //check all figures if they are finished
+
+    //check which figure is on the house field
+    private int figureOnHouseField(int fieldNummber){
+        for (int i = 0; i < figures.length; i++){
+            if (figures[i].isInHouse()){
+                if (figures[i].getField() == fieldNummber){
+                    return i;
+                }
+            }
+        }
+        return 99;
+    }
 }
