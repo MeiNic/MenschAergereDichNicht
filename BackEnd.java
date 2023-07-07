@@ -26,13 +26,20 @@ public class BackEnd {
     private void moveFigure(int figureNumber, int stepLength) {
         int numberOld = figures[figureNumber].getField();
         int numberNew = numberOld + stepLength;
-        int figureColor = figures[figureNumber].getColor();
-        if (numberOld < figureColor && numberNew >= figureColor * 10) {
-            figures[figureNumber].setInHouse(true);
-            numberNew -= figureColor * 10;
-            numberNew += figureColor * 4;
+        if (!figures[figureNumber].isFinished() && !figures[figureNumber].isInBase()){
+            int figureColor = figures[figureNumber].getColor();
+            if (numberOld < figureColor && numberNew >= figureColor * 10) {
+                figures[figureNumber].setInHouse(true);
+                numberNew -= figureColor * 10;
+                numberNew += figureColor * 4;
+            } else {
+                figures[figureNumber].setField(numberNew);
+            }
         }
-        figures[figureNumber].setField(numberNew);
+        else if (figures[figureNumber].isFinished()){
+            figures[figureNumber].setField(numberNew);
+        }
+
     }
 
     //move the given figure to the base
@@ -72,10 +79,10 @@ public class BackEnd {
 
 
     //check which figure is on the house field
-    private int figureOnHouseField(int fieldNummber){
+    private int figureOnHouseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].isInHouse()){
-                if (figures[i].getField() == fieldNummber){
+                if (figures[i].getField() == fieldNumber){
                     return i;
                 }
             }
