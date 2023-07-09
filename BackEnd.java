@@ -55,6 +55,17 @@ public class BackEnd {
     }
 
     //check which player has won
+    private int whoFinished(){
+        if (figures[0].isFinished() && figures[1].isFinished() && figures[2].isFinished() && figures[3].isFinished()){
+            return 0;            
+        } else if (figures[4].isFinished() && figures[5].isFinished() && figures[6].isFinished() && figures[7].isFinished()) {
+            return 1;
+        } else if (figures[9].isFinished() && figures[9].isFinished() && figures[10].isFinished() && figures[11].isFinished()) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
 
     //generate random number (copy from frontend)
 
