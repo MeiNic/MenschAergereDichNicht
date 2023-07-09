@@ -44,6 +44,19 @@ public class BackEnd {
 
     //move the given figure to the base
 
+    //return to which player the given figure belongs to
+    private int giveColor(int figureNummber){
+        if (figureNummber < 4){
+            return 0;
+        } else if (figureNummber < 8) {
+            return 1;
+        } else if (figureNummber < 12) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
     //check if a player has won (return true/false)
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
