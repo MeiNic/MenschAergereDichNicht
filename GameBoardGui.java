@@ -130,15 +130,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         result.setText("");
         repaint();
     }
-
-    /* -- method only for testing the FrontEnd --
-      method does less than the normal method in the BackEnd (generating a random number, processing it instantly, returning the random number to the FrontEnd
-      -- method only for testing the FrontEnd --
-     */
-    private int submitRandomNumber(){
-        Random rand = new Random();
-        return 1 + rand.nextInt(6);
-    }
+    
 
     /*
       -- DON'T use this method out of constructor - DON'T change any parameters --

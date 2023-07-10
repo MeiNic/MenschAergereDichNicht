@@ -90,6 +90,10 @@ public class BackEnd {
     }
 
     //generate random number (copy from frontend)
+    private int submitRandomNumber(){
+        Random rand = new Random();
+        return 1 + rand.nextInt(6);
+    }
 
     //check all figures if they are finished
     private void checkFiguresIfFinished() {
