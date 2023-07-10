@@ -43,6 +43,15 @@ public class BackEnd {
     }
 
     //move the given figure to the base
+    private void moveToBase(int figureNummber){
+        int figureColor = giveColor(figureNummber);
+        int emptyField = 0 + 4 * figureColor;
+        while (figureOnField(emptyField) != 99){
+            emptyField++;
+        }
+        figures[figureNummber].setInBase(true);
+        figures[figureNummber].setField(emptyField);
+    }
 
     //return to which player the given figure belongs to
     private int giveColor(int figureNummber){
