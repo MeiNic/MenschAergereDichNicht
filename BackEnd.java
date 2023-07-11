@@ -142,11 +142,17 @@ public class BackEnd {
     private boolean isBaseEmpty(int playerNumber){
         boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
-            if (!figures[i].isInBase()) {
+            if (figures[i].isInBase()) {
                 BaseStatus = false;
             }
         }
         return BaseStatus;
     }
 
-}
+    //move a figure out of base
+    private void moveOutOfBase(int figureNumber){
+        int figureColor = giveColor(figureNumber);
+        figures[figureNumber].setField(10*figureColor);
+        figures[figureNumber].setInBase(false);
+    }
+} 
