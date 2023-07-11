@@ -29,9 +29,8 @@ public class BackEnd {
 
     //progress a dice input
     private void playerMove(){
-        int randomNummber = submitRandomNumber();
-        i
-        if(randomNummber == 6){
+        int randomNumber = submitRandomNumber();
+        if(randomNumber == 6){
             int figureOnStartfield = figureOnField(activePlayer * 10);
             if(figureOnStartfield != activePlayer * 4 && figureOnStartfield != activePlayer * 4 +1 && figureOnStartfield != activePlayer * 4 + 2 && figureOnStartfield != activePlayer * 4 +3){
                 //startfield is empty
@@ -39,11 +38,11 @@ public class BackEnd {
             else{
                 //move player on startfield
             }
-            //display all changes in the forntEnd
+            //display all changes in the frontEnd
             //trigger new move in frontEnd
         }
         else{
-            //display all changes in the forntEnd
+            //display all changes in the frontEnd
             //same code as before the comment in the "if"-block
             if(activePlayer == 3){
                 activePlayer = 0;
@@ -75,23 +74,23 @@ public class BackEnd {
     }
 
     //move the given figure to the base
-    private void moveToBase(int figureNummber){
-        int figureColor = giveColor(figureNummber);
+    private void moveToBase(int figureNumber){
+        int figureColor = giveColor(figureNumber);
         int emptyField = 0 + 4 * figureColor;
         while (figureOnField(emptyField) != 99){
             emptyField++;
         }
-        figures[figureNummber].setInBase(true);
-        figures[figureNummber].setField(emptyField);
+        figures[figureNumber].setInBase(true);
+        figures[figureNumber].setField(emptyField);
     }
 
     //return to which player the given figure belongs to
-    private int giveColor(int figureNummber){
-        if (figureNummber < 4){
+    private int giveColor(int figureNumber){
+        if (figureNumber < 4){
             return 0;
-        } else if (figureNummber < 8) {
+        } else if (figureNumber < 8) {
             return 1;
-        } else if (figureNummber < 12) {
+        } else if (figureNumber < 12) {
             return 2;
         } else {
             return 3;
@@ -168,7 +167,7 @@ public class BackEnd {
         return 99;
     }
 
-    //check if base is empty (Mitgabewert zwischen 0 & 3)
+    //check if base is empty (argument between 0 & 3)
     private boolean isBaseEmpty(int playerNumber){
         boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
