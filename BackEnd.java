@@ -1,3 +1,5 @@
+import com.sun.source.tree.BreakTree;
+
 import java.util.Random;
 public class BackEnd {
     Figure[] figures;
@@ -90,6 +92,10 @@ public class BackEnd {
     }
 
     //generate random number (copy from frontend)
+    private int submitRandomNumber(){
+        Random rand = new Random();
+        return 1 + rand.nextInt(6);
+    }
 
     //check all figures if they are finished
     private void checkFiguresIfFinished() {
@@ -131,4 +137,22 @@ public class BackEnd {
         }
         return 99;
     }
-}
+
+    //check if base is empty (Mitgabewert zwischen 0 & 3)
+    private boolean isBaseEmpty(int playerNumber){
+        boolean BaseStatus = true;
+        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+            if (figures[i].isInBase()) {
+                BaseStatus = false;
+            }
+        }
+        return BaseStatus;
+    }
+
+    //move a figure out of base
+    private void moveOutOfBase(int figureNumber){
+        int figureColor = giveColor(figureNumber);
+        figures[figureNumber].setField(10*figureColor);
+        figures[figureNumber].setInBase(false);
+    }
+} 
