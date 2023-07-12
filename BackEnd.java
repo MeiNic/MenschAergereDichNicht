@@ -55,22 +55,75 @@ public class BackEnd {
 
     //move the given figure by the given number
     private void moveFigure(int figureNumber, int stepLength) {
-        int numberOld = figures[figureNumber].getField();
-        int numberNew = numberOld + stepLength;
-        if (!figures[figureNumber].isFinished() && !figures[figureNumber].isInBase()){
-            int figureColor = figures[figureNumber].getColor();
-            if (numberOld < figureColor && numberNew >= figureColor * 10) {
-                figures[figureNumber].setInHouse(true);
-                numberNew -= figureColor * 10;
-                numberNew += figureColor * 4;
-            } else {
+        //store the color of the figure in a local variable
+        int figureColor = figures[figureNumber].getColor();
+
+        //check if the figure isn't finished and not in the base
+        if(!figures[figureNumber].isFinished() && !figures[figureNumber].isInBase()){
+            //store the old and new field-number in local variables
+            int numberOld = figures[figureNumber].getField();
+            int cache = numberOld + stepLength;
+            int numberNew = cache;
+            if (numberNew > 39){
+                numberNew -= 40;
+            }
+
+            //check if the figure is on the gamefield
+            if (!figures[figureNumber].isInBase()){
+                //make some small if-blocks for less code complexity
+                boolean goToBase = false;
+                if (numberOld < figureColor * 10 && cache >= figureColor * 10){
+                    goToBase = true;
+                }
+                if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
+                    goToBase = true;
+                }
+
+                //if the figure comes over its startfield -> move the figure in the base
+                if (goToBase) {
+                    //variable caching some information for the further progress
+                    int steplengthInBase = numberNew - figureColor * 10;
+
+                    //check if you don't jump over figures in the base
+                    boolean fieldsFree = true;
+                    for (int i = 0; i <= steplengthInBase; i++){
+                        if (figureOnField(i + figureColor * 4) != 99){
+                            fieldsFree = false;
+                        }
+                    }
+
+                    //progress move only if figure doesn't jump over figures
+                    if (fieldsFree){
+                        figures[figureNumber].setInHouse(true);
+                        numberNew -= figureColor * 10;
+                        figures[figureNumber].setField(numberNew);
+                    }
+
+                }
+                //move the figure, if the new field is free
+                else if (figureOnField(numberNew) == 99){
+                    figures[figureNumber].setField(numberNew);
+                }
+
+                else {
+                    //move the figure, and move the figure before on the field to the base
+                    if (figures[figureOnField(numberNew)].getColor() != figureColor){
+                        moveToBase(figureOnField(numberNew));
+                        figures[figureNumber].setField(numberNew);
+                    } else {
+                        //perform the moveFigure-method with the figure, standing on the field th figure at the moment wants to move, and the same stepLength
+                        moveFigure(figureOnField(numberNew), stepLength);
+                    }
+                }
+            }
+            else if (numberNew < figures[figureNumber].getColor() * 4 + 4){
                 figures[figureNumber].setField(numberNew);
             }
         }
-        else if (figures[figureNumber].isFinished()){
-            figures[figureNumber].setField(numberNew);
+        //if figure is in the base and the step-length is 6 move figure out of base
+        else if (figures[figureNumber].isInBase() && stepLength == 6) {
+            moveOutOfBase(figureNumber);
         }
-
     }
 
     //move the given figure to the base
@@ -105,19 +158,6 @@ public class BackEnd {
             }
         }
         return false;
-    }
-
-    //check if a step is possible (not possible if the figure on the field to move is, belongs to the same player)
-    private boolean isMovePossible(int figureNumber, int moveLenght){
-        if (figureOnField(figures[figureNumber].getField() + moveLenght) != 99){
-            if (giveColor(figureNumber) == giveColor(figureOnField(figures[figureNumber].getField() + moveLenght))){
-                return false;
-            } else {
-                return true;
-            }
-        } else{
-            return true;
-        }
     }
 
     //check which player has won
