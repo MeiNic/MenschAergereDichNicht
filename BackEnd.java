@@ -36,7 +36,7 @@ public class BackEnd {
                 //startfield is empty
             }
             else{
-                //move player on startfield
+
             }
             //display all changes in the frontEnd
             //trigger new move in frontEnd
@@ -105,6 +105,19 @@ public class BackEnd {
             }
         }
         return false;
+    }
+
+    //check if a step is possible (not possible if the figure on the field to move is, belongs to the same player)
+    private boolean isMovePossible(int figureNumber, int moveLenght){
+        if (figureOnField(figures[figureNumber].getField() + moveLenght) != 99){
+            if (giveColor(figureNumber) == giveColor(figureOnField(figures[figureNumber].getField() + moveLenght))){
+                return false;
+            } else {
+                return true;
+            }
+        } else{
+            return true;
+        }
     }
 
     //check which player has won
