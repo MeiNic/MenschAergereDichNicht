@@ -9,17 +9,17 @@ public class GameBoardGui extends JFrame implements ActionListener{
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
 
-    //Circles house - Yellow-Green-Blue-Red (a-d)
+    //Circles house - Yellow-Green-Blue-Red (a-b-c-d)
     private Circle[] house;
     private final int[] houseX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
     private final int[] houseY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
 
-    //Circles base - Yellow-Green-Blue-Red (liUn, reUn, liOb, reOb)
+    //Circles base - Yellow-Green-Blue-Red (bottom left, bottom right, top left, top right)
     private Circle[] base;
     private final int[] baseX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
     private final int[] baseY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
 
-    //Circles gamefield - start at A yellow
+    //Circles gamefield - start at yellow startfield
     private Circle[] gameField;
     private final int[] gameFieldX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
     private final int[] gameFieldY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
@@ -27,11 +27,13 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //ovals figures
     private Circle[] figures;
 
-    //user advice + button
+    //all JComponents
     JLabel userAdvice;
     JButton rollDice;
     JButton[] inVisibleButtons;
     JLabel result;
+
+    //variable for the backend
     BackEnd backend;
 
     public GameBoardGui(String currentPlayer, Figure[] standardFigures, BackEnd backendNew) {
