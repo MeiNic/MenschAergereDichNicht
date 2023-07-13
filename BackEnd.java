@@ -22,10 +22,11 @@ public class BackEnd {
         activePlayer = 0;
         randomNumber = 0;
         nextMove = true;
+        usernames = new String[4];
 
         //progress input from landingpage
         startpage = landingpage;
-        usernames[4] = startpage.getName();
+        usernames[3] = startpage.getName();
 
         gui = new GameBoardGui(usernames[0]);
     }
