@@ -28,81 +28,87 @@ public class BackEnd {
     }
 
     //progress a dice input
-    private void playerMove(){
+    private void playerMove() {
         int randomNumber = submitRandomNumber();
-        if(randomNumber == 6){
+        if (randomNumber == 6) {
             int figureOnStartfield = figureOnField(activePlayer * 10);
 
             //check if an own figure is on the startfield
-            if(figures[figureOnStartfield].getColor() == activePlayer){
+            if (figures[figureOnStartfield].getColor() == activePlayer) {
                 //own figure is on the startfield
                 moveFigure(figureOnStartfield, randomNumber);
             }
             //if base not empty move a player out of base
             else if (!isBaseEmpty(activePlayer)) {
-                if (figures[activePlayer].isInBase()){
+                if (figures[activePlayer].isInBase()) {
                     moveOutOfBase(activePlayer);
                 } else if (figures[activePlayer + 1].isInBase()) {
-                    moveOutOfBase(activePlayer + 1 );
+                    moveOutOfBase(activePlayer + 1);
                 } else if (figures[activePlayer + 2].isInBase()) {
                     moveOutOfBase(activePlayer + 2);
-                }else {
+                } else {
                     moveOutOfBase(activePlayer + 3);
                 }
             } else {
-                //check with how much figures can do a beat
-                int beatsPossible = 0;
-                for(int i = 0; i < 4; i++){
-                    if (beatPossible(activePlayer * 4 + i, randomNumber)){
-                        beatsPossible++;
-                    }
-                }
-
-                //check if one or more beats are possible
-                if (beatsPossible > 0){
-                    if (beatsPossible == 1){
-                        //move the figure, where the beat is possible
-                        for (int i = 0; i < 4; i++){
-                            int activeFigure = activePlayer * 4 + i;
-                            if (beatPossible(activeFigure, randomNumber)){
-                                moveFigure(activeFigure, randomNumber);
-                            }
-                        }
-                    }
-                    else {
-                        //add the figure to the chooser
-                        for (int i = 0; i < 4; i++){
-                            int activeFigure = activePlayer * 4 + i;
-                            if (beatPossible(activeFigure, randomNumber)){
-                                figures[activeFigure].setPlaceOption(true);
-                            }
-                        }
-                        //perform the user choice of the frontEnd
-                    }
-                }
-                //make user figure chooser for all figures of the player
-                else {
-                    for (int i = 0; i < 4; i++){
-                        int activeFigure = activePlayer * 4 + i;
-                        if (!figures[activeFigure].isFinished()){
-                            figures[activeFigure].setPlaceOption(true);
-                        }
-                    }
-                    //perform the user choice of the frontEnd
-                }
+                playerMoveOnField(randomNumber);
             }
             //display all changes in the frontEnd
             //trigger new move in frontEnd
         }
-        else{
+        else {
             //display all changes in the frontEnd
             //same code as before the comment in the "if"-block
-            if(activePlayer == 3){
-                activePlayer = 0;
-            }else{
-                activePlayer++;
-            }
+        if (activePlayer == 3) {
+            activePlayer = 0;
+        } else {
+            activePlayer++;
+        }
             //trigger new move in fontEnd
+        }
+
+    }
+
+
+    //part of the playerMove-method - don't use out of it
+    private void playerMoveOnField(int randomNumber) {
+        //check with how much figures can do a beat
+        int beatsPossible = 0;
+        for (int i = 0; i < 4; i++) {
+            if (beatPossible(activePlayer * 4 + i, randomNumber)) {
+                beatsPossible++;
+            }
+        }
+
+        //check if one or more beats are possible
+        if (beatsPossible > 0) {
+            if (beatsPossible == 1) {
+                //move the figure, where the beat is possible
+                for (int i = 0; i < 4; i++) {
+                    int activeFigure = activePlayer * 4 + i;
+                    if (beatPossible(activeFigure, randomNumber)) {
+                        moveFigure(activeFigure, randomNumber);
+                    }
+                }
+            } else {
+                //add the figure to the chooser
+                for (int i = 0; i < 4; i++) {
+                    int activeFigure = activePlayer * 4 + i;
+                    if (beatPossible(activeFigure, randomNumber)) {
+                        figures[activeFigure].setPlaceOption(true);
+                    }
+                }
+                //perform the user choice of the frontEnd
+            }
+        }
+        //make user figure chooser for all figures of the player
+        else {
+            for (int i = 0; i < 4; i++) {
+                int activeFigure = activePlayer * 4 + i;
+                if (!figures[activeFigure].isFinished()) {
+                    figures[activeFigure].setPlaceOption(true);
+                }
+            }
+            //perform the user choice of the frontEnd
         }
     }
 
