@@ -71,14 +71,14 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //Button Action - Method
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
-            //method below is just for testing, enter the method-call form the backend
-           // result.setText("Result: " + submitRandomNumber()); --> necessary but not working because it isn't communicating with backEnd yet
+            //trigger new move in the backend
         }
         else if (e.getSource() == inVisibleButtons[1]){
             //perform method in BackEnd
             for (int i = 0; i < inVisibleButtons.length; i++){
                 inVisibleButtons[i] = null;
             }
+
         }
         else if (e.getSource() == inVisibleButtons[2]){
             //perform method in BackEnd
@@ -132,6 +132,12 @@ public class GameBoardGui extends JFrame implements ActionListener{
                 }
             }
         }
+    }
+
+    //method displays the given value as the result
+    public void displayResult(int randomNumber){
+        result.setText("Result: " + randomNumber);
+        repaint();
     }
 
     /*

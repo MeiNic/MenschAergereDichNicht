@@ -1,5 +1,3 @@
-import com.sun.source.tree.BreakTree;
-
 import java.util.Random;
 public class BackEnd {
     Figure[] figures;
@@ -7,6 +5,8 @@ public class BackEnd {
     String[] usernames;
     int activePlayer;
     GameBoardGui gui;
+    int randomNumber;
+    boolean nextMove;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -20,6 +20,8 @@ public class BackEnd {
         }
 
         activePlayer = 0;
+        randomNumber = 0;
+        nextMove = true;
 
         //progress input from landingpage
         startpage = landingpage;
@@ -29,13 +31,13 @@ public class BackEnd {
     }
 
     //progress a dice input
-    private void playerMove() {
+    private void playerMove() throws InterruptedException {
         //set the PlaceOption in all figures to false
         for (int i = 0; i < figures.length; i++){
             figures[i].setPlaceOption(false);
         }
 
-        int randomNumber = submitRandomNumber();
+        randomNumber = submitRandomNumber();
         int figureOnStartfield = figureOnField(activePlayer * 10);
         if (randomNumber == 6) {
 
@@ -56,10 +58,16 @@ public class BackEnd {
                     moveOutOfBase(activePlayer + 3);
                 }
             } else {
-                playerMoveOnField(randomNumber);
+                playerMoveOnField();
             }
             //display all changes in the frontEnd
+            gui.replaceFigures(figures);
+
+            while (!nextMove){
+                Thread.sleep(500);
+            }
             //trigger new move in frontEnd
+            gui.setActivePlayer(usernames[activePlayer]);
         }
         else {
 
@@ -68,21 +76,28 @@ public class BackEnd {
                 //own figure is on the startfield
                 moveFigure(figureOnStartfield, randomNumber);
             }else {
-                playerMoveOnField(randomNumber);
+                playerMoveOnField();
             }
             //display all changes in the frontEnd
+            gui.replaceFigures(figures);
+
+            while (!nextMove){
+                Thread.sleep(500);
+            }
+
             if (activePlayer == 3) {
                 activePlayer = 0;
             } else {
                 activePlayer++;
             }
-                //trigger new move in fontEnd
+            //trigger new move in fontEnd
+            gui.setActivePlayer(usernames[activePlayer]);
         }
     }
 
 
     //part of the playerMove-method - don't use out of it
-    private void playerMoveOnField(int randomNumber) {
+    private void playerMoveOnField() {
         //check with how much figures can do a beat
         int beatsPossible = 0;
         for (int i = 0; i < 4; i++) {
@@ -109,7 +124,9 @@ public class BackEnd {
                         figures[activeFigure].setPlaceOption(true);
                     }
                 }
+                nextMove = false;
                 //perform the user choice of the frontEnd
+                gui.setUserFigureOption(figures);
             }
         }
         //make user figure chooser for all figures of the player
@@ -120,7 +137,49 @@ public class BackEnd {
                     figures[activeFigure].setPlaceOption(true);
                 }
             }
+            nextMove = false;
             //perform the user choice of the frontEnd
+            gui.setUserFigureOption(figures);
+        }
+    }
+
+    public void performUserChoice(int buttonNumber){
+        if (buttonNumber == 1){
+            for (int i = 0; i < 4; i++){
+                if (figures[activePlayer * 4 + i].isPlaceOption()){
+                    moveFigure(activePlayer * 4 + i, randomNumber);
+                    figures[activePlayer * 4 + i].setPlaceOption(false);
+                    break;
+                }
+            }
+            nextMove = true;
+        } else if (buttonNumber == 2) {
+            for (int i = 0; i < 4; i++){
+                if (figures[activePlayer * 4 + i].isPlaceOption()){
+                    moveFigure(activePlayer * 4 + i, randomNumber);
+                    figures[activePlayer * 4 + i].setPlaceOption(false);
+                    break;
+                }
+            }
+            nextMove = true;
+        } else if (buttonNumber == 3) {
+            for (int i = 0; i < 4; i++){
+                if (figures[activePlayer * 4 + i].isPlaceOption()){
+                    moveFigure(activePlayer * 4 + i, randomNumber);
+                    figures[activePlayer * 4 + i].setPlaceOption(false);
+                    break;
+                }
+            }
+            nextMove = true;
+        }else {
+            for (int i = 0; i < 4; i++){
+                if (figures[activePlayer * 4 + i].isPlaceOption()){
+                    moveFigure(activePlayer * 4 + i, randomNumber);
+                    figures[activePlayer * 4 + i].setPlaceOption(false);
+                    break;
+                }
+            }
+            nextMove = true;
         }
     }
 
@@ -320,6 +379,7 @@ public class BackEnd {
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
             if (figures[i].isInBase()) {
                 BaseStatus = false;
+                break;
             }
         }
         return BaseStatus;
