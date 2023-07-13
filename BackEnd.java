@@ -32,7 +32,7 @@ public class BackEnd {
         int randomNumber = submitRandomNumber();
         if(randomNumber == 6){
             int figureOnStartfield = figureOnField(activePlayer * 10);
-            if(figureOnStartfield != activePlayer * 4 && figureOnStartfield != activePlayer * 4 +1 && figureOnStartfield != activePlayer * 4 + 2 && figureOnStartfield != activePlayer * 4 +3){
+            if(figures[figureOnStartfield].getColor() != activePlayer){
                 //startfield is empty
             }
             else{
@@ -137,7 +137,7 @@ public class BackEnd {
             }
             int figureColor = figures[figureNumber].getColor();
 
-            //real check, if a figure of an other color is standing on the field
+            //real check, if a figure of another color is standing on the field
             if (figureOnField(numberNew) != 99){
                 return false;
             } else if (figures[figureOnField(numberNew)].getColor() != figureColor) {
