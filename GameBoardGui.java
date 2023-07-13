@@ -75,16 +75,28 @@ public class GameBoardGui extends JFrame implements ActionListener{
            // result.setText("Result: " + submitRandomNumber()); --> necessary but not working because it isn't communicating with backEnd yet
         }
         else if (e.getSource() == inVisibleButtons[1]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
         }
         else if (e.getSource() == inVisibleButtons[2]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
         }
         else if (e.getSource() == inVisibleButtons[3]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
         }
         else if (e.getSource() == inVisibleButtons[4]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
         }
     }
 
@@ -158,6 +170,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         while (inVisibleButtons[i] != null){
             i++;
         }
+        inVisibleButtons[i] = new JButton();
         inVisibleButtons[i].addActionListener(this);
         inVisibleButtons[i].setBounds(x, y, 50, 50);
         inVisibleButtons[i].setContentAreaFilled(false);

@@ -6,6 +6,7 @@ public class BackEnd {
     Landingpage startpage;
     String[] usernames;
     int activePlayer;
+    GameBoardGui gui;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -24,14 +25,19 @@ public class BackEnd {
         startpage = landingpage;
         usernames[4] = startpage.getName();
 
-        new GameBoardGui("test");
+        gui = new GameBoardGui(usernames[0]);
     }
 
     //progress a dice input
     private void playerMove() {
+        //set the PlaceOption in all figures to false
+        for (int i = 0; i < figures.length; i++){
+            figures[i].setPlaceOption(false);
+        }
+
         int randomNumber = submitRandomNumber();
+        int figureOnStartfield = figureOnField(activePlayer * 10);
         if (randomNumber == 6) {
-            int figureOnStartfield = figureOnField(activePlayer * 10);
 
             //check if an own figure is on the startfield
             if (figures[figureOnStartfield].getColor() == activePlayer) {
@@ -56,16 +62,22 @@ public class BackEnd {
             //trigger new move in frontEnd
         }
         else {
-            //display all changes in the frontEnd
-            //same code as before the comment in the "if"-block
-        if (activePlayer == 3) {
-            activePlayer = 0;
-        } else {
-            activePlayer++;
-        }
-            //trigger new move in fontEnd
-        }
 
+            //check if an own figure is on the startfield
+            if (figures[figureOnStartfield].getColor() == activePlayer) {
+                //own figure is on the startfield
+                moveFigure(figureOnStartfield, randomNumber);
+            }else {
+                playerMoveOnField(randomNumber);
+            }
+            //display all changes in the frontEnd
+            if (activePlayer == 3) {
+                activePlayer = 0;
+            } else {
+                activePlayer++;
+            }
+                //trigger new move in fontEnd
+        }
     }
 
 
