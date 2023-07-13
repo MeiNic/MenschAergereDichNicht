@@ -28,17 +28,22 @@ public class BackEnd {
         startpage = landingpage;
         usernames[3] = startpage.getName();
 
-        gui = new GameBoardGui(usernames[0]);
+        gui = new GameBoardGui(usernames[0], figures, this);
     }
 
     //progress a dice input
-    private void playerMove() throws InterruptedException {
+
+    public void playerMove() throws InterruptedException {
         //set the PlaceOption in all figures to false
         for (int i = 0; i < figures.length; i++){
             figures[i].setPlaceOption(false);
         }
 
+        //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
+        gui.displayResult(randomNumber);
+
+        //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         if (randomNumber == 6) {
 

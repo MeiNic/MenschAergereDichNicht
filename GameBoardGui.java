@@ -32,13 +32,15 @@ public class GameBoardGui extends JFrame implements ActionListener{
     JButton rollDice;
     JButton[] inVisibleButtons;
     JLabel result;
+    BackEnd backend;
 
-    public GameBoardGui(String currentPlayer) {
+    public GameBoardGui(String currentPlayer, Figure[] standardFigures, BackEnd backendNew) {
         //initialization of arrays
         house = new Circle[16];
         base = new Circle[16];
         gameField = new Circle[40];
         figures = new Circle[16];
+        replaceFigures(standardFigures);
 
         //set circles in arrays
         setCircleValues(house, houseX, houseY, 50, colors[0]);
@@ -62,6 +64,9 @@ public class GameBoardGui extends JFrame implements ActionListener{
         inVisibleButtons = new JButton[4];
         result = new JLabel();
 
+        //link backEnd
+        backend = backendNew;
+
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
         //display GUI
@@ -72,31 +77,39 @@ public class GameBoardGui extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
             //trigger new move in the backend
+            try {
+                backend.playerMove();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if (e.getSource() == inVisibleButtons[0]){
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
+            backend.performUserChoice(0);
         }
         else if (e.getSource() == inVisibleButtons[1]){
             //perform method in BackEnd
             for (int i = 0; i < inVisibleButtons.length; i++){
                 inVisibleButtons[i] = null;
             }
-
+            backend.performUserChoice(1);
         }
         else if (e.getSource() == inVisibleButtons[2]){
             //perform method in BackEnd
             for (int i = 0; i < inVisibleButtons.length; i++){
                 inVisibleButtons[i] = null;
             }
+            backend.performUserChoice(2);
         }
         else if (e.getSource() == inVisibleButtons[3]){
             //perform method in BackEnd
             for (int i = 0; i < inVisibleButtons.length; i++){
                 inVisibleButtons[i] = null;
             }
-        }
-        else if (e.getSource() == inVisibleButtons[4]){
-            //perform method in BackEnd
-            for (int i = 0; i < inVisibleButtons.length; i++){
-                inVisibleButtons[i] = null;
-            }
+            backend.performUserChoice(3);
         }
     }
 
@@ -227,6 +240,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         forEachloopPaintFields(g, house);
         forEachloopPaintFields(g, base);
         forEachloopPaintFields(g, gameField);
+        forEachloopPaintFigures(g, figures);
     }
 
     private void forEachloopPaintFields(Graphics g, Circle[] array) {
@@ -245,16 +259,16 @@ public class GameBoardGui extends JFrame implements ActionListener{
 
     private void forEachloopPaintFigures(Graphics g, Circle[] array){
         for (Circle oval : array){
-            int x = oval.getX();
+            int x = oval.getX() + oval.getRadius() / 4;
             int y = oval.getY();
             int radius = oval.getRadius();
-            int radiusHalf = oval.getRadius();
+            int radiusHalf = oval.getRadius() / 2;
             Color color = oval.getColor();
 
             g.setColor(color);
             g.fillOval(x, y, radiusHalf, radius);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+            g.drawOval(x - 1, y - 1, radiusHalf + 1, radius + 1);
         }
     }
 }
