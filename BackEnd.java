@@ -126,6 +126,29 @@ public class BackEnd {
         }
     }
 
+    //check if a beat is possible
+    private boolean beatPossible(int figureNumber, int stepLength){
+        if (!figures[figureNumber].isInBase() && !figures[figureNumber].isInHouse()){
+            //store some useful variables
+            int numberOld = figures[figureNumber].getField();
+            int numberNew = numberOld + stepLength;
+            if (numberNew > 39){
+                numberNew -= 40;
+            }
+            int figureColor = figures[figureNumber].getColor();
+
+            //real check, if a figure of an other color is standing on the field
+            if (figureOnField(numberNew) != 99){
+                return false;
+            } else if (figures[figureOnField(numberNew)].getColor() != figureColor) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     //move the given figure to the base
     private void moveToBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
