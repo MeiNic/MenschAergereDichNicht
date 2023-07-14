@@ -14,15 +14,7 @@ public class Circle {
         this.color = Color.decode(hexCode);
         this.button = false;
     }
-
-    public Circle(int xNew, int yNew, int radiusNew){
-        this.x = xNew;
-        this.y = yNew;
-        this.radius = radiusNew;
-        this.color = Color.BLACK;
-        this.button = false;
-    }
-
+    
     //Getter and Setter for every value
     public int getX() {
         return x;
