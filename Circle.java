@@ -14,7 +14,7 @@ public class Circle {
         this.color = Color.decode(hexCode);
         this.button = false;
     }
-    
+
     //Getter and Setter for every value
     public int getX() {
         return x;
