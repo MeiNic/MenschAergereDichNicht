@@ -123,7 +123,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     public void replaceFigures(Figure[] input){
         for (int i = 0; i < input.length; i++){
             if(input[i].isInBase()){
-                figures[i] = new Circle(baseX[input[i].getField()], baseX[input[i].getField()], 50, figureColors[input[i].getColor()]);
+                figures[i] = new Circle(baseX[input[i].getField()], baseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
             }else if (input[i].isInHouse()){
                 figures[i] = new Circle(houseX[input[i].getField()], houseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
             }else {
