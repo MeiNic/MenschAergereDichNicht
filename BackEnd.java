@@ -397,4 +397,4 @@ public class BackEnd {
         figures[figureNumber].setField(10*figureColor);
         figures[figureNumber].setInBase(false);
     }
-} 
+}
