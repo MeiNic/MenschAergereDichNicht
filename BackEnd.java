@@ -26,13 +26,17 @@ public class BackEnd {
 
         //progress input from landingpage
         startpage = landingpage;
-        usernames[3] = startpage.getName();
+        usernames = startpage.getNames();
 
         gui = new GameBoardGui(usernames[0], figures, this);
     }
+    //generate random number (copy from frontend)
+    private int submitRandomNumber(){
+        Random rand = new Random();
+        return 1 + rand.nextInt(6);
+    }
 
     //progress a dice input
-
     public void playerMove() throws InterruptedException {
         //set the PlaceOption in all figures to false
         for (int i = 0; i < figures.length; i++){
@@ -330,12 +334,6 @@ public class BackEnd {
         } else {
             return 3;
         }
-    }
-
-    //generate random number (copy from frontend)
-    private int submitRandomNumber(){
-        Random rand = new Random();
-        return 1 + rand.nextInt(6);
     }
 
     //check all figures if they are finished
