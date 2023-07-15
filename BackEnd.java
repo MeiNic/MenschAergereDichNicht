@@ -390,7 +390,7 @@ public class BackEnd {
     }
     
     //check if all figures are in the base
-    private boolean isBaseEmpty(int playerNumber){
+    private boolean isBaseFull(int playerNumber){
         boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
             if (!figures[i].isInBase()) {
