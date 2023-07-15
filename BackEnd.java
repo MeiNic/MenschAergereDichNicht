@@ -401,6 +401,30 @@ public class BackEnd {
         return BaseStatus;
     }
 
+    //check if given player is allowed to roll the dice three times
+    private boolean threeTimesAllowed(int playerNumber){
+        int finished = 0;
+        int inBase = 0;
+        //count figures in base
+        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
+            if (figures[i].isInBase()){
+                inBase++;
+            }
+        }
+        //count figures finished
+        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
+            if (figures[i].isFinished()){
+                finished++;
+            }
+        }
+        int cache = inBase + finished;
+        if (cache == 4){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     //move a figure out of base
     private void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
