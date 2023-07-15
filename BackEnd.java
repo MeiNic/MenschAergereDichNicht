@@ -388,6 +388,18 @@ public class BackEnd {
         }
         return BaseStatus;
     }
+    
+    //check if all figures are in the base
+    private boolean isBaseEmpty(int playerNumber){
+        boolean BaseStatus = true;
+        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+            if (!figures[i].isInBase()) {
+                BaseStatus = false;
+                break;
+            }
+        }
+        return BaseStatus;
+    }
 
     //move a figure out of base
     private void moveOutOfBase(int figureNumber){
