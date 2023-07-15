@@ -47,6 +47,26 @@ public class BackEnd {
         randomNumber = submitRandomNumber();
         gui.displayResult(randomNumber);
 
+        //if user is allowed to roll the dice three time operate this option
+        int counter = 0;
+        if (threeTimesAllowed(activePlayer)){
+            while (counter < 3 && randomNumber != 6){
+                randomNumber = submitRandomNumber();
+                gui.displayResult(randomNumber);
+                counter++;
+            }
+            if (randomNumber != 6){
+                if (activePlayer == 3) {
+                    activePlayer = 0;
+                } else {
+                    activePlayer++;
+                }
+                //trigger new move in fontEnd
+                gui.setActivePlayer(usernames[activePlayer]);
+                return;
+            }
+        }
+
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         if (randomNumber == 6) {
@@ -403,6 +423,9 @@ public class BackEnd {
 
     //check if given player is allowed to roll the dice three times
     private boolean threeTimesAllowed(int playerNumber){
+        if (isBaseFull(playerNumber)){
+            return true;
+        }
         int finished = 0;
         int inBase = 0;
         //count figures in base
