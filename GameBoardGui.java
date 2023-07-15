@@ -78,6 +78,8 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //Button Action - Method
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
+            //remove the button from the JPanel
+            remove(rollDice);
             //trigger new move in the backend
             try {
                 backend.playerMove();
@@ -159,6 +161,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     method sets the given player-name to the userAdvice-JLabel and resets the result jLabel
      */
     public void setActivePlayer(String newPlayer){
+        add(rollDice);
         userAdvice.setText("Player " + newPlayer + " is on the turn, click this button");
         result.setText("");
         repaint();
