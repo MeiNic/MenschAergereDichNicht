@@ -37,7 +37,7 @@ public class BackEnd {
     }
 
     //progress a dice input
-    public void playerMove() throws InterruptedException {
+    public void playerMove() {
         noChooserSet = false;
 
         //Generate new randomNumber and show it on the gui
@@ -87,7 +87,6 @@ public class BackEnd {
             } else {
                 playerMoveOnField();
             }
-            Thread.sleep(500);
 
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
@@ -107,7 +106,6 @@ public class BackEnd {
             }else {
                 playerMoveOnField();
             }
-            Thread.sleep(500);
 
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
@@ -213,6 +211,18 @@ public class BackEnd {
         for (Figure figure : figures) {
             figure.setPlaceOption(false);
         }
+
+        //rest of the normal playerMove-method
+        gui.replaceFigures(figures);
+        if (randomNumber != 6){
+            if (activePlayer == 3){
+                activePlayer = 0;
+            } else {
+                activePlayer++;
+            }
+        }
+        //trigger new move in fontEnd
+        gui.setActivePlayer(usernames[activePlayer]);
     }
 
     //move the given figure by the given number
