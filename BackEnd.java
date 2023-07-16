@@ -38,11 +38,6 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() throws InterruptedException {
-        //set the PlaceOption in all figures to false
-        for (int i = 0; i < figures.length; i++){
-            figures[i].setPlaceOption(false);
-        }
-
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
         gui.displayResult(randomNumber);
@@ -90,12 +85,15 @@ public class BackEnd {
             } else {
                 playerMoveOnField();
             }
-            //display all changes in the frontEnd
-            gui.replaceFigures(figures);
+            Thread.sleep(500);
 
             while (!nextMove){
                 Thread.sleep(500);
             }
+
+            //display all changes in the frontEnd
+            gui.replaceFigures(figures);
+
             //trigger new move in frontEnd
             gui.setActivePlayer(usernames[activePlayer]);
         }
@@ -108,18 +106,21 @@ public class BackEnd {
             }else {
                 playerMoveOnField();
             }
-            //display all changes in the frontEnd
-            gui.replaceFigures(figures);
+            Thread.sleep(500);
 
             while (!nextMove){
                 Thread.sleep(500);
             }
+
+            //display all changes in the frontEnd
+            gui.replaceFigures(figures);
 
             if (activePlayer == 3) {
                 activePlayer = 0;
             } else {
                 activePlayer++;
             }
+
             //trigger new move in fontEnd
             gui.setActivePlayer(usernames[activePlayer]);
         }
@@ -144,6 +145,7 @@ public class BackEnd {
                     int activeFigure = activePlayer * 4 + i;
                     if (beatPossible(activeFigure, randomNumber)) {
                         moveFigure(activeFigure, randomNumber);
+                        break;
                     }
                 }
             } else {
@@ -163,7 +165,7 @@ public class BackEnd {
         else {
             for (int i = 0; i < 4; i++) {
                 int activeFigure = activePlayer * 4 + i;
-                if (!figures[activeFigure].isFinished()) {
+                if (!figures[activeFigure].isFinished() && !figures[activeFigure].isInBase()) {
                     figures[activeFigure].setPlaceOption(true);
                 }
             }
@@ -178,7 +180,6 @@ public class BackEnd {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
                     moveFigure(activePlayer * 4 + i, randomNumber);
-                    figures[activePlayer * 4 + i].setPlaceOption(false);
                     break;
                 }
             }
@@ -187,7 +188,6 @@ public class BackEnd {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
                     moveFigure(activePlayer * 4 + i, randomNumber);
-                    figures[activePlayer * 4 + i].setPlaceOption(false);
                     break;
                 }
             }
@@ -196,7 +196,6 @@ public class BackEnd {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
                     moveFigure(activePlayer * 4 + i, randomNumber);
-                    figures[activePlayer * 4 + i].setPlaceOption(false);
                     break;
                 }
             }
@@ -205,12 +204,18 @@ public class BackEnd {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
                     moveFigure(activePlayer * 4 + i, randomNumber);
-                    figures[activePlayer * 4 + i].setPlaceOption(false);
                     break;
                 }
             }
-            nextMove = true;
+
         }
+
+        //removing the place options on all figures
+        for (Figure figure : figures) {
+            figure.setPlaceOption(false);
+        }
+        //change variable so the move is displayed and the next player is on the turn
+        nextMove = true;
     }
 
     //move the given figure by the given number
@@ -312,7 +317,7 @@ public class BackEnd {
     //move the given figure to the base
     private void moveToBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
-        int emptyField = 0 + 4 * figureColor;
+        int emptyField = 4 * figureColor;
         while (figureOnField(emptyField) != 99){
             emptyField++;
         }
@@ -441,11 +446,7 @@ public class BackEnd {
             }
         }
         int cache = inBase + finished;
-        if (cache == 4){
-            return true;
-        }else {
-            return false;
-        }
+        return cache == 4;
     }
 
     //move a figure out of base
