@@ -6,7 +6,7 @@ public class BackEnd {
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
-    boolean nextMove;
+    boolean noChooserSet;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -21,7 +21,7 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        nextMove = true;
+        noChooserSet = true;
         usernames = new String[4];
 
         //progress input from landingpage
@@ -38,6 +38,8 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() throws InterruptedException {
+        noChooserSet = false;
+
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
         gui.displayResult(randomNumber);
@@ -87,12 +89,14 @@ public class BackEnd {
             }
             Thread.sleep(500);
 
-            while (!nextMove){
-                Thread.sleep(500);
+            //no figure chooser set -> display all changes in gui
+            if (noChooserSet) {
+                gui.replaceFigures(figures);
             }
-
-            //display all changes in the frontEnd
-            gui.replaceFigures(figures);
+            //figure chooser set -> end method
+            else {
+                return;
+            }
         }
         else {
 
@@ -105,17 +109,18 @@ public class BackEnd {
             }
             Thread.sleep(500);
 
-            while (!nextMove){
-                Thread.sleep(500);
+            //no figure chooser set -> display changes in gui & set activePlayer to next player
+            if (noChooserSet){
+                gui.replaceFigures(figures);
+                if (activePlayer == 3) {
+                    activePlayer = 0;
+                } else {
+                    activePlayer++;
+                }
             }
-
-            //display all changes in the frontEnd
-            gui.replaceFigures(figures);
-
-            if (activePlayer == 3) {
-                activePlayer = 0;
-            } else {
-                activePlayer++;
+            //figure chooser set -> end method
+            else {
+                return;
             }
         }
         //trigger new move in fontEnd
@@ -152,7 +157,7 @@ public class BackEnd {
                         figures[activeFigure].setPlaceOption(true);
                     }
                 }
-                nextMove = false;
+                noChooserSet = false;
                 //perform the user choice of the frontEnd
                 gui.setUserFigureOption(figures);
             }
@@ -165,7 +170,8 @@ public class BackEnd {
                     figures[activeFigure].setPlaceOption(true);
                 }
             }
-            nextMove = false;
+            noChooserSet = false;
+
             //perform the user choice of the frontEnd
             gui.setUserFigureOption(figures);
         }
@@ -179,7 +185,6 @@ public class BackEnd {
                     break;
                 }
             }
-            nextMove = true;
         } else if (buttonNumber == 2) {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
@@ -187,7 +192,6 @@ public class BackEnd {
                     break;
                 }
             }
-            nextMove = true;
         } else if (buttonNumber == 3) {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
@@ -195,7 +199,6 @@ public class BackEnd {
                     break;
                 }
             }
-            nextMove = true;
         }else {
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
@@ -210,8 +213,6 @@ public class BackEnd {
         for (Figure figure : figures) {
             figure.setPlaceOption(false);
         }
-        //change variable so the move is displayed and the next player is on the turn
-        nextMove = true;
     }
 
     //move the given figure by the given number
