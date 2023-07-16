@@ -93,9 +93,6 @@ public class BackEnd {
 
             //display all changes in the frontEnd
             gui.replaceFigures(figures);
-
-            //trigger new move in frontEnd
-            gui.setActivePlayer(usernames[activePlayer]);
         }
         else {
 
@@ -120,10 +117,9 @@ public class BackEnd {
             } else {
                 activePlayer++;
             }
-
-            //trigger new move in fontEnd
-            gui.setActivePlayer(usernames[activePlayer]);
         }
+        //trigger new move in fontEnd
+        gui.setActivePlayer(usernames[activePlayer]);
     }
 
 
