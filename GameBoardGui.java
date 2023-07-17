@@ -80,12 +80,9 @@ public class GameBoardGui extends JFrame implements ActionListener{
         if (e.getSource() == rollDice){
             //remove the button from the JPanel
             remove(rollDice);
+
             //trigger new move in the backend
-            try {
-                backend.playerMove();
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
+            backend.playerMove();
         }
         else if (e.getSource() == inVisibleButtons[0]){
             //perform method in BackEnd
