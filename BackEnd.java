@@ -75,14 +75,11 @@ public class BackEnd {
             }
             //if base not empty move a player out of base
             else if (!isBaseEmpty(activePlayer)) {
-                if (figures[activePlayer].isInBase()) {
-                    moveOutOfBase(activePlayer);
-                } else if (figures[activePlayer + 1].isInBase()) {
-                    moveOutOfBase(activePlayer + 1);
-                } else if (figures[activePlayer + 2].isInBase()) {
-                    moveOutOfBase(activePlayer + 2);
-                } else {
-                    moveOutOfBase(activePlayer + 3);
+                for (int i = activePlayer * 4; i < 16; i++){
+                    if (figures[i].isInBase()){
+                        moveOutOfBase(i);
+                        break;
+                    }
                 }
             } else {
                 playerMoveOnField();
