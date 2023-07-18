@@ -8,6 +8,7 @@ public class BackEnd {
     int randomNumber;
     boolean noChooserSet;
     winWindow winner;
+    boolean finishStatus;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -40,7 +41,7 @@ public class BackEnd {
     //progress a dice input
     public void playerMove() {
         noChooserSet = false;
-        boolean finishStatus = false;
+        finishStatus = false;
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
         gui.displayResult(randomNumber);
@@ -126,6 +127,7 @@ public class BackEnd {
         if(finished()){
             finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
+            gui.setVisible(false);
         }
 
         //trigger new move in fontEnd
@@ -183,6 +185,7 @@ public class BackEnd {
     }
 
     public void performUserChoice(int buttonNumber){
+        finishStatus = false;
         if (buttonNumber == 1){
             for (int i = 0; i < 4; i++){
                 if (figures[activePlayer * 4 + i].isPlaceOption()){
@@ -228,6 +231,14 @@ public class BackEnd {
                 activePlayer++;
             }
         }
+        //check if anyone has won yet
+        //check if a player has won yet
+        if(finished()){
+            finishStatus = true;
+            winner = new winWindow(usernames[whoFinished()]);
+            gui.setVisible(false);
+        }
+
         //trigger new move in fontEnd
         gui.setActivePlayer(usernames[activePlayer]);
     }
