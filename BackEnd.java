@@ -7,7 +7,7 @@ public class BackEnd {
     GameBoardGui gui;
     int randomNumber;
     boolean noChooserSet;
-    winWindow winner;
+
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
