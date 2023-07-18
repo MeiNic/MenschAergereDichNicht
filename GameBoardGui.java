@@ -142,7 +142,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
                     placeInvisibleButton(houseX[input[i].getField()], houseY[input[i].getField()]);
                 }
                 else {
-                    placeInvisibleButton(gameFieldX[input[i].getField()], houseY[input[i].getField()]);
+                    placeInvisibleButton(gameFieldX[input[i].getField()], gameFieldY[input[i].getField()]);
                 }
             }
         }
@@ -225,8 +225,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         for (int i = 0; i < array.length; i++) {
             int xNew = x[i];
             int yNew = y[i];
-            int radiusNew = radius;
-            array[i] = new Circle(xNew, yNew, radiusNew, hexColor);
+            array[i] = new Circle(xNew, yNew, radius, hexColor);
         }
     }
 
