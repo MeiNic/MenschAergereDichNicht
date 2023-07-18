@@ -75,7 +75,6 @@ public class Landingpage extends JFrame implements ActionListener {
         adjustJFrameSetting();
     }
     public void actionPerformed(ActionEvent e) {
-        BackEnd game = new BackEnd();
         setVisible(false);
         BackEnd game = new BackEnd(this);
 
