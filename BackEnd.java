@@ -387,7 +387,7 @@ public class BackEnd {
     //check which figure is on the normal field
     private int figureOnField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
-            if (figures[i].getField() == fieldNumber){
+            if (figures[i].getField() == fieldNumber && !figures[i].isInBase() && !figures[i].isInHouse()){
                 return i;
             }
         }
