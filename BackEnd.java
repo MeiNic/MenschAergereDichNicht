@@ -431,6 +431,17 @@ public class BackEnd {
         return 99;
     }
 
+    public int figureONBaseField(int fieldNumber){
+        for (int i = 0; i < figures.length; i++){
+            if (figures[i].isInBase()) {
+                if (figures[i].getField() == fieldNumber){
+                    return i;
+                }
+            }
+        }
+        return 99;
+    }
+
     //check if base is empty (argument between 0 & 3)
     private boolean isBaseEmpty(int playerNumber){
         boolean BaseStatus = true;
