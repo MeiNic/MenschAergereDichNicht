@@ -32,6 +32,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     JButton rollDice;
     JButton[] inVisibleButtons;
     JLabel result;
+    JLabel figureChooserPrompt;
 
     //variable for the backend
     BackEnd backend;
@@ -65,6 +66,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         rollDice = new JButton();
         inVisibleButtons = new JButton[4];
         result = new JLabel();
+        figureChooserPrompt = new JLabel();
 
         //link backEnd
         backend = backendNew;
@@ -133,6 +135,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     }
 
     public void setUserFigureOption(Figure[] input){
+        setPromptValues();
         for (int i = 0; i < input.length && i < figures.length; i++){
             if (input[i].isPlaceOption()){
                 if (input[i].isInBase()){
@@ -142,7 +145,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
                     placeInvisibleButton(houseX[input[i].getField()], houseY[input[i].getField()]);
                 }
                 else {
-                    placeInvisibleButton(gameFieldX[input[i].getField()], houseY[input[i].getField()]);
+                    placeInvisibleButton(gameFieldX[input[i].getField()], gameFieldY[input[i].getField()]);
                 }
             }
         }
@@ -180,6 +183,12 @@ public class GameBoardGui extends JFrame implements ActionListener{
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+    }
+
+    public void setPromptValues(){
+        figureChooserPrompt.setText("Choose the figure you want to move!");
+        figureChooserPrompt.setBounds(970, 120, 200, 32);
+        add(figureChooserPrompt);
     }
 
     /*
@@ -225,8 +234,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         for (int i = 0; i < array.length; i++) {
             int xNew = x[i];
             int yNew = y[i];
-            int radiusNew = radius;
-            array[i] = new Circle(xNew, yNew, radiusNew, hexColor);
+            array[i] = new Circle(xNew, yNew, radius, hexColor);
         }
     }
 

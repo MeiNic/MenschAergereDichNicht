@@ -68,23 +68,28 @@ public class BackEnd {
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
-        if (randomNumber == 6) {
-
-            //check if an own figure is on the startfield
+        boolean ownFigureOnStartfield = false;
+        if (figureOnStartfield != 99){
             if (figures[figureOnStartfield].getColor() == activePlayer) {
                 //own figure is on the startfield
+                ownFigureOnStartfield = true;
+
+            }
+        }
+
+        if (randomNumber == 6) {
+            //check if an own figure is on the startfield
+            if (ownFigureOnStartfield){
                 moveFigure(figureOnStartfield, randomNumber);
             }
+
             //if base not empty move a player out of base
             else if (!isBaseEmpty(activePlayer)) {
-                if (figures[activePlayer].isInBase()) {
-                    moveOutOfBase(activePlayer);
-                } else if (figures[activePlayer + 1].isInBase()) {
-                    moveOutOfBase(activePlayer + 1);
-                } else if (figures[activePlayer + 2].isInBase()) {
-                    moveOutOfBase(activePlayer + 2);
-                } else {
-                    moveOutOfBase(activePlayer + 3);
+                for (int i = activePlayer * 4; i < 16; i++){
+                    if (figures[i].isInBase()){
+                        moveOutOfBase(i);
+                        break;
+                    }
                 }
             } else {
                 playerMoveOnField();
@@ -102,8 +107,7 @@ public class BackEnd {
         else {
 
             //check if an own figure is on the startfield
-            if (figures[figureOnStartfield].getColor() == activePlayer) {
-                //own figure is on the startfield
+            if (ownFigureOnStartfield) {
                 moveFigure(figureOnStartfield, randomNumber);
             }else {
                 playerMoveOnField();
@@ -328,7 +332,7 @@ public class BackEnd {
             int figureColor = figures[figureNumber].getColor();
 
             //real check, if a figure of another color is standing on the field
-            if (figureOnField(numberNew) != 99){
+            if (figureOnField(numberNew) == 99){
                 return false;
             } else if (figures[figureOnField(numberNew)].getColor() != figureColor) {
                 return true;
@@ -408,7 +412,7 @@ public class BackEnd {
     //check which figure is on the normal field
     private int figureOnField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
-            if (figures[i].getField() == fieldNumber){
+            if (figures[i].getField() == fieldNumber && !figures[i].isInBase() && !figures[i].isInHouse()){
                 return i;
             }
         }
