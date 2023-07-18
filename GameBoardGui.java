@@ -135,6 +135,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     }
 
     public void setUserFigureOption(Figure[] input){
+        setPromptValues();
         for (int i = 0; i < input.length && i < figures.length; i++){
             if (input[i].isPlaceOption()){
                 if (input[i].isInBase()){
