@@ -7,6 +7,7 @@ public class BackEnd {
     GameBoardGui gui;
     int randomNumber;
     boolean noChooserSet;
+    winWindow winner;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -349,6 +350,7 @@ public class BackEnd {
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
             if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
+
                 return true;
             }
         }
