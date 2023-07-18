@@ -170,7 +170,7 @@ public class BackEnd {
                 }
                 noChooserSet = false;
                 //perform the user choice of the frontEnd
-                gui.setUserFigureOption(figures);
+                gui.setPromptValues();
             }
         }
         //make user figure chooser for all figures of the player
@@ -184,7 +184,7 @@ public class BackEnd {
             noChooserSet = false;
 
             //perform the user choice of the frontEnd
-            gui.setUserFigureOption(figures);
+            gui.setPromptValues();
         }
     }
 
