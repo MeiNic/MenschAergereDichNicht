@@ -86,34 +86,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             //trigger new move in the backend
             backend.playerMove();
         }
-        else if (e.getSource() == inVisibleButtons[0]){
-            //perform method in BackEnd
-            for (int i = 0; i < inVisibleButtons.length; i++){
-                inVisibleButtons[i] = null;
-            }
-            backend.performUserChoice(0);
-        }
-        else if (e.getSource() == inVisibleButtons[1]){
-            //perform method in BackEnd
-            for (int i = 0; i < inVisibleButtons.length; i++){
-                inVisibleButtons[i] = null;
-            }
-            backend.performUserChoice(1);
-        }
-        else if (e.getSource() == inVisibleButtons[2]){
-            //perform method in BackEnd
-            for (int i = 0; i < inVisibleButtons.length; i++){
-                inVisibleButtons[i] = null;
-            }
-            backend.performUserChoice(2);
-        }
-        else if (e.getSource() == inVisibleButtons[3]){
-            //perform method in BackEnd
-            for (int i = 0; i < inVisibleButtons.length; i++){
-                inVisibleButtons[i] = null;
-            }
-            backend.performUserChoice(3);
-        }
     }
 
     //methods for the mouse listener
@@ -159,6 +131,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                     }
                 }
             }
+        }
+        if (moveFinished){
+            backend.performUserChoice();
         }
     }
 
