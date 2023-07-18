@@ -30,7 +30,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //all JComponents
     JLabel userAdvice;
     JButton rollDice;
-    JButton[] inVisibleButtons;
     JLabel result;
     JLabel figureChooserPrompt;
 
@@ -64,7 +63,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         //Implement JButton and JLabel
         userAdvice = new JLabel();
         rollDice = new JButton();
-        inVisibleButtons = new JButton[4];
         result = new JLabel();
         figureChooserPrompt = new JLabel();
 
@@ -165,24 +163,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
-    //Interface with BackEnd - 2. method: setUserFigureOption
-    public void setUserFigureOption(Figure[] input){
-        setPromptValues();
-        for (int i = 0; i < input.length && i < figures.length; i++){
-            if (input[i].isPlaceOption()){
-                if (input[i].isInBase()){
-                    placeInvisibleButton(baseX[input[i].getField()], baseY[input[i].getField()]);
-                }
-                else if (input[i].isInHouse()){
-                    placeInvisibleButton(houseX[input[i].getField()], houseY[input[i].getField()]);
-                }
-                else {
-                    placeInvisibleButton(gameFieldX[input[i].getField()], gameFieldY[input[i].getField()]);
-                }
-            }
-        }
-    }
-
     //method displays the given value as the result
     public void displayResult(int randomNumber){
         result.setText("Result: " + randomNumber);
@@ -222,24 +202,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 200, 32);
         add(figureChooserPrompt);
-    }
-
-    /*
-        this method, sets all needed parameters to the next free JButton in the invisibleButton-Array
-        the method gets the coordinates for the button on its call
-     */
-    private void placeInvisibleButton(int x, int y){
-        int i = 0;
-        while (inVisibleButtons[i] != null){
-            i++;
-        }
-        inVisibleButtons[i] = new JButton();
-        inVisibleButtons[i].addActionListener(this);
-        inVisibleButtons[i].setBounds(x, y, 50, 50);
-        inVisibleButtons[i].setContentAreaFilled(false);
-        inVisibleButtons[i].setBorderPainted(false);
-        inVisibleButtons[i].setFocusPainted(false);
-        add(inVisibleButtons[i]);
     }
 
     /*
