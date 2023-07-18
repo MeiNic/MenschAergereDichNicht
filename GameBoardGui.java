@@ -9,17 +9,17 @@ public class GameBoardGui extends JFrame implements ActionListener{
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
 
-    //Circles house - Yellow-Green-Blue-Red (a-d)
+    //Circles house - Yellow-Green-Blue-Red (a-b-c-d)
     private Circle[] house;
     private final int[] houseX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
     private final int[] houseY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
 
-    //Circles base - Yellow-Green-Blue-Red (liUn, reUn, liOb, reOb)
+    //Circles base - Yellow-Green-Blue-Red (bottom left, bottom right, top left, top right)
     private Circle[] base;
     private final int[] baseX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
     private final int[] baseY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
 
-    //Circles gamefield - start at A yellow
+    //Circles gamefield - start at yellow startfield
     private Circle[] gameField;
     private final int[] gameFieldX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
     private final int[] gameFieldY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
@@ -27,18 +27,22 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //ovals figures
     private Circle[] figures;
 
-    //user advice + button
+    //all JComponents
     JLabel userAdvice;
     JButton rollDice;
     JButton[] inVisibleButtons;
     JLabel result;
 
-    public GameBoardGui(String currentPlayer) {
+    //variable for the backend
+    BackEnd backend;
+
+    public GameBoardGui(String currentPlayer, Figure[] standardFigures, BackEnd backendNew) {
         //initialization of arrays
         house = new Circle[16];
         base = new Circle[16];
         gameField = new Circle[40];
         figures = new Circle[16];
+        replaceFigures(standardFigures);
 
         //set circles in arrays
         setCircleValues(house, houseX, houseY, 50, colors[0]);
@@ -62,6 +66,9 @@ public class GameBoardGui extends JFrame implements ActionListener{
         inVisibleButtons = new JButton[4];
         result = new JLabel();
 
+        //link backEnd
+        backend = backendNew;
+
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
         //display GUI
@@ -71,20 +78,39 @@ public class GameBoardGui extends JFrame implements ActionListener{
     //Button Action - Method
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
-            //method below is just for testing, enter the method-call form the backend
-            result.setText("Result: " + submitRandomNumber());
+            //remove the button from the JPanel
+            remove(rollDice);
+
+            //trigger new move in the backend
+            backend.playerMove();
+        }
+        else if (e.getSource() == inVisibleButtons[0]){
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
+            backend.performUserChoice(0);
         }
         else if (e.getSource() == inVisibleButtons[1]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
+            backend.performUserChoice(1);
         }
         else if (e.getSource() == inVisibleButtons[2]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
+            backend.performUserChoice(2);
         }
         else if (e.getSource() == inVisibleButtons[3]){
-
-        }
-        else if (e.getSource() == inVisibleButtons[4]){
-
+            //perform method in BackEnd
+            for (int i = 0; i < inVisibleButtons.length; i++){
+                inVisibleButtons[i] = null;
+            }
+            backend.performUserChoice(3);
         }
     }
 
@@ -94,9 +120,9 @@ public class GameBoardGui extends JFrame implements ActionListener{
      2. method: setUserFigureOption
      */
     public void replaceFigures(Figure[] input){
-        for (int i = 0; i < input.length; i++){
+        for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].isInBase()){
-                figures[i] = new Circle(baseX[input[i].getField()], baseX[input[i].getField()], 50, figureColors[input[i].getColor()]);
+                figures[i] = new Circle(baseX[input[i].getField()], baseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
             }else if (input[i].isInHouse()){
                 figures[i] = new Circle(houseX[input[i].getField()], houseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
             }else {
@@ -122,23 +148,22 @@ public class GameBoardGui extends JFrame implements ActionListener{
         }
     }
 
+    //method displays the given value as the result
+    public void displayResult(int randomNumber){
+        result.setText("Result: " + randomNumber);
+        repaint();
+    }
+
     /*
     method sets the given player-name to the userAdvice-JLabel and resets the result jLabel
      */
     public void setActivePlayer(String newPlayer){
+        add(rollDice);
         userAdvice.setText("Player " + newPlayer + " is on the turn, click this button");
         result.setText("");
         repaint();
     }
-
-    /* -- method only for testing the FrontEnd --
-      method does less than the normal method in the BackEnd (generating a random number, processing it instantly, returning the random number to the FrontEnd
-      -- method only for testing the FrontEnd --
-     */
-    private int submitRandomNumber(){
-        Random rand = new Random();
-        return 1 + rand.nextInt(6);
-    }
+    
 
     /*
       -- DON'T use this method out of constructor - DON'T change any parameters --
@@ -166,6 +191,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         while (inVisibleButtons[i] != null){
             i++;
         }
+        inVisibleButtons[i] = new JButton();
         inVisibleButtons[i].addActionListener(this);
         inVisibleButtons[i].setBounds(x, y, 50, 50);
         inVisibleButtons[i].setContentAreaFilled(false);
@@ -216,6 +242,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         forEachloopPaintFields(g, house);
         forEachloopPaintFields(g, base);
         forEachloopPaintFields(g, gameField);
+        forEachloopPaintFigures(g, figures);
     }
 
     private void forEachloopPaintFields(Graphics g, Circle[] array) {
@@ -234,16 +261,16 @@ public class GameBoardGui extends JFrame implements ActionListener{
 
     private void forEachloopPaintFigures(Graphics g, Circle[] array){
         for (Circle oval : array){
-            int x = oval.getX();
+            int x = oval.getX() + oval.getRadius() / 4;
             int y = oval.getY();
             int radius = oval.getRadius();
-            int radiusHalf = oval.getRadius();
+            int radiusHalf = oval.getRadius() / 2;
             Color color = oval.getColor();
 
             g.setColor(color);
             g.fillOval(x, y, radiusHalf, radius);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+            g.drawOval(x - 1, y - 1, radiusHalf + 1, radius + 1);
         }
     }
 }

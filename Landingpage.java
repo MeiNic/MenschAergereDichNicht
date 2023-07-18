@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class Landingpage extends JFrame implements ActionListener {
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private JLabel head;
@@ -76,6 +77,17 @@ public class Landingpage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         BackEnd game = new BackEnd();
         setVisible(false);
+        BackEnd game = new BackEnd(this);
+
+    }
+
+    public String[] getNames(){
+        String[] name = new String[4];
+        for(int i = 0; i <=3; i++){
+            name[i] = userNames[i].getText();
+
+        }
+        return name;
     }
 
     private void resetUseroptions(){
