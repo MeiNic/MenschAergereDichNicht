@@ -40,7 +40,7 @@ public class BackEnd {
     //progress a dice input
     public void playerMove() {
         noChooserSet = false;
-
+        boolean finishStatus = false;
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
         gui.displayResult(randomNumber);
@@ -122,6 +122,12 @@ public class BackEnd {
                 return;
             }
         }
+        //check if a player has won yet
+        if(finished()){
+            finishStatus = true;
+            winner = new winWindow(usernames[whoFinished()]);
+        }
+
         //trigger new move in fontEnd
         gui.setActivePlayer(usernames[activePlayer]);
     }
@@ -350,7 +356,6 @@ public class BackEnd {
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
             if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-                winner = new winWindow(usernames[whoFinished()]);
                 return true;
             }
         }
