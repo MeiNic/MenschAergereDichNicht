@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
-
-public class GameBoardGui extends JFrame implements ActionListener{
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
     //Store hex-codes for different colors - yellow, green, blue, red, normal
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
@@ -116,11 +116,60 @@ public class GameBoardGui extends JFrame implements ActionListener{
         }
     }
 
-    /*
-     Interface with BackEnd
-     1. method: replaceFigures
-     2. method: setUserFigureOption
-     */
+    //methods for the mouse listener
+    public void mouseClicked(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+        boolean moveFinished = false;
+        for (int i = 0; i < gameFieldX.length && !moveFinished; i++){
+            int diffX = gameFieldX[i] - mouseX;
+            int diffY = gameFieldY[i] - mouseY;
+            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
+                int cache = backend.figureOnField(i);
+                if (cache != 99){
+                    if(backend.figures[cache].isPlaceOption()){
+                        backend.moveFigure(cache, backend.randomNumber);
+                        moveFinished = true;
+                        break;
+
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < houseX.length && !moveFinished; i++){
+            int diffX = houseX[i] - mouseX;
+            int diffY = houseY[i] - mouseY;
+            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
+                int cache = backend.figureOnHouseField(i);
+                if (cache != 99){
+                    if (backend.figures[cache].isPlaceOption()){
+                        backend.moveFigure(cache, backend.randomNumber);
+                        moveFinished = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    //methods below aren't used (but needed, otherwise causing errors)
+    public void mousePressed(MouseEvent e) {
+
+    }
+    public void mouseReleased(MouseEvent e) {
+
+    }
+    public void mouseEntered(MouseEvent e) {
+
+    }
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+     //Interface with BackEnd
+     //1. method: replaceFigures
+     //2. method: setUserFigureOption
+
     public void replaceFigures(Figure[] input){
         for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].isInBase()){
@@ -215,6 +264,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
       -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
      */
     private void adjustJFrameSetting() {
+        addMouseListener(this);
         setTitle("game field");
         setSize(1400, 940);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

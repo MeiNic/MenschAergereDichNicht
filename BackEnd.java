@@ -248,7 +248,7 @@ public class BackEnd {
     }
 
     //move the given figure by the given number
-    private void moveFigure(int figureNumber, int stepLength) {
+    public void moveFigure(int figureNumber, int stepLength) {
         //store the color of the figure in a local variable
         int figureColor = figures[figureNumber].getColor();
 
@@ -410,7 +410,7 @@ public class BackEnd {
     }
 
     //check which figure is on the normal field
-    private int figureOnField(int fieldNumber){
+    public int figureOnField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].getField() == fieldNumber && !figures[i].isInBase() && !figures[i].isInHouse()){
                 return i;
@@ -420,7 +420,7 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    private int figureOnHouseField(int fieldNumber){
+    public int figureOnHouseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].isInHouse()){
                 if (figures[i].getField() == fieldNumber){
