@@ -38,7 +38,7 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() {
-        noChooserSet = false;
+        noChooserSet = true;
 
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
