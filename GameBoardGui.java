@@ -32,6 +32,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
     JButton rollDice;
     JButton[] inVisibleButtons;
     JLabel result;
+    JLabel figureChooserPrompt;
 
     //variable for the backend
     BackEnd backend;
@@ -65,6 +66,7 @@ public class GameBoardGui extends JFrame implements ActionListener{
         rollDice = new JButton();
         inVisibleButtons = new JButton[4];
         result = new JLabel();
+        figureChooserPrompt = new JLabel();
 
         //link backEnd
         backend = backendNew;
@@ -180,6 +182,12 @@ public class GameBoardGui extends JFrame implements ActionListener{
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+    }
+
+    public void setPromptValues(){
+        figureChooserPrompt.setText("Choose the figure you want to move!");
+        figureChooserPrompt.setBounds(970, 120, 200, 32);
+        add(figureChooserPrompt);
     }
 
     /*

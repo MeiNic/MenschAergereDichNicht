@@ -172,6 +172,7 @@ public class BackEnd {
             noChooserSet = false;
 
             //perform the user choice of the frontEnd
+            gui.setPromptValues();
             gui.setUserFigureOption(figures);
         }
     }
