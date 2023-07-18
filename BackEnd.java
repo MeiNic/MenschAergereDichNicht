@@ -188,39 +188,7 @@ public class BackEnd {
         }
     }
 
-    public void performUserChoice(int buttonNumber){
-        finishStatus = false;
-        if (buttonNumber == 1){
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        } else if (buttonNumber == 2) {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        } else if (buttonNumber == 3) {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        }else {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-
-        }
-
+    public void performUserChoice(){
         //removing the place options on all figures
         for (Figure figure : figures) {
             figure.setPlaceOption(false);
@@ -235,7 +203,7 @@ public class BackEnd {
                 activePlayer++;
             }
         }
-        //check if anyone has won yet
+
         //check if a player has won yet
         if(finished()){
             finishStatus = true;
