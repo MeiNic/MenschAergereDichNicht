@@ -8,6 +8,7 @@ public class BackEnd {
     int randomNumber;
     boolean noChooserSet;
 
+
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
         for (int i = 0; i < figures.length; i++) {
@@ -349,6 +350,7 @@ public class BackEnd {
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
             if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
+
                 return true;
             }
         }
