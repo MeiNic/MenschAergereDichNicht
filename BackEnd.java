@@ -350,7 +350,7 @@ public class BackEnd {
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
             if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-
+                winner = new winWindow(usernames[whoFinished()]);
                 return true;
             }
         }
