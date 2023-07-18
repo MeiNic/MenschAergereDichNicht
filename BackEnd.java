@@ -431,7 +431,7 @@ public class BackEnd {
         return 99;
     }
 
-    public int figureONBaseField(int fieldNumber){
+    public int figureOnBaseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].isInBase()) {
                 if (figures[i].getField() == fieldNumber){
@@ -490,7 +490,7 @@ public class BackEnd {
     }
 
     //move a figure out of base
-    private void moveOutOfBase(int figureNumber){
+    public void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
         figures[figureNumber].setField(10*figureColor);
         figures[figureNumber].setInBase(false);

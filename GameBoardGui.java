@@ -121,6 +121,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mouseX = e.getX();
         int mouseY = e.getY();
         boolean moveFinished = false;
+        //check if the figure is on the gamefield
         for (int i = 0; i < gameFieldX.length && !moveFinished; i++){
             int diffX = gameFieldX[i] - mouseX;
             int diffY = gameFieldY[i] - mouseY;
@@ -136,14 +137,23 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 }
             }
         }
+        //check if the figure is in the house or base
         for (int i = 0; i < houseX.length && !moveFinished; i++){
             int diffX = houseX[i] - mouseX;
             int diffY = houseY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int cache = backend.figureOnHouseField(i);
-                if (cache != 99){
-                    if (backend.figures[cache].isPlaceOption()){
-                        backend.moveFigure(cache, backend.randomNumber);
+                int house = backend.figureOnHouseField(i);
+                if (house != 99){
+                    if (backend.figures[house].isPlaceOption()){
+                        backend.moveFigure(house, backend.randomNumber);
+                        moveFinished = true;
+                        break;
+                    }
+                }
+                int base = backend.figureOnBaseField(i);
+                if (base != 99){
+                    if (backend.figures[base].isPlaceOption()){
+                        backend.moveOutOfBase(base);
                         moveFinished = true;
                         break;
                     }
@@ -166,10 +176,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     }
 
-     //Interface with BackEnd
-     //1. method: replaceFigures
-     //2. method: setUserFigureOption
-
+     //Interface with BackEnd - 1. method: replaceFigures
     public void replaceFigures(Figure[] input){
         for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].isInBase()){
@@ -183,6 +190,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
+    //Interface with BackEnd - 2. method: setUserFigureOption
     public void setUserFigureOption(Figure[] input){
         setPromptValues();
         for (int i = 0; i < input.length && i < figures.length; i++){
