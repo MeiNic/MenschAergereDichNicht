@@ -1,10 +1,10 @@
 public class Figure {
-    private int field;
-    private boolean inBase;
-    private boolean inHouse;
-    private int color;
-    private boolean finished;
-    private boolean placeOption;
+    public int field;
+    public boolean inBase;
+    public boolean inHouse;
+    public int color;
+    public boolean finished;
+    public boolean placeOption;
 
     Figure(int fieldNew, int colorNew){
         inBase = true;
