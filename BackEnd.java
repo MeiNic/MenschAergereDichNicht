@@ -30,7 +30,7 @@ public class BackEnd {
         startpage = landingpage;
         usernames = startpage.getNames();
 
-        gui = new GameBoardGui(usernames[0], figures, this);
+        gui = new GameBoardGui(usernames[0], this);
     }
     //generate random number (copy from frontend)
     private int submitRandomNumber(){
@@ -97,7 +97,7 @@ public class BackEnd {
 
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
-                gui.replaceFigures(figures);
+                gui.replaceFigures();
             }
             //figure chooser set -> end method
             else {
@@ -115,7 +115,7 @@ public class BackEnd {
 
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
-                gui.replaceFigures(figures);
+                gui.replaceFigures();
                 if (activePlayer == 3) {
                     activePlayer = 0;
                 } else {
@@ -194,7 +194,7 @@ public class BackEnd {
         }
 
         //rest of the normal playerMove-method
-        gui.replaceFigures(figures);
+        gui.replaceFigures();
         if (randomNumber != 6){
             if (activePlayer == 3){
                 activePlayer = 0;
