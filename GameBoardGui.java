@@ -179,7 +179,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result.setText("");
         repaint();
     }
-    
 
     /*
       -- DON'T use this method out of constructor - DON'T change any parameters --
@@ -203,6 +202,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 200, 32);
         add(figureChooserPrompt);
+    }
+
+    //removing the figureChooserPrompt from the GameBoardGui
+    public void removePrompt(){
+        remove(figureChooserPrompt);
     }
 
     /*

@@ -193,6 +193,7 @@ public class BackEnd {
         for (Figure figure : figures) {
             figure.setPlaceOption(false);
         }
+        gui.removePrompt();
 
         //rest of the normal playerMove-method
         gui.replaceFigures();
