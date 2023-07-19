@@ -40,7 +40,7 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() {
-        noChooserSet = false;
+        noChooserSet = true;
         finishStatus = false;
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
@@ -182,7 +182,6 @@ public class BackEnd {
                 }
             }
             noChooserSet = false;
-
             //perform the user choice of the frontEnd
             gui.setPromptValues();
         }
