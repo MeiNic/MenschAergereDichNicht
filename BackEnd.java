@@ -128,6 +128,7 @@ public class BackEnd {
             }
         }
         //check if a player has won yet
+        checkFiguresIfFinished();
         if(finished()){
             finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
