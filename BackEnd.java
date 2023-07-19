@@ -40,7 +40,7 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() {
-        noChooserSet = false;
+        noChooserSet = true;
         finishStatus = false;
         //Generate new randomNumber and show it on the gui
         randomNumber = submitRandomNumber();
@@ -170,7 +170,7 @@ public class BackEnd {
                 }
                 noChooserSet = false;
                 //perform the user choice of the frontEnd
-                gui.setUserFigureOption(figures);
+                gui.setPromptValues();
             }
         }
         //make user figure chooser for all figures of the player
@@ -182,45 +182,12 @@ public class BackEnd {
                 }
             }
             noChooserSet = false;
-
             //perform the user choice of the frontEnd
-            gui.setUserFigureOption(figures);
+            gui.setPromptValues();
         }
     }
 
-    public void performUserChoice(int buttonNumber){
-        finishStatus = false;
-        if (buttonNumber == 1){
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        } else if (buttonNumber == 2) {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        } else if (buttonNumber == 3) {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-        }else {
-            for (int i = 0; i < 4; i++){
-                if (figures[activePlayer * 4 + i].isPlaceOption()){
-                    moveFigure(activePlayer * 4 + i, randomNumber);
-                    break;
-                }
-            }
-
-        }
-
+    public void performUserChoice(){
         //removing the place options on all figures
         for (Figure figure : figures) {
             figure.setPlaceOption(false);
@@ -235,7 +202,7 @@ public class BackEnd {
                 activePlayer++;
             }
         }
-        //check if anyone has won yet
+
         //check if a player has won yet
         if(finished()){
             finishStatus = true;
@@ -248,7 +215,7 @@ public class BackEnd {
     }
 
     //move the given figure by the given number
-    private void moveFigure(int figureNumber, int stepLength) {
+    public void moveFigure(int figureNumber, int stepLength) {
         //store the color of the figure in a local variable
         int figureColor = figures[figureNumber].getColor();
 
@@ -410,7 +377,7 @@ public class BackEnd {
     }
 
     //check which figure is on the normal field
-    private int figureOnField(int fieldNumber){
+    public int figureOnField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].getField() == fieldNumber && !figures[i].isInBase() && !figures[i].isInHouse()){
                 return i;
@@ -420,9 +387,20 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    private int figureOnHouseField(int fieldNumber){
+    public int figureOnHouseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
             if (figures[i].isInHouse()){
+                if (figures[i].getField() == fieldNumber){
+                    return i;
+                }
+            }
+        }
+        return 99;
+    }
+
+    public int figureOnBaseField(int fieldNumber){
+        for (int i = 0; i < figures.length; i++){
+            if (figures[i].isInBase()) {
                 if (figures[i].getField() == fieldNumber){
                     return i;
                 }
@@ -479,7 +457,7 @@ public class BackEnd {
     }
 
     //move a figure out of base
-    private void moveOutOfBase(int figureNumber){
+    public void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
         figures[figureNumber].setField(10*figureColor);
         figures[figureNumber].setInBase(false);
