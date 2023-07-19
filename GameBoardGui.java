@@ -200,7 +200,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //setting the values for the figureChooserPromt
     public void setPromptValues(){
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 120, 200, 32);
+        figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
     }
 
