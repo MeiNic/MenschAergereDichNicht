@@ -350,7 +350,7 @@ public class BackEnd {
             return 0;            
         } else if (figures[4].isFinished() && figures[5].isFinished() && figures[6].isFinished() && figures[7].isFinished()) {
             return 1;
-        } else if (figures[9].isFinished() && figures[9].isFinished() && figures[10].isFinished() && figures[11].isFinished()) {
+        } else if (figures[8].isFinished() && figures[9].isFinished() && figures[10].isFinished() && figures[11].isFinished()) {
             return 2;
         } else {
             return 3;
