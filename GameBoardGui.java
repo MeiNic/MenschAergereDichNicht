@@ -154,8 +154,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].inBase){
+                if (input[i].field > 16){
+                    input[i].field = 15;
+                }
                 figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
             }else if (input[i].inHouse){
+                if (input[i].field > 16){
+                    input[i].field = 15;
+                }
                 figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
             }else {
                 figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
