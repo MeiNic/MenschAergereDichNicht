@@ -83,8 +83,20 @@ public class Landingpage extends JFrame implements ActionListener {
     public String[] getNames(){
         String[] name = new String[4];
         for(int i = 0; i <=3; i++){
-            name[i] = userNames[i].getText();
-
+            if (userNames[i].getText() != ""){
+                name[i] = userNames[i].getText();
+            }else {
+                if (i == 0){
+                    name[i] = "yellow";
+                } else if (i == 1) {
+                    name[i] = "green";
+                } else if (i == 2) {
+                    name[i] = "blue";
+                }else {
+                    name[i] = "red";
+                }
+            }
+            
         }
         return name;
     }
