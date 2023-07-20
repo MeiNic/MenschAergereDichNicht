@@ -16,9 +16,9 @@ public class BackEnd {
             figures[i] = new Figure(i, 0);
         }
         for (int i = 0; i < 4; i++) {
-            figures[i + 4].setColor(1);
-            figures[i + 8].setColor(2);
-            figures[i + 12].setColor(3);
+            figures[i + 4].color = 1;
+            figures[i + 8].color = 2;
+            figures[i + 12].color = 3;
         }
 
         activePlayer = 0;
@@ -70,7 +70,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
         if (figureOnStartfield != 99){
-            if (figures[figureOnStartfield].getColor() == activePlayer) {
+            if (figures[figureOnStartfield].color == activePlayer) {
                 //own figure is on the startfield
                 ownFigureOnStartfield = true;
 
@@ -86,7 +86,7 @@ public class BackEnd {
             //if base not empty move a player out of base
             else if (!isBaseEmpty(activePlayer)) {
                 for (int i = activePlayer * 4; i < 16; i++){
-                    if (figures[i].isInBase()){
+                    if (figures[i].inBase){
                         moveOutOfBase(i);
                         break;
                     }
@@ -165,7 +165,7 @@ public class BackEnd {
                 for (int i = 0; i < 4; i++) {
                     int activeFigure = activePlayer * 4 + i;
                     if (beatPossible(activeFigure, randomNumber)) {
-                        figures[activeFigure].setPlaceOption(true);
+                        figures[activeFigure].placeOption = true;
                     }
                 }
                 noChooserSet = false;
@@ -177,8 +177,8 @@ public class BackEnd {
         else {
             for (int i = 0; i < 4; i++) {
                 int activeFigure = activePlayer * 4 + i;
-                if (!figures[activeFigure].isFinished() && !figures[activeFigure].isInBase()) {
-                    figures[activeFigure].setPlaceOption(true);
+                if (!figures[activeFigure].finished && !figures[activeFigure].inBase) {
+                    figures[activeFigure].placeOption = true;
                 }
             }
             noChooserSet = false;
@@ -190,7 +190,7 @@ public class BackEnd {
     public void performUserChoice(){
         //removing the place options on all figures
         for (Figure figure : figures) {
-            figure.setPlaceOption(false);
+            figure.placeOption = false;
         }
 
         //rest of the normal playerMove-method
@@ -217,12 +217,12 @@ public class BackEnd {
     //move the given figure by the given number
     public void moveFigure(int figureNumber, int stepLength) {
         //store the color of the figure in a local variable
-        int figureColor = figures[figureNumber].getColor();
+        int figureColor = figures[figureNumber].color;
 
         //check if the figure isn't finished and not in the base
-        if(!figures[figureNumber].isFinished() && !figures[figureNumber].isInBase()){
+        if(!figures[figureNumber].finished && !figures[figureNumber].inBase){
             //store the old and new field-number in local variables
-            int numberOld = figures[figureNumber].getField();
+            int numberOld = figures[figureNumber].field;
             int cache = numberOld + stepLength;
             int numberNew = cache;
             if (numberNew > 39){
@@ -230,7 +230,7 @@ public class BackEnd {
             }
 
             //check if the figure is on the gamefield
-            if (!figures[figureNumber].isInBase()){
+            if (!figures[figureNumber].inBase){
                 //make some small if-blocks for less code complexity
                 boolean goToBase = false;
                 if (numberOld < figureColor * 10 && cache >= figureColor * 10){
@@ -255,53 +255,53 @@ public class BackEnd {
 
                     //progress move only if figure doesn't jump over figures
                     if (fieldsFree){
-                        figures[figureNumber].setInHouse(true);
+                        figures[figureNumber].inHouse = true;
                         numberNew -= figureColor * 10;
-                        figures[figureNumber].setField(numberNew);
+                        figures[figureNumber].field = numberNew;
                     }
 
                 }
                 //move the figure, if the new field is free
                 else if (figureOnField(numberNew) == 99){
-                    figures[figureNumber].setField(numberNew);
+                    figures[figureNumber].field = numberNew;
                 }
 
                 else {
                     //move the figure, and move the figure before on the field to the base
-                    if (figures[figureOnField(numberNew)].getColor() != figureColor){
+                    if (figures[figureOnField(numberNew)].color != figureColor){
                         moveToBase(figureOnField(numberNew));
-                        figures[figureNumber].setField(numberNew);
+                        figures[figureNumber].field = numberNew;
                     } else {
                         //perform the moveFigure-method with the figure, standing on the field th figure at the moment wants to move, and the same stepLength
                         moveFigure(figureOnField(numberNew), stepLength);
                     }
                 }
             }
-            else if (numberNew < figures[figureNumber].getColor() * 4 + 4){
-                figures[figureNumber].setField(numberNew);
+            else if (numberNew < figures[figureNumber].color * 4 + 4){
+                figures[figureNumber].field = numberNew;
             }
         }
         //if figure is in the base and the step-length is 6 move figure out of base
-        else if (figures[figureNumber].isInBase() && stepLength == 6) {
+        else if (figures[figureNumber].inBase && stepLength == 6) {
             moveOutOfBase(figureNumber);
         }
     }
 
     //check if a beat is possible
     private boolean beatPossible(int figureNumber, int stepLength){
-        if (!figures[figureNumber].isInBase() && !figures[figureNumber].isInHouse()){
+        if (!figures[figureNumber].inBase && !figures[figureNumber].inHouse){
             //store some useful variables
-            int numberOld = figures[figureNumber].getField();
+            int numberOld = figures[figureNumber].field;
             int numberNew = numberOld + stepLength;
             if (numberNew > 39){
                 numberNew -= 40;
             }
-            int figureColor = figures[figureNumber].getColor();
+            int figureColor = figures[figureNumber].color;
 
             //real check, if a figure of another color is standing on the field
             if (figureOnField(numberNew) == 99){
                 return false;
-            } else if (figures[figureOnField(numberNew)].getColor() != figureColor) {
+            } else if (figures[figureOnField(numberNew)].color != figureColor) {
                 return true;
             } else {
                 return false;
@@ -317,8 +317,8 @@ public class BackEnd {
         while (figureOnField(emptyField) != 99){
             emptyField++;
         }
-        figures[figureNumber].setInBase(true);
-        figures[figureNumber].setField(emptyField);
+        figures[figureNumber].inBase = true;
+        figures[figureNumber].field = emptyField;
     }
 
     //return to which player the given figure belongs to
@@ -337,7 +337,7 @@ public class BackEnd {
     //check if a player has won (return true/false)
     private boolean finished() {
         for (int i = 0; i < 4; i++) {
-            if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
+            if (figures[i].finished && figures[i + 1].finished && figures[i + 2].finished && figures[i + 3].finished) {
                 return true;
             }
         }
@@ -346,9 +346,9 @@ public class BackEnd {
 
     //check which player has won
     private int whoFinished(){
-        if (figures[0].isFinished() && figures[1].isFinished() && figures[2].isFinished() && figures[3].isFinished()){
+        if (figures[0].finished && figures[1].finished && figures[2].finished && figures[3].finished){
             return 0;            
-        } else if (figures[4].isFinished() && figures[5].isFinished() && figures[6].isFinished() && figures[7].isFinished()) {
+        } else if (figures[4].finished && figures[5].finished && figures[6].finished && figures[7].finished) {
             return 1;
         } else if (figures[8].isFinished() && figures[9].isFinished() && figures[10].isFinished() && figures[11].isFinished()) {
             return 2;
@@ -363,12 +363,12 @@ public class BackEnd {
             int cache = figureOnHouseField(i);
             if (cache != 99) {
                 if (i == 15 || i == 11 || i == 7 || i == 3) {
-                    figures[cache].setFinished(true);
+                    figures[cache].finished = true;
                 } else {
                     int figureDeeper = figureOnHouseField(i + 1);
                     if (figureDeeper != 99) {
-                        if (figures[figureDeeper].isFinished()) {
-                            figures[cache].setFinished(true);
+                        if (figures[figureDeeper].finished) {
+                            figures[cache].finished = true;
                         }
                     }
                 }
@@ -379,7 +379,7 @@ public class BackEnd {
     //check which figure is on the normal field
     public int figureOnField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
-            if (figures[i].getField() == fieldNumber && !figures[i].isInBase() && !figures[i].isInHouse()){
+            if (figures[i].field == fieldNumber && !figures[i].inBase && !figures[i].inHouse){
                 return i;
             }
         }
@@ -389,8 +389,8 @@ public class BackEnd {
     //check which figure is on the house field
     public int figureOnHouseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInHouse()){
-                if (figures[i].getField() == fieldNumber){
+            if (figures[i].inHouse){
+                if (figures[i].field == fieldNumber){
                     return i;
                 }
             }
@@ -400,8 +400,8 @@ public class BackEnd {
 
     public int figureOnBaseField(int fieldNumber){
         for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInBase()) {
-                if (figures[i].getField() == fieldNumber){
+            if (figures[i].inBase) {
+                if (figures[i].field == fieldNumber){
                     return i;
                 }
             }
@@ -413,7 +413,7 @@ public class BackEnd {
     private boolean isBaseEmpty(int playerNumber){
         boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
-            if (figures[i].isInBase()) {
+            if (figures[i].inBase) {
                 BaseStatus = false;
                 break;
             }
@@ -425,7 +425,7 @@ public class BackEnd {
     private boolean isBaseFull(int playerNumber){
         boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
-            if (!figures[i].isInBase()) {
+            if (!figures[i].inBase) {
                 BaseStatus = false;
                 break;
             }
@@ -442,13 +442,13 @@ public class BackEnd {
         int inBase = 0;
         //count figures in base
         for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isInBase()){
+            if (figures[i].inBase){
                 inBase++;
             }
         }
         //count figures finished
         for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isFinished()){
+            if (figures[i].finished){
                 finished++;
             }
         }
@@ -459,7 +459,7 @@ public class BackEnd {
     //move a figure out of base
     public void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
-        figures[figureNumber].setField(10*figureColor);
-        figures[figureNumber].setInBase(false);
+        figures[figureNumber].field = 10*figureColor;
+        figures[figureNumber].inBase = false;
     }
 }
