@@ -30,7 +30,7 @@ public class BackEnd {
         startpage = landingpage;
         usernames = startpage.getNames();
 
-        gui = new GameBoardGui(usernames[0], figures, this);
+        gui = new GameBoardGui(usernames[0], this);
     }
     //generate random number (copy from frontend)
     private int submitRandomNumber(){
@@ -97,7 +97,7 @@ public class BackEnd {
 
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
-                gui.replaceFigures(figures);
+                gui.replaceFigures();
             }
             //figure chooser set -> end method
             else {
@@ -115,7 +115,7 @@ public class BackEnd {
 
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
-                gui.replaceFigures(figures);
+                gui.replaceFigures();
                 if (activePlayer == 3) {
                     activePlayer = 0;
                 } else {
@@ -128,6 +128,7 @@ public class BackEnd {
             }
         }
         //check if a player has won yet
+        checkFiguresIfFinished();
         if(finished()){
             finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
@@ -192,9 +193,10 @@ public class BackEnd {
         for (Figure figure : figures) {
             figure.placeOption = false;
         }
+        gui.removePrompt();
 
         //rest of the normal playerMove-method
-        gui.replaceFigures(figures);
+        gui.replaceFigures();
         if (randomNumber != 6){
             if (activePlayer == 3){
                 activePlayer = 0;
@@ -459,7 +461,11 @@ public class BackEnd {
     //move a figure out of base
     public void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
-        figures[figureNumber].field = 10*figureColor;
-        figures[figureNumber].inBase = false;
+        if (figureOnField(10 * figureColor) != 99){
+                moveFigure(figureOnField(10 * figureColor), 6);
+        }else {
+            figures[figureNumber].setField(10 * figureColor);
+            figures[figureNumber].setInBase(false);
+        }
     }
 }

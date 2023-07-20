@@ -36,13 +36,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //variable for the backend
     BackEnd backend;
 
-    public GameBoardGui(String currentPlayer, Figure[] standardFigures, BackEnd backendNew) {
+    public GameBoardGui(String currentPlayer, BackEnd backendNew) {
         //initialization of arrays
         house = new Circle[16];
         base = new Circle[16];
         gameField = new Circle[40];
         figures = new Circle[16];
-        replaceFigures(standardFigures);
+        replaceFigures();
 
         //set circles in arrays
         setCircleValues(house, houseX, houseY, 50, colors[0]);
@@ -150,7 +150,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     }
 
      //Interface with BackEnd - 1. method: replaceFigures
-    public void replaceFigures(Figure[] input){
+    public void replaceFigures(){
+        Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].isInBase()){
                 figures[i] = new Circle(baseX[input[i].getField()], baseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
@@ -178,7 +179,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result.setText("");
         repaint();
     }
-    
 
     /*
       -- DON'T use this method out of constructor - DON'T change any parameters --
@@ -200,8 +200,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //setting the values for the figureChooserPromt
     public void setPromptValues(){
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 120, 200, 32);
+        figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
+    }
+
+    //removing the figureChooserPrompt from the GameBoardGui
+    public void removePrompt(){
+        remove(figureChooserPrompt);
     }
 
     /*
