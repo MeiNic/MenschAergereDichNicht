@@ -42,6 +42,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         base = new Circle[16];
         gameField = new Circle[40];
         figures = new Circle[16];
+	backend = backendNew;
+	
         replaceFigures();
 
         //set circles in arrays
@@ -65,9 +67,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
-
-        //link backEnd
-        backend = backendNew;
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
