@@ -464,8 +464,8 @@ public class BackEnd {
         if (figureOnField(10 * figureColor) != 99){
                 moveFigure(figureOnField(10 * figureColor), 6);
         }else {
-            figures[figureNumber].setField(10 * figureColor);
-            figures[figureNumber].setInBase(false);
+            figures[figureNumber].field = 10 * figureColor;
+            figures[figureNumber].inBase = false;
         }
     }
 }
