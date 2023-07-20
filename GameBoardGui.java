@@ -98,7 +98,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int cache = backend.figureOnField(i);
                 if (cache != 99){
-                    if(backend.figures[cache].isPlaceOption()){
+                    if(backend.figures[cache].placeOption){
                         backend.moveFigure(cache, backend.randomNumber);
                         moveFinished = true;
                         break;
@@ -114,7 +114,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int house = backend.figureOnHouseField(i);
                 if (house != 99){
-                    if (backend.figures[house].isPlaceOption()){
+                    if (backend.figures[house].placeOption){
                         backend.moveFigure(house, backend.randomNumber);
                         moveFinished = true;
                         break;
@@ -122,7 +122,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 }
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
-                    if (backend.figures[base].isPlaceOption()){
+                    if (backend.figures[base].placeOption){
                         backend.moveOutOfBase(base);
                         moveFinished = true;
                         break;
@@ -153,12 +153,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void replaceFigures(){
         Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
-            if(input[i].isInBase()){
-                figures[i] = new Circle(baseX[input[i].getField()], baseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
-            }else if (input[i].isInHouse()){
-                figures[i] = new Circle(houseX[input[i].getField()], houseY[input[i].getField()], 50, figureColors[input[i].getColor()]);
+            if(input[i].inBase){
+                figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
+            }else if (input[i].inHouse){
+                figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
             }else {
-                figures[i] = new Circle(gameFieldX[input[i].getField()], gameFieldY[input[i].getField()], 50, figureColors[input[i].getColor()]);
+                figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
             }
         }
         repaint();
@@ -197,7 +197,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(result);
     }
 
-    //setting the values for the figureChooserPromt
+    //setting the values for the figureChooserPrompt
     public void setPromptValues(){
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
