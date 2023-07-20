@@ -24,10 +24,10 @@ public class Landingpage extends JFrame implements ActionListener {
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
         userNames = new JTextField[4];
-        userNames[0] = new JTextField();
-        userNames[1] = new JTextField();
-        userNames[2] = new JTextField();
-        userNames[3] = new JTextField();
+        userNames[0] = new JTextField("yellow");
+        userNames[1] = new JTextField("green");
+        userNames[2] = new JTextField("blue");
+        userNames[3] = new JTextField("red");
         startGame = new JButton("start game");
 
         //Declaration of the colored circles
