@@ -230,22 +230,23 @@ public class BackEnd {
             if (numberNew > 39){
                 numberNew -= 40;
             }
+            int steplengthInBase = numberNew - figureColor * 10;
 
             //check if the figure is on the gamefield
-            if (!figures[figureNumber].inBase){
+            if (!figures[figureNumber].inHouse){
                 //make some small if-blocks for less code complexity
-                boolean goToBase = false;
+                boolean goToHouse = false;
                 if (numberOld < figureColor * 10 && cache >= figureColor * 10){
-                    goToBase = true;
+                    goToHouse = true;
                 }
                 if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
-                    goToBase = true;
+                    goToHouse = true;
                 }
 
                 //if the figure comes over its startfield -> move the figure in the base
-                if (goToBase) {
+                if (goToHouse) {
                     //variable caching some information for the further progress
-                    int steplengthInBase = numberNew - figureColor * 10;
+
 
                     //check if you don't jump over figures in the base
                     boolean fieldsFree = true;
@@ -258,8 +259,7 @@ public class BackEnd {
                     //progress move only if figure doesn't jump over figures
                     if (fieldsFree){
                         figures[figureNumber].inHouse = true;
-                        numberNew -= figureColor * 10;
-                        figures[figureNumber].field = numberNew;
+                        figures[figureNumber].field += steplengthInBase;
                     }
 
                 }
@@ -279,8 +279,20 @@ public class BackEnd {
                     }
                 }
             }
-            else if (numberNew < figures[figureNumber].color * 4 + 4){
-                figures[figureNumber].field = numberNew;
+            else if (numberOld + stepLength < figures[figureNumber].color * 4 + 4){
+                //check if you don't jump over figures in the base
+                boolean fieldsFree = true;
+                for (int i = numberOld; i <=  numberOld + stepLength; i++){
+                    if (figureOnField(i + figureColor * 4) != 99){
+                        fieldsFree = false;
+                    }
+                }
+
+                //progress move only if figure doesn't jump over figures
+                if (fieldsFree){
+                    figures[figureNumber].inHouse = true;
+                    figures[figureNumber].field += steplengthInBase;
+                }
             }
         }
         //if figure is in the base and the step-length is 6 move figure out of base

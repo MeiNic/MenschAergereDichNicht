@@ -37,6 +37,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     BackEnd backend;
 
     public GameBoardGui(String currentPlayer, BackEnd backendNew) {
+        //link backEnd
+        backend = backendNew;
+
         //initialization of arrays
         house = new Circle[16];
         base = new Circle[16];
@@ -65,9 +68,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
-
-        //link backEnd
-        backend = backendNew;
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
@@ -154,8 +154,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
             if(input[i].inBase){
+                if (input[i].field > 16){
+                    input[i].field = 15;
+                }
                 figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
             }else if (input[i].inHouse){
+                if (input[i].field > 16){
+                    input[i].field = 15;
+                }
                 figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
             }else {
                 figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
