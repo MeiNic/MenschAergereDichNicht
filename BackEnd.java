@@ -473,8 +473,9 @@ public class BackEnd {
     //move a figure out of base
     public void moveOutOfBase(int figureNumber){
         int figureColor = giveColor(figureNumber);
-        if (figureOnField(10 * figureColor) != 99){
-                moveToBase(figureOnField(10 + figureColor));
+        int figureOnFirstField = figureOnField(10 * figureColor);
+        if (figureOnField(figureOnFirstField) != 99){
+                moveToBase(figureOnField(figureOnFirstField));
         }
         figures[figureNumber].field = 10 * figureColor;
         figures[figureNumber].inBase = false;
