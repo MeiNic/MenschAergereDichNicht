@@ -243,23 +243,40 @@ public class BackEnd {
 
                 //if the figure comes over its startfield -> move the figure in the base
                 if (goToHouse) {
-                    //variable caching some information for the further progress
+                    int toMove = stepLength;
+                    int figurePosition = figures[figureNumber].field;
+                    //unifying the values for cleaner code
+                    if (figureColor == 0){
+                        figurePosition -= 30;
+                    } else if (figureColor == 2) {
+                        figurePosition -= 10;
+                    } else if (figureColor == 3) {
+                        figurePosition -= 20;
+                    }
+                    //move figure in front of the base
+                    while (toMove > 0 && figurePosition <= 9){
+                        figurePosition++;
+                        toMove--;
+                    }
+                    //check if a move into the base is possible
+                    boolean movePossible = true;
+                    if (toMove > 0 && toMove < 5){
+                        for (int i = 0; i <= toMove; i++){
+                            if (figureOnField(i + figureColor*4) != 99){
+                                movePossible = false;
+                                break;
+                            }
+                        }
 
-
-                    //check if you don't jump over figures in the base
-                    boolean fieldsFree = true;
-                    for (int i = 0; i <= steplengthInBase; i++){
-                        if (figureOnField(i + figureColor * 4) != 99){
-                            fieldsFree = false;
+                    }
+                    if (movePossible){
+                        toMove--;
+                        figures[figureNumber].inHouse = true;
+                        figures[figureNumber].field = figureColor*4;
+                        if (toMove > 0){
+                            moveInHouse(figureNumber, toMove);
                         }
                     }
-
-                    //progress move only if figure doesn't jump over figures
-                    if (fieldsFree){
-                        figures[figureNumber].inHouse = true;
-                        figures[figureNumber].field += steplengthInBase;
-                    }
-
                 }
                 //move the figure, if the new field is free
                 else if (figureOnField(numberNew) == 99){
