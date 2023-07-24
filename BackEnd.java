@@ -58,12 +58,13 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                if (activePlayer == playerNumber) {
-                    activePlayer = 0;
-                } else {
+                if (activePlayer < playerNumber){
                     activePlayer++;
+                } else {
+                    activePlayer = 0;
                 }
                 //trigger new move in fontEnd
+                gui.setActivePlayer();
                 gui.setActivePlayer();
                 return;
             }
@@ -117,10 +118,10 @@ public class BackEnd {
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
                 gui.replaceFigures();
-                if (activePlayer == playerNumber) {
-                    activePlayer = 0;
-                } else {
+                if (activePlayer < playerNumber){
                     activePlayer++;
+                } else {
+                    activePlayer = 0;
                 }
             }
             //figure chooser set -> end method
@@ -199,10 +200,10 @@ public class BackEnd {
         //rest of the normal playerMove-method
         gui.replaceFigures();
         if (randomNumber != 6){
-            if (activePlayer == playerNumber){
-                activePlayer = 0;
-            } else {
+            if (activePlayer < playerNumber){
                 activePlayer++;
+            } else {
+                activePlayer = 0;
             }
         }
 
