@@ -279,20 +279,8 @@ public class BackEnd {
                     }
                 }
             }
-            else if (numberOld + stepLength < figures[figureNumber].color * 4 + 4){
-                //check if you don't jump over figures in the base
-                boolean fieldsFree = true;
-                for (int i = numberOld; i <=  numberOld + stepLength; i++){
-                    if (figureOnField(i + figureColor * 4) != 99){
-                        fieldsFree = false;
-                    }
-                }
-
-                //progress move only if figure doesn't jump over figures
-                if (fieldsFree){
-                    figures[figureNumber].inHouse = true;
-                    figures[figureNumber].field += steplengthInBase;
-                }
+            else {
+                moveInHouse(figureNumber, stepLength);
             }
         }
         //if figure is in the base and the step-length is 6 move figure out of base
