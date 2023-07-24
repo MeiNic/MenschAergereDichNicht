@@ -3,6 +3,7 @@ public class BackEnd {
     Figure[] figures;
     Landingpage startpage;
     String[] usernames;
+    int playerNumber;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -25,10 +26,12 @@ public class BackEnd {
         randomNumber = 0;
         noChooserSet = true;
         usernames = new String[4];
+        playerNumber = 0;
 
         //progress input from landingpage
         startpage = landingpage;
         usernames = startpage.getNames();
+        playerNumber = startpage.getPlayerNumber();
 
         gui = new GameBoardGui(usernames[0], this);
     }
