@@ -69,8 +69,6 @@ public class Landingpage extends JFrame implements ActionListener {
         add(userNames[3]);
         add(startGame);
 
-        //Resets the values of all input-options for the user
-        resetUseroptions();
         //Apply all needed values for the JFrame
         adjustJFrameSetting();
     }
@@ -102,16 +100,12 @@ public class Landingpage extends JFrame implements ActionListener {
     }
 
     public int getPlayerNumber(){
-        return ((Number) playerNumber.getValue()).intValue() - 1;
+        Object value = playerNumber.getValue();
+        int currentValue = (int) value;
+        currentValue -= 1;
+        return currentValue;
     }
 
-    private void resetUseroptions(){
-        for (JTextField jTextField : userNames){
-            jTextField.setText("");
-        }
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
-        bots = new JCheckBox("Fill the round with bots" ,false);
-    }
     private void adjustJFrameSetting() {
         setTitle("landingpage");
         setSize(500, 500);
