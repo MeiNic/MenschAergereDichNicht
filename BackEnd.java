@@ -301,6 +301,31 @@ public class BackEnd {
         }
     }
 
+    //move figure in the house by the given value
+    private void moveInHouse(int figureNumber, int steplength){
+        //if-loop preventing false moves by mistake
+        if (figures[figureNumber].inHouse && !figures[figureNumber].finished){
+            //store the figure-field and the figure-color as local variable
+            int figureField = figures[figureNumber].field;
+            int figureColor = figures[figureNumber].color;
+            //be safe that the move doesn't go over the available fields in the house
+            if (figureField + steplength < figureColor * 4 + 4){
+                //be safe that the figure doesn't jump over other figures
+                boolean movePossible = true;
+                for (int i = figureField; i < 4; i++){
+                    if (figureOnField(i) != 99){
+                        movePossible = false;
+                        break;
+                    }
+                }
+                //perform the move
+                if (movePossible){
+                    figures[figureNumber].field = figureField + steplength;
+                }
+            }
+        }
+    }
+
     //check if a beat is possible
     private boolean beatPossible(int figureNumber, int stepLength){
         if (!figures[figureNumber].inBase && !figures[figureNumber].inHouse){
