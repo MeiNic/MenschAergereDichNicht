@@ -102,7 +102,7 @@ public class Landingpage extends JFrame implements ActionListener {
     }
 
     public int getPlayerNumber(){
-        return ((Number) playerNumber.getValue()).intValue();
+        return ((Number) playerNumber.getValue()).intValue() - 1;
     }
 
     private void resetUseroptions(){

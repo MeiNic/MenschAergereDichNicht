@@ -199,7 +199,7 @@ public class BackEnd {
         //rest of the normal playerMove-method
         gui.replaceFigures();
         if (randomNumber != 6){
-            if (activePlayer == 3){
+            if (activePlayer == playerNumber){
                 activePlayer = 0;
             } else {
                 activePlayer++;
