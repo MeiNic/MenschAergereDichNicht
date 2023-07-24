@@ -20,7 +20,7 @@ public class Landingpage extends JFrame implements ActionListener {
         //Declaration of all the J-components
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
+        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
         userNames = new JTextField[4];
