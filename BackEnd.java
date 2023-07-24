@@ -94,7 +94,6 @@ public class BackEnd {
             } else {
                 playerMoveOnField();
             }
-
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
                 gui.replaceFigures();
@@ -105,7 +104,6 @@ public class BackEnd {
             }
         }
         else {
-
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield) {
                 moveFigure(figureOnStartfield, randomNumber);
@@ -234,7 +232,7 @@ public class BackEnd {
 
             //check if the figure is on the gamefield
             if (!figures[figureNumber].inHouse){
-                //make some small if-blocks for less code complexity
+                //check if a figure would come over its own startfield
                 boolean goToHouse = false;
                 if (numberOld < figureColor * 10 && cache >= figureColor * 10){
                     goToHouse = true;
@@ -245,23 +243,40 @@ public class BackEnd {
 
                 //if the figure comes over its startfield -> move the figure in the base
                 if (goToHouse) {
-                    //variable caching some information for the further progress
+                    int toMove = stepLength;
+                    int figurePosition = figures[figureNumber].field;
+                    //unifying the values for cleaner code
+                    if (figureColor == 0){
+                        figurePosition -= 30;
+                    } else if (figureColor == 2) {
+                        figurePosition -= 10;
+                    } else if (figureColor == 3) {
+                        figurePosition -= 20;
+                    }
+                    //move figure in front of the base
+                    while (toMove > 0 && figurePosition <= 9){
+                        figurePosition++;
+                        toMove--;
+                    }
+                    //check if a move into the base is possible
+                    boolean movePossible = true;
+                    if (toMove > 0 && toMove < 5){
+                        for (int i = 0; i <= toMove; i++){
+                            if (figureOnField(i + figureColor*4) != 99){
+                                movePossible = false;
+                                break;
+                            }
+                        }
 
-
-                    //check if you don't jump over figures in the base
-                    boolean fieldsFree = true;
-                    for (int i = 0; i <= steplengthInBase; i++){
-                        if (figureOnField(i + figureColor * 4) != 99){
-                            fieldsFree = false;
+                    }
+                    if (movePossible){
+                        toMove--;
+                        figures[figureNumber].inHouse = true;
+                        figures[figureNumber].field = figureColor*4;
+                        if (toMove > 0){
+                            moveInHouse(figureNumber, toMove);
                         }
                     }
-
-                    //progress move only if figure doesn't jump over figures
-                    if (fieldsFree){
-                        figures[figureNumber].inHouse = true;
-                        figures[figureNumber].field += steplengthInBase;
-                    }
-
                 }
                 //move the figure, if the new field is free
                 else if (figureOnField(numberNew) == 99){
@@ -279,25 +294,38 @@ public class BackEnd {
                     }
                 }
             }
-            else if (numberOld + stepLength < figures[figureNumber].color * 4 + 4){
-                //check if you don't jump over figures in the base
-                boolean fieldsFree = true;
-                for (int i = numberOld; i <=  numberOld + stepLength; i++){
-                    if (figureOnField(i + figureColor * 4) != 99){
-                        fieldsFree = false;
-                    }
-                }
-
-                //progress move only if figure doesn't jump over figures
-                if (fieldsFree){
-                    figures[figureNumber].inHouse = true;
-                    figures[figureNumber].field += steplengthInBase;
-                }
+            else {
+                moveInHouse(figureNumber, stepLength);
             }
         }
         //if figure is in the base and the step-length is 6 move figure out of base
         else if (figures[figureNumber].inBase && stepLength == 6) {
             moveOutOfBase(figureNumber);
+        }
+    }
+
+    //move figure in the house by the given value
+    private void moveInHouse(int figureNumber, int steplength){
+        //if-loop preventing false moves by mistake
+        if (figures[figureNumber].inHouse && !figures[figureNumber].finished){
+            //store the figure-field and the figure-color as local variable
+            int figureField = figures[figureNumber].field;
+            int figureColor = figures[figureNumber].color;
+            //be safe that the move doesn't go over the available fields in the house
+            if (figureField + steplength < figureColor * 4 + 4){
+                //be safe that the figure doesn't jump over other figures
+                boolean movePossible = true;
+                for (int i = figureField; i < 4; i++){
+                    if (figureOnField(i) != 99){
+                        movePossible = false;
+                        break;
+                    }
+                }
+                //perform the move
+                if (movePossible){
+                    figures[figureNumber].field = figureField + steplength;
+                }
+            }
         }
     }
 
