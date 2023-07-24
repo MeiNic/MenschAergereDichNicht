@@ -101,6 +101,10 @@ public class Landingpage extends JFrame implements ActionListener {
         return name;
     }
 
+    public int getPlayerNumber(){
+        return ((Number) playerNumber.getValue()).intValue();
+    }
+
     private void resetUseroptions(){
         for (JTextField jTextField : userNames){
             jTextField.setText("");
