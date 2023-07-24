@@ -94,7 +94,6 @@ public class BackEnd {
             } else {
                 playerMoveOnField();
             }
-
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
                 gui.replaceFigures();
@@ -105,7 +104,6 @@ public class BackEnd {
             }
         }
         else {
-
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield) {
                 moveFigure(figureOnStartfield, randomNumber);
