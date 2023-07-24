@@ -61,7 +61,7 @@ public class BackEnd {
                     activePlayer++;
                 }
                 //trigger new move in fontEnd
-                gui.setActivePlayer(usernames[activePlayer]);
+                gui.setActivePlayer();
                 return;
             }
         }
@@ -136,7 +136,7 @@ public class BackEnd {
         }
 
         //trigger new move in fontEnd
-        gui.setActivePlayer(usernames[activePlayer]);
+        gui.setActivePlayer();
     }
 
 
@@ -213,7 +213,7 @@ public class BackEnd {
         }
 
         //trigger new move in fontEnd
-        gui.setActivePlayer(usernames[activePlayer]);
+        gui.setActivePlayer();
     }
 
     //move the given figure by the given number
