@@ -232,7 +232,7 @@ public class BackEnd {
 
             //check if the figure is on the gamefield
             if (!figures[figureNumber].inHouse){
-                //make some small if-blocks for less code complexity
+                //check if a figure would come over its own startfield
                 boolean goToHouse = false;
                 if (numberOld < figureColor * 10 && cache >= figureColor * 10){
                     goToHouse = true;
