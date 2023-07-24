@@ -58,7 +58,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                if (activePlayer == 3) {
+                if (activePlayer == playerNumber) {
                     activePlayer = 0;
                 } else {
                     activePlayer++;
@@ -117,7 +117,7 @@ public class BackEnd {
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
                 gui.replaceFigures();
-                if (activePlayer == 3) {
+                if (activePlayer == playerNumber) {
                     activePlayer = 0;
                 } else {
                     activePlayer++;
