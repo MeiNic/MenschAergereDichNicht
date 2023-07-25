@@ -92,7 +92,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
         BackEnd game = new BackEnd(this);
-
+        Rules overview = new Rules(game);
+        game.gui.setVisible(false);
     }
 
     public String[] getNames(){

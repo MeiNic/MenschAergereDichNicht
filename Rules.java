@@ -2,10 +2,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
-public class Rules extends JFrame implements ActionListener{
+public class Rules extends JFrame implements ActionListener, ItemListener {
     private JLabel header;
     private JLabel rules;
     private JLabel goal;
@@ -34,7 +36,9 @@ public class Rules extends JFrame implements ActionListener{
         //position of all j-components
         goal.setBounds(40, 80, 600, 32);
         rules.setBounds(40, 110, 600, 400);
+
         understood.setBounds(40, 600, 120, 32);
+        understood.addItemListener(this);
 
         done.setBounds(40, 635, 80, 32);
         done.addActionListener(this);
@@ -54,6 +58,13 @@ public class Rules extends JFrame implements ActionListener{
         return understood.isSelected();
     }
 
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if(getCheckboxSetting()){
+            add(done);
+        }
+    }
+
     public void actionPerformed(ActionEvent e){
         setVisible(false);
         game.gui.setVisible(true);
@@ -69,5 +80,4 @@ public class Rules extends JFrame implements ActionListener{
         setResizable(true);
         setVisible(true);
     }
-
 }

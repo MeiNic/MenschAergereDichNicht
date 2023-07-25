@@ -5,7 +5,6 @@ public class Main {
         try {
             // Set the look and feel
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-
             new Landingpage();
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
