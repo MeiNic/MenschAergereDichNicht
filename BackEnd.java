@@ -98,14 +98,14 @@ public class BackEnd {
         if (randomNumber == 6) {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
-                moveFigure(figureOnStartfield, randomNumber);
+                figures[figureOnStartfield].placeOption = true;
             }
 
             //if base not empty move a player out of base
             else if (!isBaseEmpty(activePlayer)) {
                 for (int i = activePlayer * 4; i < 16; i++){
                     if (figures[i].inBase){
-                        moveOutOfBase(i);
+                        figures[i].placeOption = true;
                         break;
                     }
                 }
@@ -129,7 +129,7 @@ public class BackEnd {
         else {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield) {
-                moveFigure(figureOnStartfield, randomNumber);
+                figures[figureOnStartfield].placeOption = true;
             }else {
                 if (activePlayer <= playerNumber){
                     playerMoveOnField();
