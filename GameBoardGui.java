@@ -98,11 +98,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int cache = backend.figureOnField(i);
                 if (cache != 99){
-                    if(backend.figures[cache].placeOption){
-                        backend.moveFigure(cache, backend.randomNumber);
-                        moveFinished = true;
-                        break;
+                    if (backend.figures[cache].color == backend.activePlayer){
+                        if(backend.figures[cache].placeOption){
+                            backend.moveFigure(cache, backend.randomNumber);
+                            moveFinished = true;
+                            break;
 
+                        }else {
+                            backend.moveToBase(cache);
+                        }
                     }
                 }
             }
@@ -114,11 +118,16 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int house = backend.figureOnHouseField(i);
                 if (house != 99){
-                    if (backend.figures[house].placeOption){
-                        backend.moveFigure(house, backend.randomNumber);
-                        moveFinished = true;
-                        break;
+                    if (backend.figures[house].color == backend.activePlayer){
+                        if (backend.figures[house].placeOption) {
+                            backend.moveFigure(house, backend.randomNumber);
+                            moveFinished = true;
+                            break;
+                        }else {
+                            backend.moveToBase(house);
+                        }
                     }
+                    
                 }
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
