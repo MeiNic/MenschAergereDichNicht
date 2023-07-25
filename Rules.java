@@ -62,6 +62,8 @@ public class Rules extends JFrame implements ActionListener, ItemListener {
     public void itemStateChanged(ItemEvent e) {
         if(getCheckboxSetting()){
             add(done);
+        } else {
+            remove(done);
         }
     }
 
