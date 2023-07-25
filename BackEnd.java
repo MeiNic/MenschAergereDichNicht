@@ -8,7 +8,6 @@ public class BackEnd {
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
-    boolean noChooserSet;
     winWindow winner;
     boolean finishStatus;
 
