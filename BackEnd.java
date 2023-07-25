@@ -395,7 +395,7 @@ public class BackEnd {
     }
 
     //move the given figure to the base
-    private void moveToBase(int figureNumber){
+    public void moveToBase(int figureNumber){
         figures[figureNumber].inBase = true;
         figures[figureNumber].field = figureNumber;
     }
