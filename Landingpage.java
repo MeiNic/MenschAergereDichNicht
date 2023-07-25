@@ -119,6 +119,10 @@ public class Landingpage extends JFrame implements ActionListener /*, ChangeList
         return currentValue;
     }
 
+    public boolean getBotsSelection(){
+        return bots.isSelected();
+    }
+
     private void adjustJFrameSetting() {
         setTitle("landingpage");
         setSize(500, 500);
