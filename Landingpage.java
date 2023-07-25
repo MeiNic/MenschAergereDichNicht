@@ -4,9 +4,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
-public class Landingpage extends JFrame implements ActionListener /*, ChangeListener*/{
-    private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
+public class Landingpage extends JFrame implements ActionListener, ChangeListener {
+    private final int[] yCoordinatesCircles = {211, 273, 335, 397};
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -23,7 +24,7 @@ public class Landingpage extends JFrame implements ActionListener /*, ChangeList
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
-        //playerNumber.addChangeListener(this);
+        playerNumber.addChangeListener(this);
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
         userNames = new JTextField[4];
@@ -75,16 +76,19 @@ public class Landingpage extends JFrame implements ActionListener /*, ChangeList
         //Apply all needed values for the JFrame
         adjustJFrameSetting();
     }
-    /*public void stateChanged(ChangeEvent e) {
+    public void stateChanged(ChangeEvent e) {
         int value = getPlayerNumber();
-        int counter = 3;
-        for (int i = value; i < 3; i++){
-            remove(userNames[counter]);
-
-            counter--;
+        for (int i = 0; i < 4; i++){
+            if (i <= value){
+                add(userNames[i]);
+                colorMarker[i].setY(yCoordinatesCircles[i]);
+            }else {
+                remove(userNames[i]);
+                colorMarker[i].setY(100000);
+            }
         }
         repaint();
-    }*/
+    }
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
         BackEnd game = new BackEnd(this);
@@ -94,7 +98,7 @@ public class Landingpage extends JFrame implements ActionListener /*, ChangeList
     public String[] getNames(){
         String[] name = new String[4];
         for(int i = 0; i <=3; i++){
-            if (userNames[i].getText() != ""){
+            if (!Objects.equals(userNames[i].getText(), "")){
                 name[i] = userNames[i].getText();
             }else {
                 if (i == 0){
