@@ -181,20 +181,26 @@ public class BackEnd {
 
     //bot-move on the "normal" fields
     private void botMoveOnField(){
+        boolean cache = true;
         //move the figure, where the beat is possible
         for (int i = 0; i < 4; i++) {
             int activeFigure = activePlayer * 4 + i;
             if (beatPossible(activeFigure, randomNumber)) {
                 moveFigure(activeFigure, randomNumber);
-                return;
+                cache = false;
+                break;
             }
         }
-        for (int i = 0; i < 4; i++){
-            int activeFigure = activePlayer * 4 + i;
-            if (!figures[activeFigure].inBase){
-                moveFigure(activeFigure, randomNumber);
+        if (cache){
+            for (int i = 0; i < 4; i++){
+                int activeFigure = activePlayer * 4 + i;
+                if (!figures[activeFigure].inBase){
+                    moveFigure(activeFigure, randomNumber);
+                    break;
+                }
             }
         }
+
     }
 
     //move the given figure by the given number
