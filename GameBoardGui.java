@@ -90,9 +90,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
-        boolean moveFinished = false;
         //check if the figure is on the gamefield
-        for (int i = 0; i < gameFieldX.length && !moveFinished; i++){
+        for (int i = 0; i < gameFieldX.length; i++){
             int diffX = gameFieldX[i] - mouseX;
             int diffY = gameFieldY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
@@ -101,18 +100,17 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                     if (backend.figures[cache].color == backend.activePlayer){
                         if(backend.figures[cache].placeOption){
                             backend.moveFigure(cache, backend.randomNumber);
-                            moveFinished = true;
-                            break;
-
                         }else {
                             backend.moveToBase(cache);
                         }
+                        backend.performUserChoice();
+                        return;
                     }
                 }
             }
         }
         //check if the figure is in the house or base
-        for (int i = 0; i < houseX.length && !moveFinished; i++){
+        for (int i = 0; i < houseX.length; i++){
             int diffX = houseX[i] - mouseX;
             int diffY = houseY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
@@ -121,26 +119,22 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                     if (backend.figures[house].color == backend.activePlayer){
                         if (backend.figures[house].placeOption) {
                             backend.moveFigure(house, backend.randomNumber);
-                            moveFinished = true;
-                            break;
                         }else {
                             backend.moveToBase(house);
                         }
+                        backend.performUserChoice();
+                        return;
                     }
-                    
                 }
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
                     if (backend.figures[base].placeOption){
                         backend.moveOutOfBase(base);
-                        moveFinished = true;
-                        break;
+                        backend.performUserChoice();
+                        return;
                     }
                 }
             }
-        }
-        if (moveFinished){
-            backend.performUserChoice();
         }
     }
 
