@@ -232,7 +232,6 @@ public class BackEnd {
             if (numberNew > 39){
                 numberNew -= 40;
             }
-            int steplengthInBase = numberNew - figureColor * 10;
 
             //check if the figure is on the gamefield
             if (!figures[figureNumber].inHouse){
@@ -349,8 +348,6 @@ public class BackEnd {
                 return false;
             } else if (figures[figureOnField(numberNew)].color != figureColor) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
