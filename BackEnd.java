@@ -44,6 +44,12 @@ public class BackEnd {
         return 1 + rand.nextInt(6);
     }
 
+    private int submitRandomNumberBots(){
+        int[] cache = {1, 2, 3, 4, 5, 6, 1, 2, 3, 40};
+        Random rand = new Random();
+        return cache[rand.nextInt(10)];
+    }
+
     //progress a dice input
     public void playerMove() {
         noChooserSet = true;
