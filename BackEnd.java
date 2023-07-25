@@ -99,6 +99,7 @@ public class BackEnd {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
                 figures[figureOnStartfield].placeOption = true;
+                gui.setPromptValues();
             }
 
             //if base not empty move a player out of base
@@ -106,6 +107,7 @@ public class BackEnd {
                 for (int i = activePlayer * 4; i < 16; i++){
                     if (figures[i].inBase){
                         figures[i].placeOption = true;
+                        gui.setPromptValues();
                         break;
                     }
                 }
@@ -129,7 +131,8 @@ public class BackEnd {
         else {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield) {
-                figures[figureOnStartfield].placeOption = true;
+                figures[figureOnStartfield].placeOption = true
+                gui.setPromptValues();;
             }else {
                 if (activePlayer <= playerNumber){
                     playerMoveOnField();
