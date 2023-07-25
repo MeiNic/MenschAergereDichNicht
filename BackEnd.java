@@ -56,14 +56,22 @@ public class BackEnd {
         noChooserSet = true;
         finishStatus = false;
         //Generate new randomNumber and show it on the gui
-        randomNumber = submitRandomNumber();
+        if (activePlayer <= playerNumber){
+            randomNumber = submitRandomNumber();
+        }else {
+            randomNumber = submitRandomNumberBots();
+        }
         gui.displayResult(randomNumber);
 
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                randomNumber = submitRandomNumber();
+                if (activePlayer <= playerNumber){
+                    randomNumber = submitRandomNumber();
+                }else {
+                    randomNumber = submitRandomNumberBots();
+                }
                 gui.displayResult(randomNumber);
                 counter++;
             }
@@ -102,7 +110,12 @@ public class BackEnd {
                     }
                 }
             } else {
-                playerMoveOnField();
+                if (activePlayer <= playerNumber){
+                    playerMoveOnField();
+                }else {
+                    botMoveOnField();
+                }
+
             }
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
@@ -118,7 +131,11 @@ public class BackEnd {
             if (ownFigureOnStartfield) {
                 moveFigure(figureOnStartfield, randomNumber);
             }else {
-                playerMoveOnField();
+                if (activePlayer <= playerNumber){
+                    playerMoveOnField();
+                }else {
+                    botMoveOnField();
+                }
             }
 
             //no figure chooser set -> display changes in gui & set activePlayer to next player
