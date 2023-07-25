@@ -153,6 +153,4 @@ public class Landingpage extends JFrame implements ActionListener /*, ChangeList
             g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
         }
     }
-
-
 }
