@@ -232,7 +232,6 @@ public class BackEnd {
             if (numberNew > 39){
                 numberNew -= 40;
             }
-            int steplengthInBase = numberNew - figureColor * 10;
 
             //check if the figure is on the gamefield
             if (!figures[figureNumber].inHouse){
@@ -338,19 +337,25 @@ public class BackEnd {
         if (!figures[figureNumber].inBase && !figures[figureNumber].inHouse){
             //store some useful variables
             int numberOld = figures[figureNumber].field;
-            int numberNew = numberOld + stepLength;
+            int cache = numberOld + stepLength;
+            int numberNew = cache;
             if (numberNew > 39){
                 numberNew -= 40;
             }
             int figureColor = figures[figureNumber].color;
+
+            if (numberOld < figureColor * 10 && cache >= figureColor * 10){
+                return false;
+            }
+            if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
+                return false;
+            }
 
             //real check, if a figure of another color is standing on the field
             if (figureOnField(numberNew) == 99){
                 return false;
             } else if (figures[figureOnField(numberNew)].color != figureColor) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
