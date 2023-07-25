@@ -4,6 +4,7 @@ public class BackEnd {
     Landingpage startpage;
     String[] usernames;
     int playerNumber;
+    boolean bots;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -27,11 +28,13 @@ public class BackEnd {
         noChooserSet = true;
         usernames = new String[4];
         playerNumber = 0;
+        bots = false;
 
         //progress input from landingpage
         startpage = landingpage;
         usernames = startpage.getNames();
         playerNumber = startpage.getPlayerNumber();
+        bots = startpage.getBotsSelection();
 
         gui = new GameBoardGui(usernames[0], this);
     }
