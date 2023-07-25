@@ -200,7 +200,11 @@ public class BackEnd {
                 }
             }
         }
-
+        if (randomNumber != 6){
+            nextPlayer();
+        }
+        //trigger new move in fontEnd
+        gui.setActivePlayer();
     }
 
     //move the given figure by the given number
