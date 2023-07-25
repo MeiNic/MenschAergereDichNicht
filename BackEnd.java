@@ -25,7 +25,6 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        noChooserSet = true;
         usernames = new String[4];
         playerNumber = 0;
         bots = false;
@@ -53,7 +52,6 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() {
-        noChooserSet = true;
         finishStatus = false;
         //Generate new randomNumber and show it on the gui
         if (activePlayer <= playerNumber){
@@ -99,7 +97,6 @@ public class BackEnd {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
                 figures[figureOnStartfield].placeOption = true;
-                gui.setPromptValues();
             }
 
             //if base not empty move a player out of base
@@ -107,7 +104,6 @@ public class BackEnd {
                 for (int i = activePlayer * 4; i < 16; i++){
                     if (figures[i].inBase){
                         figures[i].placeOption = true;
-                        gui.setPromptValues();
                         break;
                     }
                 }
@@ -119,20 +115,13 @@ public class BackEnd {
                 }
 
             }
-            //no figure chooser set -> display all changes in gui
-            if (noChooserSet) {
-                gui.replaceFigures();
-            }
-            //figure chooser set -> end method
-            else {
-                return;
-            }
+            gui.setPromptValues();
         }
         else {
             //check if an own figure is on the startfield
             if (ownFigureOnStartfield) {
-                figures[figureOnStartfield].placeOption = true
-                gui.setPromptValues();;
+                figures[figureOnStartfield].placeOption = true;
+
             }else {
                 if (activePlayer <= playerNumber){
                     playerMoveOnField();
@@ -140,27 +129,8 @@ public class BackEnd {
                     botMoveOnField();
                 }
             }
-
-            //no figure chooser set -> display changes in gui & set activePlayer to next player
-            if (noChooserSet){
-                gui.replaceFigures();
-                nextPlayer();
-            }
-            //figure chooser set -> end method
-            else {
-                return;
-            }
+            gui.setPromptValues();
         }
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()){
-            finishStatus = true;
-            winner = new winWindow(usernames[whoFinished()]);
-            gui.setVisible(false);
-        }
-
-        //trigger new move in fontEnd
-        gui.setActivePlayer();
     }
 
 
@@ -184,9 +154,6 @@ public class BackEnd {
                 }
             }
         }
-        noChooserSet = false;
-        //perform the user choice of the frontEnd
-        gui.setPromptValues();
     }
 
     public void performUserChoice(){
