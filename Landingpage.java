@@ -1,9 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Landingpage extends JFrame implements ActionListener {
+public class Landingpage extends JFrame implements ActionListener /*, ChangeListener*/{
     private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
     private JLabel head;
     private JLabel labelPlayerNumber;
@@ -20,7 +22,8 @@ public class Landingpage extends JFrame implements ActionListener {
         //Declaration of all the J-components
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
+        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
+        //playerNumber.addChangeListener(this);
         bots = new JCheckBox("Fill the round with bots" ,false);
         userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
         userNames = new JTextField[4];
@@ -69,11 +72,19 @@ public class Landingpage extends JFrame implements ActionListener {
         add(userNames[3]);
         add(startGame);
 
-        //Resets the values of all input-options for the user
-        resetUseroptions();
         //Apply all needed values for the JFrame
         adjustJFrameSetting();
     }
+    /*public void stateChanged(ChangeEvent e) {
+        int value = getPlayerNumber();
+        int counter = 3;
+        for (int i = value; i < 3; i++){
+            remove(userNames[counter]);
+
+            counter--;
+        }
+        repaint();
+    }*/
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
         BackEnd game = new BackEnd(this);
@@ -101,13 +112,13 @@ public class Landingpage extends JFrame implements ActionListener {
         return name;
     }
 
-    private void resetUseroptions(){
-        for (JTextField jTextField : userNames){
-            jTextField.setText("");
-        }
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
-        bots = new JCheckBox("Fill the round with bots" ,false);
+    public int getPlayerNumber(){
+        Object value = playerNumber.getValue();
+        int currentValue = (int) value;
+        currentValue -= 1;
+        return currentValue;
     }
+
     private void adjustJFrameSetting() {
         setTitle("landingpage");
         setSize(500, 500);
@@ -138,4 +149,6 @@ public class Landingpage extends JFrame implements ActionListener {
             g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
         }
     }
+
+
 }

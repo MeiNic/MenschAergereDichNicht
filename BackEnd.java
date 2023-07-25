@@ -3,6 +3,7 @@ public class BackEnd {
     Figure[] figures;
     Landingpage startpage;
     String[] usernames;
+    int playerNumber;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -25,10 +26,12 @@ public class BackEnd {
         randomNumber = 0;
         noChooserSet = true;
         usernames = new String[4];
+        playerNumber = 0;
 
         //progress input from landingpage
         startpage = landingpage;
         usernames = startpage.getNames();
+        playerNumber = startpage.getPlayerNumber();
 
         gui = new GameBoardGui(usernames[0], this);
     }
@@ -55,12 +58,13 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                if (activePlayer == 3) {
-                    activePlayer = 0;
-                } else {
+                if (activePlayer < playerNumber){
                     activePlayer++;
+                } else {
+                    activePlayer = 0;
                 }
                 //trigger new move in fontEnd
+                gui.setActivePlayer();
                 gui.setActivePlayer();
                 return;
             }
@@ -114,10 +118,10 @@ public class BackEnd {
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
                 gui.replaceFigures();
-                if (activePlayer == 3) {
-                    activePlayer = 0;
-                } else {
+                if (activePlayer < playerNumber){
                     activePlayer++;
+                } else {
+                    activePlayer = 0;
                 }
             }
             //figure chooser set -> end method
@@ -196,10 +200,10 @@ public class BackEnd {
         //rest of the normal playerMove-method
         gui.replaceFigures();
         if (randomNumber != 6){
-            if (activePlayer == 3){
-                activePlayer = 0;
-            } else {
+            if (activePlayer < playerNumber){
                 activePlayer++;
+            } else {
+                activePlayer = 0;
             }
         }
 
@@ -228,7 +232,6 @@ public class BackEnd {
             if (numberNew > 39){
                 numberNew -= 40;
             }
-            int steplengthInBase = numberNew - figureColor * 10;
 
             //check if the figure is on the gamefield
             if (!figures[figureNumber].inHouse){
@@ -334,19 +337,25 @@ public class BackEnd {
         if (!figures[figureNumber].inBase && !figures[figureNumber].inHouse){
             //store some useful variables
             int numberOld = figures[figureNumber].field;
-            int numberNew = numberOld + stepLength;
+            int cache = numberOld + stepLength;
+            int numberNew = cache;
             if (numberNew > 39){
                 numberNew -= 40;
             }
             int figureColor = figures[figureNumber].color;
+
+            if (numberOld < figureColor * 10 && cache >= figureColor * 10){
+                return false;
+            }
+            if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
+                return false;
+            }
 
             //real check, if a figure of another color is standing on the field
             if (figureOnField(numberNew) == 99){
                 return false;
             } else if (figures[figureOnField(numberNew)].color != figureColor) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
