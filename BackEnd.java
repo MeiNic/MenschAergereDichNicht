@@ -4,6 +4,7 @@ public class BackEnd {
     Landingpage startpage;
     String[] usernames;
     int playerNumber;
+    boolean bots;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -27,11 +28,13 @@ public class BackEnd {
         noChooserSet = true;
         usernames = new String[4];
         playerNumber = 0;
+        bots = false;
 
         //progress input from landingpage
         startpage = landingpage;
         usernames = startpage.getNames();
         playerNumber = startpage.getPlayerNumber();
+        bots = startpage.getBotsSelection();
 
         gui = new GameBoardGui(usernames[0], this);
     }
@@ -41,28 +44,39 @@ public class BackEnd {
         return 1 + rand.nextInt(6);
     }
 
+    //generate a randomNumber for the bots-movement with lower chances for 5 & 6
+    private int submitRandomNumberBots(){
+        int[] cache = {1, 2, 3, 4, 5, 6, 1, 2, 3, 4};
+        Random rand = new Random();
+        return cache[rand.nextInt(10)];
+    }
+
     //progress a dice input
     public void playerMove() {
         noChooserSet = true;
         finishStatus = false;
         //Generate new randomNumber and show it on the gui
-        randomNumber = submitRandomNumber();
+        if (activePlayer <= playerNumber){
+            randomNumber = submitRandomNumber();
+        }else {
+            randomNumber = submitRandomNumberBots();
+        }
         gui.displayResult(randomNumber);
 
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                randomNumber = submitRandomNumber();
+                if (activePlayer <= playerNumber){
+                    randomNumber = submitRandomNumber();
+                }else {
+                    randomNumber = submitRandomNumberBots();
+                }
                 gui.displayResult(randomNumber);
                 counter++;
             }
             if (randomNumber != 6){
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+                nextPlayer();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
                 gui.setActivePlayer();
@@ -96,7 +110,12 @@ public class BackEnd {
                     }
                 }
             } else {
-                playerMoveOnField();
+                if (activePlayer <= playerNumber){
+                    playerMoveOnField();
+                }else {
+                    botMoveOnField();
+                }
+
             }
             //no figure chooser set -> display all changes in gui
             if (noChooserSet) {
@@ -112,17 +131,17 @@ public class BackEnd {
             if (ownFigureOnStartfield) {
                 moveFigure(figureOnStartfield, randomNumber);
             }else {
-                playerMoveOnField();
+                if (activePlayer <= playerNumber){
+                    playerMoveOnField();
+                }else {
+                    botMoveOnField();
+                }
             }
 
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
                 gui.replaceFigures();
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+                nextPlayer();
             }
             //figure chooser set -> end method
             else {
@@ -200,11 +219,7 @@ public class BackEnd {
         //rest of the normal playerMove-method
         gui.replaceFigures();
         if (randomNumber != 6){
-            if (activePlayer < playerNumber){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
+            nextPlayer();
         }
 
         //check if a player has won yet
@@ -216,6 +231,24 @@ public class BackEnd {
 
         //trigger new move in fontEnd
         gui.setActivePlayer();
+    }
+
+    //bot-move on the "normal" fields
+    private void botMoveOnField(){
+        //move the figure, where the beat is possible
+        for (int i = 0; i < 4; i++) {
+            int activeFigure = activePlayer * 4 + i;
+            if (beatPossible(activeFigure, randomNumber)) {
+                moveFigure(activeFigure, randomNumber);
+                return;
+            }
+        }
+        for (int i = 0; i < 4; i++){
+            int activeFigure = activePlayer * 4 + i;
+            if (!figures[activeFigure].inBase){
+                moveFigure(activeFigure, randomNumber);
+            }
+        }
     }
 
     //move the given figure by the given number
@@ -516,5 +549,22 @@ public class BackEnd {
         }
         figures[figureNumber].field = 10 * figureColor;
         figures[figureNumber].inBase = false;
+    }
+
+    //next player
+    private void nextPlayer(){
+        if (bots){
+            if (activePlayer < 3){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
+            }
+        }else {
+            if (activePlayer < playerNumber){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
+            }
+        }
     }
 }
