@@ -228,6 +228,24 @@ public class BackEnd {
         gui.setActivePlayer();
     }
 
+    //bot-move on the "normal" fields
+    private void botMoveOnField(){
+        //move the figure, where the beat is possible
+        for (int i = 0; i < 4; i++) {
+            int activeFigure = activePlayer * 4 + i;
+            if (beatPossible(activeFigure, randomNumber)) {
+                moveFigure(activeFigure, randomNumber);
+                return;
+            }
+        }
+        for (int i = 0; i < 4; i++){
+            int activeFigure = activePlayer * 4 + i;
+            if (!figures[activeFigure].inBase){
+                moveFigure(activeFigure, randomNumber);
+            }
+        }
+    }
+
     //move the given figure by the given number
     public void moveFigure(int figureNumber, int stepLength) {
         //store the color of the figure in a local variable
