@@ -97,7 +97,7 @@ public class BackEnd {
 
         if (randomNumber == 6) {
             //check if an own figure is on the startfield
-            if (ownFigureOnStartfield){
+            if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
                 moveFigure(figureOnStartfield, randomNumber);
             }
 
