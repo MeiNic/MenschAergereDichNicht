@@ -5,16 +5,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
-public class Rules extends JFrame implements ActionListener, ChangeListener{
+public class Rules extends JFrame implements ActionListener{
     private JLabel header;
     private JLabel rules;
     private JLabel goal;
     private JCheckBox understood;
     private JButton done;
     private String r;
+    public BackEnd game;
 
-
-    Rules(){
+    Rules(BackEnd newBackEnd){
+        game = newBackEnd;
         //declaration of the JLabels & the JCheckBox
         r = new String("1. When a 6 is rolled, you have to move a figure out of base! /n2. you have to keep your start-field free, as long as there are figures in your Base " +
                 "/n3. If possible, you must kick another person! If you didn't your figure, that was able to kick someone, will get moved to your Base."
@@ -23,6 +24,7 @@ public class Rules extends JFrame implements ActionListener, ChangeListener{
         goal = new JLabel("Goal of the Game: /nThe Goal is to get all of your 4 figures into your House. /nIn order to get there you have to kick your opponents figures.");
         rules = new JLabel(r);
         understood = new JCheckBox("I read and understood the rules of the game", false);
+        done = new JButton("done");
 
         //settings of header
         Font fontHeading = new Font(header.getFont().getName(), Font.PLAIN, 40);
@@ -34,6 +36,10 @@ public class Rules extends JFrame implements ActionListener, ChangeListener{
         rules.setBounds(40, 110, 600, 400);
         understood.setBounds(40, 600, 120, 32);
 
+        done.setBounds(40, 635, 80, 32);
+        done.addActionListener(this);
+        done.setBackground(Color.green);
+
         //Add all the j-components to the content Panel
         add(header);
         add(goal);
@@ -43,6 +49,17 @@ public class Rules extends JFrame implements ActionListener, ChangeListener{
         //apply all needed values for the JFrame
         adjustJFrameSetting();
     }
+
+    public boolean getCheckboxSetting(){
+        return understood.isSelected();
+    }
+
+    public void actionPerformed(ActionEvent e){
+        setVisible(false);
+        game.gui.setVisible(true);
+    }
+
+
     private void adjustJFrameSetting(){
         setTitle("Overview Rules");
         setSize(800, 900);
