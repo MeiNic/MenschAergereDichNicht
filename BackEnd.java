@@ -545,4 +545,21 @@ public class BackEnd {
         figures[figureNumber].field = 10 * figureColor;
         figures[figureNumber].inBase = false;
     }
+
+    //next player
+    private void nextPlayer(){
+        if (bots){
+            if (activePlayer < 3){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
+            }
+        }else {
+            if (activePlayer < playerNumber){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
+            }
+        }
+    }
 }
