@@ -163,50 +163,27 @@ public class BackEnd {
 
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
-        //check with how much figures can do a beat
-        int beatsPossible = 0;
+        boolean beatsPossible = false;
+        //add the figures to the chooser
         for (int i = 0; i < 4; i++) {
-            if (beatPossible(activePlayer * 4 + i, randomNumber)) {
-                beatsPossible++;
-            }
-        }
-
-        //check if one or more beats are possible
-        if (beatsPossible > 0) {
-            if (beatsPossible == 1) {
-                //move the figure, where the beat is possible
-                for (int i = 0; i < 4; i++) {
-                    int activeFigure = activePlayer * 4 + i;
-                    if (beatPossible(activeFigure, randomNumber)) {
-                        moveFigure(activeFigure, randomNumber);
-                        break;
-                    }
-                }
-            } else {
-                //add the figure to the chooser
-                for (int i = 0; i < 4; i++) {
-                    int activeFigure = activePlayer * 4 + i;
-                    if (beatPossible(activeFigure, randomNumber)) {
-                        figures[activeFigure].placeOption = true;
-                    }
-                }
-                noChooserSet = false;
-                //perform the user choice of the frontEnd
-                gui.setPromptValues();
+            int activeFigure = activePlayer * 4 + i;
+            if (beatPossible(activeFigure, randomNumber)) {
+                figures[activeFigure].placeOption = true;
+                beatsPossible = true;
             }
         }
         //make user figure chooser for all figures of the player
-        else {
+        if (!beatsPossible){
             for (int i = 0; i < 4; i++) {
                 int activeFigure = activePlayer * 4 + i;
                 if (!figures[activeFigure].finished && !figures[activeFigure].inBase) {
                     figures[activeFigure].placeOption = true;
                 }
             }
-            noChooserSet = false;
-            //perform the user choice of the frontEnd
-            gui.setPromptValues();
         }
+        noChooserSet = false;
+        //perform the user choice of the frontEnd
+        gui.setPromptValues();
     }
 
     public void performUserChoice(){
