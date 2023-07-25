@@ -68,11 +68,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+                nextPlayer();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
                 gui.setActivePlayer();
@@ -128,11 +124,7 @@ public class BackEnd {
             //no figure chooser set -> display changes in gui & set activePlayer to next player
             if (noChooserSet){
                 gui.replaceFigures();
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+                nextPlayer();
             }
             //figure chooser set -> end method
             else {
@@ -210,11 +202,7 @@ public class BackEnd {
         //rest of the normal playerMove-method
         gui.replaceFigures();
         if (randomNumber != 6){
-            if (activePlayer < playerNumber){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
+            nextPlayer();
         }
 
         //check if a player has won yet
