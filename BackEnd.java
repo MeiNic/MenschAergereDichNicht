@@ -103,20 +103,18 @@ public class BackEnd {
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
         boolean beatsPossible = false;
-        //add the figures to the chooser
-        for (int i = 0; i < 4; i++) {
-            int activeFigure = activePlayer * 4 + i;
-            if (beatPossible(activeFigure, randomNumber)) {
-                figures[activeFigure].placeOption = true;
+        //add chooser for all figures, which can beat another figure
+        for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+            if (beatPossible(i, randomNumber)) {
+                figures[i].placeOption = true;
                 beatsPossible = true;
             }
         }
-        //make user figure chooser for all figures of the player
+        //make user figure chooser for all figures on the gamefield or in the house
         if (!beatsPossible){
-            for (int i = 0; i < 4; i++) {
-                int activeFigure = activePlayer * 4 + i;
-                if (!figures[activeFigure].finished && !figures[activeFigure].inBase) {
-                    figures[activeFigure].placeOption = true;
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                if (!figures[i].finished && !figures[i].inBase) {
+                    figures[i].placeOption = true;
                 }
             }
         }
