@@ -5,14 +5,12 @@ public class Circle {
     private int y;
     private int radius;
     private Color color;
-    private boolean button;
 
     public Circle(int xNew, int yNew, int radiusNew, String hexCode){
         this.x = xNew;
         this.y = yNew;
         this.radius = radiusNew;
         this.color = Color.decode(hexCode);
-        this.button = false;
     }
 
     //Getter and Setter for every value
@@ -50,13 +48,5 @@ public class Circle {
 
     public void setColor(Color color){
         this.color = color;
-    }
-
-    public boolean isButton() {
-        return button;
-    }
-
-    public void setButton(boolean button) {
-        this.button = button;
     }
 }
