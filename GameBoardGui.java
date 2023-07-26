@@ -82,7 +82,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             remove(rollDice);
 
             //trigger new move in the backend
-            backend.playerMove();
+            backend.move();
         }
     }
 
