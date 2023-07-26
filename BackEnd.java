@@ -8,7 +8,7 @@ public class BackEnd {
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
-    winWindow winner;
+    WinWindow winner;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -135,7 +135,7 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            winner = new winWindow(usernames[whoFinished()]);
+            winner = new WinWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
@@ -209,7 +209,7 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            winner = new winWindow(usernames[whoFinished()]);
+            winner = new WinWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
         //trigger new move in fontEnd

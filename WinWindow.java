@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class winWindow implements ActionListener {
+public class WinWindow implements ActionListener {
     private JFrame frame;
     private JLabel message;
     private JButton close;
 
-    public winWindow(String player){
+    public WinWindow(String player){
         frame = new JFrame();
         message = new JLabel();
         close = new JButton();
