@@ -128,6 +128,72 @@ public class BackEnd {
             figure.placeOption = false;
         }
         gui.removePrompt();
+
+    }
+
+    //bot-move on the "normal" fields
+    private void botMove(){
+        finishStatus = false;
+        randomNumber = submitRandomNumberBots();
+        //if user is allowed to roll the dice three time operate this option
+        int counter = 0;
+        if (threeTimesAllowed(activePlayer)){
+            while (counter < 3 && randomNumber != 6){
+                randomNumber = submitRandomNumberBots();
+                counter++;
+            }
+            if (randomNumber != 6){
+                nextPlayer();
+                //trigger new move in fontEnd
+                gui.setActivePlayer();
+                return;
+            }
+        }
+        gui.displayResult(randomNumber);
+
+        //cache a much used value, make the code look cleaner
+        int figureOnStartfield = figureOnField(activePlayer * 10);
+        boolean ownFigureOnStartfield = false;
+        if (figureOnStartfield != 99){
+            if (figures[figureOnStartfield].color == activePlayer) {
+                //own figure is on the startfield
+                ownFigureOnStartfield = true;
+            }
+        }
+
+        //check if an own figure is on the startfield
+        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+            moveFigure(figureOnStartfield, randomNumber);
+        }
+
+        //if base not empty move a player out of base
+        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+            for (int i = activePlayer * 4; i < 16; i++){
+                if (figures[i].inBase){
+                    moveFigure(i, randomNumber);
+                    break;
+                }
+            }
+        } else {
+            boolean beatsPossible = false;
+            //add the figures to the chooser
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                if (beatPossible(i, randomNumber)) {
+                    moveFigure(i, randomNumber);
+                    beatsPossible = true;
+                    break;
+                }
+            }
+            //make user figure chooser for all figures of the player
+            if (!beatsPossible){
+                for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                    if (!figures[i].finished && !figures[i].inBase) {
+                        moveFigure(i, randomNumber);
+                        break;
+                    }
+                }
+            }
+        }
         gui.replaceFigures();
         //check if a player has won yet
         checkFiguresIfFinished();
@@ -138,34 +204,6 @@ public class BackEnd {
         }
         //trigger new move in fontEnd
         nextPlayer();
-        gui.setActivePlayer();
-    }
-
-    //bot-move on the "normal" fields
-    private void botMoveOnField(){
-        boolean cache = true;
-        //move the figure, where the beat is possible
-        for (int i = 0; i < 4; i++) {
-            int activeFigure = activePlayer * 4 + i;
-            if (beatPossible(activeFigure, randomNumber)) {
-                moveFigure(activeFigure, randomNumber);
-                cache = false;
-                break;
-            }
-        }
-        if (cache){
-            for (int i = 0; i < 4; i++){
-                int activeFigure = activePlayer * 4 + i;
-                if (!figures[activeFigure].inBase){
-                    moveFigure(activeFigure, randomNumber);
-                    break;
-                }
-            }
-        }
-        if (randomNumber != 6){
-            nextPlayer();
-        }
-        //trigger new move in fontEnd
         gui.setActivePlayer();
     }
 
