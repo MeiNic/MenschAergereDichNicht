@@ -9,7 +9,6 @@ public class BackEnd {
     GameBoardGui gui;
     int randomNumber;
     winWindow winner;
-    boolean finishStatus;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -59,7 +58,6 @@ public class BackEnd {
 
     //progress a dice input
     private void playerMove() {
-        finishStatus = false;
         randomNumber = submitRandomNumber();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
@@ -137,7 +135,6 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
@@ -148,7 +145,6 @@ public class BackEnd {
 
     //bot-move on the "normal" fields
     private void botMove(){
-        finishStatus = false;
         randomNumber = submitRandomNumberBots();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
@@ -213,7 +209,6 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
