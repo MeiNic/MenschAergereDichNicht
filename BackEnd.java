@@ -52,34 +52,22 @@ public class BackEnd {
     //progress a dice input
     public void playerMove() {
         finishStatus = false;
-        //Generate new randomNumber and show it on the gui
-        if (activePlayer <= playerNumber){
-            randomNumber = submitRandomNumber();
-        }else {
-            randomNumber = submitRandomNumberBots();
-        }
-        gui.displayResult(randomNumber);
-
+        randomNumber = submitRandomNumber();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                if (activePlayer <= playerNumber){
-                    randomNumber = submitRandomNumber();
-                }else {
-                    randomNumber = submitRandomNumberBots();
-                }
-                gui.displayResult(randomNumber);
+                randomNumber = submitRandomNumber();
                 counter++;
             }
             if (randomNumber != 6){
                 nextPlayer();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
-                gui.setActivePlayer();
                 return;
             }
         }
+        gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
