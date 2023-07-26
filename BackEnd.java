@@ -92,44 +92,27 @@ public class BackEnd {
             }
         }
 
-        if (randomNumber == 6) {
-            //check if an own figure is on the startfield
-            if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
-                figures[figureOnStartfield].placeOption = true;
-            }
-
-            //if base not empty move a player out of base
-            else if (!isBaseEmpty(activePlayer)) {
-                for (int i = activePlayer * 4; i < 16; i++){
-                    if (figures[i].inBase){
-                        figures[i].placeOption = true;
-                        break;
-                    }
-                }
-            } else {
-                if (activePlayer <= playerNumber){
-                    playerMoveOnField();
-                }else {
-                    botMoveOnField();
-                }
-
-            }
-            gui.setPromptValues();
+        //check if an own figure is on the startfield
+        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+            figures[figureOnStartfield].placeOption = true;
         }
-        else {
-            //check if an own figure is on the startfield
-            if (ownFigureOnStartfield) {
-                figures[figureOnStartfield].placeOption = true;
 
+        //if base not empty move a player out of base
+        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+            for (int i = activePlayer * 4; i < 16; i++){
+                if (figures[i].inBase){
+                    figures[i].placeOption = true;
+                    break;
+                }
+            }
+        } else {
+            if (activePlayer <= playerNumber){
+                playerMoveOnField();
             }else {
-                if (activePlayer <= playerNumber){
-                    playerMoveOnField();
-                }else {
-                    botMoveOnField();
-                }
+                botMoveOnField();
             }
-            gui.setPromptValues();
         }
+        gui.setPromptValues();
     }
 
 
