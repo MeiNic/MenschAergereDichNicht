@@ -8,7 +8,6 @@ public class BackEnd {
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
-    boolean noChooserSet;
     winWindow winner;
     boolean finishStatus;
 
@@ -25,7 +24,6 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        noChooserSet = true;
         usernames = new String[4];
         playerNumber = 0;
         bots = false;
@@ -51,38 +49,33 @@ public class BackEnd {
         return cache[rand.nextInt(10)];
     }
 
-    //progress a dice input
-    public void playerMove() {
-        noChooserSet = true;
-        finishStatus = false;
-        //Generate new randomNumber and show it on the gui
-        if (activePlayer <= playerNumber){
-            randomNumber = submitRandomNumber();
-        }else {
-            randomNumber = submitRandomNumberBots();
+    public void move(){
+        if (activePlayer > playerNumber){
+            botMove();
+        } else {
+            playerMove();
         }
-        gui.displayResult(randomNumber);
+    }
 
+    //progress a dice input
+    private void playerMove() {
+        finishStatus = false;
+        randomNumber = submitRandomNumber();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                if (activePlayer <= playerNumber){
-                    randomNumber = submitRandomNumber();
-                }else {
-                    randomNumber = submitRandomNumberBots();
-                }
-                gui.displayResult(randomNumber);
+                randomNumber = submitRandomNumber();
                 counter++;
             }
             if (randomNumber != 6){
                 nextPlayer();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
-                gui.setActivePlayer();
                 return;
             }
         }
+        gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
@@ -95,117 +88,42 @@ public class BackEnd {
             }
         }
 
-        if (randomNumber == 6) {
-            //check if an own figure is on the startfield
-            if (ownFigureOnStartfield){
-                moveFigure(figureOnStartfield, randomNumber);
-            }
-
-            //if base not empty move a player out of base
-            else if (!isBaseEmpty(activePlayer)) {
-                for (int i = activePlayer * 4; i < 16; i++){
-                    if (figures[i].inBase){
-                        moveOutOfBase(i);
-                        break;
-                    }
-                }
-            } else {
-                if (activePlayer <= playerNumber){
-                    playerMoveOnField();
-                }else {
-                    botMoveOnField();
-                }
-
-            }
-            //no figure chooser set -> display all changes in gui
-            if (noChooserSet) {
-                gui.replaceFigures();
-            }
-            //figure chooser set -> end method
-            else {
-                return;
-            }
-        }
-        else {
-            //check if an own figure is on the startfield
-            if (ownFigureOnStartfield) {
-                moveFigure(figureOnStartfield, randomNumber);
-            }else {
-                if (activePlayer <= playerNumber){
-                    playerMoveOnField();
-                }else {
-                    botMoveOnField();
-                }
-            }
-
-            //no figure chooser set -> display changes in gui & set activePlayer to next player
-            if (noChooserSet){
-                gui.replaceFigures();
-                nextPlayer();
-            }
-            //figure chooser set -> end method
-            else {
-                return;
-            }
-        }
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()){
-            finishStatus = true;
-            winner = new winWindow(usernames[whoFinished()]);
-            gui.setVisible(false);
+        //check if an own figure is on the startfield
+        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+            figures[figureOnStartfield].placeOption = true;
         }
 
-        //trigger new move in fontEnd
-        gui.setActivePlayer();
+        //if base not empty move a player out of base
+        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++){
+                if (figures[i].inBase){
+                    figures[i].placeOption = true;
+                }
+            }
+        } else {
+            playerMoveOnField();
+        }
+        gui.setPromptValues();
     }
 
 
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
-        //check with how much figures can do a beat
-        int beatsPossible = 0;
-        for (int i = 0; i < 4; i++) {
-            if (beatPossible(activePlayer * 4 + i, randomNumber)) {
-                beatsPossible++;
+        boolean beatsPossible = false;
+        //add chooser for all figures, which can beat another figure
+        for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+            if (beatPossible(i, randomNumber)) {
+                figures[i].placeOption = true;
+                beatsPossible = true;
             }
         }
-
-        //check if one or more beats are possible
-        if (beatsPossible > 0) {
-            if (beatsPossible == 1) {
-                //move the figure, where the beat is possible
-                for (int i = 0; i < 4; i++) {
-                    int activeFigure = activePlayer * 4 + i;
-                    if (beatPossible(activeFigure, randomNumber)) {
-                        moveFigure(activeFigure, randomNumber);
-                        break;
-                    }
-                }
-            } else {
-                //add the figure to the chooser
-                for (int i = 0; i < 4; i++) {
-                    int activeFigure = activePlayer * 4 + i;
-                    if (beatPossible(activeFigure, randomNumber)) {
-                        figures[activeFigure].placeOption = true;
-                    }
-                }
-                noChooserSet = false;
-                //perform the user choice of the frontEnd
-                gui.setPromptValues();
-            }
-        }
-        //make user figure chooser for all figures of the player
-        else {
-            for (int i = 0; i < 4; i++) {
-                int activeFigure = activePlayer * 4 + i;
-                if (!figures[activeFigure].finished && !figures[activeFigure].inBase) {
-                    figures[activeFigure].placeOption = true;
+        //make user figure chooser for all figures on the gamefield or in the house
+        if (!beatsPossible){
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                if (!figures[i].finished && !figures[i].inBase) {
+                    figures[i].placeOption = true;
                 }
             }
-            noChooserSet = false;
-            //perform the user choice of the frontEnd
-            gui.setPromptValues();
         }
     }
 
@@ -215,40 +133,93 @@ public class BackEnd {
             figure.placeOption = false;
         }
         gui.removePrompt();
-
-        //rest of the normal playerMove-method
         gui.replaceFigures();
-        if (randomNumber != 6){
-            nextPlayer();
-        }
-
         //check if a player has won yet
+        checkFiguresIfFinished();
         if(finished()){
             finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
-
         //trigger new move in fontEnd
+        nextPlayer();
         gui.setActivePlayer();
     }
 
     //bot-move on the "normal" fields
-    private void botMoveOnField(){
-        //move the figure, where the beat is possible
-        for (int i = 0; i < 4; i++) {
-            int activeFigure = activePlayer * 4 + i;
-            if (beatPossible(activeFigure, randomNumber)) {
-                moveFigure(activeFigure, randomNumber);
+    private void botMove(){
+        finishStatus = false;
+        randomNumber = submitRandomNumberBots();
+        //if user is allowed to roll the dice three time operate this option
+        int counter = 0;
+        if (threeTimesAllowed(activePlayer)){
+            while (counter < 3 && randomNumber != 6){
+                randomNumber = submitRandomNumberBots();
+                counter++;
+            }
+            if (randomNumber != 6){
+                nextPlayer();
+                //trigger new move in fontEnd
+                gui.setActivePlayer();
                 return;
             }
         }
-        for (int i = 0; i < 4; i++){
-            int activeFigure = activePlayer * 4 + i;
-            if (!figures[activeFigure].inBase){
-                moveFigure(activeFigure, randomNumber);
+        gui.displayResult(randomNumber);
+
+        //cache a much used value, make the code look cleaner
+        int figureOnStartfield = figureOnField(activePlayer * 10);
+        boolean ownFigureOnStartfield = false;
+        if (figureOnStartfield != 99){
+            if (figures[figureOnStartfield].color == activePlayer) {
+                //own figure is on the startfield
+                ownFigureOnStartfield = true;
             }
         }
+
+        //check if an own figure is on the startfield
+        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+            moveFigure(figureOnStartfield, randomNumber);
+        }
+
+        //if base not empty move a player out of base
+        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+            for (int i = activePlayer * 4; i < 16; i++){
+                if (figures[i].inBase){
+                    moveFigure(i, randomNumber);
+                    break;
+                }
+            }
+        } else {
+            boolean beatsPossible = false;
+            //add the figures to the chooser
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                if (beatPossible(i, randomNumber)) {
+                    moveFigure(i, randomNumber);
+                    beatsPossible = true;
+                    break;
+                }
+            }
+            //make user figure chooser for all figures of the player
+            if (!beatsPossible){
+                for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                    if (!figures[i].finished && !figures[i].inBase) {
+                        moveFigure(i, randomNumber);
+                        break;
+                    }
+                }
+            }
+        }
+        gui.replaceFigures();
+        //check if a player has won yet
+        checkFiguresIfFinished();
+        if(finished()){
+            finishStatus = true;
+            winner = new winWindow(usernames[whoFinished()]);
+            gui.setVisible(false);
+        }
+        //trigger new move in fontEnd
+        nextPlayer();
+        gui.setActivePlayer();
     }
 
     //move the given figure by the given number
@@ -395,7 +366,7 @@ public class BackEnd {
     }
 
     //move the given figure to the base
-    private void moveToBase(int figureNumber){
+    public void moveToBase(int figureNumber){
         figures[figureNumber].inBase = true;
         figures[figureNumber].field = figureNumber;
     }
@@ -548,17 +519,19 @@ public class BackEnd {
 
     //next player
     private void nextPlayer(){
-        if (bots){
-            if (activePlayer < 3){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
-        }else {
-            if (activePlayer < playerNumber){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
+        if (randomNumber != 6){
+            if (bots){
+                if (activePlayer < 3){
+                    activePlayer++;
+                } else {
+                    activePlayer = 0;
+                }
+            }else {
+                if (activePlayer < playerNumber){
+                    activePlayer++;
+                } else {
+                    activePlayer = 0;
+                }
             }
         }
     }
