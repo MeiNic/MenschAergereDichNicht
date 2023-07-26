@@ -128,21 +128,16 @@ public class BackEnd {
             figure.placeOption = false;
         }
         gui.removePrompt();
-
-        //rest of the normal playerMove-method
         gui.replaceFigures();
-        if (randomNumber != 6){
-            nextPlayer();
-        }
-
         //check if a player has won yet
+        checkFiguresIfFinished();
         if(finished()){
             finishStatus = true;
             winner = new winWindow(usernames[whoFinished()]);
             gui.setVisible(false);
         }
-
         //trigger new move in fontEnd
+        nextPlayer();
         gui.setActivePlayer();
     }
 
