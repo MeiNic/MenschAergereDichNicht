@@ -116,8 +116,8 @@ public class Rules extends JFrame implements ActionListener{
             game.gui.setVisible(true);
         }else{
             add(notification);
+            repaint();
         }
-
     }
 
 
