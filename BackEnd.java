@@ -94,11 +94,7 @@ public class BackEnd {
                 }
             }
         } else {
-            if (activePlayer <= playerNumber){
-                playerMoveOnField();
-            }else {
-                botMoveOnField();
-            }
+            playerMoveOnField();
         }
         gui.setPromptValues();
     }
