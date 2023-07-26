@@ -504,17 +504,19 @@ public class BackEnd {
 
     //next player
     private void nextPlayer(){
-        if (bots){
-            if (activePlayer < 3){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
-        }else {
-            if (activePlayer < playerNumber){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
+        if (randomNumber != 6){
+            if (bots){
+                if (activePlayer < 3){
+                    activePlayer++;
+                } else {
+                    activePlayer = 0;
+                }
+            }else {
+                if (activePlayer < playerNumber){
+                    activePlayer++;
+                } else {
+                    activePlayer = 0;
+                }
             }
         }
     }
