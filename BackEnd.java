@@ -128,7 +128,17 @@ public class BackEnd {
             figure.placeOption = false;
         }
         gui.removePrompt();
-
+        gui.replaceFigures();
+        //check if a player has won yet
+        checkFiguresIfFinished();
+        if(finished()){
+            finishStatus = true;
+            winner = new winWindow(usernames[whoFinished()]);
+            gui.setVisible(false);
+        }
+        //trigger new move in fontEnd
+        nextPlayer();
+        gui.setActivePlayer();
     }
 
     //bot-move on the "normal" fields
