@@ -110,7 +110,7 @@ public class BackEnd {
         boolean beatsPossible = false;
         //add chooser for all figures, which can beat another figure
         for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
-            if (beatPossible(i, randomNumber)) {
+            if (beatPossible(i)) {
                 figures[i].placeOption = true;
                 beatsPossible = true;
             }
@@ -174,14 +174,14 @@ public class BackEnd {
 
         //check if an own figure is on the startfield
         if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
-            moveFigure(figureOnStartfield, randomNumber);
+            moveFigure(figureOnStartfield);
         }
 
         //if base not empty move a player out of base
         else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
             for (int i = activePlayer * 4; i < 16; i++){
                 if (figures[i].inBase){
-                    moveFigure(i, randomNumber);
+                    moveFigure(i);
                     break;
                 }
             }
@@ -189,8 +189,8 @@ public class BackEnd {
             boolean beatsPossible = false;
             //add the figures to the chooser
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
-                if (beatPossible(i, randomNumber)) {
-                    moveFigure(i, randomNumber);
+                if (beatPossible(i)) {
+                    moveFigure(i);
                     beatsPossible = true;
                     break;
                 }
@@ -199,7 +199,7 @@ public class BackEnd {
             if (!beatsPossible){
                 for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                     if (!figures[i].finished && !figures[i].inBase) {
-                        moveFigure(i, randomNumber);
+                        moveFigure(i);
                         break;
                     }
                 }
@@ -218,7 +218,7 @@ public class BackEnd {
     }
 
     //move the given figure by the given number
-    public void moveFigure(int figureNumber, int stepLength) {
+    public void moveFigure(int figureNumber) {
         //store the color of the figure in a local variable
         int figureColor = figures[figureNumber].color;
 
@@ -226,7 +226,7 @@ public class BackEnd {
         if(!figures[figureNumber].finished && !figures[figureNumber].inBase){
             //store the old and new field-number in local variables
             int numberOld = figures[figureNumber].field;
-            int cache = numberOld + stepLength;
+            int cache = numberOld + randomNumber;
             int numberNew = cache;
             if (numberNew > 39){
                 numberNew -= 40;
@@ -245,7 +245,7 @@ public class BackEnd {
 
                 //if the figure comes over its startfield -> move the figure in the base
                 if (goToHouse) {
-                    int toMove = stepLength;
+                    int toMove = randomNumber;
                     int figurePosition = figures[figureNumber].field;
                     //unifying the values for cleaner code
                     if (figureColor == 0){
@@ -276,7 +276,8 @@ public class BackEnd {
                         figures[figureNumber].inHouse = true;
                         figures[figureNumber].field = figureColor*4;
                         if (toMove > 0){
-                            moveInHouse(figureNumber, toMove);
+                            randomNumber = toMove;
+                            moveInHouse(figureNumber);
                         }
                     }
                 }
@@ -292,29 +293,29 @@ public class BackEnd {
                         figures[figureNumber].field = numberNew;
                     } else {
                         //perform the moveFigure-method with the figure, standing on the field th figure at the moment wants to move, and the same stepLength
-                        moveFigure(figureOnField(numberNew), stepLength);
+                        moveFigure(figureOnField(numberNew));
                     }
                 }
             }
             else {
-                moveInHouse(figureNumber, stepLength);
+                moveInHouse(figureNumber);
             }
         }
         //if figure is in the base and the step-length is 6 move figure out of base
-        else if (figures[figureNumber].inBase && stepLength == 6) {
+        else if (figures[figureNumber].inBase && randomNumber == 6) {
             moveOutOfBase(figureNumber);
         }
     }
 
     //move figure in the house by the given value
-    private void moveInHouse(int figureNumber, int steplength){
+    private void moveInHouse(int figureNumber){
         //if-loop preventing false moves by mistake
         if (figures[figureNumber].inHouse && !figures[figureNumber].finished){
             //store the figure-field and the figure-color as local variable
             int figureField = figures[figureNumber].field;
             int figureColor = figures[figureNumber].color;
             //be safe that the move doesn't go over the available fields in the house
-            if (figureField + steplength < figureColor * 4 + 4){
+            if (figureField + randomNumber < figureColor * 4 + 4){
                 //be safe that the figure doesn't jump over other figures
                 boolean movePossible = true;
                 for (int i = figureField; i < 4; i++){
@@ -325,18 +326,18 @@ public class BackEnd {
                 }
                 //perform the move
                 if (movePossible){
-                    figures[figureNumber].field = figureField + steplength;
+                    figures[figureNumber].field = figureField + randomNumber;
                 }
             }
         }
     }
 
     //check if a beat is possible
-    private boolean beatPossible(int figureNumber, int stepLength){
+    private boolean beatPossible(int figureNumber){
         if (!figures[figureNumber].inBase && !figures[figureNumber].inHouse){
             //store some useful variables
             int numberOld = figures[figureNumber].field;
-            int cache = numberOld + stepLength;
+            int cache = numberOld + randomNumber;
             int numberNew = cache;
             if (numberNew > 39){
                 numberNew -= 40;
