@@ -95,10 +95,9 @@ public class BackEnd {
 
         //if base not empty move a player out of base
         else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-            for (int i = activePlayer * 4; i < 16; i++){
+            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++){
                 if (figures[i].inBase){
                     figures[i].placeOption = true;
-                    break;
                 }
             }
         } else {
