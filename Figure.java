@@ -1,13 +1,13 @@
-enum State {
-    IN_BASE,
-    ON_FIELD,
-    IN_HOUSE,
-    FINISHED,
-}
-
 public class Figure {
+    enum State {
+	IN_BASE,
+	ON_FIELD,
+	IN_HOUSE,
+	FINISHED,
+    }
+    private State state;
+
     public int field;
-    public State state;
     public int color;
     public boolean placeOption;
 
