@@ -99,7 +99,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 if (cache != 99){
                     if (backend.figures[cache].color == backend.activePlayer){
                         if(backend.figures[cache].placeOption){
-                            backend.moveFigure(cache, backend.randomNumber);
+                            backend.moveFigure(cache);
                         }else {
                             backend.moveToBase(cache);
                         }
@@ -118,7 +118,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 if (house != 99){
                     if (backend.figures[house].color == backend.activePlayer){
                         if (backend.figures[house].placeOption) {
-                            backend.moveFigure(house, backend.randomNumber);
+                            backend.moveFigure(house);
                         }else {
                             backend.moveToBase(house);
                         }
@@ -160,9 +160,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void replaceFigures(){
         Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
-            if(input[i].inBase){
+            if(input[i].isInBase()){
                 figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
-            }else if (input[i].inHouse){
+            }else if (input[i].isInHouse()){
                 figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
             }else {
                 figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);

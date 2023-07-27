@@ -181,7 +181,7 @@ public class BackEnd {
         else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
             for (int i = activePlayer * 4; i < 16; i++){
                 if (figures[i].isInBase()){
-                    moveFigure(i, randomNumber);
+                    moveFigure(i);
                     break;
                 }
             }
@@ -199,7 +199,7 @@ public class BackEnd {
             if (!beatsPossible){
                 for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                     if (figures[i].isMovable()) {
-                        moveFigure(i, randomNumber);
+                        moveFigure(i);
                         break;
                     }
                 }
