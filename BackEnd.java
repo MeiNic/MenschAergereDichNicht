@@ -1,10 +1,23 @@
 import java.util.Random;
 public class BackEnd {
-    record Player(String name, boolean bot){}
+    enum PlayerState {
+        IS_PLAYER,
+        IS_BOT,
+        NOTHING,
+    }
+    record Player(String name, PlayerState status){
+        int getPlayerState(){
+            if (status == PlayerState.IS_PLAYER){
+                return 0;
+            } else if (status == PlayerState.IS_BOT) {
+                return 1;
+            }
+            return -1;
+        }
+    }
     Figure[] figures;
     Landingpage startpage;
     final Player[] players;
-    final boolean bots;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -27,14 +40,18 @@ public class BackEnd {
 
         //progress input from landingpage
         startpage = landingpage;
+        boolean bots = startpage.getBotsSelection();
         for (int i = 0; i < 4; i++){
             if (i <= startpage.getPlayerNumber()){
-                players[i] = new Player(startpage.getNames()[i], false);
+                players[i] = new Player(startpage.getNames()[i], PlayerState.IS_PLAYER);
             }else {
-                players[i] = new Player(startpage.getNames()[i], true);
+                if (bots){
+                    players[i] = new Player(startpage.getNames()[i], PlayerState.IS_BOT);
+                }else {
+                    players[i] = new Player(startpage.getNames()[i], PlayerState.NOTHING);
+                }
             }
         }
-        bots = startpage.getBotsSelection();
         gui = new GameBoardGui(players[0].name, this);
     }
     //generate random number (copy from frontend)
@@ -509,14 +526,14 @@ public class BackEnd {
                 activePlayer = 0;
             }
         }
-        if (bots && players[activePlayer].bot){
+        if (players[activePlayer].getPlayerState() == 1){
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             botMove();
-        }else {
+        }else if (players[activePlayer].getPlayerState() == 0){
             gui.setActivePlayer();
         }
     }
