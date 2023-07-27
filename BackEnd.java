@@ -129,7 +129,7 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            winner = new WinWindow(usernames[whoFinished()]);
+            winner = new WinWindow(players[whoFinished()].name);
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
@@ -203,7 +203,7 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            winner = new WinWindow(usernames[whoFinished()]);
+            winner = new WinWindow(players[whoFinished()].name);
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
