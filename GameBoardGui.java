@@ -130,14 +130,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             diffX = baseX[i] - mouseX;
             diffY = baseY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-
-            }
-            int base = backend.figureOnBaseField(i);
-            if (base != 99){
-                if (backend.figures[base].placeOption){
-                    backend.moveOutOfBase(base);
-                    backend.performUserChoice();
-                    return;
+                int base = backend.figureOnBaseField(i);
+                if (base != 99){
+                    if (backend.figures[base].placeOption){
+                        backend.moveOutOfBase(base);
+                        backend.performUserChoice();
+                        return;
+                    }
                 }
             }
         }
