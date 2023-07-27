@@ -501,7 +501,7 @@ public class BackEnd {
     }
 
     //next player
-    private void nextMove(){
+    private void nextMove() {
         if (randomNumber != 6){
             if (activePlayer < 3){
                 activePlayer++;
@@ -510,6 +510,11 @@ public class BackEnd {
             }
         }
         if (bots && players[activePlayer].bot){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             botMove();
         }else {
             gui.setActivePlayer();
