@@ -88,14 +88,14 @@ public class BackEnd {
 
         //check if an own figure is on the startfield
         if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
-            figures[figureOnStartfield].placeOption = true;
+            figures[figureOnStartfield].enablePlacement();
         }
 
         //if base not empty move a player out of base
         else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++){
                 if (figures[i].isInBase()){
-                    figures[i].placeOption = true;
+                    figures[i].enablePlacement();
                 }
             }
         } else {
@@ -111,7 +111,7 @@ public class BackEnd {
         //add chooser for all figures, which can beat another figure
         for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
             if (beatPossible(i)) {
-                figures[i].placeOption = true;
+                figures[i].enablePlacement();
                 beatsPossible = true;
             }
         }
@@ -119,7 +119,7 @@ public class BackEnd {
         if (!beatsPossible){
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                 if (figures[i].isMovable()) {
-                    figures[i].placeOption = true;
+                    figures[i].enablePlacement();
                 }
             }
         }
@@ -128,7 +128,7 @@ public class BackEnd {
     public void performUserChoice(){
         //removing the place options on all figures
         for (Figure figure : figures) {
-            figure.placeOption = false;
+            figure.disablePlacement();
         }
         gui.removePrompt();
         gui.replaceFigures();

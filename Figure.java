@@ -9,13 +9,21 @@ public class Figure {
 
     public int field;
     public int color;
-    public boolean placeOption;
+    public boolean placable;
 
     Figure(int fieldNew, int colorNew){
 	state = State.IN_BASE;
         field = fieldNew;
         color = colorNew;
-        placeOption = false;
+        placable = false;
+    }
+
+    public void enablePlacement() {
+	placable = true;
+    }
+
+    public void disablePlacement() {
+	placable = false;
     }
 
     public void setInBase() {
