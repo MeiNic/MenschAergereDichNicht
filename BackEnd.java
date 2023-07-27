@@ -50,14 +50,6 @@ public class BackEnd {
         return cache[rand.nextInt(10)];
     }
 
-    public void move(){
-        if (activePlayer > playerNumber){
-            botMove();
-        } else {
-            playerMove();
-        }
-    }
-
     //progress a dice input
     private void playerMove() {
         randomNumber = submitRandomNumber();
