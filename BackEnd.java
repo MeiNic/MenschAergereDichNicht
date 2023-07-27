@@ -61,7 +61,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                nextPlayer();
+                nextMove();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
                 return;
@@ -133,7 +133,7 @@ public class BackEnd {
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
-        nextPlayer();
+        nextMove();
         gui.setActivePlayer();
     }
 
@@ -148,7 +148,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                nextPlayer();
+                nextMove();
                 //trigger new move in fontEnd
                 gui.setActivePlayer();
                 return;
@@ -207,7 +207,7 @@ public class BackEnd {
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
-        nextPlayer();
+        nextMove();
         gui.setActivePlayer();
     }
 
@@ -508,7 +508,7 @@ public class BackEnd {
     }
 
     //next player
-    private void nextPlayer(){
+    private void nextMove(){
         if (randomNumber != 6){
             if (bots){
                 if (activePlayer < 3){
