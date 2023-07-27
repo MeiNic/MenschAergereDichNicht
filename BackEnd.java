@@ -527,6 +527,7 @@ public class BackEnd {
             }
         }
         if (players[activePlayer].getPlayerState() == 1){
+            gui.setBotAdvice();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -535,6 +536,8 @@ public class BackEnd {
             botMove();
         }else if (players[activePlayer].getPlayerState() == 0){
             gui.setActivePlayer();
+        }else {
+            nextMove();
         }
     }
 }

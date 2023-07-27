@@ -217,6 +217,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         remove(figureChooserPrompt);
     }
 
+    public void setBotAdvice(){
+        remove(rollDice);
+        userAdvice.setText("Bots are moving... Please wait, the next player is on the turn in seconds");
+        result.setText("");
+        repaint();
+    }
+
     /*
       -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
       sets all needed parameters for the frame and opens in the end
