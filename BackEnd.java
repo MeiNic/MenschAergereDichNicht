@@ -62,8 +62,6 @@ public class BackEnd {
             }
             if (randomNumber != 6){
                 nextMove();
-                //trigger new move in fontEnd
-                gui.setActivePlayer();
                 return;
             }
         }
@@ -134,7 +132,6 @@ public class BackEnd {
         }
         //trigger new move in fontEnd
         nextMove();
-        gui.setActivePlayer();
     }
 
     //bot-move on the "normal" fields
@@ -149,8 +146,6 @@ public class BackEnd {
             }
             if (randomNumber != 6){
                 nextMove();
-                //trigger new move in fontEnd
-                gui.setActivePlayer();
                 return;
             }
         }
@@ -202,13 +197,11 @@ public class BackEnd {
         gui.replaceFigures();
         //check if a player has won yet
         checkFiguresIfFinished();
-        if(finished()){
+        if(finished()) {
             winner = new WinWindow(players[whoFinished()].name);
             gui.setVisible(false);
         }
-        //trigger new move in fontEnd
         nextMove();
-        gui.setActivePlayer();
     }
 
     //move the given figure by the given number
@@ -510,19 +503,16 @@ public class BackEnd {
     //next player
     private void nextMove(){
         if (randomNumber != 6){
-            if (bots){
-                if (activePlayer < 3){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
-            }else {
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+            if (activePlayer < 3){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
             }
+        }
+        if (bots && players[activePlayer].bot){
+            botMove();
+        }else {
+            gui.setActivePlayer();
         }
     }
 }
