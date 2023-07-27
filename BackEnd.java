@@ -1,10 +1,10 @@
 import java.util.Random;
 public class BackEnd {
+    record Player(String name, boolean bot){}
     Figure[] figures;
     Landingpage startpage;
-    String[] usernames;
-    int playerNumber;
-    boolean bots;
+    final Player[] players;
+    final boolean bots;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -23,17 +23,19 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        usernames = new String[4];
-        playerNumber = 0;
-        bots = false;
+        players = new Player[4];
 
         //progress input from landingpage
         startpage = landingpage;
-        usernames = startpage.getNames();
-        playerNumber = startpage.getPlayerNumber();
+        for (int i = 0; i < 4; i++){
+            if (i <= startpage.getPlayerNumber()){
+                players[i] = new Player(startpage.getNames()[i], false);
+            }else {
+                players[i] = new Player(startpage.getNames()[i], true);
+            }
+        }
         bots = startpage.getBotsSelection();
-
-        gui = new GameBoardGui(usernames[0], this);
+        gui = new GameBoardGui(players[0].name, this);
     }
     //generate random number (copy from frontend)
     private int submitRandomNumber(){
