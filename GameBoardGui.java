@@ -82,7 +82,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             remove(rollDice);
 
             //trigger new move in the backend
-            backend.move();
+            backend.playerMove();
         }
     }
 
@@ -182,7 +182,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
      */
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.usernames[backend.activePlayer] + " is on the turn, click this button");
+        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn, click this button");
         result.setText("");
         repaint();
     }
@@ -206,7 +206,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     //setting the values for the figureChooserPrompt
     public void setPromptValues(){
-        userAdvice.setText("Player " + backend.usernames[backend.activePlayer] + " is on the turn");
+        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);

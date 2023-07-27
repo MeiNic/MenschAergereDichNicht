@@ -51,7 +51,7 @@ public class BackEnd {
     }
 
     //progress a dice input
-    private void playerMove() {
+    public void playerMove() {
         randomNumber = submitRandomNumber();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
