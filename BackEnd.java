@@ -457,26 +457,22 @@ public class BackEnd {
 
     //check if base is empty (argument between 0 & 3)
     private boolean isBaseEmpty(int playerNumber){
-        boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
             if (figures[i].isInBase()) {
-                BaseStatus = false;
-                break;
+		return false;
             }
         }
-        return BaseStatus;
+        return true;
     }
     
     //check if all figures are in the base
     private boolean isBaseFull(int playerNumber){
-        boolean BaseStatus = true;
         for(int i = playerNumber*4; i<playerNumber*4+4; i++){
             if (!figures[i].isInBase()) {
-                BaseStatus = false;
-                break;
+		return false;
             }
         }
-        return BaseStatus;
+        return true;
     }
 
     //check if given player is allowed to roll the dice three times
