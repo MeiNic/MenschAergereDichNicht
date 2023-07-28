@@ -6,16 +6,16 @@ public class Figure {
 	FINISHED,
     }
     private State state;
+    private boolean placable;
 
     public int field;
     public int color;
-    public boolean placable;
 
     Figure(int fieldNew, int colorNew){
 	state = State.IN_BASE;
+        placable = false;
         field = fieldNew;
         color = colorNew;
-        placable = false;
     }
 
     public void enablePlacement() {
