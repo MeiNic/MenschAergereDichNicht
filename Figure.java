@@ -26,6 +26,10 @@ public class Figure {
 	placable = false;
     }
 
+    public void isPlacable() {
+	return placable;
+    }
+
     public void setInBase() {
 	state = State.IN_BASE;
     }
