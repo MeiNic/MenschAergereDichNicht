@@ -1,10 +1,23 @@
 import java.util.Random;
 public class BackEnd {
+    enum PlayerState {
+        IS_PLAYER,
+        IS_BOT,
+        NOTHING,
+    }
+    record Player(String name, PlayerState status){
+        int getPlayerState(){
+            if (status == PlayerState.IS_PLAYER){
+                return 0;
+            } else if (status == PlayerState.IS_BOT) {
+                return 1;
+            }
+            return -1;
+        }
+    }
     Figure[] figures;
     Landingpage startpage;
-    String[] usernames;
-    int playerNumber;
-    boolean bots;
+    final Player[] players;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -23,17 +36,23 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        usernames = new String[4];
-        playerNumber = 0;
-        bots = false;
+        players = new Player[4];
 
         //progress input from landingpage
         startpage = landingpage;
-        usernames = startpage.getNames();
-        playerNumber = startpage.getPlayerNumber();
-        bots = startpage.getBotsSelection();
-
-        gui = new GameBoardGui(usernames[0], this);
+        boolean bots = startpage.getBotsSelection();
+        for (int i = 0; i < 4; i++){
+            if (i <= startpage.getPlayerNumber()){
+                players[i] = new Player(startpage.getNames()[i], PlayerState.IS_PLAYER);
+            }else {
+                if (bots){
+                    players[i] = new Player(startpage.getNames()[i], PlayerState.IS_BOT);
+                }else {
+                    players[i] = new Player(startpage.getNames()[i], PlayerState.NOTHING);
+                }
+            }
+        }
+        gui = new GameBoardGui(players[0].name, this);
     }
     //generate random number (copy from frontend)
     private int submitRandomNumber(){
@@ -48,16 +67,8 @@ public class BackEnd {
         return cache[rand.nextInt(10)];
     }
 
-    public void move(){
-        if (activePlayer > playerNumber){
-            botMove();
-        } else {
-            playerMove();
-        }
-    }
-
     //progress a dice input
-    private void playerMove() {
+    public void playerMove() {
         randomNumber = submitRandomNumber();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
@@ -67,9 +78,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                nextPlayer();
-                //trigger new move in fontEnd
-                gui.setActivePlayer();
+                nextMove();
                 return;
             }
         }
@@ -135,12 +144,11 @@ public class BackEnd {
         //check if a player has won yet
         checkFiguresIfFinished();
         if(finished()){
-            winner = new WinWindow(usernames[whoFinished()]);
+            winner = new WinWindow(players[whoFinished()].name);
             gui.setVisible(false);
         }
         //trigger new move in fontEnd
-        nextPlayer();
-        gui.setActivePlayer();
+        nextMove();
     }
 
     //bot-move on the "normal" fields
@@ -154,9 +162,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                nextPlayer();
-                //trigger new move in fontEnd
-                gui.setActivePlayer();
+                nextMove();
                 return;
             }
         }
@@ -181,7 +187,7 @@ public class BackEnd {
         else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
             for (int i = activePlayer * 4; i < 16; i++){
                 if (figures[i].isInBase()){
-                    moveFigure(i, randomNumber);
+                    moveFigure(i);
                     break;
                 }
             }
@@ -199,7 +205,7 @@ public class BackEnd {
             if (!beatsPossible){
                 for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                     if (figures[i].isMovable()) {
-                        moveFigure(i, randomNumber);
+                        moveFigure(i);
                         break;
                     }
                 }
@@ -208,13 +214,11 @@ public class BackEnd {
         gui.replaceFigures();
         //check if a player has won yet
         checkFiguresIfFinished();
-        if(finished()){
-            winner = new WinWindow(usernames[whoFinished()]);
+        if(finished()) {
+            winner = new WinWindow(players[whoFinished()].name);
             gui.setVisible(false);
         }
-        //trigger new move in fontEnd
-        nextPlayer();
-        gui.setActivePlayer();
+        nextMove();
     }
 
     //move the given figure by the given number
@@ -510,21 +514,26 @@ public class BackEnd {
     }
 
     //next player
-    private void nextPlayer(){
+    private void nextMove() {
         if (randomNumber != 6){
-            if (bots){
-                if (activePlayer < 3){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
-            }else {
-                if (activePlayer < playerNumber){
-                    activePlayer++;
-                } else {
-                    activePlayer = 0;
-                }
+            if (activePlayer < 3){
+                activePlayer++;
+            } else {
+                activePlayer = 0;
             }
+        }
+        if (players[activePlayer].getPlayerState() == 1){
+            gui.setBotAdvice();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            botMove();
+        }else if (players[activePlayer].getPlayerState() == 0){
+            gui.setActivePlayer();
+        }else {
+            nextMove();
         }
     }
 }

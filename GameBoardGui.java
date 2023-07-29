@@ -82,7 +82,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             remove(rollDice);
 
             //trigger new move in the backend
-            backend.move();
+            backend.playerMove();
         }
     }
 
@@ -98,8 +98,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 int cache = backend.figureOnField(i);
                 if (cache != 99){
                     if (backend.figures[cache].color == backend.activePlayer){
-                        if(backend.figures[cache].isPlacable()){
-                            backend.moveFigure(cache, backend.randomNumber);
+                        if(backend.figures[cache].isPlaceable()){
+                            backend.moveFigure(cache);
                         }else {
                             backend.moveToBase(cache);
                         }
@@ -117,8 +117,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 int house = backend.figureOnHouseField(i);
                 if (house != 99){
                     if (backend.figures[house].color == backend.activePlayer){
-                        if (backend.figures[house].isPlacable()) {
-                            backend.moveFigure(house, backend.randomNumber);
+                        if (backend.figures[house].isPlaceable()) {
+                            backend.moveFigure(house);
                         }else {
                             backend.moveToBase(house);
                         }
@@ -132,7 +132,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
-                    if (backend.figures[base].isPlacable()){
+                    if (backend.figures[base].isPlaceable()){
                         backend.moveOutOfBase(base);
                         backend.performUserChoice();
                         return;
@@ -160,9 +160,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void replaceFigures(){
         Figure[] input = backend.figures;
         for (int i = 0; i < input.length && i < figures.length; i++){
-            if(input[i].inBase){
+            if(input[i].isInBase()){
                 figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
-            }else if (input[i].inHouse){
+            }else if (input[i].isInHouse()){
                 figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
             }else {
                 figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
@@ -182,7 +182,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
      */
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.usernames[backend.activePlayer] + " is on the turn, click this button");
+        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn, click this button");
         result.setText("");
         repaint();
     }
@@ -206,7 +206,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     //setting the values for the figureChooserPrompt
     public void setPromptValues(){
-        userAdvice.setText("Player " + backend.usernames[backend.activePlayer] + " is on the turn");
+        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
@@ -215,6 +215,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //removing the figureChooserPrompt from the GameBoardGui
     public void removePrompt(){
         remove(figureChooserPrompt);
+    }
+
+    public void setBotAdvice(){
+        remove(rollDice);
+        userAdvice.setText("Bots are moving... Please wait, the next player is on the turn in seconds");
+        result.setText("");
+        repaint();
     }
 
     /*
