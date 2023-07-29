@@ -6,16 +6,28 @@ public class Figure {
 	FINISHED,
     }
     private State state;
+    private boolean placable;
 
     public int field;
     public int color;
-    public boolean placeOption;
 
     Figure(int fieldNew, int colorNew){
 	state = State.IN_BASE;
+        placable = false;
         field = fieldNew;
         color = colorNew;
-        placeOption = false;
+    }
+
+    public void enablePlacement() {
+	placable = true;
+    }
+
+    public void disablePlacement() {
+	placable = false;
+    }
+
+    public void isPlacable() {
+	return placable;
     }
 
     public void setInBase() {

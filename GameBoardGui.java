@@ -132,7 +132,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
-                    if (backend.figures[base].placeOption){
+                    if (backend.figures[base].isPlacable()){
                         backend.moveOutOfBase(base);
                         backend.performUserChoice();
                         return;
