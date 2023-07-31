@@ -63,7 +63,6 @@ public class BackEnd {
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                Dice dice = new LaPlaceDice();
 		randomNumber = dice.roll();
                 counter++;
             }
@@ -149,7 +148,6 @@ public class BackEnd {
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                Dice dice = new LoadedDice();
 		randomNumber = dice.roll();
                 counter++;
             }
