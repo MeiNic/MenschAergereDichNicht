@@ -213,7 +213,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
-        result2.setText("You didn't get a 6 :(. Press this button to move on to the next player:");
+        result2.setText("You didn't get a 6 :(  Press this button to move on to the next player:");
         result2.setBounds(960, 120, 450, 32);
         nextPlayer.setText("next Player");
         nextPlayer.setBounds(975, 150, 110, 32);
@@ -231,7 +231,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void setPromptValues(){
         userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 185, 250, 32);
+        figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
     }
 
