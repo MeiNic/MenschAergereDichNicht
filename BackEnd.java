@@ -149,39 +149,37 @@ public class BackEnd {
     //bot-move on the "normal" fields
     private void botMove(){
 	Dice dice = new LoadedDice();
-	randomNumber = dice.roll();
-        //if user is allowed to roll the dice three time operate this option
-        int counter = 0;
-        if (threeTimesAllowed(activePlayer)){
-            while (counter < 3 && randomNumber != 6){
-		randomNumber = dice.roll();
-                counter++;
-            }
-            if (randomNumber != 6){
-                nextMove();
-                return;
-            }
-        }
+
+	int allowedTries = threeTimesAllowed(activePlayer) ? 3 : 1;
+	int tries = 0;
+
+	int firstOwnedFigure = activePlayer * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+
+	do {
+	    randomNumber = dice.roll();
+	    tries++;
+	} while (tries < allowedTries && randomNumber != 6);
+
+	if (randomNumber != 6 && allowedTries == 3) {
+	    nextMove();
+	    return;
+	}
+        
         gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
-        if (figureOnStartfield != 99){
-            if (figures[figureOnStartfield].color == activePlayer) {
-                //own figure is on the startfield
-                ownFigureOnStartfield = true;
-            }
+	
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer) {
+	    ownFigureOnStartfield = true;
         }
 
-        //check if an own figure is on the startfield
         if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
             moveFigure(figureOnStartfield);
-        }
-
-        //if base not empty move a player out of base
-        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-            for (int i = activePlayer * 4; i < 16; i++){
+        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
                 if (figures[i].isInBase()){
                     moveFigure(i);
                     break;
@@ -189,7 +187,6 @@ public class BackEnd {
             }
         } else {
             boolean beatsPossible = false;
-            //add the figures to the chooser
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                 if (beatPossible(i)) {
                     moveFigure(i);
@@ -199,7 +196,7 @@ public class BackEnd {
             }
             //make user figure chooser for all figures of the player
             if (!beatsPossible){
-                for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
                     if (figures[i].isMovable()) {
                         moveFigure(i);
                         break;
