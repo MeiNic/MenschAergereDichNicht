@@ -32,6 +32,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JButton rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
+    JLabel result2;
+    JButton nextPlayer;
 
     //variable for the backend
     BackEnd backend;
@@ -68,6 +70,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
+        result2 = new JLabel();
+        nextPlayer = new JButton();
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
@@ -83,6 +87,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
             //trigger new move in the backend
             backend.playerMove();
+        } else if(e.getSource() == nextPlayer){
+            //remove the button
+            remove(nextPlayer);
+
+            //trigger the next move in the backend
+            backend.nextMove();
         }
     }
 
@@ -202,13 +212,23 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+        result2.setText("You didn't get a 6 :(. Press this button to move on to the next player:");
+        result2.setBounds(970, 120, 350, 32);
+        nextPlayer.setText("next Player");
+        nextPlayer.setBounds(975, 150, 110, 32);
+        nextPlayer.addActionListener(this);
+    }
+
+    public void notSix(){
+        add(result2);
+        add(nextPlayer);
     }
 
     //setting the values for the figureChooserPrompt
     public void setPromptValues(){
         userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 120, 250, 32);
+        figureChooserPrompt.setBounds(970, 185, 250, 32);
         add(figureChooserPrompt);
     }
 
