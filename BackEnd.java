@@ -54,27 +54,16 @@ public class BackEnd {
         }
         gui = new GameBoardGui(players[0].name, this);
     }
-    //generate random number (copy from frontend)
-    private int submitRandomNumber(){
-        Random rand = new Random();
-        return 1 + rand.nextInt(6);
-    }
-
-    //generate a randomNumber for the bots-movement with lower chances for 5 & 6
-    private int submitRandomNumberBots(){
-        int[] cache = {1, 2, 3, 4, 5, 6, 1, 2, 3, 4};
-        Random rand = new Random();
-        return cache[rand.nextInt(10)];
-    }
 
     //progress a dice input
     public void playerMove() {
-        randomNumber = submitRandomNumber();
+	Dice dice = new LaPlaceDice();
+	randomNumber = dice.roll();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                randomNumber = submitRandomNumber();
+		randomNumber = dice.roll();
                 counter++;
             }
             if (randomNumber != 6){
@@ -153,12 +142,13 @@ public class BackEnd {
 
     //bot-move on the "normal" fields
     private void botMove(){
-        randomNumber = submitRandomNumberBots();
+	Dice dice = new LoadedDice();
+	randomNumber = dice.roll();
         //if user is allowed to roll the dice three time operate this option
         int counter = 0;
         if (threeTimesAllowed(activePlayer)){
             while (counter < 3 && randomNumber != 6){
-                randomNumber = submitRandomNumberBots();
+		randomNumber = dice.roll();
                 counter++;
             }
             if (randomNumber != 6){
