@@ -104,20 +104,28 @@ public class BackEnd {
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
         boolean beatsPossible = false;
-        //add chooser for all figures, which can beat another figure
-        for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+	
+	int firstOwnedFigure = activePlayer * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (beatPossible(i)) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
             }
         }
-        //make user figure chooser for all figures on the gamefield or in the house
-        if (!beatsPossible){
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
-                if (figures[i].isMovable()) {
-                    figures[i].enablePlacement();
-                }
-            }
+
+	if (beatsPossible) {
+	    // Only figures able to beat another figure should be
+	    // moved now.
+	    return;
+	}
+
+	// Any movable figure should be moved now.
+	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	    if (figures[i].isMovable()) {
+		figures[i].enablePlacement();
+	    }
         }
     }
 
