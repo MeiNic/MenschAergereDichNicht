@@ -90,6 +90,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         } else if(e.getSource() == nextPlayer){
             //remove the button
             remove(nextPlayer);
+            remove(result2);
 
             //trigger the next move in the backend
             backend.nextMove();
@@ -213,15 +214,17 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result.setBounds(1150, 90, 100, 32);
         add(result);
         result2.setText("You didn't get a 6 :(. Press this button to move on to the next player:");
-        result2.setBounds(970, 120, 350, 32);
+        result2.setBounds(960, 120, 450, 32);
         nextPlayer.setText("next Player");
         nextPlayer.setBounds(975, 150, 110, 32);
         nextPlayer.addActionListener(this);
     }
 
     public void notSix(){
+        remove(rollDice);
         add(result2);
         add(nextPlayer);
+        repaint();
     }
 
     //setting the values for the figureChooserPrompt

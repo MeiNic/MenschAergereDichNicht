@@ -67,7 +67,7 @@ public class BackEnd {
                 counter++;
             }
             if (randomNumber != 6){
-                nextMove();
+                gui.notSix();
                 return;
             }
         }
@@ -504,7 +504,7 @@ public class BackEnd {
     }
 
     //next player
-    private void nextMove() {
+    public void nextMove() {
         if (randomNumber != 6){
             if (activePlayer < 3){
                 activePlayer++;
