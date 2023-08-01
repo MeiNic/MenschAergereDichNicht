@@ -58,21 +58,22 @@ public class BackEnd {
     //progress a dice input
     public void playerMove() {
 	Dice dice = new LaPlaceDice();
-	randomNumber = dice.roll();
-        //if user is allowed to roll the dice three time operate this option
-        int counter = 0;
-        if (threeTimesAllowed(activePlayer)){
-            while (counter < 3 && randomNumber != 6){
-		randomNumber = dice.roll();
-                counter++;
-            }
-            if (randomNumber != 6){
-                nextMove();
-                return;
-            }
-        }
+	
+	int allowedTries = threeTimesAllowed(activePlayer) ? 3 : 1;
+	int tries = 0;
+	
+	do {
+	    randomNumber = dice.roll();
+	    tries++;
+	} while (tries < allowedTries && randomNumber != 6);
+	
+	if (randomNumber != 6 && allowedTries == 3) {
+	    nextMove();
+	    return;
+	}
+        
         gui.displayResult(randomNumber);
-
+	
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
