@@ -218,92 +218,97 @@ public class BackEnd {
 
     //move the given figure by the given number
     public void moveFigure(int figureNumber) {
-        //store the color of the figure in a local variable
-        int figureColor = figures[figureNumber].color;
+	Figure figureToBeMoved = figures[figureNumber];
+        int figureColor = figureToBeMoved.color;
 
-        //check if the figure isn't finished and not in the base
-        if(figures[figureNumber].isMovable()) {
-            //store the old and new field-number in local variables
-            int numberOld = figures[figureNumber].field;
-            int cache = numberOld + randomNumber;
-            int numberNew = cache;
-            if (numberNew > 39){
-                numberNew -= 40;
-            }
-
-            //check if the figure is on the gamefield
-            if (figures[figureNumber].isOnField()) {
-                //check if a figure would come over its own startfield
-                boolean goToHouse = false;
-                if (numberOld < figureColor * 10 && cache >= figureColor * 10){
-                    goToHouse = true;
-                }
-                if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
-                    goToHouse = true;
-                }
-
-                //if the figure comes over its startfield -> move the figure in the base
-                if (goToHouse) {
-                    int toMove = randomNumber;
-                    int figurePosition = figures[figureNumber].field;
-                    //unifying the values for cleaner code
-                    if (figureColor == 0){
-                        figurePosition -= 30;
-                    } else if (figureColor == 2) {
-                        figurePosition -= 10;
-                    } else if (figureColor == 3) {
-                        figurePosition -= 20;
-                    }
-                    //move figure in front of the base
-                    while (toMove > 0 && figurePosition <= 9){
-                        figurePosition++;
-                        toMove--;
-                    }
-                    //check if a move into the base is possible
-                    boolean movePossible = true;
-                    if (toMove > 0 && toMove < 5){
-                        for (int i = 0; i <= toMove; i++){
-                            if (figureOnField(i + figureColor*4) != 99){
-                                movePossible = false;
-                                break;
-                            }
-                        }
-
-                    }
-                    if (movePossible){
-                        toMove--;
-                        figures[figureNumber].setInHouse();
-                        figures[figureNumber].field = figureColor*4;
-                        if (toMove > 0){
-                            randomNumber = toMove;
-                            moveInHouse(figureNumber);
-                        }
-                    }
-                }
-                //move the figure, if the new field is free
-                else if (figureOnField(numberNew) == 99){
-                    figures[figureNumber].field = numberNew;
-                }
-
-                else {
-                    //move the figure, and move the figure before on the field to the base
-                    if (figures[figureOnField(numberNew)].color != figureColor){
-                        moveToBase(figureOnField(numberNew));
-                        figures[figureNumber].field = numberNew;
-                    } else {
-                        //perform the moveFigure-method with the figure, standing on the field th figure at the moment wants to move, and the same stepLength
-                        moveFigure(figureOnField(numberNew));
-                    }
-                }
-            }
-            else {
-                moveInHouse(figureNumber);
-            }
-        }
-        //if figure is in the base and the step-length is 6 move figure out of base
-        else if (figures[figureNumber].isInBase() && randomNumber == 6) {
+        if (figureToBeMoved.isInBase() && randomNumber == 6) {
             moveOutOfBase(figureNumber);
+	    return;
         }
+
+	// Figure is not movable.
+	if (!figureToBeMoved.isMovable()) {
+	    return;
+	}
+
+	//store the old and new field-number in local variables
+	int numberOld = figureToBeMoved.field;
+	int numberNew = numberOld + randomNumber;
+	
+	if (numberNew > 39){
+	    numberNew -= 40;
+	}
+
+	// Figure is moving in their house.
+	if (figureToBeMoved.isInHouse()) {
+	    moveInHouse(figureNumber);
+	    return;
+	}
+
+	// Figure is about to enter their house.
+	boolean goToHouse = false;
+	if ((numberOld < figureColor * 10 && numberNew >= figureColor * 10)
+	    || (figureColor == 0 && numberOld > 34 && numberNew >= 0)){
+	    goToHouse = true;
+	}
+	
+	//move the figure, if the new field is free
+	if (!goToHouse && figureOnField(numberNew) == 99){
+	    figureToBeMoved.field = numberNew;
+	    return;
+	}
+
+	if (!goToHouse) {
+	    //move the figure, and move the figure before on the field
+	    //to the base
+	    if (figures[figureOnField(numberNew)].color != figureColor){
+		moveToBase(figureOnField(numberNew));
+	        figureToBeMoved.field = numberNew;
+	    } else {
+		//perform the moveFigure-method with the figure,
+		//standing on the field th figure at the moment wants
+		//to move, and the same stepLength
+		moveFigure(figureOnField(numberNew));
+	    }
+	    return;
+	}
+
+	int toMove = randomNumber;
+	int figurePosition = figureToBeMoved.field;
+	
+	//unifying the values for cleaner code
+	if (figureColor == 0){
+	    figurePosition -= 30;
+	} else if (figureColor == 2) {
+	    figurePosition -= 10;
+	} else if (figureColor == 3) {
+	    figurePosition -= 20;
+	}
+	
+	//move figure in front of the base
+	while (toMove > 0 && figurePosition <= 9){
+	    figurePosition++;
+	    toMove--;
+	}
+
+	// Don't move figure if entering the house is not possible.
+	if (0 < toMove && toMove < 5) {
+	    for (int i = 0; i <= toMove; i++) {
+		if (figureOnField(i + (figureColor * 4)) != 99) {
+		    return;
+		}
+	    }
+	}
+
+	// Move figure into house.
+	toMove--;
+        figureToBeMoved.setInHouse();
+        figureToBeMoved.field = figureColor * 4;
+	
+	if (toMove > 0){
+	    randomNumber = toMove;
+	    moveInHouse(figureNumber);
+	}
     }
 
     //move figure in the house by the given value
