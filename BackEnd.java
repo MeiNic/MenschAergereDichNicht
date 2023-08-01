@@ -136,12 +136,9 @@ public class BackEnd {
         }
         gui.removePrompt();
         gui.replaceFigures();
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()){
-            winner = new WinWindow(players[whoFinished()].name);
-            gui.setVisible(false);
-        }
+
+	displayWinWindowIfNecessary();
+	
         //trigger new move in fontEnd
         nextMove();
     }
@@ -205,13 +202,18 @@ public class BackEnd {
             }
         }
         gui.replaceFigures();
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()) {
-            winner = new WinWindow(players[whoFinished()].name);
-            gui.setVisible(false);
-        }
+        displayWinWindowIfNecessary();
         nextMove();
+    }
+
+    private void displayWinWindowIfNecessary() {
+	checkFiguresIfFinished();
+
+	if (finished()) {
+	    String name_of_winner = players[whoFinished()].name;
+	    winner = new WinWindow(name_of_winner);
+	    gui.setVisible(false);
+	}
     }
 
     //move the given figure by the given number
