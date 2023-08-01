@@ -77,29 +77,26 @@ public class BackEnd {
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
-        if (figureOnStartfield != 99){
-            if (figures[figureOnStartfield].color == activePlayer) {
-                //own figure is on the startfield
-                ownFigureOnStartfield = true;
-
-            }
+	
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer){
+	    ownFigureOnStartfield = true;
         }
 
-        //check if an own figure is on the startfield
-        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield && !isBaseEmpty(activePlayer)){
             figures[figureOnStartfield].enablePlacement();
-        }
-
-        //if base not empty move a player out of base
-        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++){
-                if (figures[i].isInBase()){
-                    figures[i].enablePlacement();
-                }
-            }
-        } else {
-            playerMoveOnField();
-        }
+        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+	    int firstOwnedFigure = activePlayer * 4;
+	    int lastOwnedFigure = firstOwnedFigure + 4;
+	    
+	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+		if (figures[i].isInBase()) {
+		    figures[i].enablePlacement();
+		}
+	    }
+	} else {
+	    playerMoveOnField();
+	}
+	
         gui.setPromptValues();
     }
 
