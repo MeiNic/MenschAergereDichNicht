@@ -529,25 +529,26 @@ public class BackEnd {
 
     //next player
     private void nextMove() {
-        if (randomNumber != 6){
-            if (activePlayer < 3){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
-        }
-        if (players[activePlayer].getPlayerState() == 1){
-            gui.setBotAdvice();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            botMove();
-        }else if (players[activePlayer].getPlayerState() == 0){
-            gui.setActivePlayer();
-        }else {
-            nextMove();
-        }
+	if (randomNumber != 6) {
+	    activePlayer = (activePlayer++) % 4;
+	}
+
+	int playerState = players[activePlayer].getPlayerState();
+
+	if (playerState == 1) {
+	    gui.setBotAdvice();
+
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		throw new RuntimeException(e);
+	    }
+
+	    botMove();
+	} else if (playerState == 0) {
+	    gui.setActivePlayer();
+	} else {
+	    nextMove();
+	}
     }
 }
