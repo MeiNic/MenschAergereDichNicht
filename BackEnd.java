@@ -341,32 +341,36 @@ public class BackEnd {
     }
 
     //check if a beat is possible
-    private boolean beatPossible(int figureNumber){
-        if (figures[figureNumber].isOnField()) {
-            //store some useful variables
-            int numberOld = figures[figureNumber].field;
-            int cache = numberOld + randomNumber;
-            int numberNew = cache;
-            if (numberNew > 39){
-                numberNew -= 40;
-            }
-            int figureColor = figures[figureNumber].color;
+    private boolean beatPossible(int figureNumber) {
+	int figureToBeMoved = figures[figureNumber];
 
-            if (numberOld < figureColor * 10 && cache >= figureColor * 10){
-                return false;
-            }
-            if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
-                return false;
-            }
+	if (!figureToBeMoved.isOnField()) {
+	    return false;
+	}
+	
+	int figureColor = figureToBeMoved.color;
+	int oldField = figureToBeMoved.field;
+	int newField = oldField + randomNumber;
 
-            //real check, if a figure of another color is standing on the field
-            if (figureOnField(numberNew) == 99){
-                return false;
-            } else if (figures[figureOnField(numberNew)].color != figureColor) {
-                return true;
-            }
-        }
-        return false;
+	if (newField > 39) {
+	    newField -= 40;
+	}
+
+	if ((oldField < figureColor * 10 && figureColor * 10 <= newField)
+	    || (figureColor == 0 && 34 < oldField && 0 <= newField)) {
+	    return false;
+	}
+
+	if (figureOnField(newField) == 99) {
+	    return false;
+	}
+
+	boolean beatableFigureIsOwnedByOtherPlayer =
+	    figures[figureOnField(newField)].color != figureColor;
+
+	if (beatableFigureIsOwnedByOtherPlayer) {
+	    return true;
+	}
     }
 
     //move the given figure to the base
