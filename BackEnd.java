@@ -438,8 +438,8 @@ public class BackEnd {
     }
 
     //check which figure is on the normal field
-    public int figureOnField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
+    public int figureOnField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
             if (figures[i].field == fieldNumber && figures[i].isOnField()) {
                 return i;
             }
@@ -448,31 +448,30 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    public int figureOnHouseField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInHouse()){
-                if (figures[i].field == fieldNumber){
-                    return i;
-                }
+    public int figureOnHouseField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
+            if (figures[i].field == fieldNumber && figures[i].isInHouse()) {
+		return i;
             }
         }
         return 99;
     }
 
-    public int figureOnBaseField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInBase()) {
-                if (figures[i].field == fieldNumber){
-                    return i;
-                }
+    public int figureOnBaseField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
+            if (figures[i].field == fieldNumber && figures[i].isInBase()) {
+		return i;
             }
         }
         return 99;
     }
 
     //check if base is empty (argument between 0 & 3)
-    private boolean isBaseEmpty(int playerNumber){
-        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+    private boolean isBaseEmpty(int playerNumber) {
+	int firstOwnedFigure = playerNumber * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (figures[i].isInBase()) {
 		return false;
             }
@@ -481,8 +480,11 @@ public class BackEnd {
     }
     
     //check if all figures are in the base
-    private boolean isBaseFull(int playerNumber){
-        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+    private boolean isBaseFull(int playerNumber) {
+	int firstOwnedFigure = playerNumber * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for(int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (!figures[i].isInBase()) {
 		return false;
             }
