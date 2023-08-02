@@ -493,26 +493,21 @@ public class BackEnd {
     }
 
     //check if given player is allowed to roll the dice three times
-    private boolean threeTimesAllowed(int playerNumber){
-        if (isBaseFull(playerNumber)){
-            return true;
-        }
-        int finished = 0;
-        int inBase = 0;
-        //count figures in base
-        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isInBase()){
-                inBase++;
-            }
-        }
-        //count figures finished
-        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isFinished()){
-                finished++;
-            }
-        }
-        int cache = inBase + finished;
-        return cache == 4;
+    private boolean threeTimesAllowed(int playerNumber) {
+	int numberOfFiguresInBase = 0;
+	int numberOfFinishedFigures = 0;
+	
+	int firstOwnedFigure = playerNumber * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	    if (figures[i].isInBase()) {
+		numberOfFiguresInBase++;
+	    } else if (figures[i].isFinished()) {
+		numberOfFinishedFigures++;
+	    }
+	}
+	return 4 == numberOfFiguresInBase + numberOfFinishedFigures;
     }
 
     //move a figure out of base
