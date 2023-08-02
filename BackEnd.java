@@ -532,7 +532,6 @@ public class BackEnd {
     //next player
     private void nextMove() {
 	if (randomNumber != 6) {
-	    
 	    activePlayer = (++activePlayer) % 4;
 	}
 	int playerState = players[activePlayer].getPlayerState();
