@@ -313,27 +313,31 @@ public class BackEnd {
 
     //move figure in the house by the given value
     private void moveInHouse(int figureNumber){
-        //if-loop preventing false moves by mistake
-        if (figures[figureNumber].isInHouse()){
-            //store the figure-field and the figure-color as local variable
-            int figureField = figures[figureNumber].field;
-            int figureColor = figures[figureNumber].color;
-            //be safe that the move doesn't go over the available fields in the house
-            if (figureField + randomNumber < figureColor * 4 + 4){
-                //be safe that the figure doesn't jump over other figures
-                boolean movePossible = true;
-                for (int i = figureField; i < 4; i++){
-                    if (figureOnField(i) != 99){
-                        movePossible = false;
-                        break;
-                    }
-                }
-                //perform the move
-                if (movePossible){
-                    figures[figureNumber].field = figureField + randomNumber;
-                }
-            }
-        }
+        Figure figureToBeMoved = figures[figureNumber];
+
+	if (!figureToBeMoved.isInHouse()) {
+	    return;
+	}
+
+	int newField = figureToBeMoved.field + randomNumber;
+	int maxField = (figureToBeMoved.color * 4) + 4;
+
+	if (maxField < newField) {
+	    // Move would exceed the number of available fields in the
+	    // game.
+	    return;
+	}
+
+	for (int i = figureToBeMoved.field; i < 4; i++){
+	    if (figureOnField(i) != 99){
+		// Figure would have to jump over other figures in
+		// the house, which is not allowed.
+		return;
+	    }
+	}
+
+	// Finally we can move the figure to its new position.
+	figureToBeMoved.field += randomNumber;
     }
 
     //check if a beat is possible
