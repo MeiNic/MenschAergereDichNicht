@@ -59,7 +59,7 @@ public class BackEnd {
     public void playerMove() {
 	Dice dice = new LaPlaceDice();
 	
-	int allowedTries = threeTimesAllowed(activePlayer) ? 3 : 1;
+	int allowedTries = getNumberOfAllowedTries();
 	int tries = 0;
 	
 	do {
@@ -147,7 +147,7 @@ public class BackEnd {
     private void botMove(){
 	Dice dice = new LoadedDice();
 
-	int allowedTries = threeTimesAllowed(activePlayer) ? 3 : 1;
+	int allowedTries = getNumberOfAllowedTries();
 	int tries = 0;
 
 	int firstOwnedFigure = activePlayer * 4;
@@ -492,12 +492,11 @@ public class BackEnd {
         return true;
     }
 
-    //check if given player is allowed to roll the dice three times
-    private boolean threeTimesAllowed(int playerNumber) {
+    private int getNumberOfAllowedTries() {
 	int numberOfFiguresInBase = 0;
 	int numberOfFinishedFigures = 0;
 	
-	int firstOwnedFigure = playerNumber * 4;
+	int firstOwnedFigure = activePlayer * 4;
 	int lastOwnedFigure = firstOwnedFigure + 4;
 	
 	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
@@ -507,7 +506,11 @@ public class BackEnd {
 		numberOfFinishedFigures++;
 	    }
 	}
-	return 4 == numberOfFiguresInBase + numberOfFinishedFigures;
+	if (4 == numberOfFiguresInBase + numberOfFinishedFigures) {
+	    return 3;
+	} else {
+	    return 1;
+	}
     }
 
     //move a figure out of base
