@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class BackEnd {
     enum PlayerState {
         IS_PLAYER,
@@ -411,11 +412,12 @@ public class BackEnd {
     private void setFinishedFigures() {
         for (int i = figures.length - 1; 0 <= i; i--) {
             int figureNumber = figureOnHouseField(i);
-	    Figure currentFigure = figures[figureNumber];
 
 	    if (figureNumber == 99) {
 		continue;
 	    }
+
+	    Figure currentFigure = figures[figureNumber];
 
 	    // If figure is on the last field in the house, this one
 	    // is definitely finished and does not have to be moved
@@ -532,7 +534,6 @@ public class BackEnd {
 	if (randomNumber != 6) {
 	    activePlayer = (activePlayer++) % 4;
 	}
-
 	int playerState = players[activePlayer].getPlayerState();
 
 	if (playerState == 1) {
