@@ -207,13 +207,14 @@ public class BackEnd {
     }
 
     private void displayWinWindowIfNecessary() {
-	checkFiguresIfFinished();
+	setFinishedFigures();
 
-	if (finished()) {
-	    String name_of_winner = players[whoFinished()].name;
-	    winner = new WinWindow(name_of_winner);
-	    gui.setVisible(false);
+	String nameOfWinner = getWinningPlayer();
+	if (nameOfWinner == null) {
+	    return;
 	}
+	winner = new WinWindow(nameOfWinner);
+	gui.setVisible(false);
     }
 
     //move the given figure by the given number
@@ -375,8 +376,10 @@ public class BackEnd {
 
     //move the given figure to the base
     public void moveToBase(int figureNumber){
-        figures[figureNumber].setInBase();
-        figures[figureNumber].field = figureNumber;
+	int figureToBeMoved = figures[figureNumber];
+
+        figureToBeMoved.setInBase();
+        figureToBeMoved.field = figureNumber;
     }
 
     //return to which player the given figure belongs to
@@ -392,45 +395,43 @@ public class BackEnd {
         }
     }
 
-    //check if a player has won (return true/false)
-    private boolean finished() {
-        for (int i = 0; i < 4; i++) {
-            if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     //check which player has won
-    private int whoFinished(){
-        if (figures[0].isFinished() && figures[1].isFinished()&& figures[2].isFinished() && figures[3].isFinished()){
-            return 0;            
-        } else if (figures[4].isFinished() && figures[5].isFinished() && figures[6].isFinished() && figures[7].isFinished()) {
-            return 1;
-        } else if (figures[8].isFinished() && figures[9].isFinished()  && figures[10].isFinished() && figures[11].isFinished()) {
-            return 2;
-        } else {
-            return 3;
-        }
+    private String getWinningPlayer(){
+	for (int i = 0; i < 16; i += 4) {
+	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
+		return players[i / 4].name;
+	    }
+	}
+	return null;
     }
 
     //check all figures if they are finished
-    private void checkFiguresIfFinished() {
-        for (int i = figures.length - 1; i >= 0; i--) {
-            int cache = figureOnHouseField(i);
-            if (cache != 99) {
-                if (i == 15 || i == 11 || i == 7 || i == 3) {
-                    figures[cache].setFinished();
-                } else {
-                    int figureDeeper = figureOnHouseField(i + 1);
-                    if (figureDeeper != 99) {
-                        if (figures[figureDeeper].isFinished()) {
-                            figures[cache].setFinished();
-                        }
-                    }
-                }
-            }
+    private void setFinishedFigures() {
+        for (int i = figures.length - 1; 0 <= i; i--) {
+            int figureNumber = figureOnHouseField(i);
+	    Figure currentFigure = figures[figureNumber];
+
+	    if (figureNumber == 99) {
+		continue;
+	    }
+
+	    // If figure is on the last field in the house, this one
+	    // is definitely finished and does not have to be moved
+	    // any further.
+	    if (i == 15 || i == 11 || i == 7 || i == 3) {
+		currentFigure.setFinished();
+		continue;
+	    }
+
+	    int nextFigureInHouse = figureOnHouseField(i + 1);
+
+	    if (nextFigureInHouse == 99) {
+		continue;
+	    }
+
+	    if (nextFigureInHouse.isFinished()) {
+		currentFigure.setFinished();
+	    }
         }
     }
 
