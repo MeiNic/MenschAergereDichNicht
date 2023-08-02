@@ -343,7 +343,7 @@ public class BackEnd {
 
     //check if a beat is possible
     private boolean beatPossible(int figureNumber) {
-	int figureToBeMoved = figures[figureNumber];
+	Figure figureToBeMoved = figures[figureNumber];
 
 	if (!figureToBeMoved.isOnField()) {
 	    return false;
@@ -372,11 +372,13 @@ public class BackEnd {
 	if (beatableFigureIsOwnedByOtherPlayer) {
 	    return true;
 	}
+	
+	return false;
     }
 
     //move the given figure to the base
     public void moveToBase(int figureNumber){
-	int figureToBeMoved = figures[figureNumber];
+	Figure figureToBeMoved = figures[figureNumber];
 
         figureToBeMoved.setInBase();
         figureToBeMoved.field = figureNumber;
@@ -423,12 +425,12 @@ public class BackEnd {
 		continue;
 	    }
 
-	    int nextFigureInHouse = figureOnHouseField(i + 1);
-
-	    if (nextFigureInHouse == 99) {
+	    int nextFigureNumber = figureOnHouseField(i + 1);
+	    if (nextFigureNumber == 99) {
 		continue;
 	    }
-
+	    
+	    Figure nextFigureInHouse = figures[nextFigureNumber];
 	    if (nextFigureInHouse.isFinished()) {
 		currentFigure.setFinished();
 	    }
