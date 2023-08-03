@@ -255,6 +255,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         finalMovement.setText(currentPlayer + message + movedFields);
         finalMovement.setBounds(970, 120,450, 32);
         remove(rollDice);
+        remove(result);
         add(finalMovement);
         add(nextPlayer);
         repaint();

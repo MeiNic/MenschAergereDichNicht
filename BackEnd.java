@@ -167,6 +167,8 @@ public class BackEnd {
         
         gui.displayResult(randomNumber);
 
+		int movedFieldsNew = movedFields + randomNumber;
+
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
