@@ -35,6 +35,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JLabel result2;
     JButton nextPlayer;
     JLabel finalMovement;
+    JLabel mistake;
+    JButton understood;
 
     //variable for the backend
     BackEnd backend;
@@ -74,6 +76,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result2 = new JLabel();
         nextPlayer = new JButton();
         finalMovement = new JLabel();
+        mistake = new JLabel();
+        understood = new JButton();
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
@@ -93,6 +97,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             remove(nextPlayer);
             remove(result2);
             remove(finalMovement);
+
+            //trigger new move in backend
+            backend.nextMove();
+        } else if(e.getSource() == understood){
+            remove(understood);
+            remove(mistake);
 
             //trigger new move in backend
             backend.nextMove();
@@ -220,8 +230,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         nextPlayer.setText("next Player");
         nextPlayer.setBounds(975, 150, 110, 32);
         nextPlayer.addActionListener(this);
-        finalMovement.setText(currentPlayer + "has moved his figure by " /*+ number of fields he moved*/);
-        finalMovement.setBounds(970, 120,450, 32);
     }
 
     //setting the values for the figureChooserPrompt
@@ -235,6 +243,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     //removing the figureChooserPrompt from the GameBoardGui
     public void removePrompt(){
         remove(figureChooserPrompt);
+    }
+
+    public void setMistakeMessage(){
+        mistake.setText("It was possible to kick another person for this figure, as penalty your figure got moved back to your base.");
+        mistake.setBounds(935, 120, 550, 32);
+        understood.setText("OK");
+        understood.setBounds(970, 165, 80, 32);
+        understood.addActionListener(this);
+        remove(rollDice);
+        remove(result);
+        remove(finalMovement);
+        add(mistake);
+        add(understood);
     }
 
     public void setBotAdvice(){
