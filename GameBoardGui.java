@@ -89,7 +89,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
             //trigger new move in the backend
             backend.playerMove();
-        }else if(e.getSource() == rollDice){
+        }else if(e.getSource() == nextPlayer){
             remove(nextPlayer);
             remove(result2);
 
@@ -218,6 +218,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result2.setBounds(960, 120, 450, 32);
         nextPlayer.setText("next Player");
         nextPlayer.setBounds(975, 150, 110, 32);
+        nextPlayer.addActionListener(this);
+        finalMovement.setText(currentPlayer + "has moved his figure by " /*+ number of fields he moved*/);
+        finalMovement.setBounds(970, 120,450, 32);
     }
 
     //setting the values for the figureChooserPrompt
@@ -243,6 +246,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void notSix(){
         remove(rollDice);
         add(result2);
+        add(nextPlayer);
+        repaint();
+    }
+
+    public void setFinalMovement(String currentPlayer, String message,  int movedFields){
+        finalMovement.setText(currentPlayer + message + movedFields);
+        finalMovement.setBounds(970, 120,450, 32);
+        remove(rollDice);
+        add(finalMovement);
         add(nextPlayer);
         repaint();
     }
