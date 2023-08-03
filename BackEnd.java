@@ -60,20 +60,20 @@ public class BackEnd {
 
     //progress a dice input
     public void playerMove() {
-	Dice dice = new LaPlaceDice();
+		Dice dice = new LaPlaceDice();
 	
-	int allowedTries = getNumberOfAllowedTries();
-	int tries = 0;
+		int allowedTries = getNumberOfAllowedTries();
+		int tries = 0;
 	
-	do {
-	    randomNumber = dice.roll();
-	    tries++;
-	} while (tries < allowedTries && randomNumber != 6);
+		do {
+	    	randomNumber = dice.roll();
+	    	tries++;
+		} while (tries < allowedTries && randomNumber != 6);
 	
-	if (randomNumber != 6 && allowedTries == 3) {
-	    gui.notSix();
-	    return;
-	}
+		if (randomNumber != 6 && allowedTries == 3) {
+	    	gui.notSix();
+	    	return;
+		}
 
         gui.displayResult(randomNumber);
 	
@@ -113,12 +113,14 @@ public class BackEnd {
 	
         for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (beatPossible(i)) {
-                figures[i].enablePlacement();
+                System.out.println("statement here");
+				figures[i].enablePlacement();
                 beatsPossible = true;
             }
         }
 
 	if (beatsPossible) {
+		System.out.println("mistakeMessage here");
 	    // Only figures able to beat another figure should be moved now.
 	    return;
 	}
@@ -139,31 +141,31 @@ public class BackEnd {
         gui.removePrompt();
         gui.replaceFigures();
 
-	displayWinWindowIfNecessary();
+		displayWinWindowIfNecessary();
 	
-        //trigger new move in fontEnd
-        nextMove();
-    }
+        	//trigger new move in fontEnd
+        	nextMove();
+    	}
 
-    //bot-move on the "normal" fields
-    private void botMove(){
-	Dice dice = new LoadedDice();
+    	//bot-move on the "normal" fields
+    	private void botMove(){
+		Dice dice = new LoadedDice();
 
-	int allowedTries = getNumberOfAllowedTries();
-	int tries = 0;
+		int allowedTries = getNumberOfAllowedTries();
+		int tries = 0;
 
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
+		int firstOwnedFigure = activePlayer * 4;
+		int lastOwnedFigure = firstOwnedFigure + 4;
 
-	do {
-	    randomNumber = dice.roll();
-	    tries++;
-	} while (tries < allowedTries && randomNumber != 6);
+		do {
+	    	randomNumber = dice.roll();
+	    	tries++;
+		} while (tries < allowedTries && randomNumber != 6);
 
-	if (randomNumber != 6 && allowedTries == 3) {
-		gui.setFinalMovement(players[activePlayer].name(), " didn't get a 6, he got a ", randomNumber);
-	    return;
-	}
+		if (randomNumber != 6 && allowedTries == 3) {
+			gui.setFinalMovement(players[activePlayer].name(), " didn't get a 6, he got a ", randomNumber);
+	    	return;
+		}
         
         gui.displayResult(randomNumber);
 
@@ -210,7 +212,7 @@ public class BackEnd {
         gui.replaceFigures();
         displayWinWindowIfNecessary();
 		if(randomNumber != 6){
-			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", movedFields);
+			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", movedFieldsNew);
 		}else{
 			nextMove();
 		}
@@ -271,8 +273,7 @@ public class BackEnd {
 		}
 
 		if (!goToHouse) {
-	    	//move the figure, and move the figure before on the field
-	    	//to the base
+	    	//move the figure, and move the figure to the base if it was kicked
 	    	if (figures[figureOnField(numberNew)].color != figureColor){
 				moveToBase(figureOnField(numberNew));
 	        	figureToBeMoved.field = numberNew;

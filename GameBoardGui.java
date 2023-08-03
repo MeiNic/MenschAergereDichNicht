@@ -125,6 +125,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                             backend.moveFigure(cache);
                         }else {
                             backend.moveToBase(cache);
+                            setMistakeMessage();
                         }
                         backend.performUserChoice();
                         return;
