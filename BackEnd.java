@@ -23,6 +23,7 @@ public class BackEnd {
     GameBoardGui gui;
     int randomNumber;
     WinWindow winner;
+	int movedFields;
 
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
@@ -38,6 +39,7 @@ public class BackEnd {
         activePlayer = 0;
         randomNumber = 0;
         players = new Player[4];
+		movedFields = 0;
 
         //progress input from landingpage
         startpage = landingpage;
@@ -159,8 +161,6 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 
 	if (randomNumber != 6 && allowedTries == 3) {
-		String message = " didn't get a six. He got a ";
-	    gui.setFinalMovement(players[activePlayer].name(), message, randomNumber);
 	    return;
 	}
         
@@ -176,6 +176,7 @@ public class BackEnd {
 
         if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
             moveFigure(figureOnStartfield);
+
         } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
 	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
                 if (figures[i].isInBase()){
@@ -187,6 +188,7 @@ public class BackEnd {
             boolean beatsPossible = false;
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                 if (beatPossible(i)) {
+
                     moveFigure(i);
                     beatsPossible = true;
                     break;
@@ -204,7 +206,7 @@ public class BackEnd {
         }
         gui.replaceFigures();
         displayWinWindowIfNecessary();
-        nextMove();
+        gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", movedFields);
     }
 
     private void displayWinWindowIfNecessary() {
@@ -236,7 +238,8 @@ public class BackEnd {
 		//store the old and new field-number in local variables
 		int numberOld = figureToBeMoved.field;
 		int numberNew = numberOld + randomNumber;
-	
+		movedFields = + randomNumber;
+
 		if (numberNew > 39){
 	    	numberNew -= 40;
 		}
@@ -244,7 +247,6 @@ public class BackEnd {
 		// Figure is moving in their house.
 		if (figureToBeMoved.isInHouse()) {
 	    	moveInHouse(figureNumber);
-			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", randomNumber);
 	    	return;
 		}
 
@@ -258,7 +260,6 @@ public class BackEnd {
 		//move the figure, if the new field is free
 		if (!goToHouse && figureOnField(numberNew) == 99){
 	    	figureToBeMoved.field = numberNew;
-			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", randomNumber);
 	    	return;
 		}
 
@@ -266,15 +267,13 @@ public class BackEnd {
 	    	//move the figure, and move the figure before on the field
 	    	//to the base
 	    	if (figures[figureOnField(numberNew)].color != figureColor){
-			moveToBase(figureOnField(numberNew));
+				moveToBase(figureOnField(numberNew));
 	        	figureToBeMoved.field = numberNew;
-				gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", randomNumber);
 	    	} else {
 			//perform the moveFigure-method with the figure,
 			//standing on the field the figure at the moment wants
 			//to move, and the same stepLength
 			moveFigure(figureOnField(numberNew));
-				gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", randomNumber);
 	    	}
 	    	return;
 		}
@@ -295,7 +294,7 @@ public class BackEnd {
 		while (toMove > 0 && figurePosition <= 9){
 	    	figurePosition++;
 	    	toMove--;
-			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", randomNumber);
+
 		}
 
 		// Don't move figure if entering the house is not possible.
@@ -538,7 +537,7 @@ public class BackEnd {
 
     //next player
     public void nextMove() {
-		
+		movedFields = 0;
 		if (randomNumber != 6) {
 	    	activePlayer = (++activePlayer) % 4;
 		}

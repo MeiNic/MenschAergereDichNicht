@@ -92,6 +92,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }else if(e.getSource() == nextPlayer){
             remove(nextPlayer);
             remove(result2);
+            remove(finalMovement);
 
             //trigger new move in backend
             backend.nextMove();
