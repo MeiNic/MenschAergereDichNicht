@@ -247,9 +247,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void setMistakeMessage(){
         mistake.setText("It was possible to kick another person for this figure, as penalty your figure got moved back to your base.");
-        mistake.setBounds(935, 120, 550, 32);
+        mistake.setBounds(935, 70, 550, 32);
         understood.setText("OK");
-        understood.setBounds(970, 165, 80, 32);
+        understood.setBounds(970, 110, 80, 32);
         understood.addActionListener(this);
         remove(rollDice);
         remove(result);
