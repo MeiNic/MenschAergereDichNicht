@@ -194,7 +194,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
      */
     private void setJComponentValues(String currentPlayer){
         userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
-        userAdvice.setBounds(970, 22, 450, 62);
+        userAdvice.setBounds(970, 22, 550, 62);
         add(userAdvice);
         rollDice.setText("roll the dice");
         rollDice.setBounds(980, 90, 120, 32);
