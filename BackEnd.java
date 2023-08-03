@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class BackEnd {
     enum PlayerState {
         IS_PLAYER,
@@ -58,47 +59,45 @@ public class BackEnd {
     //progress a dice input
     public void playerMove() {
 	Dice dice = new LaPlaceDice();
-	randomNumber = dice.roll();
-        //if user is allowed to roll the dice three time operate this option
-        int counter = 0;
-        if (threeTimesAllowed(activePlayer)){
-            while (counter < 3 && randomNumber != 6){
-		randomNumber = dice.roll();
-                counter++;
-            }
-            if (randomNumber != 6){
-                nextMove();
-                return;
-            }
-        }
+	
+	int allowedTries = getNumberOfAllowedTries();
+	int tries = 0;
+	
+	do {
+	    randomNumber = dice.roll();
+	    tries++;
+	} while (tries < allowedTries && randomNumber != 6);
+	
+	if (randomNumber != 6 && allowedTries == 3) {
+	    nextMove();
+	    return;
+	}
+        
         gui.displayResult(randomNumber);
-
+	
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
-        if (figureOnStartfield != 99){
-            if (figures[figureOnStartfield].color == activePlayer) {
-                //own figure is on the startfield
-                ownFigureOnStartfield = true;
-
-            }
+	
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer){
+	    ownFigureOnStartfield = true;
         }
 
-        //check if an own figure is on the startfield
-        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield && !isBaseEmpty(activePlayer)){
             figures[figureOnStartfield].enablePlacement();
-        }
-
-        //if base not empty move a player out of base
-        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++){
-                if (figures[i].isInBase()){
-                    figures[i].enablePlacement();
-                }
-            }
-        } else {
-            playerMoveOnField();
-        }
+        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+	    int firstOwnedFigure = activePlayer * 4;
+	    int lastOwnedFigure = firstOwnedFigure + 4;
+	    
+	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+		if (figures[i].isInBase()) {
+		    figures[i].enablePlacement();
+		}
+	    }
+	} else {
+	    playerMoveOnField();
+	}
+	
         gui.setPromptValues();
     }
 
@@ -106,20 +105,28 @@ public class BackEnd {
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
         boolean beatsPossible = false;
-        //add chooser for all figures, which can beat another figure
-        for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+	
+	int firstOwnedFigure = activePlayer * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (beatPossible(i)) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
             }
         }
-        //make user figure chooser for all figures on the gamefield or in the house
-        if (!beatsPossible){
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
-                if (figures[i].isMovable()) {
-                    figures[i].enablePlacement();
-                }
-            }
+
+	if (beatsPossible) {
+	    // Only figures able to beat another figure should be
+	    // moved now.
+	    return;
+	}
+
+	// Any movable figure should be moved now.
+	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	    if (figures[i].isMovable()) {
+		figures[i].enablePlacement();
+	    }
         }
     }
 
@@ -130,12 +137,9 @@ public class BackEnd {
         }
         gui.removePrompt();
         gui.replaceFigures();
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()){
-            winner = new WinWindow(players[whoFinished()].name);
-            gui.setVisible(false);
-        }
+
+	displayWinWindowIfNecessary();
+	
         //trigger new move in fontEnd
         nextMove();
     }
@@ -143,39 +147,37 @@ public class BackEnd {
     //bot-move on the "normal" fields
     private void botMove(){
 	Dice dice = new LoadedDice();
-	randomNumber = dice.roll();
-        //if user is allowed to roll the dice three time operate this option
-        int counter = 0;
-        if (threeTimesAllowed(activePlayer)){
-            while (counter < 3 && randomNumber != 6){
-		randomNumber = dice.roll();
-                counter++;
-            }
-            if (randomNumber != 6){
-                nextMove();
-                return;
-            }
-        }
+
+	int allowedTries = getNumberOfAllowedTries();
+	int tries = 0;
+
+	int firstOwnedFigure = activePlayer * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+
+	do {
+	    randomNumber = dice.roll();
+	    tries++;
+	} while (tries < allowedTries && randomNumber != 6);
+
+	if (randomNumber != 6 && allowedTries == 3) {
+	    nextMove();
+	    return;
+	}
+        
         gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
-        if (figureOnStartfield != 99){
-            if (figures[figureOnStartfield].color == activePlayer) {
-                //own figure is on the startfield
-                ownFigureOnStartfield = true;
-            }
+	
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer) {
+	    ownFigureOnStartfield = true;
         }
 
-        //check if an own figure is on the startfield
         if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
             moveFigure(figureOnStartfield);
-        }
-
-        //if base not empty move a player out of base
-        else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-            for (int i = activePlayer * 4; i < 16; i++){
+        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
                 if (figures[i].isInBase()){
                     moveFigure(i);
                     break;
@@ -183,7 +185,6 @@ public class BackEnd {
             }
         } else {
             boolean beatsPossible = false;
-            //add the figures to the chooser
             for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
                 if (beatPossible(i)) {
                     moveFigure(i);
@@ -193,7 +194,7 @@ public class BackEnd {
             }
             //make user figure chooser for all figures of the player
             if (!beatsPossible){
-                for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+                for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
                     if (figures[i].isMovable()) {
                         moveFigure(i);
                         break;
@@ -202,163 +203,186 @@ public class BackEnd {
             }
         }
         gui.replaceFigures();
-        //check if a player has won yet
-        checkFiguresIfFinished();
-        if(finished()) {
-            winner = new WinWindow(players[whoFinished()].name);
-            gui.setVisible(false);
-        }
+        displayWinWindowIfNecessary();
         nextMove();
+    }
+
+    private void displayWinWindowIfNecessary() {
+	setFinishedFigures();
+
+	String nameOfWinner = getWinningPlayer();
+	if (nameOfWinner == null) {
+	    return;
+	}
+	winner = new WinWindow(nameOfWinner);
+	gui.setVisible(false);
     }
 
     //move the given figure by the given number
     public void moveFigure(int figureNumber) {
-        //store the color of the figure in a local variable
-        int figureColor = figures[figureNumber].color;
+	Figure figureToBeMoved = figures[figureNumber];
+        int figureColor = figureToBeMoved.color;
 
-        //check if the figure isn't finished and not in the base
-        if(figures[figureNumber].isMovable()) {
-            //store the old and new field-number in local variables
-            int numberOld = figures[figureNumber].field;
-            int cache = numberOld + randomNumber;
-            int numberNew = cache;
-            if (numberNew > 39){
-                numberNew -= 40;
-            }
-
-            //check if the figure is on the gamefield
-            if (figures[figureNumber].isOnField()) {
-                //check if a figure would come over its own startfield
-                boolean goToHouse = false;
-                if (numberOld < figureColor * 10 && cache >= figureColor * 10){
-                    goToHouse = true;
-                }
-                if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
-                    goToHouse = true;
-                }
-
-                //if the figure comes over its startfield -> move the figure in the base
-                if (goToHouse) {
-                    int toMove = randomNumber;
-                    int figurePosition = figures[figureNumber].field;
-                    //unifying the values for cleaner code
-                    if (figureColor == 0){
-                        figurePosition -= 30;
-                    } else if (figureColor == 2) {
-                        figurePosition -= 10;
-                    } else if (figureColor == 3) {
-                        figurePosition -= 20;
-                    }
-                    //move figure in front of the base
-                    while (toMove > 0 && figurePosition <= 9){
-                        figurePosition++;
-                        toMove--;
-                    }
-                    //check if a move into the base is possible
-                    boolean movePossible = true;
-                    if (toMove > 0 && toMove < 5){
-                        for (int i = 0; i <= toMove; i++){
-                            if (figureOnField(i + figureColor*4) != 99){
-                                movePossible = false;
-                                break;
-                            }
-                        }
-
-                    }
-                    if (movePossible){
-                        toMove--;
-                        figures[figureNumber].setInHouse();
-                        figures[figureNumber].field = figureColor*4;
-                        if (toMove > 0){
-                            randomNumber = toMove;
-                            moveInHouse(figureNumber);
-                        }
-                    }
-                }
-                //move the figure, if the new field is free
-                else if (figureOnField(numberNew) == 99){
-                    figures[figureNumber].field = numberNew;
-                }
-
-                else {
-                    //move the figure, and move the figure before on the field to the base
-                    if (figures[figureOnField(numberNew)].color != figureColor){
-                        moveToBase(figureOnField(numberNew));
-                        figures[figureNumber].field = numberNew;
-                    } else {
-                        //perform the moveFigure-method with the figure, standing on the field th figure at the moment wants to move, and the same stepLength
-                        moveFigure(figureOnField(numberNew));
-                    }
-                }
-            }
-            else {
-                moveInHouse(figureNumber);
-            }
-        }
-        //if figure is in the base and the step-length is 6 move figure out of base
-        else if (figures[figureNumber].isInBase() && randomNumber == 6) {
+        if (figureToBeMoved.isInBase() && randomNumber == 6) {
             moveOutOfBase(figureNumber);
+	    return;
         }
+
+	// Figure is not movable.
+	if (!figureToBeMoved.isMovable()) {
+	    return;
+	}
+
+	//store the old and new field-number in local variables
+	int numberOld = figureToBeMoved.field;
+	int numberNew = numberOld + randomNumber;
+	
+	if (numberNew > 39){
+	    numberNew -= 40;
+	}
+
+	// Figure is moving in their house.
+	if (figureToBeMoved.isInHouse()) {
+	    moveInHouse(figureNumber);
+	    return;
+	}
+
+	// Figure is about to enter their house.
+	boolean goToHouse = false;
+	if ((numberOld < figureColor * 10 && numberNew >= figureColor * 10)
+	    || (figureColor == 0 && numberOld > 34 && numberNew >= 0)){
+	    goToHouse = true;
+	}
+	
+	//move the figure, if the new field is free
+	if (!goToHouse && figureOnField(numberNew) == 99){
+	    figureToBeMoved.field = numberNew;
+	    return;
+	}
+
+	if (!goToHouse) {
+	    //move the figure, and move the figure before on the field
+	    //to the base
+	    if (figures[figureOnField(numberNew)].color != figureColor){
+		moveToBase(figureOnField(numberNew));
+	        figureToBeMoved.field = numberNew;
+	    } else {
+		//perform the moveFigure-method with the figure,
+		//standing on the field th figure at the moment wants
+		//to move, and the same stepLength
+		moveFigure(figureOnField(numberNew));
+	    }
+	    return;
+	}
+
+	int toMove = randomNumber;
+	int figurePosition = figureToBeMoved.field;
+	
+	//unifying the values for cleaner code
+	if (figureColor == 0){
+	    figurePosition -= 30;
+	} else if (figureColor == 2) {
+	    figurePosition -= 10;
+	} else if (figureColor == 3) {
+	    figurePosition -= 20;
+	}
+	
+	//move figure in front of the base
+	while (toMove > 0 && figurePosition <= 9){
+	    figurePosition++;
+	    toMove--;
+	}
+
+	// Don't move figure if entering the house is not possible.
+	if (0 < toMove && toMove < 5) {
+	    for (int i = 0; i <= toMove; i++) {
+		if (figureOnField(i + (figureColor * 4)) != 99) {
+		    return;
+		}
+	    }
+	}
+
+	// Move figure into house.
+	toMove--;
+        figureToBeMoved.setInHouse();
+        figureToBeMoved.field = figureColor * 4;
+	
+	if (toMove > 0){
+	    randomNumber = toMove;
+	    moveInHouse(figureNumber);
+	}
     }
 
     //move figure in the house by the given value
     private void moveInHouse(int figureNumber){
-        //if-loop preventing false moves by mistake
-        if (figures[figureNumber].isInHouse()){
-            //store the figure-field and the figure-color as local variable
-            int figureField = figures[figureNumber].field;
-            int figureColor = figures[figureNumber].color;
-            //be safe that the move doesn't go over the available fields in the house
-            if (figureField + randomNumber < figureColor * 4 + 4){
-                //be safe that the figure doesn't jump over other figures
-                boolean movePossible = true;
-                for (int i = figureField; i < 4; i++){
-                    if (figureOnField(i) != 99){
-                        movePossible = false;
-                        break;
-                    }
-                }
-                //perform the move
-                if (movePossible){
-                    figures[figureNumber].field = figureField + randomNumber;
-                }
-            }
-        }
+        Figure figureToBeMoved = figures[figureNumber];
+
+	if (!figureToBeMoved.isInHouse()) {
+	    return;
+	}
+
+	int newField = figureToBeMoved.field + randomNumber;
+	int maxField = (figureToBeMoved.color * 4) + 4;
+
+	if (maxField < newField) {
+	    // Move would exceed the number of available fields in the
+	    // game.
+	    return;
+	}
+
+	for (int i = figureToBeMoved.field; i < 4; i++){
+	    if (figureOnField(i) != 99){
+		// Figure would have to jump over other figures in
+		// the house, which is not allowed.
+		return;
+	    }
+	}
+
+	// Finally we can move the figure to its new position.
+	figureToBeMoved.field += randomNumber;
     }
 
     //check if a beat is possible
-    private boolean beatPossible(int figureNumber){
-        if (figures[figureNumber].isOnField()) {
-            //store some useful variables
-            int numberOld = figures[figureNumber].field;
-            int cache = numberOld + randomNumber;
-            int numberNew = cache;
-            if (numberNew > 39){
-                numberNew -= 40;
-            }
-            int figureColor = figures[figureNumber].color;
+    private boolean beatPossible(int figureNumber) {
+	Figure figureToBeMoved = figures[figureNumber];
 
-            if (numberOld < figureColor * 10 && cache >= figureColor * 10){
-                return false;
-            }
-            if (figureColor == 0 && numberOld > 34 && numberNew >= 0){
-                return false;
-            }
+	if (!figureToBeMoved.isOnField()) {
+	    return false;
+	}
+	
+	int figureColor = figureToBeMoved.color;
+	int oldField = figureToBeMoved.field;
+	int newField = oldField + randomNumber;
 
-            //real check, if a figure of another color is standing on the field
-            if (figureOnField(numberNew) == 99){
-                return false;
-            } else if (figures[figureOnField(numberNew)].color != figureColor) {
-                return true;
-            }
-        }
-        return false;
+	if (newField > 39) {
+	    newField -= 40;
+	}
+
+	if ((oldField < figureColor * 10 && figureColor * 10 <= newField)
+	    || (figureColor == 0 && 34 < oldField && 0 <= newField)) {
+	    return false;
+	}
+
+	if (figureOnField(newField) == 99) {
+	    return false;
+	}
+
+	boolean beatableFigureIsOwnedByOtherPlayer =
+	    figures[figureOnField(newField)].color != figureColor;
+
+	if (beatableFigureIsOwnedByOtherPlayer) {
+	    return true;
+	}
+	
+	return false;
     }
 
     //move the given figure to the base
     public void moveToBase(int figureNumber){
-        figures[figureNumber].setInBase();
-        figures[figureNumber].field = figureNumber;
+	Figure figureToBeMoved = figures[figureNumber];
+
+        figureToBeMoved.setInBase();
+        figureToBeMoved.field = figureNumber;
     }
 
     //return to which player the given figure belongs to
@@ -374,51 +398,50 @@ public class BackEnd {
         }
     }
 
-    //check if a player has won (return true/false)
-    private boolean finished() {
-        for (int i = 0; i < 4; i++) {
-            if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     //check which player has won
-    private int whoFinished(){
-        if (figures[0].isFinished() && figures[1].isFinished()&& figures[2].isFinished() && figures[3].isFinished()){
-            return 0;            
-        } else if (figures[4].isFinished() && figures[5].isFinished() && figures[6].isFinished() && figures[7].isFinished()) {
-            return 1;
-        } else if (figures[8].isFinished() && figures[9].isFinished()  && figures[10].isFinished() && figures[11].isFinished()) {
-            return 2;
-        } else {
-            return 3;
-        }
+    private String getWinningPlayer(){
+	for (int i = 0; i < 16; i += 4) {
+	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
+		return players[i / 4].name;
+	    }
+	}
+	return null;
     }
 
     //check all figures if they are finished
-    private void checkFiguresIfFinished() {
-        for (int i = figures.length - 1; i >= 0; i--) {
-            int cache = figureOnHouseField(i);
-            if (cache != 99) {
-                if (i == 15 || i == 11 || i == 7 || i == 3) {
-                    figures[cache].setFinished();
-                } else {
-                    int figureDeeper = figureOnHouseField(i + 1);
-                    if (figureDeeper != 99) {
-                        if (figures[figureDeeper].isFinished()) {
-                            figures[cache].setFinished();
-                        }
-                    }
-                }
-            }
+    private void setFinishedFigures() {
+        for (int i = figures.length - 1; 0 <= i; i--) {
+            int figureNumber = figureOnHouseField(i);
+
+	    if (figureNumber == 99) {
+		continue;
+	    }
+
+	    Figure currentFigure = figures[figureNumber];
+
+	    // If figure is on the last field in the house, this one
+	    // is definitely finished and does not have to be moved
+	    // any further.
+	    if (i == 15 || i == 11 || i == 7 || i == 3) {
+		currentFigure.setFinished();
+		continue;
+	    }
+
+	    int nextFigureNumber = figureOnHouseField(i + 1);
+	    if (nextFigureNumber == 99) {
+		continue;
+	    }
+	    
+	    Figure nextFigureInHouse = figures[nextFigureNumber];
+	    if (nextFigureInHouse.isFinished()) {
+		currentFigure.setFinished();
+	    }
         }
     }
 
     //check which figure is on the normal field
-    public int figureOnField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
+    public int figureOnField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
             if (figures[i].field == fieldNumber && figures[i].isOnField()) {
                 return i;
             }
@@ -427,31 +450,30 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    public int figureOnHouseField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInHouse()){
-                if (figures[i].field == fieldNumber){
-                    return i;
-                }
+    public int figureOnHouseField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
+            if (figures[i].field == fieldNumber && figures[i].isInHouse()) {
+		return i;
             }
         }
         return 99;
     }
 
-    public int figureOnBaseField(int fieldNumber){
-        for (int i = 0; i < figures.length; i++){
-            if (figures[i].isInBase()) {
-                if (figures[i].field == fieldNumber){
-                    return i;
-                }
+    public int figureOnBaseField(int fieldNumber) {
+        for (int i = 0; i < figures.length; i++) {
+            if (figures[i].field == fieldNumber && figures[i].isInBase()) {
+		return i;
             }
         }
         return 99;
     }
 
     //check if base is empty (argument between 0 & 3)
-    private boolean isBaseEmpty(int playerNumber){
-        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+    private boolean isBaseEmpty(int playerNumber) {
+	int firstOwnedFigure = playerNumber * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (figures[i].isInBase()) {
 		return false;
             }
@@ -460,8 +482,11 @@ public class BackEnd {
     }
     
     //check if all figures are in the base
-    private boolean isBaseFull(int playerNumber){
-        for(int i = playerNumber*4; i<playerNumber*4+4; i++){
+    private boolean isBaseFull(int playerNumber) {
+	int firstOwnedFigure = playerNumber * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+        for(int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
             if (!figures[i].isInBase()) {
 		return false;
             }
@@ -469,61 +494,62 @@ public class BackEnd {
         return true;
     }
 
-    //check if given player is allowed to roll the dice three times
-    private boolean threeTimesAllowed(int playerNumber){
-        if (isBaseFull(playerNumber)){
-            return true;
-        }
-        int finished = 0;
-        int inBase = 0;
-        //count figures in base
-        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isInBase()){
-                inBase++;
-            }
-        }
-        //count figures finished
-        for (int i = playerNumber * 4; i < playerNumber * 4 + 4; i++){
-            if (figures[i].isFinished()){
-                finished++;
-            }
-        }
-        int cache = inBase + finished;
-        return cache == 4;
+    private int getNumberOfAllowedTries() {
+	int numberOfFiguresInBase = 0;
+	int numberOfFinishedFigures = 0;
+	
+	int firstOwnedFigure = activePlayer * 4;
+	int lastOwnedFigure = firstOwnedFigure + 4;
+	
+	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	    if (figures[i].isInBase()) {
+		numberOfFiguresInBase++;
+	    } else if (figures[i].isFinished()) {
+		numberOfFinishedFigures++;
+	    }
+	}
+	if (4 == numberOfFiguresInBase + numberOfFinishedFigures) {
+	    return 3;
+	} else {
+	    return 1;
+	}
     }
 
     //move a figure out of base
-    public void moveOutOfBase(int figureNumber){
-        int figureColor = giveColor(figureNumber);
-        int figureOnFirstField = figureOnField(10 * figureColor);
-        if (figureOnFirstField != 99){
-            moveToBase(figureOnFirstField);
-        }
-        figures[figureNumber].field = 10 * figureColor;
-        figures[figureNumber].setOnField();
+    public void moveOutOfBase(int figureNumber) {
+	Figure figureToBeMoved = figures[figureNumber];
+	int firstField = 10 * figureToBeMoved.color;
+	int figureOnFirstField = figureOnField(firstField);
+
+	if (figureOnFirstField != 99) {
+	    moveToBase(figureOnFirstField);
+	}
+
+	figureToBeMoved.field = firstField;
+	figureToBeMoved.setOnField();
     }
 
     //next player
     private void nextMove() {
-        if (randomNumber != 6){
-            if (activePlayer < 3){
-                activePlayer++;
-            } else {
-                activePlayer = 0;
-            }
-        }
-        if (players[activePlayer].getPlayerState() == 1){
-            gui.setBotAdvice();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            botMove();
-        }else if (players[activePlayer].getPlayerState() == 0){
-            gui.setActivePlayer();
-        }else {
-            nextMove();
-        }
+	if (randomNumber != 6) {
+	    activePlayer = (++activePlayer) % 4;
+	}
+	int playerState = players[activePlayer].getPlayerState();
+
+	if (playerState == 1) {
+	    gui.setBotAdvice();
+
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		throw new RuntimeException(e);
+	    }
+
+	    botMove();
+	} else if (playerState == 0) {
+	    gui.setActivePlayer();
+	} else {
+	    nextMove();
+	}
     }
 }
