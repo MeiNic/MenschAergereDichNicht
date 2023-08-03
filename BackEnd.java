@@ -161,6 +161,7 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 
 	if (randomNumber != 6 && allowedTries == 3) {
+		gui.setFinalMovement(players[activePlayer].name(), " didn't get a 6, he got a ", randomNumber);
 	    return;
 	}
         
@@ -206,7 +207,11 @@ public class BackEnd {
         }
         gui.replaceFigures();
         displayWinWindowIfNecessary();
-        gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", movedFields);
+		if(randomNumber != 6){
+			gui.setFinalMovement(players[activePlayer].name(), " moved his figure by ", movedFields);
+		}else{
+			nextMove();
+		}
     }
 
     private void displayWinWindowIfNecessary() {
@@ -301,7 +306,6 @@ public class BackEnd {
 		if (0 < toMove && toMove < 5) {
 	    	for (int i = 0; i <= toMove; i++) {
 			if (figureOnField(i + (figureColor * 4)) != 99) {
-				gui.setFinalMovement(players[activePlayer].name(), " couldn't move his figure by ", randomNumber);
 		    	return;
 			}
 	    	}
@@ -315,7 +319,6 @@ public class BackEnd {
 		if (toMove > 0){
 	    	randomNumber = toMove;
 	    	moveInHouse(figureNumber);
-			gui.setFinalMovement(players[activePlayer].name(), " moved his figure into the house. He got a ", randomNumber);
 		}
     }
 
