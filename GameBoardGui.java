@@ -32,6 +32,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JButton rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
+    JLabel result2;
+    JButton nextPlayer;
+    JLabel finalMovement;
 
     //variable for the backend
     BackEnd backend;
@@ -68,6 +71,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
+        result2 = new JLabel();
+        nextPlayer = new JButton();
+        finalMovement = new JLabel();
 
         //set parameters for JComponents
         setJComponentValues(currentPlayer);
@@ -83,6 +89,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
             //trigger new move in the backend
             backend.playerMove();
+        }else if(e.getSource() == rollDice){
+            remove(nextPlayer);
+            remove(result2);
+
+            //trigger new move in backend
+            backend.nextMove();
         }
     }
 
@@ -202,6 +214,10 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(rollDice);
         result.setBounds(1150, 90, 100, 32);
         add(result);
+        result2.setText("You didn't get a 6 :(  Press this button to move on to the next player:");
+        result2.setBounds(960, 120, 450, 32);
+        nextPlayer.setText("next Player");
+        nextPlayer.setBounds(975, 150, 110, 32);
     }
 
     //setting the values for the figureChooserPrompt
@@ -221,6 +237,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         remove(rollDice);
         userAdvice.setText("Bots are moving... Please wait, the next player is on the turn in seconds");
         result.setText("");
+        repaint();
+    }
+
+    public void notSix(){
+        remove(rollDice);
+        add(result2);
+        add(nextPlayer);
         repaint();
     }
 

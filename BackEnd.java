@@ -69,7 +69,7 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 	
 	if (randomNumber != 6 && allowedTries == 3) {
-	    nextMove();
+	    gui.notSix();
 	    return;
 	}
         
@@ -530,7 +530,7 @@ public class BackEnd {
     }
 
     //next player
-    private void nextMove() {
+    public void nextMove() {
 	if (randomNumber != 6) {
 	    activePlayer = (++activePlayer) % 4;
 	}
