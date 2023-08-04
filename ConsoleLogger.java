@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 public final class ConsoleLogger implements Logger {
     private static ConsoleLogger instance;
     private static DateTimeFormatter formatter;
-    
+
     private enum Level {
 	DEBUG,
 	INFO,
@@ -25,18 +25,20 @@ public final class ConsoleLogger implements Logger {
     }
 
     public void debug(String message) {
-    	System.out.println(format(Level.DEBUG, message));
+    	System.out.println(ANSIColorCodes.BLUE.getCode()
+			   + format(Level.DEBUG, message)
+			   + ANSIColorCodes.RESET.getCode());
     };
 
     private String format(Level level, String message) {
 	String levelEnclosingStart = "[";
 	String levelEnclosingEnd = "] ";
 	String messageSeparator = ": ";
-	
+    
 	if (Level.INFO == level || Level.WARN == level) {
 	    // Because info and warn levels are one character shorter
-	    // than all other levels, we append a single space to
-	    // align all messages properly.
+	    // than all other levels, we append a single space at the
+	    // start for properly aligning all messages.
 	    levelEnclosingStart = " [";
 	}
 
@@ -45,15 +47,23 @@ public final class ConsoleLogger implements Logger {
     };
     
     public void info(String message) {
-	System.out.println(format(Level.INFO, message));
+	System.out.println(ANSIColorCodes.WHITE.getCode()
+			   + format(Level.INFO, message)
+			   + ANSIColorCodes.RESET.getCode());
     };
     public void warn(String message) {
-	System.out.println(format(Level.WARN, message));
+	System.out.println(ANSIColorCodes.YELLOW.getCode()
+			   + format(Level.WARN, message)
+			   + ANSIColorCodes.RESET.getCode());
     };
     public void error(String message) {
-    	System.out.println(format(Level.ERROR, message));
+    	System.out.println(ANSIColorCodes.PURPLE.getCode()
+			   + format(Level.ERROR, message)
+			   + ANSIColorCodes.RESET.getCode());
     };
     public void fatal(String message) {
-    	System.out.println(format(Level.FATAL, message));
+    	System.out.println(ANSIColorCodes.RED.getCode()
+			   + format(Level.FATAL, message)
+			   + ANSIColorCodes.RESET.getCode());
     };
 }
