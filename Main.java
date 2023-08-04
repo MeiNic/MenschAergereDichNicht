@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-	Logger logger = ConsoleLogger.getInstance();
+	Logger logger = LoggerFactory.getInstance();
 	logger.info("Starting game.");
 
 	Thread quittingHook = new Thread(() -> logger.info("Quitting game."));
