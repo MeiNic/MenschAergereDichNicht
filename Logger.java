@@ -1,7 +1,7 @@
 interface Logger {
-    public static void debug(String message);
-    public static void info(String message);
-    public static void warn(String message);
-    public static void error(String message);
-    public static void fatal(String message);
+    public void debug(String message);
+    public void info(String message);
+    public void warn(String message);
+    public void error(String message);
+    public void fatal(String message);
 }
