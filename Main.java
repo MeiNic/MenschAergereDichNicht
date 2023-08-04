@@ -3,20 +3,23 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
 	Logger logger = ConsoleLogger.getInstance();
-	logger.debug("Test! 1, 2, 3, Test!");
-	logger.info("Hello World!");
-	logger.warn("Not su good...");
-	logger.error("What was that?");
-	logger.fatal("Aaaaaargghhhh!");
+	logger.info("Starting game.");
+
+	Thread quittingHook = new Thread(() -> logger.info("Quitting game."));
+	Runtime.getRuntime().addShutdownHook(quittingHook);
 	
         try {
-            // Set the look and feel
+	    logger.info("Try setting look and feel of windows.");
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            new Landingpage();
-
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+   
+	    logger.info("Instantiating landingpage.");
+	    new Landingpage();
+        } catch (UnsupportedLookAndFeelException e) {
+	    logger.fatal("Unable to set the look and feel of windows.");
             e.printStackTrace();
-        
-        }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+	    logger.fatal("An unexpected error occured.");
+	    e.printStackTrace();
+	}
     }
 }
