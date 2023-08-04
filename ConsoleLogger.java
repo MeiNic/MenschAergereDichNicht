@@ -6,15 +6,15 @@ public final class ConsoleLogger implements Logger {
     private static DateTimeFormatter formatter;
     private static Level logForLevelEqualOrAbove;
 
-    private ConsoleLogger() {
+    private ConsoleLogger(Level loggingLevel) {
 	formatter = DateTimeFormatter
 	    .ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
-	logForLevelEqualOrAbove = Level.DEBUG;
+	logForLevelEqualOrAbove = loggingLevel;
     }
 
-    public static ConsoleLogger getInstance() {
+    public static ConsoleLogger getInstance(Level loggingLevel) {
 	if (instance == null) {
-	    instance = new ConsoleLogger();
+	    instance = new ConsoleLogger(loggingLevel);
 	}
 	return instance;
     }

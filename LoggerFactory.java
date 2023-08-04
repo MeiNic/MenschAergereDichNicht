@@ -1,5 +1,7 @@
 public class LoggerFactory {
-    public static Logger getInstance() {
-	return ConsoleLogger.getInstance();
+    private LoggerFactory() {};
+    
+    public static Logger getLoggerInstance() {
+	return ConsoleLogger.getInstance(Level.DEBUG);
     }
 }
