@@ -4,17 +4,12 @@ import java.time.LocalDateTime;
 public final class ConsoleLogger implements Logger {
     private static ConsoleLogger instance;
     private static DateTimeFormatter formatter;
-
-    private enum Level {
-	DEBUG,
-	INFO,
-	WARN,
-	ERROR,
-	FATAL,
-    }
+    private static Level logForLevelEqualOrAbove;
 
     private ConsoleLogger() {
-	formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+	formatter = DateTimeFormatter
+	    .ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+	logForLevelEqualOrAbove = Level.DEBUG;
     }
 
     public static ConsoleLogger getInstance() {
@@ -25,10 +20,21 @@ public final class ConsoleLogger implements Logger {
     }
 
     public void debug(String message) {
-    	System.out.println(ANSIColorCodes.BLUE.getCode()
-			   + format(Level.DEBUG, message)
-			   + ANSIColorCodes.RESET.getCode());
+	if (shouldLog(Level.DEBUG)) {
+	    System.out.println(ANSIColorCodes.BLUE.getCode()
+			       + format(Level.DEBUG, message)
+			       + ANSIColorCodes.RESET.getCode());
+	}
     };
+
+    private boolean shouldLog(Level level) {
+	// Only log messages whose level is equal or above the level
+	// specified in the constructor. This allows for example
+	// turning off all message below WARN to only print severe
+	// messages.
+	return logForLevelEqualOrAbove.ordinal() <= level.ordinal();
+    }
+	    
 
     private String format(Level level, String message) {
 	String levelEnclosingStart = "[";
@@ -42,28 +48,40 @@ public final class ConsoleLogger implements Logger {
 	    levelEnclosingStart = " [";
 	}
 
-	return levelEnclosingStart + level.toString() + levelEnclosingEnd
-	    + formatter.format(LocalDateTime.now()) + messageSeparator + message;
+	return levelEnclosingStart
+	    + level.toString()
+	    + levelEnclosingEnd
+	    + formatter.format(LocalDateTime.now())
+	    + messageSeparator
+	    + message;
     };
     
     public void info(String message) {
-	System.out.println(ANSIColorCodes.WHITE.getCode()
-			   + format(Level.INFO, message)
-			   + ANSIColorCodes.RESET.getCode());
+	if (shouldLog(Level.INFO)) {
+	    System.out.println(ANSIColorCodes.WHITE.getCode()
+			       + format(Level.INFO, message)
+			       + ANSIColorCodes.RESET.getCode());
+	}
     };
     public void warn(String message) {
-	System.out.println(ANSIColorCodes.YELLOW.getCode()
-			   + format(Level.WARN, message)
-			   + ANSIColorCodes.RESET.getCode());
+	if (shouldLog(Level.WARN)) {
+	    System.out.println(ANSIColorCodes.YELLOW.getCode()
+			       + format(Level.WARN, message)
+			       + ANSIColorCodes.RESET.getCode());
+	}
     };
     public void error(String message) {
-    	System.out.println(ANSIColorCodes.PURPLE.getCode()
-			   + format(Level.ERROR, message)
-			   + ANSIColorCodes.RESET.getCode());
+    	if (shouldLog(Level.ERROR)) {
+	    System.out.println(ANSIColorCodes.PURPLE.getCode()
+			       + format(Level.ERROR, message)
+			       + ANSIColorCodes.RESET.getCode());
+	}
     };
     public void fatal(String message) {
-    	System.out.println(ANSIColorCodes.RED.getCode()
-			   + format(Level.FATAL, message)
-			   + ANSIColorCodes.RESET.getCode());
+    	if (shouldLog(Level.FATAL)) {
+	    System.out.println(ANSIColorCodes.RED.getCode()
+			       + format(Level.FATAL, message)
+			       + ANSIColorCodes.RESET.getCode());
+	}
     };
 }
