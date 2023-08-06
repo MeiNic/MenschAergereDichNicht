@@ -193,8 +193,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
       -- DON'T use this method out of constructor - DON'T change any parameters --
      */
     private void setJComponentValues(String currentPlayer){
-        userAdvice.setText("Player " + currentPlayer + " is on the turn, click this button");
-        userAdvice.setBounds(970, 22, 370, 62);
+        userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
+        userAdvice.setBounds(970, 22, 550, 62);
         add(userAdvice);
         rollDice.setText("roll the dice");
         rollDice.setBounds(980, 90, 120, 32);
@@ -206,7 +206,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     //setting the values for the figureChooserPrompt
     public void setPromptValues(){
-        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn");
+        userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
@@ -219,7 +219,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void setBotAdvice(){
         remove(rollDice);
-        userAdvice.setText("Bots are moving... Please wait, the next player is on the turn in seconds");
+        userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
         repaint();
     }
