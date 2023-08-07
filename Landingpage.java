@@ -25,8 +25,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         playerNumber.addChangeListener(this);
-        bots = new JCheckBox("Fill the round with bots" ,false);
-        userNameAdvice = new JLabel("Enter how each player wants to be called during the game:");
+        bots = new JCheckBox("Fill the game with bots" ,false);
+        userNameAdvice = new JLabel("Enter names for all the players:");
         userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
