@@ -55,13 +55,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private final int[] fieldPositionsX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
     private final int[] fieldPositionsY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
 
-    //all JComponents
     JLabel userAdvice;
     JButton rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
 
-    //variable for the backend
     BackEnd backend;
 
     public GameBoardGui(String currentPlayer, BackEnd backendNew) {
@@ -94,25 +92,21 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	fields[20].setColor(FieldColor.BLUE.getHTML());
 	fields[30].setColor(FieldColor.RED.getHTML());
 
-        //Implement JButton and JLabel
+        // Implement JButton and JLabel
         userAdvice = new JLabel();
         rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
 
-        //set parameters for JComponents
+        // Set parameters for JComponents
         setJComponentValues(currentPlayer);
-        //display GUI
+        // Display GUI
         adjustJFrameSetting();
     }
 
-    //Button Action - Method
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
-            //remove the button from the JPanel
             remove(rollDice);
-
-            //trigger new move in the backend
             backend.playerMove();
         }
     }
@@ -213,7 +207,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
 
-     //Interface with BackEnd - 1. method: replaceFigures
     public void replaceFigures(){
         Figure[] input = backend.figures;
 	int radius = 50;
@@ -252,15 +245,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
-    //method displays the given value as the result
     public void displayResult(int randomNumber){
         result.setText("Result: " + randomNumber);
         repaint();
     }
 
-    /*
-    method sets the given player-name to the userAdvice-JLabel and resets the result jLabel
-     */
     public void setActivePlayer(){
         add(rollDice);
         userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn, click this button");
@@ -285,7 +274,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(result);
     }
 
-    //setting the values for the figureChooserPrompt
     public void setPromptValues(){
         userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
@@ -293,7 +281,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(figureChooserPrompt);
     }
 
-    //removing the figureChooserPrompt from the GameBoardGui
     public void removePrompt(){
         remove(figureChooserPrompt);
     }
