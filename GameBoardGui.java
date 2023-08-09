@@ -41,23 +41,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	}
     }
 
-    //Circles house - Yellow-Green-Blue-Red (a-b-c-d)
-    private Circle[] house;
-    private final int[] houseX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
-    private final int[] houseY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
-
-    //Circles base - Yellow-Green-Blue-Red (bottom left, bottom right, top left, top right)
-    private Circle[] base;
-    private final int[] baseX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
-    private final int[] baseY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
-
-    //Circles gamefield - start at yellow startfield
-    private Circle[] gameField;
-    private final int[] gameFieldX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
-    private final int[] gameFieldY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
-
-    //ovals figures
     private Circle[] figures;
+    private Circle[] houses;
+    private Circle[] bases;
+    private Circle[] fields;
+    
+    private final int[] housePositionsX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
+    private final int[] housePositionsY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
+
+    private final int[] basePositionsX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
+    private final int[] basePositionsY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
+
+    private final int[] fieldPositionsX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
+    private final int[] fieldPositionsY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
 
     //all JComponents
     JLabel userAdvice;
@@ -69,38 +65,34 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     BackEnd backend;
 
     public GameBoardGui(String currentPlayer, BackEnd backendNew) {
-        //link backEnd
         backend = backendNew;
 
-        //initialization of arrays
-        house = new Circle[16];
-        base = new Circle[16];
-        gameField = new Circle[40];
         figures = new Circle[16];
+        houses = new Circle[16];
+        bases = new Circle[16];
+        fields = new Circle[40];
+	
         replaceFigures();
 
-        //set circles in arrays
-        setCircleValues(house, houseX, houseY, 50, FieldColor.YELLOW.getHTML());
-        setCircleValues(base, baseX, baseY, 50, FieldColor.YELLOW.getHTML());
-        setCircleValues(gameField, gameFieldX, gameFieldY, 50, FieldColor.GRAY.getHTML());
+        setCircleValues(houses, housePositionsX, housePositionsY, 50, FieldColor.YELLOW.getHTML());
+        setCircleValues(bases, basePositionsX, basePositionsY, 50, FieldColor.YELLOW.getHTML());
+        setCircleValues(fields, fieldPositionsX, fieldPositionsY, 50, FieldColor.GRAY.getHTML());
 
         for (int i = 0; i < 4; i++) {
-	    // Set color for fields of house
-            house[i + 4].setColor(FieldColor.GREEN.getHTML());
-            house[i + 8].setColor(FieldColor.BLUE.getHTML());
-            house[i + 12].setColor(FieldColor.RED.getHTML());
+            houses[i + 4].setColor(FieldColor.GREEN.getHTML());
+            houses[i + 8].setColor(FieldColor.BLUE.getHTML());
+            houses[i + 12].setColor(FieldColor.RED.getHTML());
 
-	    // Set color for fields of base
-            base[i + 4].setColor(FieldColor.GREEN.getHTML());
-            base[i + 8].setColor(FieldColor.BLUE.getHTML());
-            base[i + 12].setColor(FieldColor.RED.getHTML());
+            bases[i + 4].setColor(FieldColor.GREEN.getHTML());
+            bases[i + 8].setColor(FieldColor.BLUE.getHTML());
+            bases[i + 12].setColor(FieldColor.RED.getHTML());
         }
 
 	// Set color for start fields
-	gameField[0].setColor(FieldColor.YELLOW.getHTML());
-	gameField[10].setColor(FieldColor.GREEN.getHTML());
-	gameField[20].setColor(FieldColor.BLUE.getHTML());
-	gameField[30].setColor(FieldColor.RED.getHTML());
+	fields[0].setColor(FieldColor.YELLOW.getHTML());
+	fields[10].setColor(FieldColor.GREEN.getHTML());
+	fields[20].setColor(FieldColor.BLUE.getHTML());
+	fields[30].setColor(FieldColor.RED.getHTML());
 
         //Implement JButton and JLabel
         userAdvice = new JLabel();
@@ -130,9 +122,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mouseX = e.getX();
         int mouseY = e.getY();
         //check if the figure is on the gamefield
-        for (int i = 0; i < gameFieldX.length; i++){
-            int diffX = gameFieldX[i] - mouseX;
-            int diffY = gameFieldY[i] - mouseY;
+        for (int i = 0; i < fieldPositionsX.length; i++){
+            int diffX = fieldPositionsX[i] - mouseX;
+            int diffY = fieldPositionsY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int cache = backend.figureOnField(i);
                 if (cache != 99){
@@ -149,9 +141,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             }
         }
         //check if the figure is in the house or base
-        for (int i = 0; i < houseX.length; i++){
-            int diffX = houseX[i] - mouseX;
-            int diffY = houseY[i] - mouseY;
+        for (int i = 0; i < housePositionsX.length; i++){
+            int diffX = housePositionsX[i] - mouseX;
+            int diffY = housePositionsY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int house = backend.figureOnHouseField(i);
                 if (house != 99){
@@ -166,8 +158,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                     }
                 }
             }
-            diffX = baseX[i] - mouseX;
-            diffY = baseY[i] - mouseY;
+            diffX = basePositionsX[i] - mouseX;
+            diffY = basePositionsY[i] - mouseY;
             if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
                 int base = backend.figureOnBaseField(i);
                 if (base != 99){
@@ -181,19 +173,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
     }
 
-    //methods below aren't used (but needed, otherwise causing errors)
-    public void mousePressed(MouseEvent e) {
-
-    }
-    public void mouseReleased(MouseEvent e) {
-
-    }
-    public void mouseEntered(MouseEvent e) {
-
-    }
-    public void mouseExited(MouseEvent e) {
-
-    }
+    // Even though we neither implement nor use these methods, they
+    // are necessary for implementing `java.awt.event.MouseListener`.
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 
      //Interface with BackEnd - 1. method: replaceFigures
     public void replaceFigures(){
@@ -218,14 +203,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    int y;
 	    
             if (input[i].isInBase()) {
-		x = baseX[input[i].field];
-		y = baseY[input[i].field];
+		x = basePositionsX[input[i].field];
+		y = basePositionsY[input[i].field];
             } else if (input[i].isInHouse()) {
-		x = houseX[input[i].field];
-		y = houseY[input[i].field];
+		x = housePositionsX[input[i].field];
+		y = housePositionsY[input[i].field];
             } else {
-		x = gameFieldX[input[i].field];
-		y = gameFieldY[input[i].field];
+		x = fieldPositionsX[input[i].field];
+		y = fieldPositionsY[input[i].field];
             }
 
 	    figures[i] = new Circle(x, y, radius, color);
@@ -326,9 +311,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void paint(Graphics g) {
         super.paint(g);
 
-        forEachloopPaintFields(g, house);
-        forEachloopPaintFields(g, base);
-        forEachloopPaintFields(g, gameField);
+        forEachloopPaintFields(g, houses);
+        forEachloopPaintFields(g, bases);
+        forEachloopPaintFields(g, fields);
         forEachloopPaintFigures(g, figures);
     }
 
