@@ -117,60 +117,93 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
     }
 
-    //methods for the mouse listener
     public void mouseClicked(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-        //check if the figure is on the gamefield
-        for (int i = 0; i < fieldPositionsX.length; i++){
-            int diffX = fieldPositionsX[i] - mouseX;
-            int diffY = fieldPositionsY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int cache = backend.figureOnField(i);
-                if (cache != 99){
-                    if (backend.figures[cache].color == backend.activePlayer){
-                        if(backend.figures[cache].isPlaceable()){
-                            backend.moveFigure(cache);
-                        }else {
-                            backend.moveToBase(cache);
-                        }
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-        }
-        //check if the figure is in the house or base
-        for (int i = 0; i < housePositionsX.length; i++){
-            int diffX = housePositionsX[i] - mouseX;
-            int diffY = housePositionsY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int house = backend.figureOnHouseField(i);
-                if (house != 99){
-                    if (backend.figures[house].color == backend.activePlayer){
-                        if (backend.figures[house].isPlaceable()) {
-                            backend.moveFigure(house);
-                        }else {
-                            backend.moveToBase(house);
-                        }
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-            diffX = basePositionsX[i] - mouseX;
-            diffY = basePositionsY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int base = backend.figureOnBaseField(i);
-                if (base != 99){
-                    if (backend.figures[base].isPlaceable()){
-                        backend.moveOutOfBase(base);
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-        }
+        int mousePositionX = e.getX();
+        int mousePositionY = e.getY();
+
+	int diameter = 50;
+
+	for (int i = 0; i < fieldPositionsX.length; i++) {
+	    int differenceX = mousePositionX - fieldPositionsX[i];
+	    int differenceY = mousePositionY - fieldPositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.color != backend.activePlayer) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveFigure(clickedFigureIndex);
+	    } else {
+		backend.moveToBase(clickedFigureIndex);
+	    }
+	    backend.performUserChoice();
+	    return;
+	}
+	
+	for (int i = 0; i < housePositionsX.length; i++) {
+	    int differenceX = mousePositionX - housePositionsX[i];
+	    int differenceY = mousePositionY - housePositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnHouseField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.color != backend.activePlayer) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveFigure(clickedFigureIndex);
+	    } else {
+		backend.moveToBase(clickedFigureIndex);
+	    }
+	    backend.performUserChoice();
+	    return;
+	}
+	
+	for (int i = 0; i < basePositionsX.length; i++) {
+	    int differenceX = mousePositionX - basePositionsX[i];
+	    int differenceY = mousePositionY - basePositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnBaseField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.color != backend.activePlayer) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveOutOfBase(clickedFigureIndex);
+	    }
+	    backend.performUserChoice();
+	    return;
+	}
     }
 
     // Even though we neither implement nor use these methods, they
