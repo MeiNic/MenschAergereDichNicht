@@ -4,10 +4,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
-    //Store hex-codes for different colors - yellow, green, blue, red, normal
-    private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
-    private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
+    private enum FieldColor {
+	YELLOW("#FFC957"),
+	GREEN("#2A914E"),
+	BLUE("#1E32FF"),
+	RED("#CC0000"),
+	GRAY("#CCCCCC");
+
+	private final String html;
+
+	private FieldColor(String html) {
+	    this.html = html;
+	}
+
+	public String getHTML() {
+	    return html;
+	}
+    }
+
+    private enum FigureColor {
+	YELLOW("#FFFF00"),
+        GREEN("#00CC00"),
+	BLUE("#3C93FF"),
+	RED("#FF0000");
+
+	private final String html;
+
+	private FigureColor(String html) {
+	    this.html = html;
+	}
+
+	public String getHTML() {
+	    return html;
+	}
+    }
 
     //Circles house - Yellow-Green-Blue-Red (a-b-c-d)
     private Circle[] house;
@@ -48,20 +80,27 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         replaceFigures();
 
         //set circles in arrays
-        setCircleValues(house, houseX, houseY, 50, colors[0]);
-        setCircleValues(base, baseX, baseY, 50, colors[0]);
-        setCircleValues(gameField, gameFieldX, gameFieldY, 50, colors[4]);
+        setCircleValues(house, houseX, houseY, 50, FieldColor.YELLOW.getHTML());
+        setCircleValues(base, baseX, baseY, 50, FieldColor.YELLOW.getHTML());
+        setCircleValues(gameField, gameFieldX, gameFieldY, 50, FieldColor.GRAY.getHTML());
 
-        //set different colors in one array
         for (int i = 0; i < 4; i++) {
-            house[i + 4].setColor(colors[1]);
-            house[i + 8].setColor(colors[2]);
-            house[i + 12].setColor(colors[3]);
-            base[i + 4].setColor(colors[1]);
-            base[i + 8].setColor(colors[2]);
-            base[i + 12].setColor(colors[3]);
-            gameField[i * 10].setColor(colors[i]);
+	    // Set color for fields of house
+            house[i + 4].setColor(FieldColor.GREEN.getHTML());
+            house[i + 8].setColor(FieldColor.BLUE.getHTML());
+            house[i + 12].setColor(FieldColor.RED.getHTML());
+
+	    // Set color for fields of base
+            base[i + 4].setColor(FieldColor.GREEN.getHTML());
+            base[i + 8].setColor(FieldColor.BLUE.getHTML());
+            base[i + 12].setColor(FieldColor.RED.getHTML());
         }
+
+	// Set color for start fields
+	gameField[0].setColor(FieldColor.YELLOW.getHTML());
+	gameField[10].setColor(FieldColor.GREEN.getHTML());
+	gameField[20].setColor(FieldColor.BLUE.getHTML());
+	gameField[30].setColor(FieldColor.RED.getHTML());
 
         //Implement JButton and JLabel
         userAdvice = new JLabel();
@@ -159,15 +198,39 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
      //Interface with BackEnd - 1. method: replaceFigures
     public void replaceFigures(){
         Figure[] input = backend.figures;
+	int radius = 50;
+	    
         for (int i = 0; i < input.length && i < figures.length; i++){
-            if(input[i].isInBase()){
-                figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
-            }else if (input[i].isInHouse()){
-                figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
-            }else {
-                figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
+	    String color = FigureColor.YELLOW.getHTML();
+
+	    switch (input[i].color) {
+	    case 0: color = FigureColor.YELLOW.getHTML();
+		break;
+	    case 1: color = FigureColor.GREEN.getHTML();
+		break;
+	    case 2: color = FigureColor.BLUE.getHTML();
+		break;
+	    case 3: color = FigureColor.RED.getHTML();
+		break;
+	    }
+
+	    int x;
+	    int y;
+	    
+            if (input[i].isInBase()) {
+		x = baseX[input[i].field];
+		y = baseY[input[i].field];
+            } else if (input[i].isInHouse()) {
+		x = houseX[input[i].field];
+		y = houseY[input[i].field];
+            } else {
+		x = gameFieldX[input[i].field];
+		y = gameFieldY[input[i].field];
             }
+
+	    figures[i] = new Circle(x, y, radius, color);
         }
+	
         repaint();
     }
 
