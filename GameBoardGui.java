@@ -72,9 +72,26 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	
         replaceFigures();
 
-        setCircleValues(houses, housePositionsX, housePositionsY, 50, FieldColor.YELLOW.getHTML());
-        setCircleValues(bases, basePositionsX, basePositionsY, 50, FieldColor.YELLOW.getHTML());
-        setCircleValues(fields, fieldPositionsX, fieldPositionsY, 50, FieldColor.GRAY.getHTML());
+	int radius = 50;
+
+	for (int i = 0; i < houses.length; i++) {
+	    int x = housePositionsX[i];
+	    int y = housePositionsY[i];
+
+	    houses[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHTML());
+	}
+	for (int i = 0; i < bases.length; i++) {
+	    int x = basePositionsX[i];
+	    int y = basePositionsY[i];
+
+	    bases[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHTML());
+	}
+	for (int i = 0; i < fields.length; i++) {
+	    int x = fieldPositionsX[i];
+	    int y = fieldPositionsY[i];
+
+	    fields[i] = new Circle(x, y, radius, FieldColor.GRAY.getHTML());
+	}
 
         for (int i = 0; i < 4; i++) {
             houses[i + 4].setColor(FieldColor.GREEN.getHTML());
@@ -99,9 +116,25 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figureChooserPrompt = new JLabel();
 
         // Set parameters for JComponents
-        setJComponentValues(currentPlayer);
-        // Display GUI
-        adjustJFrameSetting();
+	userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
+        userAdvice.setBounds(970, 22, 550, 62);
+        add(userAdvice);
+        rollDice.setText("roll the dice");
+        rollDice.setBounds(980, 90, 120, 32);
+        rollDice.addActionListener(this);
+        add(rollDice);
+        result.setBounds(1150, 90, 100, 32);
+        add(result);
+
+	// Display UI
+	addMouseListener(this);
+        setTitle("game field");
+        setSize(1400, 940);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setResizable(true);
+        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -257,23 +290,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
-    /*
-      -- DON'T use this method out of constructor - DON'T change any parameters --
-      methods sets als parameters for the JLabels and the JButton and in the end adds them to the frame
-      -- DON'T use this method out of constructor - DON'T change any parameters --
-     */
-    private void setJComponentValues(String currentPlayer){
-        userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
-        userAdvice.setBounds(970, 22, 550, 62);
-        add(userAdvice);
-        rollDice.setText("roll the dice");
-        rollDice.setBounds(980, 90, 120, 32);
-        rollDice.addActionListener(this);
-        add(rollDice);
-        result.setBounds(1150, 90, 100, 32);
-        add(result);
-    }
-
     public void setPromptValues(){
         userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
@@ -290,36 +306,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
         repaint();
-    }
-
-    /*
-      -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
-      sets all needed parameters for the frame and opens in the end
-      -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
-     */
-    private void adjustJFrameSetting() {
-        addMouseListener(this);
-        setTitle("game field");
-        setSize(1400, 940);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        setBackground(Color.BLACK);
-        setResizable(true);
-        setVisible(true);
-    }
-
-    /*
-     -- methods only used in constructor DON'T use out of the constructor! --
-     Function sets in the give array new Circles with the given x and y value, radius and color
-     als well as set the border array with fitting border circles
-     -- methods only used in constructor DON'T use out of the constructor! --
-     */
-    private void setCircleValues(Circle[] array, int[] x, int[] y, int radius, String hexColor) {
-        for (int i = 0; i < array.length; i++) {
-            int xNew = x[i];
-            int yNew = y[i];
-            array[i] = new Circle(xNew, yNew, radius, hexColor);
-        }
     }
 
     @Override
