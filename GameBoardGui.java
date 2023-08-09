@@ -322,23 +322,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
     }
 
-    /*
-     -- methods needed to paint circles in JFrame --
-     "paint() is used to paint all graphical objects in the JFrame (circles + ovals)
-     -- methods needed to paint circles in JFrame --
-     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        forEachloopPaintFields(g, houses);
-        forEachloopPaintFields(g, bases);
-        forEachloopPaintFields(g, fields);
-        forEachloopPaintFigures(g, figures);
+        paintFields(g, houses);
+        paintFields(g, bases);
+        paintFields(g, fields);
+	
+        paintFigures(g, figures);
     }
 
-    private void forEachloopPaintFields(Graphics g, Circle[] array) {
-        for (Circle circle : array) {
+    private void paintFields(Graphics g, Circle[] circles) {
+        for (Circle circle : circles) {
             int x = circle.getX();
             int y = circle.getY();
             int radius = circle.getRadius();
@@ -347,12 +343,12 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             g.setColor(color);
             g.fillOval(x, y, radius, radius);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+	    g.drawOval(x, y, radius, radius);
         }
     }
 
-    private void forEachloopPaintFigures(Graphics g, Circle[] array){
-        for (Circle oval : array){
+    private void paintFigures(Graphics g, Circle[] ovals){
+        for (Circle oval : ovals){
             int x = oval.getX() + oval.getRadius() / 4;
             int y = oval.getY();
             int radius = oval.getRadius();
@@ -362,7 +358,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             g.setColor(color);
             g.fillOval(x, y, radiusHalf, radius);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radiusHalf + 1, radius + 1);
+            g.drawOval(x, y, radiusHalf, radius);
         }
     }
 }
