@@ -13,14 +13,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	RED("#CC0000"),
 	GRAY("#CCCCCC");
 
-	private final String html;
+	private final String hexCode;
 
-	private FieldColor(String html) {
-	    this.html = html;
+	private FieldColor(String hexCode) {
+	    this.hexCode = hexCode;
 	}
 
-	public String getHTML() {
-	    return html;
+	public String getHexCode() {
+	    return hexCode;
 	}
     }
 
@@ -30,14 +30,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	BLUE("#3C93FF"),
 	RED("#FF0000");
 
-	private final String html;
+	private final String hexCode;
 
-	private FigureColor(String html) {
-	    this.html = html;
+	private FigureColor(String hexCode) {
+	    this.hexCode = hexCode;
 	}
 
-	public String getHTML() {
-	    return html;
+	public String getHexCode() {
+	    return hexCode;
 	}
     }
 
@@ -78,36 +78,36 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    int x = housePositionsX[i];
 	    int y = housePositionsY[i];
 
-	    houses[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHTML());
+	    houses[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHexCode());
 	}
 	for (int i = 0; i < bases.length; i++) {
 	    int x = basePositionsX[i];
 	    int y = basePositionsY[i];
 
-	    bases[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHTML());
+	    bases[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHexCode());
 	}
 	for (int i = 0; i < fields.length; i++) {
 	    int x = fieldPositionsX[i];
 	    int y = fieldPositionsY[i];
 
-	    fields[i] = new Circle(x, y, radius, FieldColor.GRAY.getHTML());
+	    fields[i] = new Circle(x, y, radius, FieldColor.GRAY.getHexCode());
 	}
 
         for (int i = 0; i < 4; i++) {
-            houses[i + 4].setColor(FieldColor.GREEN.getHTML());
-            houses[i + 8].setColor(FieldColor.BLUE.getHTML());
-            houses[i + 12].setColor(FieldColor.RED.getHTML());
+            houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
+            houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
+            houses[i + 12].setColor(FieldColor.RED.getHexCode());
 
-            bases[i + 4].setColor(FieldColor.GREEN.getHTML());
-            bases[i + 8].setColor(FieldColor.BLUE.getHTML());
-            bases[i + 12].setColor(FieldColor.RED.getHTML());
+            bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
+            bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
+            bases[i + 12].setColor(FieldColor.RED.getHexCode());
         }
 
 	// Set color for start fields
-	fields[0].setColor(FieldColor.YELLOW.getHTML());
-	fields[10].setColor(FieldColor.GREEN.getHTML());
-	fields[20].setColor(FieldColor.BLUE.getHTML());
-	fields[30].setColor(FieldColor.RED.getHTML());
+	fields[0].setColor(FieldColor.YELLOW.getHexCode());
+	fields[10].setColor(FieldColor.GREEN.getHexCode());
+	fields[20].setColor(FieldColor.BLUE.getHexCode());
+	fields[30].setColor(FieldColor.RED.getHexCode());
 
         // Implement JButton and JLabel
         userAdvice = new JLabel();
@@ -245,16 +245,16 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	int radius = 50;
 	    
         for (int i = 0; i < input.length && i < figures.length; i++){
-	    String color = FigureColor.YELLOW.getHTML();
+	    String color = FigureColor.YELLOW.getHexCode();
 
 	    switch (input[i].color) {
-	    case 0: color = FigureColor.YELLOW.getHTML();
+	    case 0: color = FigureColor.YELLOW.getHexCode();
 		break;
-	    case 1: color = FigureColor.GREEN.getHTML();
+	    case 1: color = FigureColor.GREEN.getHexCode();
 		break;
-	    case 2: color = FigureColor.BLUE.getHTML();
+	    case 2: color = FigureColor.BLUE.getHexCode();
 		break;
-	    case 3: color = FigureColor.RED.getHTML();
+	    case 3: color = FigureColor.RED.getHexCode();
 		break;
 	    }
 
