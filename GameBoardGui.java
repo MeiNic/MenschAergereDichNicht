@@ -245,9 +245,20 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	
 	removePrompt();
 	replaceFigures();
-
-	backend.displayWinWindowIfNecessary();
+	displayWinWindowIfNecessary();
+	
 	backend.nextMove();
+    }
+
+    public void displayWinWindowIfNecessary() {
+	String nameOfWinner = backend.getNameOfWinner();
+	
+	if (nameOfWinner == null) {
+	    return;
+	}
+	
+	new WinWindow(nameOfWinner);
+	setVisible(false);
     }
 
     // Even though we neither implement nor use these methods, they
