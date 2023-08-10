@@ -51,7 +51,7 @@ public class BackEnd {
                 }
             }
         }
-        gui = new GameBoardGui(players[0].name, this);
+        gui = new GameBoardGui(this);
     }
 
     //progress a dice input

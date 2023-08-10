@@ -62,8 +62,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     BackEnd backend;
 
-    public GameBoardGui(String currentPlayer, BackEnd backendNew) {
-        backend = backendNew;
+    public GameBoardGui(BackEnd backend) {
+        this.backend = backend;
 
         figures = new Circle[16];
         houses = new Circle[16];
@@ -116,7 +116,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figureChooserPrompt = new JLabel();
 
         // Set parameters for JComponents
-	userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
+	userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn, click this button to roll the dice");
         userAdvice.setBounds(970, 22, 550, 62);
         add(userAdvice);
         rollDice.setText("roll the dice");
