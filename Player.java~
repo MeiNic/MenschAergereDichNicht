@@ -1,0 +1,5 @@
+interface Player {
+    public String getName();
+    public boolean isWinner();
+    public int generateRandomNumber();
+    public void move();

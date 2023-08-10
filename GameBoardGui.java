@@ -174,7 +174,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    } else {
 		backend.moveToBase(clickedFigureIndex);
 	    }
-	    backend.performUserChoice();
+	    prepareNextMove();
 	    return;
 	}
 	
@@ -202,7 +202,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    } else {
 		backend.moveToBase(clickedFigureIndex);
 	    }
-	    backend.performUserChoice();
+	    prepareNextMove();
 	    return;
 	}
 	
@@ -228,9 +228,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    if (clickedFigure.isPlaceable()) {
 		backend.moveOutOfBase(clickedFigureIndex);
 	    }
-	    backend.performUserChoice();
+	    prepareNextMove();
 	    return;
 	}
+    }
+
+    private void prepareNextMove() {
+	backend.disablePlacementForAllFigures();
+	
+	removePrompt();
+	replaceFigures();
+
+	backend.displayWinWindowIfNecessary();
+	backend.nextMove();
     }
 
     // Even though we neither implement nor use these methods, they

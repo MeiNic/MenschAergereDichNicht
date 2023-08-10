@@ -117,18 +117,10 @@ public class BackEnd {
         }
     }
 
-    public void performUserChoice(){
-        //removing the place options on all figures
+    public void disablePlacementForAllFigures() {
         for (Figure figure : figures) {
             figure.disablePlacement();
         }
-        gui.removePrompt();
-        gui.replaceFigures();
-
-	displayWinWindowIfNecessary();
-	
-        //trigger new move in fontEnd
-        nextMove();
     }
 
     //bot-move on the "normal" fields
@@ -194,7 +186,7 @@ public class BackEnd {
         nextMove();
     }
 
-    private void displayWinWindowIfNecessary() {
+    public void displayWinWindowIfNecessary() {
 	setFinishedFigures();
 
 	String nameOfWinner = getWinningPlayer();
@@ -517,7 +509,7 @@ public class BackEnd {
     }
 
     //next player
-    private void nextMove() {
+    public void nextMove() {
 	if (randomNumber != 6) {
 	    activePlayer = (++activePlayer) % 4;
 	    currentPlayer = players[activePlayer];
