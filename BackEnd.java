@@ -4,7 +4,7 @@ public class BackEnd {
         IS_BOT,
         NOTHING,
     }
-    record Player(String name, PlayerState status){
+    record PlayerDeprecated(String name, PlayerState status){
         int getPlayerState(){
             if (status == PlayerState.IS_PLAYER){
                 return 0;
@@ -16,7 +16,7 @@ public class BackEnd {
     }
     Figure[] figures;
     Landingpage startpage;
-    final Player[] players;
+    final PlayerDeprecated[] playersDeprecated;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
@@ -35,19 +35,19 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        players = new Player[4];
+        playersDeprecated = new PlayerDeprecated[4];
 
         //progress input from landingpage
         startpage = landingpage;
         boolean bots = startpage.getBotsSelection();
         for (int i = 0; i < 4; i++){
             if (i <= startpage.getPlayerNumber()){
-                players[i] = new Player(startpage.getNames()[i], PlayerState.IS_PLAYER);
+                playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.IS_PLAYER);
             }else {
                 if (bots){
-                    players[i] = new Player(startpage.getNames()[i], PlayerState.IS_BOT);
+                    playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.IS_BOT);
                 }else {
-                    players[i] = new Player(startpage.getNames()[i], PlayerState.NOTHING);
+                    playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.NOTHING);
                 }
             }
         }
@@ -400,7 +400,7 @@ public class BackEnd {
     private String getWinningPlayer(){
 	for (int i = 0; i < 16; i += 4) {
 	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-		return players[i / 4].name;
+		return playersDeprecated[i / 4].name;
 	    }
 	}
 	return null;
@@ -532,7 +532,7 @@ public class BackEnd {
 	if (randomNumber != 6) {
 	    activePlayer = (++activePlayer) % 4;
 	}
-	int playerState = players[activePlayer].getPlayerState();
+	int playerState = playersDeprecated[activePlayer].getPlayerState();
 
 	if (playerState == 1) {
 	    gui.setBotAdvice();
