@@ -149,7 +149,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         for (Circle circle : array) {
             int x = circle.getX();
             int y = circle.getY();
-            int radius = circle.getRadius();
+            int radius = circle.getDiameter();
             Color color = circle.getColor();
 
             g.setColor(color);
