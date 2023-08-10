@@ -176,17 +176,6 @@ public class BackEnd {
 	return true;
     }
 
-    public void displayWinWindowIfNecessary() {
-	setFinishedFigures();
-
-	String nameOfWinner = getWinningPlayer();
-	if (nameOfWinner == null) {
-	    return;
-	}
-	winner = new WinWindow(nameOfWinner);
-	gui.setVisible(false);
-    }
-
     //move the given figure by the given number
     public void moveFigure(int figureNumber) {
 	Figure figureToBeMoved = figures[figureNumber];
@@ -368,7 +357,9 @@ public class BackEnd {
     }
 
     //check which player has won
-    private String getWinningPlayer(){
+    public String getNameOfWinner(){
+	setFinishedFigures();
+	
 	for (int i = 0; i < 16; i += 4) {
 	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
 		return players[0].getName();
@@ -518,7 +509,7 @@ public class BackEnd {
 	    boolean botMovedItsFigures = botMove();
 	    if (botMovedItsFigures) {
 		gui.replaceFigures();
-		displayWinWindowIfNecessary();
+		gui.displayWinWindowIfNecessary();
 	    }
 	    nextMove();
 	} else if (playerState == 0) {
