@@ -119,7 +119,7 @@ public class BackEnd {
     }
 
     //bot-move on the "normal" fields
-    private void botMove(){
+    private boolean botMove(){
 	Dice dice = new LoadedDice();
 
 	int allowedTries = getNumberOfAllowedTries();
@@ -134,11 +134,8 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 
 	if (randomNumber != 6 && allowedTries == 3) {
-	    nextMove();
-	    return;
+	    return false;
 	}
-        
-        gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
@@ -176,9 +173,7 @@ public class BackEnd {
                 }
             }
         }
-        gui.replaceFigures();
-        displayWinWindowIfNecessary();
-        nextMove();
+	return true;
     }
 
     public void displayWinWindowIfNecessary() {
@@ -520,7 +515,12 @@ public class BackEnd {
 		throw new RuntimeException(e);
 	    }
 
-	    botMove();
+	    boolean botMovedItsFigures = botMove();
+	    if (botMovedItsFigures) {
+		gui.replaceFigures();
+		displayWinWindowIfNecessary();
+	    }
+	    nextMove();
 	} else if (playerState == 0) {
 	    gui.setActivePlayer();
 	} else {
