@@ -72,25 +72,25 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	
         replaceFigures();
 
-	int radius = 50;
+	int diameter = 50;
 
 	for (int i = 0; i < houses.length; i++) {
 	    int x = housePositionsX[i];
 	    int y = housePositionsY[i];
 
-	    houses[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHexCode());
+	    houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
 	}
 	for (int i = 0; i < bases.length; i++) {
 	    int x = basePositionsX[i];
 	    int y = basePositionsY[i];
 
-	    bases[i] = new Circle(x, y, radius, FieldColor.YELLOW.getHexCode());
+	    bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
 	}
 	for (int i = 0; i < fields.length; i++) {
 	    int x = fieldPositionsX[i];
 	    int y = fieldPositionsY[i];
 
-	    fields[i] = new Circle(x, y, radius, FieldColor.GRAY.getHexCode());
+	    fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
 	}
 
         for (int i = 0; i < 4; i++) {
@@ -242,7 +242,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void replaceFigures(){
         Figure[] input = backend.figures;
-	int radius = 50;
+	int diameter = 50;
 	    
         for (int i = 0; i < input.length && i < figures.length; i++){
 	    String color = FigureColor.YELLOW.getHexCode();
@@ -272,7 +272,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		y = fieldPositionsY[input[i].field];
             }
 
-	    figures[i] = new Circle(x, y, radius, color);
+	    figures[i] = new Circle(x, y, diameter, color);
         }
 	
         repaint();
@@ -323,28 +323,28 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         for (Circle circle : circles) {
             int x = circle.getX();
             int y = circle.getY();
-            int radius = circle.getRadius();
+            int diameter = circle.getDiameter();
             Color color = circle.getColor();
 
             g.setColor(color);
-            g.fillOval(x, y, radius, radius);
+            g.fillOval(x, y, diameter, diameter);
             g.setColor(Color.BLACK);
-	    g.drawOval(x, y, radius, radius);
+	    g.drawOval(x, y, diameter, diameter);
         }
     }
 
     private void paintFigures(Graphics g, Circle[] ovals){
         for (Circle oval : ovals){
-            int x = oval.getX() + oval.getRadius() / 4;
+            int x = oval.getX() + oval.getDiameter() / 4;
             int y = oval.getY();
-            int radius = oval.getRadius();
-            int radiusHalf = oval.getRadius() / 2;
+            int diameter = oval.getDiameter();
+            int radius = oval.getDiameter() / 2;
             Color color = oval.getColor();
 
             g.setColor(color);
-            g.fillOval(x, y, radiusHalf, radius);
+            g.fillOval(x, y, radius, diameter);
             g.setColor(Color.BLACK);
-            g.drawOval(x, y, radiusHalf, radius);
+            g.drawOval(x, y, radius, diameter);
         }
     }
 }

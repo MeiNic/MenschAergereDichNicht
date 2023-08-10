@@ -3,17 +3,16 @@ import java.awt.*;
 public class Circle {
     private int x;
     private int y;
-    private int radius;
+    private int diameter;
     private Color color;
 
-    public Circle(int xNew, int yNew, int radiusNew, String hexCode){
-        this.x = xNew;
-        this.y = yNew;
-        this.radius = radiusNew;
+    public Circle(int x, int y, int diameter, String hexCode){
+        this.x = x;
+        this.y = y;
+        this.diameter = diameter;
         this.color = Color.decode(hexCode);
     }
 
-    //Getter and Setter for every value
     public int getX() {
         return x;
     }
@@ -26,8 +25,8 @@ public class Circle {
         this.y = y;
     }
 
-    public int getRadius() {
-        return radius;
+    public int getDiameter() {
+        return diameter;
     }
 
     public Color getColor() {
