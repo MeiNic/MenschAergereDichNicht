@@ -140,7 +140,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rollDice){
             remove(rollDice);
-            backend.playerMove();
+	    
+            boolean setPromptValues = backend.playerMove();
+	    if (setPromptValues) {
+		displayResult(backend.randomNumber);
+		setPromptValues();
+	    } else {
+		backend.nextMove();
+	    }
         }
     }
 
