@@ -1,27 +1,13 @@
 public class BackEnd {
-    enum PlayerState {
-        IS_PLAYER,
-        IS_BOT,
-        NOTHING,
-    }
-    record PlayerDeprecated(String name, PlayerState status){
-        int getPlayerState(){
-            if (status == PlayerState.IS_PLAYER){
-                return 0;
-            } else if (status == PlayerState.IS_BOT) {
-                return 1;
-            }
-            return -1;
-        }
-    }
     Figure[] figures;
-    Landingpage startpage;
-    final PlayerDeprecated[] playersDeprecated;
     int activePlayer;
     GameBoardGui gui;
     int randomNumber;
     WinWindow winner;
 
+    private Player[] players;
+    private Player currentPlayer;
+    
     BackEnd(Landingpage landingpage) {
         figures = new Figure[16];
         for (int i = 0; i < figures.length; i++) {
@@ -35,23 +21,26 @@ public class BackEnd {
 
         activePlayer = 0;
         randomNumber = 0;
-        playersDeprecated = new PlayerDeprecated[4];
-
-        //progress input from landingpage
-        startpage = landingpage;
-        boolean bots = startpage.getBotsSelection();
-        for (int i = 0; i < 4; i++){
-            if (i <= startpage.getPlayerNumber()){
-                playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.IS_PLAYER);
-            }else {
-                if (bots){
-                    playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.IS_BOT);
-                }else {
-                    playersDeprecated[i] = new PlayerDeprecated(startpage.getNames()[i], PlayerState.NOTHING);
-                }
-            }
-        }
+	
+	players = new Player[4];
+	for (int i = 0; i < 4; i++) {
+	    String name = landingpage.getNames()[i];
+	    boolean fillWithBots = landingpage.getBotsSelection();
+	    
+	    if (i <= landingpage.getPlayerNumber()) {
+		players[i] = new Human(name);
+	    } else if (fillWithBots) {
+		players[i] = new Bot(name);
+	    } else {
+		players[i] = new Dummy(name);
+	    }
+	}
+	currentPlayer = players[0];
         gui = new GameBoardGui(this);
+    }
+
+    public String getNameOfCurrentPlayer() {
+	return currentPlayer.getName();
     }
 
     //progress a dice input
@@ -400,7 +389,7 @@ public class BackEnd {
     private String getWinningPlayer(){
 	for (int i = 0; i < 16; i += 4) {
 	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-		return playersDeprecated[i / 4].name;
+		return players[0].getName();
 	    }
 	}
 	return null;
@@ -531,8 +520,9 @@ public class BackEnd {
     private void nextMove() {
 	if (randomNumber != 6) {
 	    activePlayer = (++activePlayer) % 4;
+	    currentPlayer = players[activePlayer];
 	}
-	int playerState = playersDeprecated[activePlayer].getPlayerState();
+	int playerState = currentPlayer.getPlayerState();
 
 	if (playerState == 1) {
 	    gui.setBotAdvice();
