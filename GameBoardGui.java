@@ -116,7 +116,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figureChooserPrompt = new JLabel();
 
         // Set parameters for JComponents
-	userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn, click this button to roll the dice");
+	userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
         userAdvice.setBounds(970, 22, 550, 62);
         add(userAdvice);
         rollDice.setText("roll the dice");
@@ -285,13 +285,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn, click this button");
+        userAdvice.setText("Player " + backend.getNameOfCurrentPlayer() + " is on the turn, click this button");
         result.setText("");
         repaint();
     }
 
     public void setPromptValues(){
-        userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn");
+        userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
