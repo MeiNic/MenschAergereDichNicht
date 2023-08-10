@@ -44,7 +44,7 @@ public class BackEnd {
     }
 
     //progress a dice input
-    public void playerMove() {
+    public boolean playerMove() {
 	Dice dice = new LaPlaceDice();
 	
 	int allowedTries = getNumberOfAllowedTries();
@@ -56,12 +56,9 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 	
 	if (randomNumber != 6 && allowedTries == 3) {
-	    nextMove();
-	    return;
+	    return false;
 	}
         
-        gui.displayResult(randomNumber);
-	
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
@@ -84,10 +81,8 @@ public class BackEnd {
 	} else {
 	    playerMoveOnField();
 	}
-	
-        gui.setPromptValues();
+	return true;
     }
-
 
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
