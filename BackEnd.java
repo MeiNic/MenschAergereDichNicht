@@ -9,22 +9,20 @@ public class BackEnd {
     private Player currentPlayer;
     
     BackEnd(Landingpage landingpage) {
-        figures = new Figure[16];
-        for (int i = 0; i < figures.length; i++) {
-            figures[i] = new Figure(i, 0);
-        }
-        for (int i = 0; i < 4; i++) {
-            figures[i + 4].color = 1;
-            figures[i + 8].color = 2;
-            figures[i + 12].color = 3;
-        }
-
+	String[] names = landingpage.getNames();
+	figures = new Figure[16];
+	
+	for (int i = 0; i < 16; i++) {
+	    int index = Math.floorDiv(i, 4);
+	    figures[i] = new Figure(i, index, names[index]);
+	}
+	
         activePlayer = 0;
         randomNumber = 0;
 	
 	players = new Player[4];
 	for (int i = 0; i < 4; i++) {
-	    String name = landingpage.getNames()[i];
+	    String name = names[i];
 	    boolean fillWithBots = landingpage.getBotsSelection();
 	    
 	    if (i <= landingpage.getPlayerNumber()) {
@@ -63,7 +61,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer){
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
 	    ownFigureOnStartfield = true;
         }
 
@@ -141,7 +139,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(activePlayer * 10);
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer) {
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
 	    ownFigureOnStartfield = true;
         }
 
@@ -221,7 +219,7 @@ public class BackEnd {
 	if (!goToHouse) {
 	    //move the figure, and move the figure before on the field
 	    //to the base
-	    if (figures[figureOnField(numberNew)].color != figureColor){
+	    if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
 		moveToBase(figureOnField(numberNew));
 	        figureToBeMoved.field = numberNew;
 	    } else {
@@ -326,7 +324,7 @@ public class BackEnd {
 	}
 
 	boolean beatableFigureIsOwnedByOtherPlayer =
-	    figures[figureOnField(newField)].color != figureColor;
+	    figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
 
 	if (beatableFigureIsOwnedByOtherPlayer) {
 	    return true;

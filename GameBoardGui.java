@@ -172,7 +172,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 		
 	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.color != backend.activePlayer) {
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
 		continue;
 	    }
 
@@ -200,7 +200,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 		
 	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.color != backend.activePlayer) {
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
 		continue;
 	    }
 
@@ -228,7 +228,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 		
 	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.color != backend.activePlayer) {
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
 		continue;
 	    }
 
