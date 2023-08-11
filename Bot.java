@@ -1,8 +1,10 @@
 class Bot implements Player {
     private String name;
+    private int playerIndex;
 
-    public Bot(String name) {
+    public Bot(String name, int playerIndex) {
 	this.name = name;
+	this.playerIndex = playerIndex;
     }
 
     public String getName() {
@@ -11,5 +13,9 @@ class Bot implements Player {
 
     public int getPlayerState() {
 	return 1;
+    }
+
+    public int getPlayerIndex() {
+	return playerIndex;
     }
 }

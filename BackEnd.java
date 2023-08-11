@@ -26,11 +26,11 @@ public class BackEnd {
 	    boolean fillWithBots = landingpage.getBotsSelection();
 	    
 	    if (i <= landingpage.getPlayerNumber()) {
-		players[i] = new Human(name);
+		players[i] = new Human(name, i);
 	    } else if (fillWithBots) {
-		players[i] = new Bot(name);
+		players[i] = new Bot(name, i);
 	    } else {
-		players[i] = new Dummy(name);
+		players[i] = new Dummy(name, i);
 	    }
 	}
 	currentPlayer = players[0];
@@ -65,9 +65,9 @@ public class BackEnd {
 	    ownFigureOnStartfield = true;
         }
 
-        if (ownFigureOnStartfield && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()){
             figures[figureOnStartfield].enablePlacement();
-        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+        } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
 	    int firstOwnedFigure = activePlayer * 4;
 	    int lastOwnedFigure = firstOwnedFigure + 4;
 	    
@@ -143,9 +143,9 @@ public class BackEnd {
 	    ownFigureOnStartfield = true;
         }
 
-        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield  && !baseOfCurrentPlayerIsEmpty()){
             moveFigure(figureOnStartfield);
-        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
+        } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
 	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
                 if (figures[i].isInBase()){
                     moveFigure(i);
@@ -426,12 +426,11 @@ public class BackEnd {
         return 99;
     }
 
-    //check if base is empty (argument between 0 & 3)
-    private boolean isBaseEmpty(int playerNumber) {
-	int firstOwnedFigure = playerNumber * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
+    private boolean baseOfCurrentPlayerIsEmpty() {
+	int firstOwnedFigureIndex = currentPlayer.getPlayerIndex() * 4;
+	int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
 	
-        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+        for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
             if (figures[i].isInBase()) {
 		return false;
             }
