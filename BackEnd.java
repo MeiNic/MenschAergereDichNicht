@@ -1,12 +1,12 @@
 public class BackEnd {
     Figure[] figures;
-    int activePlayer;
     GameBoardGui gui;
     int randomNumber;
     WinWindow winner;
 
     private Player[] players;
     private Player currentPlayer;
+    private int currentPlayerIndex;
     
     BackEnd(Landingpage landingpage) {
 	String[] names = landingpage.getNames();
@@ -17,7 +17,6 @@ public class BackEnd {
 	    figures[i] = new Figure(i, index, names[index]);
 	}
 	
-        activePlayer = 0;
         randomNumber = 0;
 	
 	players = new Player[4];
@@ -33,7 +32,9 @@ public class BackEnd {
 		players[i] = new Dummy(name, i);
 	    }
 	}
-	currentPlayer = players[0];
+	currentPlayerIndex = 0;
+	currentPlayer = players[currentPlayerIndex];
+	
         gui = new GameBoardGui(this);
     }
 
@@ -58,7 +59,7 @@ public class BackEnd {
 	}
         
         //cache a much used value, make the code look cleaner
-        int figureOnStartfield = figureOnField(activePlayer * 10);
+        int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
         if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
@@ -68,10 +69,7 @@ public class BackEnd {
         if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()){
             figures[figureOnStartfield].enablePlacement();
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
-	    int firstOwnedFigure = activePlayer * 4;
-	    int lastOwnedFigure = firstOwnedFigure + 4;
-	    
-	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	    for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 		if (figures[i].isInBase()) {
 		    figures[i].enablePlacement();
 		}
@@ -86,10 +84,7 @@ public class BackEnd {
     private void playerMoveOnField() {
         boolean beatsPossible = false;
 	
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+        for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
             if (beatPossible(i)) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
@@ -103,7 +98,7 @@ public class BackEnd {
 	}
 
 	// Any movable figure should be moved now.
-	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 	    if (figures[i].isMovable()) {
 		figures[i].enablePlacement();
 	    }
@@ -123,9 +118,6 @@ public class BackEnd {
 	int allowedTries = getNumberOfAllowedTries();
 	int tries = 0;
 
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-
 	do {
 	    randomNumber = dice.roll();
 	    tries++;
@@ -136,7 +128,7 @@ public class BackEnd {
 	}
 
         //cache a much used value, make the code look cleaner
-        int figureOnStartfield = figureOnField(activePlayer * 10);
+        int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
         if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
@@ -146,7 +138,7 @@ public class BackEnd {
         if (ownFigureOnStartfield  && !baseOfCurrentPlayerIsEmpty()){
             moveFigure(figureOnStartfield);
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
-	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
+	    for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++){
                 if (figures[i].isInBase()){
                     moveFigure(i);
                     break;
@@ -154,7 +146,7 @@ public class BackEnd {
             }
         } else {
             boolean beatsPossible = false;
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+            for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
                 if (beatPossible(i)) {
                     moveFigure(i);
                     beatsPossible = true;
@@ -163,7 +155,7 @@ public class BackEnd {
             }
             //make user figure chooser for all figures of the player
             if (!beatsPossible){
-                for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+                for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
                     if (figures[i].isMovable()) {
                         moveFigure(i);
                         break;
@@ -442,10 +434,7 @@ public class BackEnd {
 	int numberOfFiguresInBase = 0;
 	int numberOfFinishedFigures = 0;
 	
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 	    if (figures[i].isInBase()) {
 		numberOfFiguresInBase++;
 	    } else if (figures[i].isFinished()) {
@@ -462,7 +451,7 @@ public class BackEnd {
     //move a figure out of base
     public void moveOutOfBase(int figureNumber) {
 	Figure figureToBeMoved = figures[figureNumber];
-	int firstField = 10 * figureToBeMoved.color;
+	int firstField = currentPlayer.getIndexOfStartField();
 	int figureOnFirstField = figureOnField(firstField);
 
 	if (figureOnFirstField != 99) {
@@ -476,8 +465,8 @@ public class BackEnd {
     //next player
     public void nextMove() {
 	if (randomNumber != 6) {
-	    activePlayer = (++activePlayer) % 4;
-	    currentPlayer = players[activePlayer];
+	    currentPlayerIndex = (++currentPlayerIndex) % 4;
+	    currentPlayer = players[currentPlayerIndex];
 	}
 	int playerState = currentPlayer.getPlayerState();
 
