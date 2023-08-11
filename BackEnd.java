@@ -2,7 +2,6 @@ public class BackEnd {
     Figure[] figures;
     GameBoardGui gui;
     int randomNumber;
-    WinWindow winner;
 
     private Player[] players;
     private Player currentPlayer;
