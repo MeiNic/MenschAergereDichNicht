@@ -10,12 +10,18 @@ public class Figure {
 
     public int field;
     public int color;
+    public String owner;
 
-    Figure(int fieldNew, int colorNew){
+    Figure(int fieldNew, int colorNew, String owner){
 	state = State.IN_BASE;
         placeable = false;
         field = fieldNew;
         color = colorNew;
+	this.owner = owner;
+    }
+
+    public String getOwner() {
+	return owner;
     }
 
     public void enablePlacement() {
