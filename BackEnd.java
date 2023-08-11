@@ -437,19 +437,6 @@ public class BackEnd {
         }
         return true;
     }
-    
-    //check if all figures are in the base
-    private boolean isBaseFull(int playerNumber) {
-	int firstOwnedFigure = playerNumber * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-        for(int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
-            if (!figures[i].isInBase()) {
-		return false;
-            }
-        }
-        return true;
-    }
 
     private int getNumberOfAllowedTries() {
 	int numberOfFiguresInBase = 0;
