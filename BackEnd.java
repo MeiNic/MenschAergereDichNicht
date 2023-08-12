@@ -1,15 +1,14 @@
 public class BackEnd {
     Figure[] figures;
-    GameBoardGui gui;
     int randomNumber;
 
     private Player[] players;
     private Player currentPlayer;
     private int currentPlayerIndex;
     
-    BackEnd(Landingpage landingpage) {
-	String[] names = landingpage.getNames();
+    BackEnd(String[] names, int numberOfPlayers, boolean fillWithBots) {
 	figures = new Figure[16];
+	players = new Player[4];
 	
 	for (int i = 0; i < 16; i++) {
 	    int index = Math.floorDiv(i, 4);
@@ -18,27 +17,26 @@ public class BackEnd {
 	
         randomNumber = 0;
 	
-	players = new Player[4];
 	for (int i = 0; i < 4; i++) {
-	    String name = names[i];
-	    boolean fillWithBots = landingpage.getBotsSelection();
-	    
-	    if (i <= landingpage.getPlayerNumber()) {
-		players[i] = new Human(name, i);
+	    if (i <= numberOfPlayers) {
+		players[i] = new Human(names[i], i);
 	    } else if (fillWithBots) {
-		players[i] = new Bot(name, i);
+		players[i] = new Bot(names[i], i);
 	    } else {
-		players[i] = new Dummy(name, i);
+		players[i] = new Dummy(names[i], i);
 	    }
 	}
+	
 	currentPlayerIndex = 0;
 	currentPlayer = players[currentPlayerIndex];
-	
-        gui = new GameBoardGui(this);
     }
 
     public String getNameOfCurrentPlayer() {
 	return currentPlayer.getName();
+    }
+
+    public int getPlayerStateOfCurrentPlayer() {
+	return currentPlayer.getPlayerState();
     }
 
     //progress a dice input
@@ -111,7 +109,7 @@ public class BackEnd {
     }
 
     //bot-move on the "normal" fields
-    private boolean botMove(){
+    public boolean botMove(){
 	Dice dice = new LoadedDice();
 
 	int allowedTries = getNumberOfAllowedTries();
@@ -461,33 +459,16 @@ public class BackEnd {
 	figureToBeMoved.setOnField();
     }
 
-    //next player
-    public void nextMove() {
-	if (randomNumber != 6) {
-	    currentPlayerIndex = (++currentPlayerIndex) % 4;
-	    currentPlayer = players[currentPlayerIndex];
+    public void setNewCurrentPlayerIfNecessary() {
+	if (currentPlayerIsAllowedToRollTheDiceAgain()) {
+	    return;
 	}
-	int playerState = currentPlayer.getPlayerState();
 
-	if (playerState == 1) {
-	    gui.setBotAdvice();
+	currentPlayerIndex = ++currentPlayerIndex % 4;
+	currentPlayer = players[currentPlayerIndex];
+    }
 
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		throw new RuntimeException(e);
-	    }
-
-	    boolean botMovedItsFigures = botMove();
-	    if (botMovedItsFigures) {
-		gui.replaceFigures();
-		gui.displayWinWindowIfNecessary();
-	    }
-	    nextMove();
-	} else if (playerState == 0) {
-	    gui.setActivePlayer();
-	} else {
-	    nextMove();
-	}
+    private boolean currentPlayerIsAllowedToRollTheDiceAgain() {
+	return 6 == randomNumber;
     }
 }
