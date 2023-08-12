@@ -62,8 +62,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     BackEnd backend;
 
-    public GameBoardGui(BackEnd backend) {
-        this.backend = backend;
+    public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
+        this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
         figures = new Circle[16];
         houses = new Circle[16];
@@ -146,7 +146,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		displayResult(backend.randomNumber);
 		setPromptValues();
 	    } else {
-		backend.nextMove();
+		executeNextMove();
 	    }
         }
     }
@@ -247,7 +247,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	replaceFigures();
 	displayWinWindowIfNecessary();
 	
-	backend.nextMove();
+	executeNextMove();
     }
 
     public void displayWinWindowIfNecessary() {
@@ -259,6 +259,32 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	
 	new WinWindow(nameOfWinner);
 	setVisible(false);
+    }
+    
+    private void executeNextMove() {
+	backend.setNewCurrentPlayerIfNecessary();
+	
+	int playerState = backend.getPlayerStateOfCurrentPlayer();
+	if (playerState == 1) {
+	    setBotAdvice();
+
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		throw new RuntimeException(e);
+	    }
+
+	    boolean botMovedItsFigures = backend.botMove();
+	    if (botMovedItsFigures) {
+		replaceFigures();
+		displayWinWindowIfNecessary();
+	    }
+	    executeNextMove();
+	} else if (playerState == 0) {
+	    setActivePlayer();
+	} else {
+	    executeNextMove();
+	}
     }
 
     // Even though we neither implement nor use these methods, they
