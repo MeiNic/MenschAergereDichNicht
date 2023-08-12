@@ -346,10 +346,10 @@ public class BackEnd {
     //check which player has won
     public String getNameOfWinner(){
 	setFinishedFigures();
-	
+
 	for (int i = 0; i < 16; i += 4) {
 	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-		return players[0].getName();
+		return figures[i].getOwner();
 	    }
 	}
 	return null;
