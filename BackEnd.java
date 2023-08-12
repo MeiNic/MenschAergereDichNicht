@@ -448,7 +448,7 @@ public class BackEnd {
     //move a figure out of base
     public void moveOutOfBase(int figureNumber) {
 	Figure figureToBeMoved = figures[figureNumber];
-	int firstField = currentPlayer.getIndexOfStartField();
+	int firstField = 10 * figureToBeMoved.color;
 	int figureOnFirstField = figureOnField(firstField);
 
 	if (figureOnFirstField != 99) {
