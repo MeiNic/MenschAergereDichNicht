@@ -109,25 +109,31 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	fields[20].setColor(FieldColor.BLUE.getHexCode());
 	fields[30].setColor(FieldColor.RED.getHexCode());
 
-        // Implement JButton and JLabel
+	// Initialize UI Elements
         userAdvice = new JLabel();
-        rollDice = new JButton();
+	rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
 
-        // Set parameters for JComponents
+	// Set text
 	userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-        userAdvice.setBounds(970, 22, 550, 62);
-        add(userAdvice);
-        rollDice.setText("roll the dice");
+	rollDice.setText("roll the dice");
+	
+	// Set bounds
+	userAdvice.setBounds(970, 22, 550, 62);
         rollDice.setBounds(980, 90, 120, 32);
-        rollDice.addActionListener(this);
-        add(rollDice);
-        result.setBounds(1150, 90, 100, 32);
-        add(result);
+	result.setBounds(1150, 90, 100, 32);
 
-	// Display UI
+	// Add listeners
+        rollDice.addActionListener(this);
 	addMouseListener(this);
+
+	// Add UI Elements
+        add(rollDice);
+	add(userAdvice);
+        add(result);
+	
+	// Display UI
         setTitle("game field");
         setSize(1400, 940);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
