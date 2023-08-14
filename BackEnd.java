@@ -1,63 +1,46 @@
-import java.util.Random;
-
 public class BackEnd {
-    enum PlayerState {
-        IS_PLAYER,
-        IS_BOT,
-        NOTHING,
-    }
-    record Player(String name, PlayerState status){
-        int getPlayerState(){
-            if (status == PlayerState.IS_PLAYER){
-                return 0;
-            } else if (status == PlayerState.IS_BOT) {
-                return 1;
-            }
-            return -1;
-        }
-    }
     Figure[] figures;
-    Landingpage startpage;
-    final Player[] players;
-    int activePlayer;
-    GameBoardGui gui;
     int randomNumber;
-    WinWindow winner;
 
-    BackEnd(Landingpage landingpage) {
-        figures = new Figure[16];
-        for (int i = 0; i < figures.length; i++) {
-            figures[i] = new Figure(i, 0);
-        }
-        for (int i = 0; i < 4; i++) {
-            figures[i + 4].color = 1;
-            figures[i + 8].color = 2;
-            figures[i + 12].color = 3;
-        }
-
-        activePlayer = 0;
+    private Player[] players;
+    private Player currentPlayer;
+    private int currentPlayerIndex;
+    
+    BackEnd(String[] names, int numberOfPlayers, boolean fillWithBots) {
+	figures = new Figure[16];
+	players = new Player[4];
+	
+	for (int i = 0; i < 16; i++) {
+	    int index = Math.floorDiv(i, 4);
+	    figures[i] = new Figure(i, index, names[index]);
+	}
+	
         randomNumber = 0;
-        players = new Player[4];
+	
+	for (int i = 0; i < 4; i++) {
+	    if (i <= numberOfPlayers) {
+		players[i] = new Human(names[i], i);
+	    } else if (fillWithBots) {
+		players[i] = new Bot(names[i], i);
+	    } else {
+		players[i] = new Dummy(names[i], i);
+	    }
+	}
+	
+	currentPlayerIndex = 0;
+	currentPlayer = players[currentPlayerIndex];
+    }
 
-        //progress input from landingpage
-        startpage = landingpage;
-        boolean bots = startpage.getBotsSelection();
-        for (int i = 0; i < 4; i++){
-            if (i <= startpage.getPlayerNumber()){
-                players[i] = new Player(startpage.getNames()[i], PlayerState.IS_PLAYER);
-            }else {
-                if (bots){
-                    players[i] = new Player(startpage.getNames()[i], PlayerState.IS_BOT);
-                }else {
-                    players[i] = new Player(startpage.getNames()[i], PlayerState.NOTHING);
-                }
-            }
-        }
-        gui = new GameBoardGui(players[0].name, this);
+    public String getNameOfCurrentPlayer() {
+	return currentPlayer.getName();
+    }
+
+    public int getPlayerStateOfCurrentPlayer() {
+	return currentPlayer.getPlayerState();
     }
 
     //progress a dice input
-    public void playerMove() {
+    public boolean playerMove() {
 	Dice dice = new LaPlaceDice();
 	
 	int allowedTries = getNumberOfAllowedTries();
@@ -69,27 +52,21 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 	
 	if (randomNumber != 6 && allowedTries == 3) {
-	    nextMove();
-	    return;
+	    return false;
 	}
         
-        gui.displayResult(randomNumber);
-	
         //cache a much used value, make the code look cleaner
-        int figureOnStartfield = figureOnField(activePlayer * 10);
+        int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer){
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
 	    ownFigureOnStartfield = true;
         }
 
-        if (ownFigureOnStartfield && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()){
             figures[figureOnStartfield].enablePlacement();
-        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-	    int firstOwnedFigure = activePlayer * 4;
-	    int lastOwnedFigure = firstOwnedFigure + 4;
-	    
-	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+        } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
+	    for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 		if (figures[i].isInBase()) {
 		    figures[i].enablePlacement();
 		}
@@ -97,19 +74,14 @@ public class BackEnd {
 	} else {
 	    playerMoveOnField();
 	}
-	
-        gui.setPromptValues();
+	return true;
     }
-
 
     //part of the playerMove-method - don't use out of it
     private void playerMoveOnField() {
         boolean beatsPossible = false;
 	
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+        for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
             if (beatPossible(i)) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
@@ -123,36 +95,25 @@ public class BackEnd {
 	}
 
 	// Any movable figure should be moved now.
-	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 	    if (figures[i].isMovable()) {
 		figures[i].enablePlacement();
 	    }
         }
     }
 
-    public void performUserChoice(){
-        //removing the place options on all figures
+    public void disablePlacementForAllFigures() {
         for (Figure figure : figures) {
             figure.disablePlacement();
         }
-        gui.removePrompt();
-        gui.replaceFigures();
-
-	displayWinWindowIfNecessary();
-	
-        //trigger new move in fontEnd
-        nextMove();
     }
 
     //bot-move on the "normal" fields
-    private void botMove(){
+    public boolean botMove(){
 	Dice dice = new LoadedDice();
 
 	int allowedTries = getNumberOfAllowedTries();
 	int tries = 0;
-
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
 
 	do {
 	    randomNumber = dice.roll();
@@ -160,24 +121,21 @@ public class BackEnd {
 	} while (tries < allowedTries && randomNumber != 6);
 
 	if (randomNumber != 6 && allowedTries == 3) {
-	    nextMove();
-	    return;
+	    return false;
 	}
-        
-        gui.displayResult(randomNumber);
 
         //cache a much used value, make the code look cleaner
-        int figureOnStartfield = figureOnField(activePlayer * 10);
+        int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].color == activePlayer) {
+        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
 	    ownFigureOnStartfield = true;
         }
 
-        if (ownFigureOnStartfield  && !isBaseEmpty(activePlayer)){
+        if (ownFigureOnStartfield  && !baseOfCurrentPlayerIsEmpty()){
             moveFigure(figureOnStartfield);
-        } else if (!isBaseEmpty(activePlayer) && randomNumber == 6) {
-	    for (int i = firstOwnedFigure; i < lastOwnedFigure; i++){
+        } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
+	    for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++){
                 if (figures[i].isInBase()){
                     moveFigure(i);
                     break;
@@ -185,7 +143,7 @@ public class BackEnd {
             }
         } else {
             boolean beatsPossible = false;
-            for (int i = activePlayer * 4; i < activePlayer * 4 + 4; i++) {
+            for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
                 if (beatPossible(i)) {
                     moveFigure(i);
                     beatsPossible = true;
@@ -194,7 +152,7 @@ public class BackEnd {
             }
             //make user figure chooser for all figures of the player
             if (!beatsPossible){
-                for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+                for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
                     if (figures[i].isMovable()) {
                         moveFigure(i);
                         break;
@@ -202,20 +160,7 @@ public class BackEnd {
                 }
             }
         }
-        gui.replaceFigures();
-        displayWinWindowIfNecessary();
-        nextMove();
-    }
-
-    private void displayWinWindowIfNecessary() {
-	setFinishedFigures();
-
-	String nameOfWinner = getWinningPlayer();
-	if (nameOfWinner == null) {
-	    return;
-	}
-	winner = new WinWindow(nameOfWinner);
-	gui.setVisible(false);
+	return true;
     }
 
     //move the given figure by the given number
@@ -263,7 +208,7 @@ public class BackEnd {
 	if (!goToHouse) {
 	    //move the figure, and move the figure before on the field
 	    //to the base
-	    if (figures[figureOnField(numberNew)].color != figureColor){
+	    if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
 		moveToBase(figureOnField(numberNew));
 	        figureToBeMoved.field = numberNew;
 	    } else {
@@ -368,7 +313,7 @@ public class BackEnd {
 	}
 
 	boolean beatableFigureIsOwnedByOtherPlayer =
-	    figures[figureOnField(newField)].color != figureColor;
+	    figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
 
 	if (beatableFigureIsOwnedByOtherPlayer) {
 	    return true;
@@ -399,10 +344,12 @@ public class BackEnd {
     }
 
     //check which player has won
-    private String getWinningPlayer(){
+    public String getNameOfWinner(){
+	setFinishedFigures();
+
 	for (int i = 0; i < 16; i += 4) {
 	    if (figures[i].isFinished() && figures[i + 1].isFinished() && figures[i + 2].isFinished() && figures[i + 3].isFinished()) {
-		return players[i / 4].name;
+		return figures[i].getOwner();
 	    }
 	}
 	return null;
@@ -468,26 +415,12 @@ public class BackEnd {
         return 99;
     }
 
-    //check if base is empty (argument between 0 & 3)
-    private boolean isBaseEmpty(int playerNumber) {
-	int firstOwnedFigure = playerNumber * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
+    private boolean baseOfCurrentPlayerIsEmpty() {
+	int firstOwnedFigureIndex = currentPlayer.getPlayerIndex() * 4;
+	int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
 	
-        for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+        for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
             if (figures[i].isInBase()) {
-		return false;
-            }
-        }
-        return true;
-    }
-    
-    //check if all figures are in the base
-    private boolean isBaseFull(int playerNumber) {
-	int firstOwnedFigure = playerNumber * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-        for(int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
-            if (!figures[i].isInBase()) {
 		return false;
             }
         }
@@ -498,10 +431,7 @@ public class BackEnd {
 	int numberOfFiguresInBase = 0;
 	int numberOfFinishedFigures = 0;
 	
-	int firstOwnedFigure = activePlayer * 4;
-	int lastOwnedFigure = firstOwnedFigure + 4;
-	
-	for (int i = firstOwnedFigure; i < lastOwnedFigure; i++) {
+	for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
 	    if (figures[i].isInBase()) {
 		numberOfFiguresInBase++;
 	    } else if (figures[i].isFinished()) {
@@ -529,27 +459,16 @@ public class BackEnd {
 	figureToBeMoved.setOnField();
     }
 
-    //next player
-    private void nextMove() {
-	if (randomNumber != 6) {
-	    activePlayer = (++activePlayer) % 4;
+    public void setNewCurrentPlayerIfNecessary() {
+	if (currentPlayerIsAllowedToRollTheDiceAgain()) {
+	    return;
 	}
-	int playerState = players[activePlayer].getPlayerState();
 
-	if (playerState == 1) {
-	    gui.setBotAdvice();
+	currentPlayerIndex = ++currentPlayerIndex % 4;
+	currentPlayer = players[currentPlayerIndex];
+    }
 
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		throw new RuntimeException(e);
-	    }
-
-	    botMove();
-	} else if (playerState == 0) {
-	    gui.setActivePlayer();
-	} else {
-	    nextMove();
-	}
+    private boolean currentPlayerIsAllowedToRollTheDiceAgain() {
+	return 6 == randomNumber;
     }
 }

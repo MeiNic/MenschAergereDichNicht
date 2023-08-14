@@ -91,9 +91,19 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
-        BackEnd game = new BackEnd(this);
-        Rules overview = new Rules(game);
-        game.gui.setVisible(false);
+
+	String[] names = getNames();
+	int numberOfPlayers = getPlayerNumber();
+	boolean fillWithBots = getBotsSelection();
+	
+	GameBoardGui game = new GameBoardGui(names, numberOfPlayers, fillWithBots);
+
+	// Providing a help button during the game might be less
+        // annoying playing, especially during development when you
+        // often have to start the game again and again.
+
+	// Rules overview = new Rules(game);
+	// game.gui.setVisible(false);
     }
 
     public String[] getNames(){
@@ -149,7 +159,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         for (Circle circle : array) {
             int x = circle.getX();
             int y = circle.getY();
-            int radius = circle.getRadius();
+            int radius = circle.getDiameter();
             Color color = circle.getColor();
 
             g.setColor(color);

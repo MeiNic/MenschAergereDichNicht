@@ -4,215 +4,361 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
-    //Store hex-codes for different colors - yellow, green, blue, red, normal
-    private final String[] colors = {"#ffc957", "#2a914e", "#1e32ff", "#cc0000", "#cccccc"};
-    private final String[] figureColors = {"#ffff00", "#00cc00", "#3c93ff", "#ff0000"};
+    private enum FieldColor {
+	YELLOW("#FFC957"),
+	GREEN("#2A914E"),
+	BLUE("#1E32FF"),
+	RED("#CC0000"),
+	GRAY("#CCCCCC");
 
-    //Circles house - Yellow-Green-Blue-Red (a-b-c-d)
-    private Circle[] house;
-    private final int[] houseX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
-    private final int[] houseY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
+	private final String hexCode;
 
-    //Circles base - Yellow-Green-Blue-Red (bottom left, bottom right, top left, top right)
-    private Circle[] base;
-    private final int[] baseX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
-    private final int[] baseY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
+	private FieldColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
 
-    //Circles gamefield - start at yellow startfield
-    private Circle[] gameField;
-    private final int[] gameFieldX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
-    private final int[] gameFieldY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
+	public String getHexCode() {
+	    return hexCode;
+	}
+    }
 
-    //ovals figures
+    private enum FigureColor {
+	YELLOW("#FFFF00"),
+        GREEN("#00CC00"),
+	BLUE("#3C93FF"),
+	RED("#FF0000");
+
+	private final String hexCode;
+
+	private FigureColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
+
+	public String getHexCode() {
+	    return hexCode;
+	}
+    }
+
     private Circle[] figures;
+    private Circle[] houses;
+    private Circle[] bases;
+    private Circle[] fields;
+    
+    private final int[] housePositionsX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
+    private final int[] housePositionsY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
 
-    //all JComponents
+    private final int[] basePositionsX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
+    private final int[] basePositionsY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
+
+    private final int[] fieldPositionsX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
+    private final int[] fieldPositionsY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
+
     JLabel userAdvice;
     JButton rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
 
-    //variable for the backend
     BackEnd backend;
 
-    public GameBoardGui(String currentPlayer, BackEnd backendNew) {
-        //link backEnd
-        backend = backendNew;
+    public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
+        this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
-        //initialization of arrays
-        house = new Circle[16];
-        base = new Circle[16];
-        gameField = new Circle[40];
         figures = new Circle[16];
+        houses = new Circle[16];
+        bases = new Circle[16];
+        fields = new Circle[40];
+	
         replaceFigures();
 
-        //set circles in arrays
-        setCircleValues(house, houseX, houseY, 50, colors[0]);
-        setCircleValues(base, baseX, baseY, 50, colors[0]);
-        setCircleValues(gameField, gameFieldX, gameFieldY, 50, colors[4]);
+	int diameter = 50;
 
-        //set different colors in one array
+	for (int i = 0; i < houses.length; i++) {
+	    int x = housePositionsX[i];
+	    int y = housePositionsY[i];
+
+	    houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+	}
+	for (int i = 0; i < bases.length; i++) {
+	    int x = basePositionsX[i];
+	    int y = basePositionsY[i];
+
+	    bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+	}
+	for (int i = 0; i < fields.length; i++) {
+	    int x = fieldPositionsX[i];
+	    int y = fieldPositionsY[i];
+
+	    fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
+	}
+
         for (int i = 0; i < 4; i++) {
-            house[i + 4].setColor(colors[1]);
-            house[i + 8].setColor(colors[2]);
-            house[i + 12].setColor(colors[3]);
-            base[i + 4].setColor(colors[1]);
-            base[i + 8].setColor(colors[2]);
-            base[i + 12].setColor(colors[3]);
-            gameField[i * 10].setColor(colors[i]);
+            houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
+            houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
+            houses[i + 12].setColor(FieldColor.RED.getHexCode());
+
+            bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
+            bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
+            bases[i + 12].setColor(FieldColor.RED.getHexCode());
         }
 
-        //Implement JButton and JLabel
+	// Set color for start fields
+	fields[0].setColor(FieldColor.YELLOW.getHexCode());
+	fields[10].setColor(FieldColor.GREEN.getHexCode());
+	fields[20].setColor(FieldColor.BLUE.getHexCode());
+	fields[30].setColor(FieldColor.RED.getHexCode());
+
+	// Initialize UI Elements
         userAdvice = new JLabel();
-        rollDice = new JButton();
+	rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
 
-        //set parameters for JComponents
-        setJComponentValues(currentPlayer);
-        //display GUI
-        adjustJFrameSetting();
+	// Set text
+	userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
+	rollDice.setText("roll the dice");
+	
+	// Set bounds
+	userAdvice.setBounds(970, 22, 550, 62);
+        rollDice.setBounds(980, 90, 120, 32);
+	result.setBounds(1150, 90, 100, 32);
+
+	// Add listeners
+        rollDice.addActionListener(this);
+	addMouseListener(this);
+
+	// Add UI Elements
+        add(rollDice);
+	add(userAdvice);
+        add(result);
+	
+	// Display UI
+        setTitle("game field");
+        setSize(1400, 940);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setResizable(true);
+        setVisible(true);
     }
 
-    //Button Action - Method
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == rollDice){
-            //remove the button from the JPanel
-            remove(rollDice);
+	if (!(rollDice == e.getSource())) {
+	    return;
+	}
 
-            //trigger new move in the backend
-            backend.playerMove();
-        }
+	remove(rollDice);
+	boolean humanCanMoveTheirFigures = backend.playerMove();
+
+	if (humanCanMoveTheirFigures) {
+	    displayResult(backend.randomNumber);
+	    setPromptValues();
+	} else {
+	    executeNextMove();
+	}
     }
 
-    //methods for the mouse listener
     public void mouseClicked(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-        //check if the figure is on the gamefield
-        for (int i = 0; i < gameFieldX.length; i++){
-            int diffX = gameFieldX[i] - mouseX;
-            int diffY = gameFieldY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int cache = backend.figureOnField(i);
-                if (cache != 99){
-                    if (backend.figures[cache].color == backend.activePlayer){
-                        if(backend.figures[cache].isPlaceable()){
-                            backend.moveFigure(cache);
-                        }else {
-                            backend.moveToBase(cache);
-                        }
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-        }
-        //check if the figure is in the house or base
-        for (int i = 0; i < houseX.length; i++){
-            int diffX = houseX[i] - mouseX;
-            int diffY = houseY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int house = backend.figureOnHouseField(i);
-                if (house != 99){
-                    if (backend.figures[house].color == backend.activePlayer){
-                        if (backend.figures[house].isPlaceable()) {
-                            backend.moveFigure(house);
-                        }else {
-                            backend.moveToBase(house);
-                        }
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-            diffX = baseX[i] - mouseX;
-            diffY = baseY[i] - mouseY;
-            if (-50 <= diffX && diffX <= 0 && -50 <= diffY && diffY <= 0){
-                int base = backend.figureOnBaseField(i);
-                if (base != 99){
-                    if (backend.figures[base].isPlaceable()){
-                        backend.moveOutOfBase(base);
-                        backend.performUserChoice();
-                        return;
-                    }
-                }
-            }
-        }
+        int mousePositionX = e.getX();
+        int mousePositionY = e.getY();
+
+	int diameter = 50;
+
+	for (int i = 0; i < fieldPositionsX.length; i++) {
+	    int differenceX = mousePositionX - fieldPositionsX[i];
+	    int differenceY = mousePositionY - fieldPositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveFigure(clickedFigureIndex);
+	    } else {
+		backend.moveToBase(clickedFigureIndex);
+	    }
+	    prepareNextMove();
+	    return;
+	}
+	
+	for (int i = 0; i < housePositionsX.length; i++) {
+	    int differenceX = mousePositionX - housePositionsX[i];
+	    int differenceY = mousePositionY - housePositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnHouseField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveFigure(clickedFigureIndex);
+	    } else {
+		backend.moveToBase(clickedFigureIndex);
+	    }
+	    prepareNextMove();
+	    return;
+	}
+	
+	for (int i = 0; i < basePositionsX.length; i++) {
+	    int differenceX = mousePositionX - basePositionsX[i];
+	    int differenceY = mousePositionY - basePositionsY[i];
+
+	    if (differenceX <= 0 || diameter <= differenceX
+		|| differenceY <= 0 || diameter <= differenceY) {
+		continue;
+	    }
+	    
+	    int clickedFigureIndex = backend.figureOnBaseField(i);
+	    if (clickedFigureIndex == 99) {
+		continue;
+	    }
+		
+	    Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+		continue;
+	    }
+
+	    if (clickedFigure.isPlaceable()) {
+		backend.moveOutOfBase(clickedFigureIndex);
+	    }
+	    prepareNextMove();
+	    return;
+	}
     }
 
-    //methods below aren't used (but needed, otherwise causing errors)
-    public void mousePressed(MouseEvent e) {
-
-    }
-    public void mouseReleased(MouseEvent e) {
-
-    }
-    public void mouseEntered(MouseEvent e) {
-
-    }
-    public void mouseExited(MouseEvent e) {
-
+    private void prepareNextMove() {
+	backend.disablePlacementForAllFigures();
+	
+	removePrompt();
+	replaceFigures();
+	displayWinWindowIfNecessary();
+	
+	executeNextMove();
     }
 
-     //Interface with BackEnd - 1. method: replaceFigures
+    public void displayWinWindowIfNecessary() {
+	String nameOfWinner = backend.getNameOfWinner();
+	
+	if (nameOfWinner == null) {
+	    return;
+	}
+	
+	new WinWindow(nameOfWinner);
+	setVisible(false);
+    }
+    
+    private void executeNextMove() {
+	backend.setNewCurrentPlayerIfNecessary();
+	
+	int playerState = backend.getPlayerStateOfCurrentPlayer();
+	if (playerState == 1) {
+	    setBotAdvice();
+
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		throw new RuntimeException(e);
+	    }
+
+	    boolean botMovedItsFigures = backend.botMove();
+	    if (botMovedItsFigures) {
+		replaceFigures();
+		displayWinWindowIfNecessary();
+	    }
+	    executeNextMove();
+	} else if (playerState == 0) {
+	    setActivePlayer();
+	} else {
+	    executeNextMove();
+	}
+    }
+
+    // Even though we neither implement nor use these methods, they
+    // are necessary for implementing `java.awt.event.MouseListener`.
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+
     public void replaceFigures(){
         Figure[] input = backend.figures;
+	int diameter = 50;
+	    
         for (int i = 0; i < input.length && i < figures.length; i++){
-            if(input[i].isInBase()){
-                figures[i] = new Circle(baseX[input[i].field], baseY[input[i].field], 50, figureColors[input[i].color]);
-            }else if (input[i].isInHouse()){
-                figures[i] = new Circle(houseX[input[i].field], houseY[input[i].field], 50, figureColors[input[i].color]);
-            }else {
-                figures[i] = new Circle(gameFieldX[input[i].field], gameFieldY[input[i].field], 50, figureColors[input[i].color]);
+	    String color = FigureColor.YELLOW.getHexCode();
+
+	    switch (input[i].color) {
+	    case 0: color = FigureColor.YELLOW.getHexCode();
+		break;
+	    case 1: color = FigureColor.GREEN.getHexCode();
+		break;
+	    case 2: color = FigureColor.BLUE.getHexCode();
+		break;
+	    case 3: color = FigureColor.RED.getHexCode();
+		break;
+	    }
+
+	    int x;
+	    int y;
+	    
+            if (input[i].isInBase()) {
+		x = basePositionsX[input[i].field];
+		y = basePositionsY[input[i].field];
+            } else if (input[i].isInHouse()) {
+		x = housePositionsX[input[i].field];
+		y = housePositionsY[input[i].field];
+            } else {
+		x = fieldPositionsX[input[i].field];
+		y = fieldPositionsY[input[i].field];
             }
+
+	    figures[i] = new Circle(x, y, diameter, color);
         }
+	
         repaint();
     }
 
-    //method displays the given value as the result
     public void displayResult(int randomNumber){
         result.setText("Result: " + randomNumber);
         repaint();
     }
 
-    /*
-    method sets the given player-name to the userAdvice-JLabel and resets the result jLabel
-     */
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.players[backend.activePlayer].name() + " is on the turn, click this button");
+        userAdvice.setText("Player " + backend.getNameOfCurrentPlayer() + " is on the turn, click this button");
         result.setText("");
         repaint();
     }
 
-    /*
-      -- DON'T use this method out of constructor - DON'T change any parameters --
-      methods sets als parameters for the JLabels and the JButton and in the end adds them to the frame
-      -- DON'T use this method out of constructor - DON'T change any parameters --
-     */
-    private void setJComponentValues(String currentPlayer){
-        userAdvice.setText("It's  " + currentPlayer + "s turn, click this button to roll the dice");
-        userAdvice.setBounds(970, 22, 550, 62);
-        add(userAdvice);
-        rollDice.setText("roll the dice");
-        rollDice.setBounds(980, 90, 120, 32);
-        rollDice.addActionListener(this);
-        add(rollDice);
-        result.setBounds(1150, 90, 100, 32);
-        add(result);
-    }
-
-    //setting the values for the figureChooserPrompt
     public void setPromptValues(){
-        userAdvice.setText("It's " + backend.players[backend.activePlayer].name() + "s turn");
+        userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(970, 120, 250, 32);
         add(figureChooserPrompt);
     }
 
-    //removing the figureChooserPrompt from the GameBoardGui
     public void removePrompt(){
         remove(figureChooserPrompt);
     }
@@ -224,77 +370,43 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
-    /*
-      -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
-      sets all needed parameters for the frame and opens in the end
-      -- DON'T use this method out of constructor - DON'T change any parameters - ONLY call at the END of the constructor --
-     */
-    private void adjustJFrameSetting() {
-        addMouseListener(this);
-        setTitle("game field");
-        setSize(1400, 940);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        setBackground(Color.BLACK);
-        setResizable(true);
-        setVisible(true);
-    }
-
-    /*
-     -- methods only used in constructor DON'T use out of the constructor! --
-     Function sets in the give array new Circles with the given x and y value, radius and color
-     als well as set the border array with fitting border circles
-     -- methods only used in constructor DON'T use out of the constructor! --
-     */
-    private void setCircleValues(Circle[] array, int[] x, int[] y, int radius, String hexColor) {
-        for (int i = 0; i < array.length; i++) {
-            int xNew = x[i];
-            int yNew = y[i];
-            array[i] = new Circle(xNew, yNew, radius, hexColor);
-        }
-    }
-
-    /*
-     -- methods needed to paint circles in JFrame --
-     "paint() is used to paint all graphical objects in the JFrame (circles + ovals)
-     -- methods needed to paint circles in JFrame --
-     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        forEachloopPaintFields(g, house);
-        forEachloopPaintFields(g, base);
-        forEachloopPaintFields(g, gameField);
-        forEachloopPaintFigures(g, figures);
+        paintFields(g, houses);
+        paintFields(g, bases);
+        paintFields(g, fields);
+	
+        paintFigures(g, figures);
     }
 
-    private void forEachloopPaintFields(Graphics g, Circle[] array) {
-        for (Circle circle : array) {
+    private void paintFields(Graphics g, Circle[] circles) {
+        for (Circle circle : circles) {
             int x = circle.getX();
             int y = circle.getY();
-            int radius = circle.getRadius();
+            int diameter = circle.getDiameter();
             Color color = circle.getColor();
 
             g.setColor(color);
-            g.fillOval(x, y, radius, radius);
+            g.fillOval(x, y, diameter, diameter);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+	    g.drawOval(x, y, diameter, diameter);
         }
     }
 
-    private void forEachloopPaintFigures(Graphics g, Circle[] array){
-        for (Circle oval : array){
-            int x = oval.getX() + oval.getRadius() / 4;
+    private void paintFigures(Graphics g, Circle[] ovals){
+        for (Circle oval : ovals){
+            int x = oval.getX() + oval.getDiameter() / 4;
             int y = oval.getY();
-            int radius = oval.getRadius();
-            int radiusHalf = oval.getRadius() / 2;
+            int diameter = oval.getDiameter();
+            int radius = oval.getDiameter() / 2;
             Color color = oval.getColor();
 
             g.setColor(color);
-            g.fillOval(x, y, radiusHalf, radius);
+            g.fillOval(x, y, radius, diameter);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radiusHalf + 1, radius + 1);
+            g.drawOval(x, y, radius, diameter);
         }
     }
 }
