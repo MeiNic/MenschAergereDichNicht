@@ -13,6 +13,11 @@ javac Main.java
 echo "done."
 
 echo "Starting game."
-java Main
+if [[ "$OSTYPE" == "linux-gnu" ]]
+then
+    java -Dsun.java2d.uiScale=2.0 Main
+else
+    java Main
+fi
 
 cd ../
