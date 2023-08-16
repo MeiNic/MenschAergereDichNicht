@@ -76,9 +76,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
     
     public void stateChanged(ChangeEvent e) {
-        int value = getPlayerNumber();
         for (int i = 0; i < 4; i++) {
-            if (i <= value) {
+            if (i < getNumberOfHumanPlayers()) {
                 add(userNames[i]);
                 colorMarker[i].setY(yCoordinatesCircles[i]);
             } else {
@@ -93,7 +92,12 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setVisible(false);
 
 	String[] names = getNames();
-	int numberOfPlayers = getPlayerNumber();
+	// TODO: Remove this `-1` by passing the "real" number of
+	// human players to `BackEnd` and switching a `<=` to a `<` in
+	// a loop of its constructor. This has to be done right after
+	// the pull request for refactoring this file has been fully
+	// merged with master. @guemax on 2023/08/16.
+	int numberOfPlayers = getNumberOfHumanPlayers() - 1;
 	boolean fillWithBots = getBotsSelection();
 	
 	GameBoardGui game = new GameBoardGui(names, numberOfPlayers, fillWithBots);
@@ -120,11 +124,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         return playerNames;
     }
 
-    public int getPlayerNumber() {
-        Object value = playerNumber.getValue();
-        int currentValue = (int)value;
-        currentValue -= 1;
-        return currentValue;
+    public int getNumberOfHumanPlayers() {
+	return (int)playerNumber.getValue();
     }
 
     public boolean getBotsSelection() {
