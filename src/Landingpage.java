@@ -107,24 +107,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
 
     public String[] getNames() {
-        String[] name = new String[4];
-        for (int i = 0; i <= 3; i++) {
-            if (!Objects.equals(userNames[i].getText(), "")) {
-                name[i] = userNames[i].getText();
-            } else {
-                if (i == 0) {
-                    name[i] = "yellow";
-                } else if (i == 1) {
-                    name[i] = "green";
-                } else if (i == 2) {
-                    name[i] = "blue";
-                } else {
-                    name[i] = "red";
-                }
-            }
-            
+	String[] defaultNames = {"yellow", "green", "blue", "red"};
+	String[] playerNames = new String[4];
+
+        for (int i = 0; i < 4; i++) {
+	    String currentPlayerName = userNames[i].getText();
+
+	    playerNames[i] = "" == currentPlayerName
+		? defaultNames[i] : currentPlayerName;
         }
-        return name;
+	
+        return playerNames;
     }
 
     public int getPlayerNumber() {
