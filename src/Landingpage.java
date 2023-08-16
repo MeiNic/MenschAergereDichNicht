@@ -17,7 +17,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JTextField[] userNames;
     private JButton startGame;
 
-    Landingpage() {
+    public Landingpage() {
         //Declaration of all the J-components
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
