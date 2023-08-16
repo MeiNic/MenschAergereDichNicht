@@ -17,15 +17,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JTextField[] userNames;
     private JButton startGame;
 
-
-
-    Landingpage(){
+    Landingpage() {
         //Declaration of all the J-components
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
         playerNumber.addChangeListener(this);
-        bots = new JCheckBox("Fill the game with bots" ,false);
+        bots = new JCheckBox("Fill the game with bots", false);
         userNameAdvice = new JLabel("Enter names for all the players:");
         userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
@@ -76,19 +74,21 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         //Apply all needed values for the JFrame
         adjustJFrameSetting();
     }
+    
     public void stateChanged(ChangeEvent e) {
         int value = getPlayerNumber();
-        for (int i = 0; i < 4; i++){
-            if (i <= value){
+        for (int i = 0; i < 4; i++) {
+            if (i <= value) {
                 add(userNames[i]);
                 colorMarker[i].setY(yCoordinatesCircles[i]);
-            }else {
+            } else {
                 remove(userNames[i]);
                 colorMarker[i].setY(100000);
             }
         }
         repaint();
     }
+    
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
 
@@ -106,19 +106,19 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 	// game.gui.setVisible(false);
     }
 
-    public String[] getNames(){
+    public String[] getNames() {
         String[] name = new String[4];
-        for(int i = 0; i <=3; i++){
-            if (!Objects.equals(userNames[i].getText(), "")){
+        for (int i = 0; i <= 3; i++) {
+            if (!Objects.equals(userNames[i].getText(), "")) {
                 name[i] = userNames[i].getText();
-            }else {
-                if (i == 0){
+            } else {
+                if (i == 0) {
                     name[i] = "yellow";
                 } else if (i == 1) {
                     name[i] = "green";
                 } else if (i == 2) {
                     name[i] = "blue";
-                }else {
+                } else {
                     name[i] = "red";
                 }
             }
@@ -127,14 +127,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         return name;
     }
 
-    public int getPlayerNumber(){
+    public int getPlayerNumber() {
         Object value = playerNumber.getValue();
-        int currentValue = (int) value;
+        int currentValue = (int)value;
         currentValue -= 1;
         return currentValue;
     }
 
-    public boolean getBotsSelection(){
+    public boolean getBotsSelection() {
         return bots.isSelected();
     }
 
