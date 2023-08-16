@@ -18,38 +18,38 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JButton startGame;
 
     public Landingpage() {
-        //Declaration of all the J-components
-        head = new JLabel("Mensch Ärgere Dich Nicht");
-        labelPlayerNumber = new JLabel("Please enter the number of players:");
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
-        playerNumber.addChangeListener(this);
-        bots = new JCheckBox("Fill the game with bots", false);
-        userNameAdvice = new JLabel("Enter names for all the players:");
-        userNames = new JTextField[4];
-        userNames[0] = new JTextField("yellow");
-        userNames[1] = new JTextField("green");
-        userNames[2] = new JTextField("blue");
-        userNames[3] = new JTextField("red");
-        startGame = new JButton("start game");
-
-        //Declaration of the colored circles
         colorMarker = new Circle[4];
         colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
         colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
         colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
         colorMarker[3] = new Circle(40, 397, 43, "#cc0000");
+	
+        // Initialize UI Elements
+        head = new JLabel("Mensch Ärgere Dich Nicht");
+        labelPlayerNumber = new JLabel("Please enter the number of players:");
+        userNameAdvice = new JLabel("Enter names for all the players:");
+	
+        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
+        bots = new JCheckBox("Fill the game with bots", false);
 
-        //Apply all setting for the head
+	userNames = new JTextField[4];
+        userNames[0] = new JTextField("yellow");
+        userNames[1] = new JTextField("green");
+        userNames[2] = new JTextField("blue");
+        userNames[3] = new JTextField("red");
+	
+        startGame = new JButton("start game");
+
+        // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
-        head.setBounds(13, 5, 480, 70);
-        add(head);
 
-        //Position the other j-components
+        // Set bounds
         labelPlayerNumber.setBounds(40, 80, 250, 32);
         playerNumber.setBounds(250, 80, 90, 32);
         bots.setBounds(35, 110, 180, 20);
         userNameAdvice.setBounds(40, 140, 350, 32);
+        head.setBounds(13, 5, 480, 70);
 
         userNames[0].setBounds(100, 185, 180, 32);
         userNames[1].setBounds(100, 247, 180, 32);
@@ -57,10 +57,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setBounds(100, 371, 180, 32);
 
         startGame.setBounds(345, 425, 120, 32);
-        startGame.addActionListener(this);
         startGame.setBackground(Color.green);
 
-        //Add all the j-components to the contentPanel
+	// Add listeners
+        startGame.addActionListener(this);
+        playerNumber.addChangeListener(this);
+
+        // Add UI Elements
+        add(head);
         add(labelPlayerNumber);
         add(playerNumber);
         add(bots);
@@ -71,8 +75,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         add(userNames[3]);
         add(startGame);
 
-        //Apply all needed values for the JFrame
-        adjustJFrameSetting();
+        // Display UI
+        setTitle("landingpage");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setResizable(true);
+        setVisible(true);
     }
     
     public void stateChanged(ChangeEvent e) {
@@ -130,16 +140,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     public boolean getBotsSelection() {
         return bots.isSelected();
-    }
-
-    private void adjustJFrameSetting() {
-        setTitle("landingpage");
-        setSize(500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        setBackground(Color.BLACK);
-        setResizable(true);
-        setVisible(true);
     }
 
     @Override
