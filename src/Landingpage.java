@@ -17,41 +17,39 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JTextField[] userNames;
     private JButton startGame;
 
-
-
-    Landingpage(){
-        //Declaration of all the J-components
-        head = new JLabel("Mensch Ärgere Dich Nicht");
-        labelPlayerNumber = new JLabel("Please enter the number of players:");
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
-        playerNumber.addChangeListener(this);
-        bots = new JCheckBox("Fill the game with bots" ,false);
-        userNameAdvice = new JLabel("Enter names for all the players:");
-        userNames = new JTextField[4];
-        userNames[0] = new JTextField("yellow");
-        userNames[1] = new JTextField("green");
-        userNames[2] = new JTextField("blue");
-        userNames[3] = new JTextField("red");
-        startGame = new JButton("start game");
-
-        //Declaration of the colored circles
+    public Landingpage() {
         colorMarker = new Circle[4];
         colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
         colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
         colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
         colorMarker[3] = new Circle(40, 397, 43, "#cc0000");
+	
+        // Initialize UI Elements
+        head = new JLabel("Mensch Ärgere Dich Nicht");
+        labelPlayerNumber = new JLabel("Please enter the number of players:");
+        userNameAdvice = new JLabel("Enter names for all the players:");
+	
+        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
+        bots = new JCheckBox("Fill the game with bots", false);
 
-        //Apply all setting for the head
+	userNames = new JTextField[4];
+        userNames[0] = new JTextField("yellow");
+        userNames[1] = new JTextField("green");
+        userNames[2] = new JTextField("blue");
+        userNames[3] = new JTextField("red");
+	
+        startGame = new JButton("start game");
+
+        // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
-        head.setBounds(13, 5, 480, 70);
-        add(head);
 
-        //Position the other j-components
+        // Set bounds
         labelPlayerNumber.setBounds(40, 80, 250, 32);
         playerNumber.setBounds(250, 80, 90, 32);
         bots.setBounds(35, 110, 180, 20);
         userNameAdvice.setBounds(40, 140, 350, 32);
+        head.setBounds(13, 5, 480, 70);
 
         userNames[0].setBounds(100, 185, 180, 32);
         userNames[1].setBounds(100, 247, 180, 32);
@@ -59,10 +57,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setBounds(100, 371, 180, 32);
 
         startGame.setBounds(345, 425, 120, 32);
-        startGame.addActionListener(this);
         startGame.setBackground(Color.green);
 
-        //Add all the j-components to the contentPanel
+	// Add listeners
+        startGame.addActionListener(this);
+        playerNumber.addChangeListener(this);
+
+        // Add UI Elements
+        add(head);
         add(labelPlayerNumber);
         add(playerNumber);
         add(bots);
@@ -73,27 +75,46 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         add(userNames[3]);
         add(startGame);
 
-        //Apply all needed values for the JFrame
-        adjustJFrameSetting();
+        // Display UI
+        setTitle("landingpage");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setResizable(true);
+        setVisible(true);
     }
+    
     public void stateChanged(ChangeEvent e) {
-        int value = getPlayerNumber();
-        for (int i = 0; i < 4; i++){
-            if (i <= value){
+        for (int i = 0; i < 4; i++) {
+            if (i < getNumberOfHumanPlayers()) {
                 add(userNames[i]);
                 colorMarker[i].setY(yCoordinatesCircles[i]);
-            }else {
+            } else {
                 remove(userNames[i]);
+		// HACK: Someone using a monitor taller than one
+		// million pixels would be able to see the hidden
+		// color marker! Because no one will ever play our
+		// game on such a gigantic monitor, I think we do not
+		// need to rush for potentially fixing this "issue",
+		// however, there might be a better way to do
+		// this. @guemax on 2023/08/16.
                 colorMarker[i].setY(100000);
             }
         }
         repaint();
     }
+    
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
 
 	String[] names = getNames();
-	int numberOfPlayers = getPlayerNumber();
+	// TODO: Remove this `-1` by passing the "real" number of
+	// human players to `BackEnd` and switching a `<=` to a `<` in
+	// a loop of its constructor. This has to be done right after
+	// the pull request for refactoring this file has been fully
+	// merged with master. @guemax on 2023/08/16.
+	int numberOfPlayers = getNumberOfHumanPlayers() - 1;
 	boolean fillWithBots = getBotsSelection();
 	
 	GameBoardGui game = new GameBoardGui(names, numberOfPlayers, fillWithBots);
@@ -106,66 +127,46 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 	// game.gui.setVisible(false);
     }
 
-    public String[] getNames(){
-        String[] name = new String[4];
-        for(int i = 0; i <=3; i++){
-            if (!Objects.equals(userNames[i].getText(), "")){
-                name[i] = userNames[i].getText();
-            }else {
-                if (i == 0){
-                    name[i] = "yellow";
-                } else if (i == 1) {
-                    name[i] = "green";
-                } else if (i == 2) {
-                    name[i] = "blue";
-                }else {
-                    name[i] = "red";
-                }
-            }
-            
+    public String[] getNames() {
+	String[] defaultNames = {"yellow", "green", "blue", "red"};
+	String[] playerNames = new String[4];
+
+        for (int i = 0; i < 4; i++) {
+	    String currentPlayerName = userNames[i].getText();
+
+	    playerNames[i] = "" == currentPlayerName
+		? defaultNames[i] : currentPlayerName;
         }
-        return name;
+	
+        return playerNames;
     }
 
-    public int getPlayerNumber(){
-        Object value = playerNumber.getValue();
-        int currentValue = (int) value;
-        currentValue -= 1;
-        return currentValue;
+    public int getNumberOfHumanPlayers() {
+	return (int)playerNumber.getValue();
     }
 
-    public boolean getBotsSelection(){
+    public boolean getBotsSelection() {
         return bots.isSelected();
-    }
-
-    private void adjustJFrameSetting() {
-        setTitle("landingpage");
-        setSize(500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        setBackground(Color.BLACK);
-        setResizable(true);
-        setVisible(true);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        forEachloopPaintFields(g, colorMarker);
+        paintColorMarkers(g, colorMarker);
     }
 
-    private void forEachloopPaintFields(Graphics g, Circle[] array) {
-        for (Circle circle : array) {
-            int x = circle.getX();
-            int y = circle.getY();
-            int radius = circle.getDiameter();
-            Color color = circle.getColor();
+    private void paintColorMarkers(Graphics g, Circle[] colorMarkers) {
+        for (Circle marker : colorMarkers) {
+            int x = marker.getX();
+            int y = marker.getY();
+            int diameter = marker.getDiameter();
+            Color color = marker.getColor();
 
             g.setColor(color);
-            g.fillOval(x, y, radius, radius);
+            g.fillOval(x, y, diameter, diameter);
             g.setColor(Color.BLACK);
-            g.drawOval(x - 1, y - 1, radius + 1, radius + 1);
+            g.drawOval(x, y, diameter, diameter);
         }
     }
 }
