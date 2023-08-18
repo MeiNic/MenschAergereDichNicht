@@ -104,6 +104,12 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 colorMarker[i].setY(100000);
             }
         }
+        if (getNumberOfHumanPlayers() == 0){
+            bots.setSelected(true);
+            userNameAdvice.setText("Enter your name:");
+        } else {
+            userNameAdvice.setText("Enter names for all the players:");
+        }
         repaint();
     }
     
