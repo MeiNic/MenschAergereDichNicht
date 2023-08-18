@@ -6,7 +6,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
     private final int[] yCoordinatesCircles = {211, 273, 335, 397};
@@ -128,7 +127,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 	    int numberOfPlayers = getNumberOfHumanPlayers() - 1;
 	    boolean fillWithBots = getBotsSelection();
 	
-	    GameBoardGui game = new GameBoardGui(names, numberOfPlayers, fillWithBots);
+	    new GameBoardGui(names, numberOfPlayers, fillWithBots);
 
 	    // Providing a help button during the game might be less
         // annoying playing, especially during development when you
