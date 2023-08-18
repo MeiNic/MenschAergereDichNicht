@@ -30,7 +30,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         userNameAdvice = new JLabel("Enter names for all the players:");
 	
-        playerNumber = new JSpinner(new SpinnerNumberModel(4, 2, 4, 1));
+        playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
 	    userNames = new JTextField[4];
