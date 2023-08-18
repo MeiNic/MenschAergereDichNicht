@@ -108,6 +108,9 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
             bots.setSelected(true);
             userNameAdvice.setText("Enter your name:");
         } else {
+            if (getNumberOfHumanPlayers() == 3){
+                bots.setSelected(false);
+            }
             userNameAdvice.setText("Enter names for all the players:");
         }
         repaint();
