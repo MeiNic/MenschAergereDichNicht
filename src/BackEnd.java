@@ -1,3 +1,5 @@
+package src;
+
 public class BackEnd {
     Figure[] figures;
     int randomNumber;

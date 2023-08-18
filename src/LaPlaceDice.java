@@ -1,3 +1,5 @@
+package src;
+
 import java.util.Random;
 
 class LaPlaceDice implements Dice {

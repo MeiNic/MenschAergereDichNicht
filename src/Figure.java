@@ -1,3 +1,5 @@
+package src;
+
 public class Figure {
     enum State {
 	IN_BASE,

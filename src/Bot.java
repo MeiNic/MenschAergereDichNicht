@@ -1,3 +1,5 @@
+package src;
+
 class Bot implements Player {
     private String name;
     private int playerIndex;

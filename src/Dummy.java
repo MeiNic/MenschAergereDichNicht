@@ -1,3 +1,5 @@
+package src;
+
 class Dummy implements Player {
     private String name;
     private int playerIndex;
