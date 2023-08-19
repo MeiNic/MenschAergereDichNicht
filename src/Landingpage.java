@@ -17,6 +17,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JLabel userNameAdvice;
     private JTextField[] userNames;
     private JCheckBox understood;
+    private JLabel notChecked;
     private JButton startGame;
 
     public Landingpage() {
@@ -41,11 +42,15 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3] = new JTextField("red");
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
+        notChecked = new JLabel("You have to read the rules and accept them first");
         startGame = new JButton("start game");
 
         // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
+        Font fontNotCheckid = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
+        notChecked.setFont(fontNotCheckid);
+        notChecked.setForeground(Color.RED);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 80, 250, 32);
@@ -60,6 +65,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setBounds(100, 371, 180, 32);
 
         understood.setBounds(20, 425, 300, 32);
+        notChecked.setBounds(20, 450, 300, 32);
 
         startGame.setBounds(345, 425, 120, 32);
         startGame.setBackground(Color.red);
@@ -78,6 +84,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         add(userNames[1]);
         add(userNames[2]);
         add(userNames[3]);
+        add(understood);
         add(startGame);
 
         // Display UI
