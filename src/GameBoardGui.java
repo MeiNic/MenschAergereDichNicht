@@ -73,69 +73,65 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         fields = new Circle[40];
 	
         replaceFigures();
+		int diameter = 50;
 
-	int diameter = 50;
+		for (int i = 0; i < houses.length; i++) {
+			int x = housePositionsX[i];
+			int y = housePositionsY[i];
+			houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+		}
+		for (int i = 0; i < bases.length; i++) {
+			int x = basePositionsX[i];
+			int y = basePositionsY[i];
+			bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+		}
+		for (int i = 0; i < fields.length; i++) {
+			int x = fieldPositionsX[i];
+			int y = fieldPositionsY[i];
+			fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
+		}
 
-	for (int i = 0; i < houses.length; i++) {
-	    int x = housePositionsX[i];
-	    int y = housePositionsY[i];
+		for (int i = 0; i < 4; i++) {
+			houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
+			houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
+			houses[i + 12].setColor(FieldColor.RED.getHexCode());
 
-	    houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
-	}
-	for (int i = 0; i < bases.length; i++) {
-	    int x = basePositionsX[i];
-	    int y = basePositionsY[i];
+			bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
+			bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
+			bases[i + 12].setColor(FieldColor.RED.getHexCode());
+		}
 
-	    bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
-	}
-	for (int i = 0; i < fields.length; i++) {
-	    int x = fieldPositionsX[i];
-	    int y = fieldPositionsY[i];
+		// Set color for start fields
+		fields[0].setColor(FieldColor.YELLOW.getHexCode());
+		fields[10].setColor(FieldColor.GREEN.getHexCode());
+		fields[20].setColor(FieldColor.BLUE.getHexCode());
+		fields[30].setColor(FieldColor.RED.getHexCode());
 
-	    fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
-	}
-
-        for (int i = 0; i < 4; i++) {
-            houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            houses[i + 12].setColor(FieldColor.RED.getHexCode());
-
-            bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            bases[i + 12].setColor(FieldColor.RED.getHexCode());
-        }
-
-	// Set color for start fields
-	fields[0].setColor(FieldColor.YELLOW.getHexCode());
-	fields[10].setColor(FieldColor.GREEN.getHexCode());
-	fields[20].setColor(FieldColor.BLUE.getHexCode());
-	fields[30].setColor(FieldColor.RED.getHexCode());
-
-	// Initialize UI Elements
+		// Initialize UI Elements
         userAdvice = new JLabel();
-	rollDice = new JButton();
+		rollDice = new JButton();
         result = new JLabel();
         figureChooserPrompt = new JLabel();
 
-	// Set text
-	userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-	rollDice.setText("roll the dice");
+		// Set text
+		userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
+		rollDice.setText("roll the dice");
 	
-	// Set bounds
-	userAdvice.setBounds(970, 22, 550, 62);
+		// Set bounds
+		userAdvice.setBounds(970, 22, 550, 62);
         rollDice.setBounds(980, 90, 120, 32);
-	result.setBounds(1150, 90, 100, 32);
+		result.setBounds(1150, 90, 100, 32);
 
-	// Add listeners
+		// Add listeners
         rollDice.addActionListener(this);
-	addMouseListener(this);
+		addMouseListener(this);
 
-	// Add UI Elements
+		// Add UI Elements
         add(rollDice);
-	add(userAdvice);
+		add(userAdvice);
         add(result);
 	
-	// Display UI
+		// Display UI
         setTitle("game field");
         setSize(1400, 940);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,155 +142,154 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     }
 
     public void actionPerformed(ActionEvent e) {
-	if (!(rollDice == e.getSource())) {
-	    return;
-	}
+		if (!(rollDice == e.getSource())) {
+	    	return;
+		}
 
-	remove(rollDice);
-	boolean humanCanMoveTheirFigures = backend.playerMove();
+		remove(rollDice);
+		boolean humanCanMoveTheirFigures = backend.playerMove();
 
-	if (humanCanMoveTheirFigures) {
-	    displayResult(backend.randomNumber);
-	    setPromptValues();
-	} else {
-	    executeNextMove();
-	}
+		if (humanCanMoveTheirFigures) {
+	    	displayResult(backend.randomNumber);
+	    	setPromptValues();
+		} else {
+	    	executeNextMove();
+		}
     }
 
     public void mouseClicked(MouseEvent e) {
         int mousePositionX = e.getX();
         int mousePositionY = e.getY();
 
-	int diameter = 50;
+		int diameter = 50;
 
-	for (int i = 0; i < fieldPositionsX.length; i++) {
-	    int differenceX = mousePositionX - fieldPositionsX[i];
-	    int differenceY = mousePositionY - fieldPositionsY[i];
+		for (int i = 0; i < fieldPositionsX.length; i++) {
+	    	int differenceX = mousePositionX - fieldPositionsX[i];
+	    	int differenceY = mousePositionY - fieldPositionsY[i];
 
-	    if (differenceX <= 0 || diameter <= differenceX
-		|| differenceY <= 0 || diameter <= differenceY) {
-		continue;
-	    }
+	    	if (differenceX <= 0 || diameter <= differenceX
+			|| differenceY <= 0 || diameter <= differenceY) {
+				continue;
+	    	}
 	    
-	    int clickedFigureIndex = backend.figureOnField(i);
-	    if (clickedFigureIndex == 99) {
-		continue;
-	    }
+	    	int clickedFigureIndex = backend.figureOnField(i);
+			if (clickedFigureIndex == 99) {
+				continue;
+	    	}
 		
-	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-		continue;
-	    }
+	    	Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    	if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+				continue;
+			}
 
-	    if (clickedFigure.isPlaceable()) {
-		backend.moveFigure(clickedFigureIndex);
-	    } else {
-		backend.moveToBase(clickedFigureIndex);
-	    }
-	    prepareNextMove();
-	    return;
-	}
+	    	if (clickedFigure.isPlaceable()) {
+				backend.moveFigure(clickedFigureIndex);
+	    	} else {
+				backend.moveToBase(clickedFigureIndex);
+	    	}
+	    	prepareNextMove();
+	    	return;
+		}
 	
-	for (int i = 0; i < housePositionsX.length; i++) {
-	    int differenceX = mousePositionX - housePositionsX[i];
-	    int differenceY = mousePositionY - housePositionsY[i];
+		for (int i = 0; i < housePositionsX.length; i++) {
+	    	int differenceX = mousePositionX - housePositionsX[i];
+	    	int differenceY = mousePositionY - housePositionsY[i];
 
-	    if (differenceX <= 0 || diameter <= differenceX
-		|| differenceY <= 0 || diameter <= differenceY) {
-		continue;
-	    }
+	    	if (differenceX <= 0 || diameter <= differenceX
+			|| differenceY <= 0 || diameter <= differenceY) {
+				continue;
+	    	}
 	    
-	    int clickedFigureIndex = backend.figureOnHouseField(i);
-	    if (clickedFigureIndex == 99) {
-		continue;
-	    }
+	    	int clickedFigureIndex = backend.figureOnHouseField(i);
+	    	if (clickedFigureIndex == 99) {
+				continue;
+			}
 		
-	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-		continue;
-	    }
-
-	    if (clickedFigure.isPlaceable()) {
-		backend.moveFigure(clickedFigureIndex);
-	    } else {
-		backend.moveToBase(clickedFigureIndex);
-	    }
-	    prepareNextMove();
-	    return;
-	}
+	    	Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    	if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+				continue;
+	    	}
+			if (clickedFigure.isPlaceable()) {
+				backend.moveFigure(clickedFigureIndex);
+	    	} else {
+				backend.moveToBase(clickedFigureIndex);
+	    	}
+	    	prepareNextMove();
+	    	return;
+		}
 	
-	for (int i = 0; i < basePositionsX.length; i++) {
-	    int differenceX = mousePositionX - basePositionsX[i];
-	    int differenceY = mousePositionY - basePositionsY[i];
+		for (int i = 0; i < basePositionsX.length; i++) {
+	    	int differenceX = mousePositionX - basePositionsX[i];
+	    	int differenceY = mousePositionY - basePositionsY[i];
 
-	    if (differenceX <= 0 || diameter <= differenceX
-		|| differenceY <= 0 || diameter <= differenceY) {
-		continue;
-	    }
+			if (differenceX <= 0 || diameter <= differenceX
+			|| differenceY <= 0 || diameter <= differenceY) {
+				continue;
+			}
 	    
-	    int clickedFigureIndex = backend.figureOnBaseField(i);
-	    if (clickedFigureIndex == 99) {
-		continue;
-	    }
+	    	int clickedFigureIndex = backend.figureOnBaseField(i);
+	    	if (clickedFigureIndex == 99) {
+			continue;
+	    	}
 		
-	    Figure clickedFigure = backend.figures[clickedFigureIndex];
-	    if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-		continue;
-	    }
+	    	Figure clickedFigure = backend.figures[clickedFigureIndex];
+	    	if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
+				continue;
+	    	}
 
-	    if (clickedFigure.isPlaceable()) {
-		backend.moveOutOfBase(clickedFigureIndex);
-	    }
-	    prepareNextMove();
-	    return;
-	}
+	    	if (clickedFigure.isPlaceable()) {
+				backend.moveOutOfBase(clickedFigureIndex);
+	    	}
+	    	prepareNextMove();
+	    	return;
+		}
     }
 
     private void prepareNextMove() {
-	backend.disablePlacementForAllFigures();
+		backend.disablePlacementForAllFigures();
 	
-	removePrompt();
-	replaceFigures();
-	displayWinWindowIfNecessary();
+		removePrompt();
+		replaceFigures();
+		displayWinWindowIfNecessary();
 	
-	executeNextMove();
+		executeNextMove();
     }
 
     public void displayWinWindowIfNecessary() {
-	String nameOfWinner = backend.getNameOfWinner();
+		String nameOfWinner = backend.getNameOfWinner();
 	
-	if (nameOfWinner == null) {
-	    return;
-	}
+		if (nameOfWinner == null) {
+	    	return;
+		}
 	
-	new WinWindow(nameOfWinner);
-	setVisible(false);
-    }
+		new WinWindow(nameOfWinner);
+			setVisible(false);
+    	}
     
     private void executeNextMove() {
-	backend.setNewCurrentPlayerIfNecessary();
+		backend.setNewCurrentPlayerIfNecessary();
 	
-	int playerState = backend.getPlayerStateOfCurrentPlayer();
-	if (playerState == 1) {
-	    setBotAdvice();
+		int playerState = backend.getPlayerStateOfCurrentPlayer();
+		if (playerState == 1) {
+	    	setBotAdvice();
 
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		throw new RuntimeException(e);
-	    }
+	    	try {
+				Thread.sleep(1000);
+	    	} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+	    	}
 
-	    boolean botMovedItsFigures = backend.botMove();
-	    if (botMovedItsFigures) {
-		replaceFigures();
-		displayWinWindowIfNecessary();
+	    	boolean botMovedItsFigures = backend.botMove();
+	    	if (botMovedItsFigures) {
+			replaceFigures();
+			displayWinWindowIfNecessary();
 	    }
 	    executeNextMove();
-	} else if (playerState == 0) {
-	    setActivePlayer();
-	} else {
-	    executeNextMove();
-	}
+		} else if (playerState == 0) {
+	    	setActivePlayer();
+		} else {
+	    	executeNextMove();
+		}
     }
 
     // Even though we neither implement nor use these methods, they
@@ -306,37 +301,37 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void replaceFigures(){
         Figure[] input = backend.figures;
-	int diameter = 50;
+		int diameter = 50;
 	    
         for (int i = 0; i < input.length && i < figures.length; i++){
 	    String color = FigureColor.YELLOW.getHexCode();
 
 	    switch (input[i].color) {
-	    case 0: color = FigureColor.YELLOW.getHexCode();
-		break;
-	    case 1: color = FigureColor.GREEN.getHexCode();
-		break;
-	    case 2: color = FigureColor.BLUE.getHexCode();
-		break;
-	    case 3: color = FigureColor.RED.getHexCode();
-		break;
+	    	case 0: color = FigureColor.YELLOW.getHexCode();
+			break;
+	    	case 1: color = FigureColor.GREEN.getHexCode();
+			break;
+	    	case 2: color = FigureColor.BLUE.getHexCode();
+			break;
+	    	case 3: color = FigureColor.RED.getHexCode();
+			break;
 	    }
 
-	    int x;
-	    int y;
+	    	int x;
+	    	int y;
 	    
             if (input[i].isInBase()) {
-		x = basePositionsX[input[i].field];
-		y = basePositionsY[input[i].field];
+				x = basePositionsX[input[i].field];
+				y = basePositionsY[input[i].field];
             } else if (input[i].isInHouse()) {
-		x = housePositionsX[input[i].field];
-		y = housePositionsY[input[i].field];
+				x = housePositionsX[input[i].field];
+				y = housePositionsY[input[i].field];
             } else {
-		x = fieldPositionsX[input[i].field];
-		y = fieldPositionsY[input[i].field];
+				x = fieldPositionsX[input[i].field];
+				y = fieldPositionsY[input[i].field];
             }
 
-	    figures[i] = new Circle(x, y, diameter, color);
+	    	figures[i] = new Circle(x, y, diameter, color);
         }
 	
         repaint();
