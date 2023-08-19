@@ -6,6 +6,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
     private final int[] yCoordinatesCircles = {211, 273, 335, 397};
@@ -73,6 +75,16 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 	    // Add listeners
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
+        understood.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    startGame.setBackground(Color.GREEN);
+                }else {
+                    startGame.setBackground(Color.RED);
+                }
+            }
+        });
 
         // Add UI Elements
         add(head);
