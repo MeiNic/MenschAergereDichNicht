@@ -118,7 +118,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         }
         repaint();
     }
-    
+
+    private boolean getUnderstoodStatus(){
+        return understood.isSelected();
+    }
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
 
