@@ -73,36 +73,33 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         fields = new Circle[40];
 	
         replaceFigures();
-
 		int diameter = 50;
 
 		for (int i = 0; i < houses.length; i++) {
-	    	int x = housePositionsX[i];
-	    	int y = housePositionsY[i];
+			int x = housePositionsX[i];
+			int y = housePositionsY[i];
 			houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
 		}
 		for (int i = 0; i < bases.length; i++) {
-	    	int x = basePositionsX[i];
-	    	int y = basePositionsY[i];
-
-	    	bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+			int x = basePositionsX[i];
+			int y = basePositionsY[i];
+			bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
 		}
 		for (int i = 0; i < fields.length; i++) {
-	    	int x = fieldPositionsX[i];
-	    	int y = fieldPositionsY[i];
-
-	    	fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
+			int x = fieldPositionsX[i];
+			int y = fieldPositionsY[i];
+			fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
 		}
 
-        for (int i = 0; i < 4; i++) {
-            houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            houses[i + 12].setColor(FieldColor.RED.getHexCode());
+		for (int i = 0; i < 4; i++) {
+			houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
+			houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
+			houses[i + 12].setColor(FieldColor.RED.getHexCode());
 
-            bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            bases[i + 12].setColor(FieldColor.RED.getHexCode());
-        }
+			bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
+			bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
+			bases[i + 12].setColor(FieldColor.RED.getHexCode());
+		}
 
 		// Set color for start fields
 		fields[0].setColor(FieldColor.YELLOW.getHexCode());
