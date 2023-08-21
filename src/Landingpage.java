@@ -80,8 +80,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         understood.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED){
                 startGame.setBackground(Color.GREEN);
+                repaint();
             }else {
                 startGame.setBackground(Color.RED);
+                repaint();
             }
         });
         rulesButton.addActionListener(this);
@@ -158,6 +160,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 new GameBoardGui(names, numberOfPlayers, fillWithBots);
             }else {
                 add(notChecked);
+                repaint();
             }
 
         }else if (e.getSource() == rulesButton){
