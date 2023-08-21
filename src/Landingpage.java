@@ -46,7 +46,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
         notChecked = new JLabel("You have to read the rules and accept them first");
-        rulesButton = new JLabel("rules");
+        rulesButton = new JButton("rules");
         startGame = new JButton("start game");
 
         // Font settings
@@ -148,7 +148,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
     public void actionPerformed(ActionEvent e) {
         setVisible(false);
-
 	    String[] names = getNames();
 	    // TODO: Remove this `-1` by passing the "real" number of
 	    // human players to `BackEnd` and switching a `<=` to a `<` in
