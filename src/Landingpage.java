@@ -165,7 +165,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
             }
 
         }else if (e.getSource() == rulesButton){
-            //open a new Rules-Window
+            setVisible(false);
+            new Rules(this);
         }
     }
 
