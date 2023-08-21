@@ -89,13 +89,7 @@ public class Rules extends JFrame implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-        if(getCheckboxSetting()){
-            setVisible(false);
-            game.gui.setVisible(true);
-        }else{
-            add(notification);
-            repaint();
-        }
+        setVisible(false);
     }
 
 
