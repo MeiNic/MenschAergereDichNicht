@@ -44,7 +44,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3] = new JTextField("red");
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
-        notChecked = new JLabel("You have to read the rules and accept them first");
+        notChecked = new JLabel("<html><body>You have to read the rules and accept <br> them first!</body></html>");
         rulesButton = new JButton("rules");
         startGame = new JButton("start game");
 
@@ -68,7 +68,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setBounds(100, 371, 180, 32);
 
         understood.setBounds(20, 425, 300, 32);
-        notChecked.setBounds(20, 450, 300, 32);
+        notChecked.setBounds(20, 450, 300, 50);
         rulesButton.setBounds(340, 425, 120, 32);
 
         startGame.setBounds(340, 475, 120, 32);
@@ -104,7 +104,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         // Display UI
         setTitle("landingpage");
-        setSize(500, 550);
+        setSize(500, 570);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
