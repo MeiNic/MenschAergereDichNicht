@@ -71,7 +71,7 @@ public class Rules extends JFrame implements ActionListener{
         done.addActionListener(this);
         done.setBackground(Color.green);
 
-        //Add all the j-components to the content Panel
+        //Add UI elements
         add(header);
         add(goalHeader);
         add(goal1);
@@ -84,17 +84,7 @@ public class Rules extends JFrame implements ActionListener{
         add(r5);
         add(done);
 
-        //apply all needed values for the JFrame
-        adjustJFrameSetting();
-    }
-
-    public void actionPerformed(ActionEvent e){
-        setVisible(false);
-        executingClass.setVisible(true);
-    }
-
-
-    private void adjustJFrameSetting(){
+        //display UI
         setTitle("Overview Rules");
         setSize(785, 510);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,5 +92,10 @@ public class Rules extends JFrame implements ActionListener{
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e){
+        setVisible(false);
+        executingClass.setVisible(true);
     }
 }
