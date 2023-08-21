@@ -15,7 +15,6 @@ public class Rules extends JFrame implements ActionListener{
     private JLabel r3;
     private JLabel r4;
     private JLabel r5;
-    private JCheckBox understood;
     private JButton done;
     private String sr1;
     private String sr2;
@@ -47,8 +46,6 @@ public class Rules extends JFrame implements ActionListener{
         r5 = new JLabel(sr5);
 
         notification = new JLabel("You have to select the checkbox first!");
-
-        understood = new JCheckBox("I read and understood the rules of the game", false);
         done = new JButton("done");
 
         //settings of headers
@@ -73,8 +70,6 @@ public class Rules extends JFrame implements ActionListener{
         r4.setBounds(40, 340, 900, 32);
         r5.setBounds(40, 370, 700, 32);
 
-        understood.setBounds(40, 450, 600, 32);
-
         done.setBounds(40, 550, 80, 32);
         done.addActionListener(this);
         done.setBackground(Color.green);
@@ -95,17 +90,11 @@ public class Rules extends JFrame implements ActionListener{
         add(r3);
         add(r4);
         add(r5);
-        add(understood);
         add(done);
 
         //apply all needed values for the JFrame
         adjustJFrameSetting();
     }
-
-    public boolean getCheckboxSetting(){
-        return understood.isSelected();
-    }
-
 
     public void actionPerformed(ActionEvent e){
         if(getCheckboxSetting()){
