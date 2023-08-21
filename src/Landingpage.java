@@ -71,7 +71,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         notChecked.setBounds(20, 450, 300, 32);
         rulesButton.setBounds(340, 425, 120, 32);
 
-        startGame.setBounds(345, 425, 120, 32);
+        startGame.setBounds(340, 475, 120, 32);
         startGame.setBackground(Color.red);
 
 	    // Add listeners
@@ -102,7 +102,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         // Display UI
         setTitle("landingpage");
-        setSize(500, 500);
+        setSize(500, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
