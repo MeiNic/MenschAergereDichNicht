@@ -22,7 +22,6 @@ public class Rules extends JFrame implements ActionListener{
     private String sr4;
     private String sr5;
     public BackEnd game;
-    private JLabel notification;
 
     Rules(BackEnd newBackEnd){
         game = newBackEnd;
@@ -44,8 +43,6 @@ public class Rules extends JFrame implements ActionListener{
         r3 = new JLabel(sr3);
         r4 = new JLabel(sr4);
         r5 = new JLabel(sr5);
-
-        notification = new JLabel("You have to select the checkbox first!");
         done = new JButton("done");
 
         //settings of headers
@@ -73,11 +70,6 @@ public class Rules extends JFrame implements ActionListener{
         done.setBounds(40, 550, 80, 32);
         done.addActionListener(this);
         done.setBackground(Color.green);
-
-        //settings of notification to select the checkbox
-        Font noti = new Font(notification.getFont().getName(), Font.PLAIN, 15);
-        notification.setFont(noti);
-        notification.setBounds(40, 500, 700, 50);
 
         //Add all the j-components to the content Panel
         add(header);
