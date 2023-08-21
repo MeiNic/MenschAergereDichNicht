@@ -21,10 +21,10 @@ public class Rules extends JFrame implements ActionListener{
     private String sr3;
     private String sr4;
     private String sr5;
-    public Landingpage executingClass;
+    public JFrame executingClass;
 
-    Rules(Landingpage newLandingpage){
-        executingClass = newLandingpage;
+    Rules(JFrame JFrameN){
+        executingClass = JFrameN;
         //Declaration of Strings
         sr1 = "1. When a 6 is rolled, you have to move a figure out of base!";
         sr2 = "2. you have to keep your start-field free, as long as there are figures in your Base";
