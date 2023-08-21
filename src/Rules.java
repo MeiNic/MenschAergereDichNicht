@@ -43,7 +43,7 @@ public class Rules extends JFrame implements ActionListener{
         r3 = new JLabel(sr3);
         r4 = new JLabel(sr4);
         r5 = new JLabel(sr5);
-        done = new JButton("done");
+        done = new JButton("close");
 
         //settings of headers
         Font fontHeading = new Font(header.getFont().getName(), Font.PLAIN, 40);
@@ -67,7 +67,7 @@ public class Rules extends JFrame implements ActionListener{
         r4.setBounds(40, 340, 900, 32);
         r5.setBounds(40, 370, 700, 32);
 
-        done.setBounds(40, 550, 80, 32);
+        done.setBounds(40, 420, 80, 32);
         done.addActionListener(this);
         done.setBackground(Color.green);
 
@@ -96,7 +96,7 @@ public class Rules extends JFrame implements ActionListener{
 
     private void adjustJFrameSetting(){
         setTitle("Overview Rules");
-        setSize(910, 650);
+        setSize(785, 510);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
