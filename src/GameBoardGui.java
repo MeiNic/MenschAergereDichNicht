@@ -24,7 +24,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		public String getHexCode() {
 			return hexCode;
 		}
-	}private enum FigureColor {
+	}
+	private enum FigureColor {
 		YELLOW("#FFFF00"),
 		GREEN("#00CC00"),
 		BLUE("#3C93FF"),
@@ -58,6 +59,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	JButton rollDice;
 	JLabel result;
 	JLabel figureChooserPrompt;
+	JLabel rulesAdvice;
+	JButton rulesButton;
 
 	BackEnd backend;
 
@@ -109,25 +112,33 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		rollDice = new JButton();
 		result = new JLabel();
 		figureChooserPrompt = new JLabel();
+		rulesAdvice = new JLabel();
+		rulesButton = new JButton();
 
 		// Set text
 		userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
 		rollDice.setText("roll the dice");
+		rulesAdvice.setText("Click this button, to view the rules again");
+		rulesButton.setText("rules");
 
 		// Set bounds
 		userAdvice.setBounds(970, 22, 550, 62);
 		rollDice.setBounds(980, 90, 120, 32);
 		result.setBounds(1150, 90, 100, 32);
+		rulesAdvice.setBounds(980, 460, 200, 32);
+		rulesButton.setBounds(980, 500, 100, 32);
 
 		// Add listeners
 		rollDice.addActionListener(this);
+		rulesButton.addActionListener(this);
 		addMouseListener(this);
 
 		// Add UI Elements
-
 		add(rollDice);
 		add(userAdvice);
 		add(result);
+		add(rulesAdvice);
+		add(rulesButton);
 	
 		// Display UI
 		setTitle("game field");
@@ -140,18 +151,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (!(rollDice == e.getSource())) {
-			return;
-		}
+		if (rollDice == e.getSource()) {
+			remove(rollDice);
+			boolean humanCanMoveTheirFigures = backend.playerMove();
 
-		remove(rollDice);
-		boolean humanCanMoveTheirFigures = backend.playerMove();
-
-		if (humanCanMoveTheirFigures) {
-			displayResult(backend.randomNumber);
-			setPromptValues();
-		} else {
-			executeNextMove();
+			if (humanCanMoveTheirFigures) {
+				displayResult(backend.randomNumber);
+				setPromptValues();
+			} else {
+				executeNextMove();
+			}
+		} else if (rulesButton == e.getSource()) {
+			setVisible(false);
+			new Rules(this);
 		}
 	}
 
