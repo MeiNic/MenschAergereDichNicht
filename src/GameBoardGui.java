@@ -62,6 +62,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	JLabel rulesAdvice;
 	JButton rulesButton;
 
+	JLabel noSix;
+	JButton nextPlayer;
+
 	BackEnd backend;
 
 	public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
@@ -114,12 +117,16 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		figureChooserPrompt = new JLabel();
 		rulesAdvice = new JLabel();
 		rulesButton = new JButton();
+		noSix = new JLabel();
+		nextPlayer = new JButton();
 
 		// Set text
 		userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
 		rollDice.setText("roll the dice");
 		rulesAdvice.setText("Click this button, to view the rules again");
 		rulesButton.setText("rules");
+		noSix.setText("You didn't got a six. Press this button to move on to the next player");
+		nextPlayer.setText("next player");
 
 		// Set bounds
 		userAdvice.setBounds(970, 22, 550, 62);
@@ -127,6 +134,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		result.setBounds(1150, 90, 100, 32);
 		rulesAdvice.setBounds(980, 460, 200, 32);
 		rulesButton.setBounds(980, 500, 100, 32);
+		noSix.setBounds(970, 120, 300, 32);
+		nextPlayer.setBounds(1270, 120, 100, 32);
 
 		// Add listeners
 		rollDice.addActionListener(this);
@@ -159,11 +168,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 				displayResult(backend.randomNumber);
 				setPromptValues();
 			} else {
-				executeNextMove();
+				this.add(noSix);
+				this.add(nextPlayer);
+				repaint();
 			}
 		} else if (rulesButton == e.getSource()) {
 			setVisible(false);
 			new Rules(this);
+		} else if (nextPlayer == e.getSource()) {
+			this.remove(noSix);
+			this.remove(nextPlayer);
+			repaint();
+			executeNextMove();
 		}
 	}
 
