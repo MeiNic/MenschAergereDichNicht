@@ -37,7 +37,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	    userNames = new JTextField[4];
+	userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
@@ -74,7 +74,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame.setBounds(340, 475, 120, 32);
         startGame.setBackground(Color.red);
 
-	    // Add listeners
+	// Add listeners
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
         understood.addItemListener(e -> {
@@ -167,11 +167,25 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
             setVisible(false);
             new Rules(this);
         }
+    
+    public void actionPerformed(ActionEvent e) {
+        setVisible(false);
+
+	String[] names = getNames();
+	// TODO: Remove this `-1` by passing the "real" number of
+	// human players to `BackEnd` and switching a `<=` to a `<` in
+	// a loop of its constructor. This has to be done right after
+	// the pull request for refactoring this file has been fully
+	// merged with master. @guemax on 2023/08/16.
+	int numberOfPlayers = getNumberOfHumanPlayers() - 1;
+	boolean fillWithBots = getBotsSelection();
+	
+	new GameBoardGui(names, numberOfPlayers, fillWithBots);
     }
 
     public String[] getNames() {
-	    String[] defaultNames = {"yellow", "green", "blue", "red"};
-	    String[] playerNames = new String[4];
+	String[] defaultNames = {"yellow", "green", "blue", "red"};
+	String[] playerNames = new String[4];
 
         for (int i = 0; i < 4; i++) {
 	    String currentPlayerName = userNames[i].getText();
@@ -184,7 +198,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
 
     public int getNumberOfHumanPlayers() {
-	    return (int)playerNumber.getValue();
+	return (int)playerNumber.getValue();
     }
 
     public boolean getBotsSelection() {
