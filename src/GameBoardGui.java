@@ -129,13 +129,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		nextPlayer.setText("next player");
 
 		// Set bounds
-		userAdvice.setBounds(970, 22, 550, 62);
-		rollDice.setBounds(980, 90, 120, 32);
-		result.setBounds(1150, 90, 100, 32);
+		userAdvice.setBounds(970, 22, 450, 64);
+		rollDice.setBounds(970, 80, 120, 32);
+		result.setBounds(970, 80, 100, 32);
 		rulesAdvice.setBounds(980, 460, 200, 32);
 		rulesButton.setBounds(980, 500, 100, 32);
-		noSix.setBounds(970, 120, 300, 32);
-		nextPlayer.setBounds(1270, 120, 100, 32);
+		noSix.setBounds(970, 22, 450, 32);
+		nextPlayer.setBounds(970, 80, 120, 32);
 
 		// Add listeners
 		rollDice.addActionListener(this);
@@ -168,6 +168,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 				displayResult(backend.randomNumber);
 				setPromptValues();
 			} else {
+				this.remove(userAdvice);
 				this.add(noSix);
 				this.add(nextPlayer);
 				repaint();
@@ -178,7 +179,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		} else if (nextPlayer == e.getSource()) {
 			this.remove(noSix);
 			this.remove(nextPlayer);
+			this.add(userAdvice);
 			repaint();
+
 			executeNextMove();
 		}
 	}
