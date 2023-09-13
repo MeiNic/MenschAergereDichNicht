@@ -40,7 +40,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 			return hexCode;
 		}
 	}
-    }
+
     
     private Circle[] figures;
     private Circle[] houses;
@@ -60,27 +60,19 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JButton rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
-
-	  JLabel userAdvice;
-	  JButton rollDice;
-	  JLabel result;
-	  JLabel figureChooserPrompt;
-	  JLabel rulesAdvice;
-	  JButton rulesButton;
+	JLabel rulesAdvice;
+	JButton rulesButton;
     JLabel noSix;
-	  JButton nextPlayer;
+	JButton nextPlayer;
     BackEnd backend;
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
-	this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
+		this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
-	figures = new Circle[16];
-	houses = new Circle[16];
-	bases = new Circle[16];
-	fields = new Circle[40];
-
-	replaceFigures();
-	int diameter = 50;
+		figures = new Circle[16];
+		houses = new Circle[16];
+		bases = new Circle[16];
+		fields = new Circle[40];
 
 		replaceFigures();
 		int diameter = 50;
@@ -192,63 +184,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 			executeNextMove();
 		}
 	}
-
-	// Set color for start fields
-	fields[0].setColor(FieldColor.YELLOW.getHexCode());
-	fields[10].setColor(FieldColor.GREEN.getHexCode());
-	fields[20].setColor(FieldColor.BLUE.getHexCode());
-	fields[30].setColor(FieldColor.RED.getHexCode());
-
-	// Initialize UI Elements
-	userAdvice = new JLabel();
-	rollDice = new JButton();
-	result = new JLabel();
-	figureChooserPrompt = new JLabel();
-
-	// Set text
-	userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-	rollDice.setText("roll the dice");
-
-	// Set bounds
-	userAdvice.setBounds(970, 22, 550, 62);
-	rollDice.setBounds(980, 90, 120, 32);
-	result.setBounds(1150, 90, 100, 32);
-
-	// Add listeners
-	rollDice.addActionListener(this);
-	addMouseListener(this);
-
-	// Add UI Elements
-
-	add(rollDice);
-	add(userAdvice);
-	add(result);
-	
-	// Display UI
-	setTitle("game field");
-	setSize(1400, 940);
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setLayout(null);
-	setBackground(Color.BLACK);
-	setResizable(true);
-	setVisible(true);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-	if (!(rollDice == e.getSource())) {
-	    return;
-	}
-
-	remove(rollDice);
-	boolean humanCanMoveTheirFigures = backend.playerMove();
-
-	if (humanCanMoveTheirFigures) {
-	    displayResult(backend.randomNumber);
-	    setPromptValues();
-	} else {
-	    executeNextMove();
-	}
-    }
 
     public void mouseClicked(MouseEvent e) {
 	int mousePositionX = e.getX();
@@ -482,17 +417,17 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     }
 
     private void paintFigures(Graphics g, Circle[] ovals){
-	for (Circle oval : ovals){
-	    int x = oval.getX() + oval.getDiameter() / 4;
-	    int y = oval.getY();
-	    int diameter = oval.getDiameter();
-	    int radius = oval.getDiameter() / 2;
-	    Color color = oval.getColor();
+		for (Circle oval : ovals){
+			int x = oval.getX() + oval.getDiameter() / 4;
+			int y = oval.getY();
+			int diameter = oval.getDiameter();
+			int radius = oval.getDiameter() / 2;
+			Color color = oval.getColor();
 
-	    g.setColor(color);
-	    g.fillOval(x, y, radius, diameter);
-	    g.setColor(Color.BLACK);
-	    g.drawOval(x, y, radius, diameter);
+			g.setColor(color);
+			g.fillOval(x, y, radius, diameter);
+			g.setColor(Color.BLACK);
+			g.drawOval(x, y, radius, diameter);
+		}
 	}
-    }
 }

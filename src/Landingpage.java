@@ -37,7 +37,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	userNames = new JTextField[4];
+	    userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
@@ -145,8 +145,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         return understood.isSelected();
     }
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startGame){
-            if (getUnderstoodStatus()){
+        if (e.getSource() == startGame) {
+            if (getUnderstoodStatus()) {
                 setVisible(false);
                 String[] names = getNames();
                 // TODO: Remove this `-1` by passing the "real" number of
@@ -158,29 +158,15 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 boolean fillWithBots = getBotsSelection();
 
                 new GameBoardGui(names, numberOfPlayers, fillWithBots);
-            }else {
+            } else {
                 add(notChecked);
                 repaint();
             }
 
-        }else if (e.getSource() == rulesButton){
+        } else if (e.getSource() == rulesButton) {
             setVisible(false);
             new Rules(this);
         }
-    
-    public void actionPerformed(ActionEvent e) {
-        setVisible(false);
-
-	String[] names = getNames();
-	// TODO: Remove this `-1` by passing the "real" number of
-	// human players to `BackEnd` and switching a `<=` to a `<` in
-	// a loop of its constructor. This has to be done right after
-	// the pull request for refactoring this file has been fully
-	// merged with master. @guemax on 2023/08/16.
-	int numberOfPlayers = getNumberOfHumanPlayers() - 1;
-	boolean fillWithBots = getBotsSelection();
-	
-	new GameBoardGui(names, numberOfPlayers, fillWithBots);
     }
 
     public String[] getNames() {
