@@ -132,8 +132,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 		userAdvice.setBounds(970, 22, 450, 64);
 		rollDice.setBounds(970, 80, 120, 32);
 		result.setBounds(970, 80, 100, 32);
-		rulesAdvice.setBounds(980, 460, 200, 32);
-		rulesButton.setBounds(980, 500, 100, 32);
+		rulesAdvice.setBounds(980, 820, 250, 32);
+		rulesButton.setBounds(980, 860, 120, 32);
 		noSix.setBounds(970, 22, 450, 32);
 		nextPlayer.setBounds(970, 80, 120, 32);
 
@@ -151,7 +151,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	
 		// Display UI
 		setTitle("game field");
-		setSize(1400, 940);
+		setSize(1300, 940);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setBackground(Color.BLACK);
