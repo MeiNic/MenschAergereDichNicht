@@ -6,6 +6,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
     private final int[] yCoordinatesCircles = {211, 273, 335, 397};
@@ -16,6 +17,9 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private Circle[] colorMarker;
     private JLabel userNameAdvice;
     private JTextField[] userNames;
+    private JCheckBox understood;
+    private JLabel notChecked;
+    private JButton rulesButton;
     private JButton startGame;
 
     public Landingpage() {
@@ -33,17 +37,23 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	userNames = new JTextField[4];
+	    userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
         userNames[3] = new JTextField("red");
-	
+
+        understood = new JCheckBox("I read and understood the rules of the game", false);
+        notChecked = new JLabel("<html><body>You have to read the rules and accept <br> them first!</body></html>");
+        rulesButton = new JButton("rules");
         startGame = new JButton("start game");
 
         // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
+        Font fontNotCheckid = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
+        notChecked.setFont(fontNotCheckid);
+        notChecked.setForeground(Color.RED);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 80, 250, 32);
@@ -57,12 +67,26 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[2].setBounds(100, 309, 180, 32);
         userNames[3].setBounds(100, 371, 180, 32);
 
-        startGame.setBounds(345, 425, 120, 32);
-        startGame.setBackground(Color.green);
+        understood.setBounds(20, 425, 300, 32);
+        notChecked.setBounds(20, 450, 300, 50);
+        rulesButton.setBounds(340, 425, 120, 32);
+
+        startGame.setBounds(340, 475, 120, 32);
+        startGame.setBackground(Color.red);
 
 	// Add listeners
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
+        understood.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                startGame.setBackground(Color.GREEN);
+                repaint();
+            }else {
+                startGame.setBackground(Color.RED);
+                repaint();
+            }
+        });
+        rulesButton.addActionListener(this);
 
         // Add UI Elements
         add(head);
@@ -74,11 +98,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         add(userNames[1]);
         add(userNames[2]);
         add(userNames[3]);
+        add(understood);
+        add(rulesButton);
         add(startGame);
 
         // Display UI
         setTitle("landingpage");
-        setSize(500, 500);
+        setSize(500, 570);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
@@ -114,27 +140,33 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         }
         repaint();
     }
-    
+
+    private boolean getUnderstoodStatus(){
+        return understood.isSelected();
+    }
     public void actionPerformed(ActionEvent e) {
-        setVisible(false);
+        if (e.getSource() == startGame) {
+            if (getUnderstoodStatus()) {
+                setVisible(false);
+                String[] names = getNames();
+                // TODO: Remove this `-1` by passing the "real" number of
+                // human players to `BackEnd` and switching a `<=` to a `<` in
+                // a loop of its constructor. This has to be done right after
+                // the pull request for refactoring this file has been fully
+                // merged with master. @guemax on 2023/08/16.
+                int numberOfPlayers = getNumberOfHumanPlayers() - 1;
+                boolean fillWithBots = getBotsSelection();
 
-	String[] names = getNames();
-	// TODO: Remove this `-1` by passing the "real" number of
-	// human players to `BackEnd` and switching a `<=` to a `<` in
-	// a loop of its constructor. This has to be done right after
-	// the pull request for refactoring this file has been fully
-	// merged with master. @guemax on 2023/08/16.
-	int numberOfPlayers = getNumberOfHumanPlayers() - 1;
-	boolean fillWithBots = getBotsSelection();
-	
-	new GameBoardGui(names, numberOfPlayers, fillWithBots);
+                new GameBoardGui(names, numberOfPlayers, fillWithBots);
+            } else {
+                add(notChecked);
+                repaint();
+            }
 
-	// Providing a help button during the game might be less
-        // annoying playing, especially during development when you
-        // often have to start the game again and again.
-
-	// Rules overview = new Rules(game);
-	// game.gui.setVisible(false);
+        } else if (e.getSource() == rulesButton) {
+            setVisible(false);
+            new Rules(this);
+        }
     }
 
     public String[] getNames() {
