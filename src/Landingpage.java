@@ -37,7 +37,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	    userNames = new JTextField[4];
+	userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
@@ -78,14 +78,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
         understood.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED){
-                startGame.setBackground(Color.GREEN);
-                repaint();
-            }else {
-                startGame.setBackground(Color.RED);
-                repaint();
-            }
-        });
+		if (e.getStateChange() == ItemEvent.SELECTED){
+		    startGame.setBackground(Color.GREEN);
+		    repaint();
+		}else {
+		    startGame.setBackground(Color.RED);
+		    repaint();
+		}
+	    });
         rulesButton.addActionListener(this);
 
         // Add UI Elements
