@@ -21,6 +21,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JLabel notChecked;
     private JButton rulesButton;
     private JButton startGame;
+    Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
         colorMarker = new Circle[4];
@@ -37,7 +38,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	userNames = new JTextField[4];
+	    userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
@@ -74,7 +75,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame.setBounds(340, 475, 120, 32);
         startGame.setBackground(Color.red);
 
-	// Add listeners
+	    // Add listeners
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
         understood.addItemListener(e -> {
@@ -110,6 +111,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
+        logger.info("Displaying landingpage.");
     }
     
     public void stateChanged(ChangeEvent e) {
@@ -156,15 +158,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 // merged with master. @guemax on 2023/08/16.
                 int numberOfPlayers = getNumberOfHumanPlayers() - 1;
                 boolean fillWithBots = getBotsSelection();
-
+                logger.info("Instantiating game-board");
                 new GameBoardGui(names, numberOfPlayers, fillWithBots);
             } else {
                 add(notChecked);
                 repaint();
+                logger.info("Adding notChecked");
             }
 
         } else if (e.getSource() == rulesButton) {
             setVisible(false);
+            logger.info("Instantiating rules from landingpage");
             new Rules(this);
         }
     }
