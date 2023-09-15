@@ -65,6 +65,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JLabel noSix;
     JButton nextPlayer;
     BackEnd backend;
+	Logger logger = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
 	this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
@@ -156,6 +157,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	setBackground(Color.BLACK);
 	setResizable(true);
 	setVisible(true);
+	logger.info("Displaying landingpage.");
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -189,6 +191,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	int mousePositionX = e.getX();
 	int mousePositionY = e.getY();
 	int diameter = 50;
+	logger.info("mouse was clicked at x: " + mousePositionX + "| y: " + mousePositionY);
 
 	for (int i = 0; i < fieldPositionsX.length; i++) {
 	    int differenceX = mousePositionX - fieldPositionsX[i];
@@ -270,6 +273,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    prepareNextMove();
 	    return;
 	}
+	logger.warn("mouse was clicked outside the fields");
     }
 
     private void prepareNextMove() {
