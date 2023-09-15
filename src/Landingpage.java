@@ -188,7 +188,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
 
     public int getNumberOfHumanPlayers() {
-	return (int)playerNumber.getValue();
+        return (int)playerNumber.getValue();
     }
 
     public boolean getBotsSelection() {
