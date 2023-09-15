@@ -200,7 +200,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 
 	    int clickedFigureIndex = backend.figureOnField(i);
-	    if (clickedFigureIndex == 99) {
+	    if (clickedFigureIndex == -1) {
 		continue;
 	    }
 
@@ -228,7 +228,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 	    
 	    int clickedFigureIndex = backend.figureOnHouseField(i);
-	    if (clickedFigureIndex == 99) {
+	    if (clickedFigureIndex == -1) {
 		continue;
 	    }
 
@@ -255,7 +255,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	    }
 
 	    int clickedFigureIndex = backend.figureOnBaseField(i);
-	    if (clickedFigureIndex == 99) {
+	    if (clickedFigureIndex == -1) {
 		continue;
 	    }
 

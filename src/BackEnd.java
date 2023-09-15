@@ -61,7 +61,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
+        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
 	    ownFigureOnStartfield = true;
         }
 
@@ -130,7 +130,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 	
-        if (figureOnStartfield != 99 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
+        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
 	    ownFigureOnStartfield = true;
         }
 
@@ -202,7 +202,7 @@ public class BackEnd {
 	}
 	
 	//move the figure, if the new field is free
-	if (!goToHouse && figureOnField(numberNew) == 99){
+	if (!goToHouse && figureOnField(numberNew) == -1){
 	    figureToBeMoved.field = numberNew;
 	    return;
 	}
@@ -243,7 +243,7 @@ public class BackEnd {
 	// Don't move figure if entering the house is not possible.
 	if (0 < toMove && toMove < 5) {
 	    for (int i = 0; i <= toMove; i++) {
-		if (figureOnField(i + (figureColor * 4)) != 99) {
+		if (figureOnField(i + (figureColor * 4)) != -1) {
 		    return;
 		}
 	    }
@@ -278,7 +278,7 @@ public class BackEnd {
 	}
 
 	for (int i = figureToBeMoved.field; i < 4; i++){
-	    if (figureOnField(i) != 99){
+	    if (figureOnField(i) != -1){
 		// Figure would have to jump over other figures in
 		// the house, which is not allowed.
 		return;
@@ -310,7 +310,7 @@ public class BackEnd {
 	    return false;
 	}
 
-	if (figureOnField(newField) == 99) {
+	if (figureOnField(newField) == -1) {
 	    return false;
 	}
 
@@ -362,7 +362,7 @@ public class BackEnd {
         for (int i = figures.length - 1; 0 <= i; i--) {
             int figureNumber = figureOnHouseField(i);
 
-	    if (figureNumber == 99) {
+	    if (figureNumber == -1) {
 		continue;
 	    }
 
@@ -377,7 +377,7 @@ public class BackEnd {
 	    }
 
 	    int nextFigureNumber = figureOnHouseField(i + 1);
-	    if (nextFigureNumber == 99) {
+	    if (nextFigureNumber == -1) {
 		continue;
 	    }
 	    
@@ -395,7 +395,7 @@ public class BackEnd {
                 return i;
             }
         }
-        return 99;
+        return -1;
     }
 
     //check which figure is on the house field
@@ -405,7 +405,7 @@ public class BackEnd {
 		return i;
             }
         }
-        return 99;
+        return -1;
     }
 
     public int figureOnBaseField(int fieldNumber) {
@@ -414,7 +414,7 @@ public class BackEnd {
 		return i;
             }
         }
-        return 99;
+        return -1;
     }
 
     private boolean baseOfCurrentPlayerIsEmpty() {
@@ -453,7 +453,7 @@ public class BackEnd {
 	int firstField = 10 * figureToBeMoved.color;
 	int figureOnFirstField = figureOnField(firstField);
 
-	if (figureOnFirstField != 99) {
+	if (figureOnFirstField != -1) {
 	    moveToBase(figureOnFirstField);
 	}
 
