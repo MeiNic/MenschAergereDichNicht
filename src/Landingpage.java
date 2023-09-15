@@ -129,11 +129,11 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 colorMarker[i].setY(100000);
             }
         }
-        if (getNumberOfHumanPlayers() == 0){
+        if (getNumberOfHumanPlayers() == 1){
             bots.setSelected(true);
             userNameAdvice.setText("Enter your name:");
         } else {
-            if (getNumberOfHumanPlayers() == 3){
+            if (getNumberOfHumanPlayers() == 4){
                 bots.setSelected(false);
             }
             userNameAdvice.setText("Enter names for all the players:");
