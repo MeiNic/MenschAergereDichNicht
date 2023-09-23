@@ -22,6 +22,7 @@ public class Rules extends JFrame implements ActionListener{
     private String sr4;
     private String sr5;
     public JFrame executingClass;
+    Logger logger = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
@@ -92,9 +93,11 @@ public class Rules extends JFrame implements ActionListener{
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
+        logger.info("Displaying landingpage.");
     }
 
     public void actionPerformed(ActionEvent e){
+        logger.info("closing rules frame and setting old visible again");
         setVisible(false);
         executingClass.setVisible(true);
     }
