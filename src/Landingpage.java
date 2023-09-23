@@ -45,7 +45,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3] = new JTextField("red");
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
-        notChecked = new JLabel("<html><body>You have to read the rules and accept <br> them first!</body></html>");
+        notChecked = new JLabel("<html> <body> You have to read the rules and accept <br> them first! </body> </html>");
         rulesButton = new JButton("rules");
         startGame = new JButton("start game");
 

@@ -125,7 +125,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	rollDice.setText("roll the dice");
 	rulesAdvice.setText("Click this button, to view the rules again");
 	rulesButton.setText("rules");
-	noSix.setText("You didn't got a six. Press this button to move on to the next player");
+	noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
+			"</html>");
 	nextPlayer.setText("next player");
 
 	// Set bounds
