@@ -29,16 +29,16 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
         colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
         colorMarker[3] = new Circle(40, 397, 43, "#cc0000");
-	
+
         // Initialize UI Elements
         head = new JLabel("Mensch Ärgere Dich Nicht");
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         userNameAdvice = new JLabel("Enter names for all the players:");
-	
+
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
         bots = new JCheckBox("Fill the game with bots", false);
 
-	    userNames = new JTextField[4];
+        userNames = new JTextField[4];
         userNames[0] = new JTextField("yellow");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
@@ -75,18 +75,18 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame.setBounds(340, 475, 120, 32);
         startGame.setBackground(Color.red);
 
-	    // Add listeners
+        // Add listeners
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
         understood.addItemListener(e -> {
-		if (e.getStateChange() == ItemEvent.SELECTED){
-		    startGame.setBackground(Color.GREEN);
-		    repaint();
-		}else {
-		    startGame.setBackground(Color.RED);
-		    repaint();
-		}
-	    });
+        if (e.getStateChange() == ItemEvent.SELECTED){
+            startGame.setBackground(Color.GREEN);
+            repaint();
+        }else {
+            startGame.setBackground(Color.RED);
+            repaint();
+        }
+        });
         rulesButton.addActionListener(this);
 
         // Add UI Elements
@@ -121,13 +121,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 colorMarker[i].setY(yCoordinatesCircles[i]);
             } else {
                 remove(userNames[i]);
-		// HACK: Someone using a monitor taller than one
-		// million pixels would be able to see the hidden
-		// color marker! Because no one will ever play our
-		// game on such a gigantic monitor, I think we do not
-		// need to rush for potentially fixing this "issue",
-		// however, there might be a better way to do
-		// this. @guemax on 2023/08/16.
+        // HACK: Someone using a monitor taller than one
+        // million pixels would be able to see the hidden
+        // color marker! Because no one will ever play our
+        // game on such a gigantic monitor, I think we do not
+        // need to rush for potentially fixing this "issue",
+        // however, there might be a better way to do
+        // this. @guemax on 2023/08/16.
                 colorMarker[i].setY(100000);
             }
         }
@@ -174,16 +174,15 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     }
 
     public String[] getNames() {
-	String[] defaultNames = {"yellow", "green", "blue", "red"};
-	String[] playerNames = new String[4];
+        String[] defaultNames = {"yellow", "green", "blue", "red"};
+        String[] playerNames = new String[4];
 
         for (int i = 0; i < 4; i++) {
-	    String currentPlayerName = userNames[i].getText();
+            String currentPlayerName = userNames[i].getText();
 
-	    playerNames[i] = "" == currentPlayerName
-		? defaultNames[i] : currentPlayerName;
+            playerNames[i] = "" == currentPlayerName ? defaultNames[i] : currentPlayerName;
         }
-	
+
         return playerNames;
     }
 
