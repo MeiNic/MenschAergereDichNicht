@@ -141,6 +141,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         // Add listeners
         rollDice.addActionListener(this);
         rulesButton.addActionListener(this);
+        nextPlayer.addActionListener(this);
         addMouseListener(this);
 
         // Add UI Elements
