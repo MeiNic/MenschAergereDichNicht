@@ -17,6 +17,17 @@ public class BackEnd {
             figures[i] = new Figure(i, index, names[index]);
         }
 
+        //Manipulation of yellow figure positions
+        figures[0].setFinished();
+        figures[0].field = 3;
+        figures[1].setFinished();
+        figures[1].field = 2;
+        figures[2].setFinished();
+        figures[2].field = 1;
+        figures[3].setOnField();
+        figures[3].field = 36;
+
+
         randomNumber = 0;
 
         for (int i = 0; i < 4; i++) {
