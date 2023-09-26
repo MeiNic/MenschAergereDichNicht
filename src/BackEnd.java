@@ -86,7 +86,7 @@ public class BackEnd {
         int tries = 0;
 
         do {
-            randomNumber = dice.roll();
+            randomNumber = 4;
             tries++;
         } while (tries < allowedTries && randomNumber != 6);
 
