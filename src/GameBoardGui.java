@@ -332,18 +332,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int diameter = 50;
 
         for (int i = 0; i < input.length && i < figures.length; i++){
-            String color = FigureColor.YELLOW.getHexCode();
-
-            switch (input[i].color) {
-                case 0: color = FigureColor.YELLOW.getHexCode();
-                break;
-                case 1: color = FigureColor.GREEN.getHexCode();
-                break;
-                case 2: color = FigureColor.BLUE.getHexCode();
-                break;
-                case 3: color = FigureColor.RED.getHexCode();
-                break;
-            }
+            String color = switch (input[i].color) {
+                case 0 -> FigureColor.YELLOW.getHexCode();
+                case 1 -> FigureColor.GREEN.getHexCode();
+                case 2 -> FigureColor.BLUE.getHexCode();
+                case 3 -> FigureColor.RED.getHexCode();
+                default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
+            };
 
             int x;
             int y;
