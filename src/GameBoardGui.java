@@ -351,7 +351,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (input[i].isInBase()) {
                 x = basePositionsX[input[i].field];
                 y = basePositionsY[input[i].field];
-            } else if (input[i].isInHouse()) {
+            } else if (input[i].isInHouse() || input[i].isFinished()) {
                 x = housePositionsX[input[i].field];
                 y = housePositionsY[input[i].field];
             } else {
