@@ -151,7 +151,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         add(rulesButton);
 
         // Display UI
-        setTitle("game field");
+        setTitle("testing backend");
         setSize(1300, 940);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
