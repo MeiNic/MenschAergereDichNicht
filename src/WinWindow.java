@@ -8,51 +8,37 @@ public class WinWindow implements ActionListener {
     private JFrame frame;
     private JLabel message;
     private JButton close;
+    private Logger logger;
 
     public WinWindow(String player){
         frame = new JFrame();
         message = new JLabel();
         close = new JButton();
+        logger = LoggerFactory.getLoggerInstance();
 
-        setMessage(player);
-        setClose();
-
-        frame.add(message);
-        frame.add(close);
-
-        adjustJFrameSetting();
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        //frame.setVisible(false);
-    }
-
-    /*
-    method set all the needed parameters for the JButton
-     */
-    private void setClose(){
+        //set component values
+        message.setText("Congratulations! Player " + player + "has won this round.");
+        message.setBounds(10, 10, 295, 32);
         close.setText("close");
         close.setBounds(95, 50, 100, 32);
         close.addActionListener(this);
-    }
 
-    /*
-    method set all the needed parameters to the JLabel
-     */
-    private void setMessage(String player){
-        message.setText("Congratulations! Player " + player + "has won this round.");
-        message.setBounds(10, 10, 295, 32);
-    }
+        //add elements
+        frame.add(message);
+        frame.add(close);
 
-    /*
-    method sets all the needed parameters to the JFrame
-     */
-    private void adjustJFrameSetting() {
+        //set JFrame values
         frame.setTitle("congratulations");
         frame.setSize(315, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setResizable(true);
         frame.setVisible(true);
+        logger.info("displaying winWindow.");
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        logger.info("closing game.");
+        frame.setVisible(false);
     }
 }
