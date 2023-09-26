@@ -9,36 +9,36 @@ import java.awt.event.MouseListener;
 
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
     private enum FieldColor {
-    YELLOW("#FFC957"),
-    GREEN("#2A914E"),
-    BLUE("#1E32FF"),
-    RED("#CC0000"),
-    GRAY("#CCCCCC");
+	YELLOW("#FFC957"),
+	GREEN("#2A914E"),
+	BLUE("#1E32FF"),
+	RED("#CC0000"),
+	GRAY("#CCCCCC");
 
-    private final String hexCode;
+	private final String hexCode;
 
-    FieldColor(String hexCode) {
-        this.hexCode = hexCode;
-    }
+	FieldColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
 
-    public String getHexCode() {
-        return hexCode;
-    }
+	public String getHexCode() {
+	    return hexCode;
+	}
     }
     private enum FigureColor {
-    YELLOW("#FFFF00"),
-    GREEN("#00CC00"),
-    BLUE("#3C93FF"),
-    RED("#FF0000");
+	YELLOW("#FFFF00"),
+	GREEN("#00CC00"),
+	BLUE("#3C93FF"),
+	RED("#FF0000");
 
-    private final String hexCode;
-    FigureColor(String hexCode) {
-        this.hexCode = hexCode;
-    }
+	private final String hexCode;
+	FigureColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
 
-    public String getHexCode() {
-        return hexCode;
-    }
+	public String getHexCode() {
+	    return hexCode;
+	}
     }
 
 
@@ -126,7 +126,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesAdvice.setText("Click this button, to view the rules again");
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
-                "</html>");
+		      "</html>");
         nextPlayer.setText("next player");
 
         // Set bounds
@@ -332,13 +332,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             String color = FigureColor.YELLOW.getHexCode();
 
             switch (input[i].color) {
-                case 0: color = FigureColor.YELLOW.getHexCode();
+	    case 0: color = FigureColor.YELLOW.getHexCode();
                 break;
-                case 1: color = FigureColor.GREEN.getHexCode();
+	    case 1: color = FigureColor.GREEN.getHexCode();
                 break;
-                case 2: color = FigureColor.BLUE.getHexCode();
+	    case 2: color = FigureColor.BLUE.getHexCode();
                 break;
-                case 3: color = FigureColor.RED.getHexCode();
+	    case 3: color = FigureColor.RED.getHexCode();
                 break;
             }
 
