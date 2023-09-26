@@ -237,6 +237,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
                 continue;
             }
+            if (clickedFigure.isFinished()){
+                continue;
+            }
             if (clickedFigure.isPlaceable()) {
                 backend.moveFigure(clickedFigureIndex);
             } else {
