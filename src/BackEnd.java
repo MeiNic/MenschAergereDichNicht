@@ -27,7 +27,7 @@ public class BackEnd {
         figures[3].setOnField();
         figures[3].field = 36;
 
-        //Manipulation of yellow figure positions
+        //Manipulation of green figure positions
         moveToBase(4);
         figures[5].setInBase();
         figures[5].field = 4;
@@ -35,6 +35,16 @@ public class BackEnd {
         figures[6].field = 7;
         figures[7].setOnField();
         figures[7].field = 20;
+
+        //Manipulation of blue figure positions
+        figures[8].setOnField();
+        figures[8].field = 21;
+        figures[9].setOnField();
+        figures[9].field = 7;
+        figures[10].setOnField();
+        figures[10].field = 14;
+        figures[11].setInHouse();
+        figures[11].field = 10;
 
         randomNumber = 0;
 
