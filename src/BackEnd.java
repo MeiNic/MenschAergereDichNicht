@@ -18,11 +18,11 @@ public class BackEnd {
         }
 
         //Manipulation of yellow figure positions
-        figures[0].setFinished();
+        figures[0].setInHouse();
         figures[0].field = 3;
-        figures[1].setFinished();
+        figures[1].setInHouse();
         figures[1].field = 2;
-        figures[2].setFinished();
+        figures[2].setInHouse();
         figures[2].field = 1;
         figures[3].setOnField();
         figures[3].field = 36;
