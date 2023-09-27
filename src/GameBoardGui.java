@@ -9,36 +9,36 @@ import java.awt.event.MouseListener;
 
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
     private enum FieldColor {
-    YELLOW("#FFC957"),
-    GREEN("#2A914E"),
-    BLUE("#1E32FF"),
-    RED("#CC0000"),
-    GRAY("#CCCCCC");
+	YELLOW("#FFC957"),
+	GREEN("#2A914E"),
+	BLUE("#1E32FF"),
+	RED("#CC0000"),
+	GRAY("#CCCCCC");
 
-    private final String hexCode;
+	private final String hexCode;
 
-    FieldColor(String hexCode) {
-        this.hexCode = hexCode;
-    }
+	FieldColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
 
-    public String getHexCode() {
-        return hexCode;
-    }
+	public String getHexCode() {
+	    return hexCode;
+	}
     }
     private enum FigureColor {
-    YELLOW("#FFFF00"),
-    GREEN("#00CC00"),
-    BLUE("#3C93FF"),
-    RED("#FF0000");
+	YELLOW("#FFFF00"),
+	GREEN("#00CC00"),
+	BLUE("#3C93FF"),
+	RED("#FF0000");
 
-    private final String hexCode;
-    FigureColor(String hexCode) {
-        this.hexCode = hexCode;
-    }
+	private final String hexCode;
+	FigureColor(String hexCode) {
+	    this.hexCode = hexCode;
+	}
 
-    public String getHexCode() {
-        return hexCode;
-    }
+	public String getHexCode() {
+	    return hexCode;
+	}
     }
 
 
@@ -126,7 +126,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesAdvice.setText("Click this button, to view the rules again");
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
-                "</html>");
+		      "</html>");
         nextPlayer.setText("next player");
 
         // Set bounds
@@ -334,11 +334,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         for (int i = 0; i < input.length && i < figures.length; i++){
             String color = switch (input[i].color) {
-                case 0 -> FigureColor.YELLOW.getHexCode();
-                case 1 -> FigureColor.GREEN.getHexCode();
-                case 2 -> FigureColor.BLUE.getHexCode();
-                case 3 -> FigureColor.RED.getHexCode();
-                default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
+	    case 0 -> FigureColor.YELLOW.getHexCode();
+	    case 1 -> FigureColor.GREEN.getHexCode();
+	    case 2 -> FigureColor.BLUE.getHexCode();
+	    case 3 -> FigureColor.RED.getHexCode();
+	    default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
             };
 
             int x;
