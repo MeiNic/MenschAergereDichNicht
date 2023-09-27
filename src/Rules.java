@@ -93,11 +93,11 @@ public class Rules extends JFrame implements ActionListener{
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying landingpage.");
+        logger.info("Displaying Landingpage.");
     }
 
     public void actionPerformed(ActionEvent e){
-        logger.info("closing rules frame and setting old visible again");
+        logger.info("Closing Rules and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
     }

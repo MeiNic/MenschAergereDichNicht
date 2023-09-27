@@ -158,17 +158,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 // merged with master. @guemax on 2023/08/16.
                 int numberOfPlayers = getNumberOfHumanPlayers() - 1;
                 boolean fillWithBots = getBotsSelection();
-                logger.info("Instantiating game-board");
+                logger.info("Displaying GameBoardGui.");
                 new GameBoardGui(names, numberOfPlayers, fillWithBots);
             } else {
                 add(notChecked);
                 repaint();
-                logger.info("Adding notChecked");
+                logger.warn("User tried to start the game without accepting the rules.");
             }
 
         } else if (e.getSource() == rulesButton) {
             setVisible(false);
-            logger.info("Instantiating rules from landingpage");
+            logger.info("Displaying rules.");
             new Rules(this);
         }
     }
