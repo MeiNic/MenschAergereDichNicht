@@ -28,8 +28,8 @@ public class WinWindow implements ActionListener {
     }
 
     /*
-      method set all the needed parameters for the JButton
-    */
+    method set all the needed parameters for the JButton
+     */
     private void setClose(){
         close.setText("close");
         close.setBounds(95, 50, 100, 32);
@@ -37,16 +37,16 @@ public class WinWindow implements ActionListener {
     }
 
     /*
-      method set all the needed parameters to the JLabel
-    */
+    method set all the needed parameters to the JLabel
+     */
     private void setMessage(String player){
         message.setText("Congratulations! Player " + player + "has won this round.");
         message.setBounds(10, 10, 295, 32);
     }
 
     /*
-      method sets all the needed parameters to the JFrame
-    */
+    method sets all the needed parameters to the JFrame
+     */
     private void adjustJFrameSetting() {
         frame.setTitle("congratulations");
         frame.setSize(315, 150);
