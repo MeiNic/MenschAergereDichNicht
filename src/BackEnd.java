@@ -270,15 +270,14 @@ public class BackEnd {
 
         if (maxField < newField) {
             // Move would exceed the number of available fields in the game.
-            // return;
-            // }
+            return;
+        }
 
-            for (int i = figureToBeMoved.field; i < 4; i++){
-                if (figureOnField(i) != -1){
-                    // Figure would have to jump over other figures in
-                    // the house, which is not allowed.
-                    return;
-                }
+        for (int i = figureToBeMoved.field; i < 4; i++){
+            if (figureOnField(i) != -1){
+                // Figure would have to jump over other figures in
+                // the house, which is not allowed.
+                return;
             }
         }
 
@@ -395,7 +394,7 @@ public class BackEnd {
     //check which figure is on the house field
     public int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
-            if (figures[i].field == fieldNumber && figures[i].isInHouse()) {
+            if (figures[i].field == fieldNumber && ( figures[i].isInHouse()) || figures[i].isFinished()) {
                 return i;
             }
         }

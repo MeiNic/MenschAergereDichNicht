@@ -8,51 +8,52 @@ public class WinWindow implements ActionListener {
     private JFrame frame;
     private JLabel message;
     private JButton close;
+    private JButton nextGame;
+    private Logger logger;
 
     public WinWindow(String player){
         frame = new JFrame();
         message = new JLabel();
         close = new JButton();
+        nextGame = new JButton();
+        logger = LoggerFactory.getLoggerInstance();
 
-        setMessage(player);
-        setClose();
+        //set component values
+        message.setText("Congratulations! Player " + player + " has won this round.");
+        message.setBounds(10, 10, 295, 32);
 
+        close.setText("close");
+        close.setBounds(140, 50, 100, 32);
+        close.addActionListener(this);
+
+        nextGame.setText("new game");
+        nextGame.setBounds(20, 50, 100, 32);
+        nextGame.addActionListener(this);
+
+        //add elements
         frame.add(message);
         frame.add(close);
+        frame.add(nextGame);
 
-        adjustJFrameSetting();
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        //frame.setVisible(false);
-    }
-
-    /*
-    method set all the needed parameters for the JButton
-     */
-    private void setClose(){
-        close.setText("close");
-        close.setBounds(95, 50, 100, 32);
-        close.addActionListener(this);
-    }
-
-    /*
-    method set all the needed parameters to the JLabel
-     */
-    private void setMessage(String player){
-        message.setText("Congratulations! Player " + player + "has won this round.");
-        message.setBounds(10, 10, 295, 32);
-    }
-
-    /*
-    method sets all the needed parameters to the JFrame
-     */
-    private void adjustJFrameSetting() {
+        //set JFrame values
         frame.setTitle("congratulations");
         frame.setSize(315, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setResizable(true);
         frame.setVisible(true);
+        logger.info("displaying winWindow.");
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == nextGame){
+            logger.info("closing winWindow.");
+            frame.setVisible(false);
+            logger.info("starting new game.");
+            new Main();
+        } else if (e.getSource() == close) {
+            logger.info("closing game.");
+            frame.setVisible(false);
+        }
     }
 }

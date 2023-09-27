@@ -141,6 +141,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         // Add listeners
         rollDice.addActionListener(this);
         rulesButton.addActionListener(this);
+        nextPlayer.addActionListener(this);
         addMouseListener(this);
 
         // Add UI Elements
@@ -237,6 +238,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
                 continue;
             }
+            if (clickedFigure.isFinished()){
+                continue;
+            }
             if (clickedFigure.isPlaceable()) {
                 backend.moveFigure(clickedFigureIndex);
             } else {
@@ -329,18 +333,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int diameter = 50;
 
         for (int i = 0; i < input.length && i < figures.length; i++){
-            String color = FigureColor.YELLOW.getHexCode();
-
-            switch (input[i].color) {
-                case 0: color = FigureColor.YELLOW.getHexCode();
-                break;
-                case 1: color = FigureColor.GREEN.getHexCode();
-                break;
-                case 2: color = FigureColor.BLUE.getHexCode();
-                break;
-                case 3: color = FigureColor.RED.getHexCode();
-                break;
-            }
+            String color = switch (input[i].color) {
+                case 0 -> FigureColor.YELLOW.getHexCode();
+                case 1 -> FigureColor.GREEN.getHexCode();
+                case 2 -> FigureColor.BLUE.getHexCode();
+                case 3 -> FigureColor.RED.getHexCode();
+                default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
+            };
 
             int x;
             int y;
@@ -348,7 +347,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             if (input[i].isInBase()) {
                 x = basePositionsX[input[i].field];
                 y = basePositionsY[input[i].field];
-            } else if (input[i].isInHouse()) {
+            } else if (input[i].isInHouse() || input[i].isFinished()) {
                 x = housePositionsX[input[i].field];
                 y = housePositionsY[input[i].field];
             } else {
