@@ -7,14 +7,14 @@ public class Circle {
     private int y;
     private int diameter;
     private Color color;
-    boolean display;
+    boolean visible;
 
     public Circle(int x, int y, int diameter, String hexCode){
         this.x = x;
         this.y = y;
         this.diameter = diameter;
         this.color = Color.decode(hexCode);
-        this.display = true;
+        this.visible = true;
     }
 
     public int getX() {
@@ -41,11 +41,14 @@ public class Circle {
         this.color = Color.decode(hexCode);
     }
 
-    public void doNotDisplay(){
-        this.display = false;
+    public boolean isVisible(){
+        return visible;
+    }
+    public void disableVisible(){
+        this.visible = false;
     }
 
-    public void display(){
-        this.display = true;
+    public void enableVisible(){
+        this.visible = true;
     }
 }
