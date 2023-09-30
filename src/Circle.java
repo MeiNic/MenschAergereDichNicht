@@ -25,10 +25,6 @@ public class Circle {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getDiameter() {
         return diameter;
     }
