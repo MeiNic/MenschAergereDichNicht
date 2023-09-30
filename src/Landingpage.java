@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
-    private final int[] yCoordinatesCircles = {211, 273, 335, 397};
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -52,8 +51,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
-        Font fontNotCheckid = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
-        notChecked.setFont(fontNotCheckid);
+        Font fontNotChecked = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
+        notChecked.setFont(fontNotChecked);
         notChecked.setForeground(Color.RED);
 
         // Set bounds
@@ -196,7 +195,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     private void paintColorMarkers(Graphics g, Circle[] colorMarkers) {
         for (Circle marker : colorMarkers) {
-            if (marker.isVisible() == true){
+            if (marker.isVisible()){
                 int x = marker.getX();
                 int y = marker.getY();
                 int diameter = marker.getDiameter();
