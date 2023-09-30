@@ -121,13 +121,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 colorMarker[i].enableVisible();
             } else {
                 remove(userNames[i]);
-		// HACK: Someone using a monitor taller than one
-		// million pixels would be able to see the hidden
-		// color marker! Because no one will ever play our
-		// game on such a gigantic monitor, I think we do not
-		// need to rush for potentially fixing this "issue",
-		// however, there might be a better way to do
-		// this. @guemax on 2023/08/16.
                 colorMarker[i].disableVisible();
             }
         }
