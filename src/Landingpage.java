@@ -203,15 +203,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     private void paintColorMarkers(Graphics g, Circle[] colorMarkers) {
         for (Circle marker : colorMarkers) {
-            int x = marker.getX();
-            int y = marker.getY();
-            int diameter = marker.getDiameter();
-            Color color = marker.getColor();
+            if (marker.isVisible() == true){
+                int x = marker.getX();
+                int y = marker.getY();
+                int diameter = marker.getDiameter();
+                Color color = marker.getColor();
 
-            g.setColor(color);
-            g.fillOval(x, y, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, diameter, diameter);
+                g.setColor(color);
+                g.fillOval(x, y, diameter, diameter);
+                g.setColor(Color.BLACK);
+                g.drawOval(x, y, diameter, diameter);
+            }
         }
     }
 }
