@@ -118,7 +118,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         for (int i = 0; i < 4; i++) {
             if (i < getNumberOfHumanPlayers()) {
                 add(userNames[i]);
-                colorMarker[i].setY(yCoordinatesCircles[i]);
+                colorMarker[i].enableVisible();
             } else {
                 remove(userNames[i]);
 		// HACK: Someone using a monitor taller than one
@@ -128,7 +128,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 		// need to rush for potentially fixing this "issue",
 		// however, there might be a better way to do
 		// this. @guemax on 2023/08/16.
-                colorMarker[i].setY(100000);
+                colorMarker[i].disableVisible();
             }
         }
         if (getNumberOfHumanPlayers() == 1){
