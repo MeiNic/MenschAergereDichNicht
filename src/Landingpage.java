@@ -111,7 +111,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying landingpage.");
+        logger.info("Displaying Landingpage.");
     }
     
     public void stateChanged(ChangeEvent e) {
