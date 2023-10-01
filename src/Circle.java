@@ -7,7 +7,7 @@ public class Circle {
     private int y;
     private int diameter;
     private Color color;
-    boolean visible;
+    private boolean visible;
 
     public Circle(int x, int y, int diameter, String hexCode){
         this.x = x;
