@@ -159,7 +159,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying landingpage.");
+        logger.info("Displaying Landingpage.");
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -192,7 +192,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mousePositionX = e.getX();
         int mousePositionY = e.getY();
         int diameter = 50;
-        logger.info("mouse was clicked at x: " + mousePositionX + "| y: " + mousePositionY);
+
+	String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
 
         for (int i = 0; i < fieldPositionsX.length; i++) {
             int differenceX = mousePositionX - fieldPositionsX[i];
@@ -218,6 +219,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
+	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
@@ -247,6 +249,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
+	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
@@ -272,9 +275,10 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveOutOfBase(clickedFigureIndex);
             }
             prepareNextMove();
+	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
-        logger.warn("mouse was clicked outside the fields");
+	logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
     }
 
     private void prepareNextMove() {

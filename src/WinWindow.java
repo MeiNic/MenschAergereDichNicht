@@ -42,17 +42,17 @@ public class WinWindow implements ActionListener {
         frame.setLayout(null);
         frame.setResizable(true);
         frame.setVisible(true);
-        logger.info("displaying winWindow.");
+        logger.info("Displaying WinWindow.");
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == nextGame){
-            logger.info("closing winWindow.");
+            logger.info("Closing WinWindow.");
             frame.setVisible(false);
-            logger.info("starting new game.");
+            logger.info("Starting new game.");
             new Main();
         } else if (e.getSource() == close) {
-            logger.info("closing game.");
+            logger.info("Closing game.");
             frame.setVisible(false);
         }
     }

@@ -14,7 +14,7 @@ public class Main {
             logger.info("Try setting look and feel of windows.");
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-            logger.info("Instantiating landingpage.");
+            logger.info("Instantiating Landingpage.");
             new Landingpage();
         } catch (UnsupportedLookAndFeelException e) {
             logger.fatal("Unable to set the look and feel of windows.");
