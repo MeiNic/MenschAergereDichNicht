@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
-    private final int[] yCoordinatesCircles = {211, 273, 335, 397};
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -52,8 +51,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         // Font settings
         Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
-        Font fontNotCheckid = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
-        notChecked.setFont(fontNotCheckid);
+        Font fontNotChecked = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
+        notChecked.setFont(fontNotChecked);
         notChecked.setForeground(Color.RED);
 
         // Set bounds
@@ -118,17 +117,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         for (int i = 0; i < 4; i++) {
             if (i < getNumberOfHumanPlayers()) {
                 add(userNames[i]);
-                colorMarker[i].setY(yCoordinatesCircles[i]);
+                colorMarker[i].enableVisible();
             } else {
                 remove(userNames[i]);
-		// HACK: Someone using a monitor taller than one
-		// million pixels would be able to see the hidden
-		// color marker! Because no one will ever play our
-		// game on such a gigantic monitor, I think we do not
-		// need to rush for potentially fixing this "issue",
-		// however, there might be a better way to do
-		// this. @guemax on 2023/08/16.
-                colorMarker[i].setY(100000);
+                colorMarker[i].disableVisible();
             }
         }
         if (getNumberOfHumanPlayers() == 1){
@@ -203,15 +195,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     private void paintColorMarkers(Graphics g, Circle[] colorMarkers) {
         for (Circle marker : colorMarkers) {
-            int x = marker.getX();
-            int y = marker.getY();
-            int diameter = marker.getDiameter();
-            Color color = marker.getColor();
+            if (marker.isVisible()){
+                int x = marker.getX();
+                int y = marker.getY();
+                int diameter = marker.getDiameter();
+                Color color = marker.getColor();
 
-            g.setColor(color);
-            g.fillOval(x, y, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, diameter, diameter);
+                g.setColor(color);
+                g.fillOval(x, y, diameter, diameter);
+                g.setColor(Color.BLACK);
+                g.drawOval(x, y, diameter, diameter);
+            }
         }
     }
 }
