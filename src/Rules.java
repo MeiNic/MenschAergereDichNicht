@@ -1,3 +1,5 @@
+package src;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,18 +15,17 @@ public class Rules extends JFrame implements ActionListener{
     private JLabel r3;
     private JLabel r4;
     private JLabel r5;
-    private JCheckBox understood;
     private JButton done;
     private String sr1;
     private String sr2;
     private String sr3;
     private String sr4;
     private String sr5;
-    public BackEnd game;
-    private JLabel notification;
+    public JFrame executingClass;
+    Logger logger = LoggerFactory.getLoggerInstance();
 
-    Rules(BackEnd newBackEnd){
-        game = newBackEnd;
+    Rules(JFrame JFrameN){
+        executingClass = JFrameN;
         //Declaration of Strings
         sr1 = "1. When a 6 is rolled, you have to move a figure out of base!";
         sr2 = "2. you have to keep your start-field free, as long as there are figures in your Base";
@@ -43,11 +44,7 @@ public class Rules extends JFrame implements ActionListener{
         r3 = new JLabel(sr3);
         r4 = new JLabel(sr4);
         r5 = new JLabel(sr5);
-
-        notification = new JLabel("You have to select the checkbox first!");
-
-        understood = new JCheckBox("I read and understood the rules of the game", false);
-        done = new JButton("done");
+        done = new JButton("close");
 
         //settings of headers
         Font fontHeading = new Font(header.getFont().getName(), Font.PLAIN, 40);
@@ -71,18 +68,11 @@ public class Rules extends JFrame implements ActionListener{
         r4.setBounds(40, 340, 900, 32);
         r5.setBounds(40, 370, 700, 32);
 
-        understood.setBounds(40, 450, 600, 32);
-
-        done.setBounds(40, 550, 80, 32);
+        done.setBounds(40, 420, 80, 32);
         done.addActionListener(this);
         done.setBackground(Color.green);
 
-        //settings of notification to select the checkbox
-        Font noti = new Font(notification.getFont().getName(), Font.PLAIN, 15);
-        notification.setFont(noti);
-        notification.setBounds(40, 500, 700, 50);
-
-        //Add all the j-components to the content Panel
+        //Add UI elements
         add(header);
         add(goalHeader);
         add(goal1);
@@ -93,36 +83,22 @@ public class Rules extends JFrame implements ActionListener{
         add(r3);
         add(r4);
         add(r5);
-        add(understood);
         add(done);
 
-        //apply all needed values for the JFrame
-        adjustJFrameSetting();
-    }
-
-    public boolean getCheckboxSetting(){
-        return understood.isSelected();
-    }
-
-
-    public void actionPerformed(ActionEvent e){
-        if(getCheckboxSetting()){
-            setVisible(false);
-            game.gui.setVisible(true);
-        }else{
-            add(notification);
-            repaint();
-        }
-    }
-
-
-    private void adjustJFrameSetting(){
+        //display UI
         setTitle("Overview Rules");
-        setSize(910, 650);
+        setSize(785, 510);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setBackground(Color.BLACK);
         setResizable(true);
         setVisible(true);
+        logger.info("Displaying Landingpage.");
+    }
+
+    public void actionPerformed(ActionEvent e){
+        logger.info("Closing Rules and setting previous window to visible again.");
+        setVisible(false);
+        executingClass.setVisible(true);
     }
 }

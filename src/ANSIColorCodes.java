@@ -1,3 +1,5 @@
+package src;
+
 public enum ANSIColorCodes {
     RESET("\u001B[0m"),
     BLACK("\u001B[30m"),
