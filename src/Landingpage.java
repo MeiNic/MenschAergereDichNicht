@@ -142,15 +142,12 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         if (e.getSource() == startGame) {
             if (getUnderstoodStatus()) {
                 setVisible(false);
+		
                 String[] names = getNames();
-                // TODO: Remove this `-1` by passing the "real" number of
-                // human players to `BackEnd` and switching a `<=` to a `<` in
-                // a loop of its constructor. This has to be done right after
-                // the pull request for refactoring this file has been fully
-                // merged with master. @guemax on 2023/08/16.
-                int numberOfPlayers = getNumberOfHumanPlayers() - 1;
+                int numberOfPlayers = getNumberOfHumanPlayers();
                 boolean fillWithBots = getBotsSelection();
-                logger.info("Displaying GameBoardGui.");
+		
+		logger.info("Displaying GameBoardGui.");
                 new GameBoardGui(names, numberOfPlayers, fillWithBots);
             } else {
                 add(notChecked);

@@ -20,7 +20,7 @@ public class BackEnd {
         randomNumber = 0;
 
         for (int i = 0; i < 4; i++) {
-            if (i <= numberOfPlayers) {
+            if (i < numberOfPlayers) {
                 players[i] = new Human(names[i], i);
             } else if (fillWithBots) {
                 players[i] = new Bot(names[i], i);
