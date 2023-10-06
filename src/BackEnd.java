@@ -8,7 +8,7 @@ public class BackEnd {
     private Player currentPlayer;
     private int currentPlayerIndex;
     
-    BackEnd(String[] names, int numberOfPlayers, boolean fillWithBots) {
+    BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
         figures = new Figure[16];
         players = new Player[4];
 
@@ -20,7 +20,7 @@ public class BackEnd {
         randomNumber = 0;
 
         for (int i = 0; i < 4; i++) {
-            if (i < numberOfPlayers) {
+            if (i < numberOfHumanPlayers) {
                 players[i] = new Human(names[i], i);
             } else if (fillWithBots) {
                 players[i] = new Bot(names[i], i);

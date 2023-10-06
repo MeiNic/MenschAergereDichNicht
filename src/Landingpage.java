@@ -144,11 +144,11 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 setVisible(false);
 		
                 String[] names = getNames();
-                int numberOfPlayers = getNumberOfHumanPlayers();
+                int numberOfHumanPlayers = getNumberOfHumanPlayers();
                 boolean fillWithBots = getBotsSelection();
 		
 		logger.info("Displaying GameBoardGui.");
-                new GameBoardGui(names, numberOfPlayers, fillWithBots);
+                new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
             } else {
                 add(notChecked);
                 repaint();
