@@ -17,7 +17,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
     private JCheckBox bots;
-    private Circle[] colorMarker;
+    private JLabel[] colorMarker;
     private JLabel userNameAdvice;
     private JTextField[] userNames;
     private JCheckBox understood;
@@ -27,11 +27,12 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
-        colorMarker = new Circle[4];
-        colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
+        colorMarker = new JLabel[4];
+        //Set positions of the color markers
+        /*colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
         colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
         colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
-        colorMarker[3] = new Circle(40, 397, 43, "#cc0000");
+        colorMarker[3] = new Circle(40, 397, 43, "#cc0000");*/
 
         // Initialize UI Elements
         head = new JLabel("Mensch Ärgere Dich Nicht");
@@ -82,14 +83,14 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
         understood.addItemListener(e -> {
-		if (e.getStateChange() == ItemEvent.SELECTED){
-		    startGame.setBackground(Color.GREEN);
-		    repaint();
-		}else {
-		    startGame.setBackground(Color.RED);
-		    repaint();
-		}
-	    });
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                startGame.setBackground(Color.GREEN);
+                repaint();
+            }else {
+                startGame.setBackground(Color.RED);
+                repaint();
+            }
+        });
         rulesButton.addActionListener(this);
 
         // Add UI Elements
@@ -121,10 +122,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         for (int i = 0; i < 4; i++) {
             if (i < getNumberOfHumanPlayers()) {
                 add(userNames[i]);
-                colorMarker[i].enableVisible();
+                add(colorMarker[i]);
             } else {
                 remove(userNames[i]);
-                colorMarker[i].disableVisible();
+                remove(colorMarker[i]);
             }
         }
         if (getNumberOfHumanPlayers() == 1){
@@ -146,12 +147,12 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         if (e.getSource() == startGame) {
             if (getUnderstoodStatus()) {
                 setVisible(false);
-		
+
                 String[] names = getNames();
                 int numberOfHumanPlayers = getNumberOfHumanPlayers();
                 boolean fillWithBots = getBotsSelection();
-		
-		logger.info("Displaying GameBoardGui.");
+
+                logger.info("Displaying GameBoardGui.");
                 new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
             } else {
                 add(notChecked);
