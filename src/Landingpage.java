@@ -1,5 +1,6 @@
 package src;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -7,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
     private JLabel head;
@@ -183,26 +187,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         return bots.isSelected();
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        paintColorMarkers(g, colorMarker);
-    }
-
-    private void paintColorMarkers(Graphics g, Circle[] colorMarkers) {
-        for (Circle marker : colorMarkers) {
-            if (marker.isVisible()){
-                int x = marker.getX();
-                int y = marker.getY();
-                int diameter = marker.getDiameter();
-                Color color = marker.getColor();
-
-                g.setColor(color);
-                g.fillOval(x, y, diameter, diameter);
-                g.setColor(Color.BLACK);
-                g.drawOval(x, y, diameter, diameter);
-            }
+    private ImageIcon readImg (String imageName){
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("res/"+imageName+".png"));
+        }catch (IOException e){
+            e.printStackTrace();
         }
+        return new ImageIcon(img);
     }
 }
