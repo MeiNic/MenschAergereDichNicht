@@ -35,10 +35,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         colorMarker[3] = new JLabel(readImg("figure-red"));
 
         //Set positions of the color markers
-        colorMarker[0].setBounds(40, 171, 50, 50);
-        colorMarker[1].setBounds(40, 233, 50, 50);
-        colorMarker[2].setBounds(40, 295, 50, 50);
-        colorMarker[3].setBounds(40, 357, 50, 50);
+        colorMarker[0].setBounds(40, 171, 39, 56);
+        colorMarker[1].setBounds(40, 233, 39, 56);
+        colorMarker[2].setBounds(40, 295, 39, 56);
+        colorMarker[3].setBounds(40, 357, 39, 56);
 
         //add circles to jframe
         add(colorMarker[0]);
