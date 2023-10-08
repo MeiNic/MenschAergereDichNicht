@@ -28,11 +28,23 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     public Landingpage() {
         colorMarker = new JLabel[4];
+        //Insert image-files to the color markers
+        colorMarker[0] = new JLabel(readImg("field-orange"));
+        colorMarker[1] = new JLabel(readImg("field-green"));
+        colorMarker[2] = new JLabel(readImg("field-blue"));
+        colorMarker[3] = new JLabel(readImg("field-red"));
+
         //Set positions of the color markers
-        /*colorMarker[0] = new Circle(40, 211, 43, "#ffc957");
-        colorMarker[1] = new Circle(40, 273, 43, "#2a914e");
-        colorMarker[2] = new Circle(40, 335, 43, "#1e32ff");
-        colorMarker[3] = new Circle(40, 397, 43, "#cc0000");*/
+        colorMarker[0].setBounds(40, 211, 50, 50);
+        colorMarker[1].setBounds(40, 273, 50, 50);
+        colorMarker[2].setBounds(40, 335, 50, 50);
+        colorMarker[3].setBounds(40, 397, 50, 50);
+
+        //add circles to jframe
+        add(colorMarker[0]);
+        add(colorMarker[1]);
+        add(colorMarker[2]);
+        add(colorMarker[3]);
 
         // Initialize UI Elements
         head = new JLabel("Mensch Ärgere Dich Nicht");
