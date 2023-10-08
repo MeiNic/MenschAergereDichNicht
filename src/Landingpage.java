@@ -29,10 +29,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     public Landingpage() {
         colorMarker = new JLabel[4];
         //Insert image-files to the color markers
-        colorMarker[0] = new JLabel(readImg("field-orange"));
-        colorMarker[1] = new JLabel(readImg("field-green"));
-        colorMarker[2] = new JLabel(readImg("field-blue"));
-        colorMarker[3] = new JLabel(readImg("field-red"));
+        colorMarker[0] = new JLabel(readImg("figure-orange"));
+        colorMarker[1] = new JLabel(readImg("figure-green"));
+        colorMarker[2] = new JLabel(readImg("figure-blue"));
+        colorMarker[3] = new JLabel(readImg("figure-red"));
 
         //Set positions of the color markers
         colorMarker[0].setBounds(40, 171, 50, 50);
