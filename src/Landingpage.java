@@ -24,6 +24,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JLabel notChecked;
     private JButton rulesButton;
     private JButton startGame;
+    private Font customFont;
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -45,6 +46,19 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         add(colorMarker[1]);
         add(colorMarker[2]);
         add(colorMarker[3]);
+
+        //Configure Font
+        try {
+            customFont = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (FontFormatException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         // Initialize UI Elements
         head = new JLabel("Mensch Ärgere Dich Nicht");
