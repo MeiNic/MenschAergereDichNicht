@@ -98,19 +98,19 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         labelPlayerNumber.setBounds(40, 80, 250, 32);
         playerNumber.setBounds(250, 80, 90, 32);
         bots.setBounds(35, 110, 180, 20);
-        userNameAdvice.setBounds(40, 140, 350, 32);
-        head.setBounds(13, 5, 480, 70);
+        userNameAdvice.setBounds(40, 140, 400, 32);
+        head.setBounds(10, 5, 550, 70);
 
-        userNames[0].setBounds(100, 185, 180, 32);
-        userNames[1].setBounds(100, 247, 180, 32);
-        userNames[2].setBounds(100, 309, 180, 32);
-        userNames[3].setBounds(100, 371, 180, 32);
+        userNames[0].setBounds(100, 185, 230, 32);
+        userNames[1].setBounds(100, 247, 230, 32);
+        userNames[2].setBounds(100, 309, 230, 32);
+        userNames[3].setBounds(100, 371, 230, 32);
 
-        understood.setBounds(20, 425, 300, 32);
-        notChecked.setBounds(20, 450, 300, 50);
-        rulesButton.setBounds(340, 425, 120, 32);
+        understood.setBounds(20, 425, 350, 32);
+        notChecked.setBounds(20, 460, 350, 50);
+        rulesButton.setBounds(390, 425, 120, 32);
 
-        startGame.setBounds(340, 475, 120, 32);
+        startGame.setBounds(390, 475, 120, 32);
         startGame.setBackground(Color.red);
 
         // Add listeners
@@ -143,7 +143,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         // Display UI
         setTitle("landingpage");
-        setSize(500, 570);
+        setSize(550, 570);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(Color.decode("#6c6f85"));
