@@ -28,6 +28,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JButton startGame;
     private Font customFont;
     private Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private Color getDefaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -145,7 +146,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setSize(550, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(Color.decode("#6c6f85"));
+        getContentPane().setBackground(defaultForegroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
