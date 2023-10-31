@@ -85,9 +85,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         //Apply Font to JComponents
         labelPlayerNumber.setFont(JetBrainsMonoSemiBold);
-        labelPlayerNumber.setForeground(defaultForegroundColor);
         userNameAdvice.setFont(JetBrainsMonoSemiBold);
-        userNameAdvice.setForeground(defaultForegroundColor);
         playerNumber.setFont(JetBrainsMonoSemiBold);
         bots.setFont(JetBrainsMonoSemiBold);
         userNames[0].setFont(JetBrainsMonoSemiBold);
@@ -96,10 +94,16 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setFont(JetBrainsMonoSemiBold);
         understood.setFont(JetBrainsMonoSemiBold);
 
-        // Font settings
+        // Font adjustments for notChecked
         Font fontNotChecked = new Font(JetBrainsMonoSemiBold.getName(), Font.PLAIN, 15);
         notChecked.setFont(fontNotChecked);
+
+        // Change Foreground
         notChecked.setForeground(Color.RED);
+        labelPlayerNumber.setForeground(defaultForegroundColor);
+        userNameAdvice.setForeground(defaultForegroundColor);
+
+        //Set Background
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 250, 32);
