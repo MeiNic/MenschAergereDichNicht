@@ -1,5 +1,7 @@
 package src;
 
+import jdk.dynalink.StandardNamespace;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -62,7 +64,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
 
         // Initialize UI Elements
-        head = new JLabel("Mensch Ärgere Dich Nicht");
+        head = new JLabel(readScaledImg("title", 250, 179));
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         userNameAdvice = new JLabel("Enter names for all the players:");
 
@@ -87,9 +89,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNameAdvice.setForeground(defaultForegroundColor);
 
         // Font settings
-        Font fontHeading = new Font(customFont.getName(), Font.PLAIN, 40);
-        head.setFont(fontHeading);
-        head.setForeground(defaultForegroundColor);
         Font fontNotChecked = new Font(customFont.getName(), Font.PLAIN, 15);
         notChecked.setFont(fontNotChecked);
         notChecked.setForeground(Color.RED);
@@ -99,7 +98,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         playerNumber.setBounds(250, 80, 90, 32);
         bots.setBounds(35, 110, 180, 20);
         userNameAdvice.setBounds(40, 140, 400, 32);
-        head.setBounds(10, 5, 550, 70);
+        head.setBounds(10, 5, 250, 179);
 
         userNames[0].setBounds(100, 185, 230, 32);
         userNames[1].setBounds(100, 247, 230, 32);
@@ -230,5 +229,19 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
             e.printStackTrace();
         }
         return new ImageIcon(img);
+    }
+
+    private ImageIcon readScaledImg (String imageName, int width, int height){
+        BufferedImage unscaledImg = null;
+        try {
+            unscaledImg = ImageIO.read(new File("res/"+imageName+".png"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        if (unscaledImg != null){
+            Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImg);
+        }
+        return null;
     }
 }
