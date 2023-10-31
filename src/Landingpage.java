@@ -25,6 +25,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JButton rulesButton;
     private JButton startGame;
     private Font customFont;
+    private Color defaultForegroundColor = Color.decode("#f3f5f9");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -79,10 +80,17 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         rulesButton = new JButton("rules");
         startGame = new JButton("start game");
 
+        //Apply Font to JComponents
+        labelPlayerNumber.setFont(customFont);
+        labelPlayerNumber.setForeground(defaultForegroundColor);
+        userNameAdvice.setFont(customFont);
+        userNameAdvice.setForeground(defaultForegroundColor);
+
         // Font settings
-        Font fontHeading = new Font(head.getFont().getName(), Font.PLAIN, 40);
+        Font fontHeading = new Font(customFont.getName(), Font.PLAIN, 40);
         head.setFont(fontHeading);
-        Font fontNotChecked = new Font(notChecked.getFont().getName(), Font.PLAIN, 15);
+        head.setForeground(defaultForegroundColor);
+        Font fontNotChecked = new Font(customFont.getName(), Font.PLAIN, 15);
         notChecked.setFont(fontNotChecked);
         notChecked.setForeground(Color.RED);
 
