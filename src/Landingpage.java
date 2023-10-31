@@ -28,7 +28,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JButton startGame;
     private Font JetBrainsMonoSemiBold;
     private Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private Color getDefaultBackgroundColor = Color.decode("#6c6f85");
+    private Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -102,8 +102,22 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         notChecked.setForeground(Color.RED);
         labelPlayerNumber.setForeground(defaultForegroundColor);
         userNameAdvice.setForeground(defaultForegroundColor);
+        playerNumber.setForeground(defaultForegroundColor);
+        bots.setForeground(defaultForegroundColor);
+        userNames[0].setForeground(defaultForegroundColor);
+        userNames[1].setForeground(defaultForegroundColor);
+        userNames[2].setForeground(defaultForegroundColor);
+        userNames[3].setForeground(defaultForegroundColor);
+        understood.setForeground(defaultForegroundColor);
 
         //Set Background
+        playerNumber.setBackground(defaultBackgroundColor);
+        bots.setBackground(defaultBackgroundColor);
+        userNames[0].setBackground(defaultBackgroundColor);
+        userNames[1].setBackground(defaultBackgroundColor);
+        userNames[2].setBackground(defaultBackgroundColor);
+        userNames[3].setBackground(defaultBackgroundColor);
+        understood.setBackground(defaultBackgroundColor);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 250, 32);
@@ -157,7 +171,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setSize(550, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(getDefaultBackgroundColor);
+        getContentPane().setBackground(defaultBackgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
