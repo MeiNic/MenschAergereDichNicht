@@ -26,7 +26,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JLabel notChecked;
     private JButton rulesButton;
     private JButton startGame;
-    private Font customFont;
+    private Font JetBrainsMonoSemiBold;
     private Color defaultForegroundColor = Color.decode("#f3f5f9");
     private Color getDefaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
@@ -53,10 +53,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         //Configure Font
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            JetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMonoSemiBold.ttf")).deriveFont(13f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
+            ge.registerFont(JetBrainsMonoSemiBold);
         } catch (FontFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -84,20 +84,20 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         startGame = new JButton("start game");
 
         //Apply Font to JComponents
-        labelPlayerNumber.setFont(customFont);
+        labelPlayerNumber.setFont(JetBrainsMonoSemiBold);
         labelPlayerNumber.setForeground(defaultForegroundColor);
-        userNameAdvice.setFont(customFont);
+        userNameAdvice.setFont(JetBrainsMonoSemiBold);
         userNameAdvice.setForeground(defaultForegroundColor);
-        playerNumber.setFont(customFont);
-        bots.setFont(customFont);
-        userNames[0].setFont(customFont);
-        userNames[1].setFont(customFont);
-        userNames[2].setFont(customFont);
-        userNames[3].setFont(customFont);
-        understood.setFont(customFont);
+        playerNumber.setFont(JetBrainsMonoSemiBold);
+        bots.setFont(JetBrainsMonoSemiBold);
+        userNames[0].setFont(JetBrainsMonoSemiBold);
+        userNames[1].setFont(JetBrainsMonoSemiBold);
+        userNames[2].setFont(JetBrainsMonoSemiBold);
+        userNames[3].setFont(JetBrainsMonoSemiBold);
+        understood.setFont(JetBrainsMonoSemiBold);
 
         // Font settings
-        Font fontNotChecked = new Font(customFont.getName(), Font.PLAIN, 15);
+        Font fontNotChecked = new Font(JetBrainsMonoSemiBold.getName(), Font.PLAIN, 15);
         notChecked.setFont(fontNotChecked);
         notChecked.setForeground(Color.RED);
 
