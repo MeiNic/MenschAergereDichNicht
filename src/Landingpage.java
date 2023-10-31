@@ -88,6 +88,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         labelPlayerNumber.setForeground(defaultForegroundColor);
         userNameAdvice.setFont(customFont);
         userNameAdvice.setForeground(defaultForegroundColor);
+        playerNumber.setFont(customFont);
+        bots.setFont(customFont);
+        userNames[0].setFont(customFont);
+        userNames[1].setFont(customFont);
+        userNames[2].setFont(customFont);
+        userNames[3].setFont(customFont);
+        understood.setFont(customFont);
 
         // Font settings
         Font fontNotChecked = new Font(customFont.getName(), Font.PLAIN, 15);
