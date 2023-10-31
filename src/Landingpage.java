@@ -27,8 +27,8 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JButton rulesButton;
     private JButton startGame;
     private Font jetBrainsMonoSemiBold;
-    private Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private Color defaultBackgroundColor = Color.decode("#6c6f85");
+    private static Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -70,6 +70,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNameAdvice = new JLabel("Enter names for all the players:");
 
         playerNumber = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
+        playerNumber = createCustomizedSpinner(playerNumber);
         bots = new JCheckBox("Fill the game with bots", false);
 
         userNames = new JTextField[4];
@@ -102,7 +103,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         notChecked.setForeground(Color.RED);
         labelPlayerNumber.setForeground(defaultForegroundColor);
         userNameAdvice.setForeground(defaultForegroundColor);
-        playerNumber.setForeground(defaultForegroundColor);
         bots.setForeground(defaultForegroundColor);
         userNames[0].setForeground(defaultForegroundColor);
         userNames[1].setForeground(defaultForegroundColor);
@@ -111,7 +111,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         understood.setForeground(defaultForegroundColor);
 
         //Set Background
-        playerNumber.setBackground(defaultBackgroundColor);
         bots.setBackground(defaultBackgroundColor);
         userNames[0].setBackground(defaultBackgroundColor);
         userNames[1].setBackground(defaultBackgroundColor);
@@ -247,6 +246,45 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         return bots.isSelected();
     }
 
+    //Two methods used to change the stile of the JSpinner
+    private static JSpinner createCustomizedSpinner(JSpinner spinnerInput){
+        SpinnerModel spinnerModel = spinnerInput.getModel();
+
+        JSpinner cache = new JSpinner(spinnerModel);
+
+        JComponent spinnerEditor = cache.getEditor();
+        if (spinnerEditor instanceof JSpinner.DefaultEditor){
+            JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
+            textField.setForeground(defaultForegroundColor);
+            textField.setBackground(defaultBackgroundColor);
+        }
+
+        JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
+        JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
+
+        if (incrementButton != null){
+            incrementButton.setForeground(defaultForegroundColor);
+            incrementButton.setBackground(defaultBackgroundColor);
+        }
+        if (decrementButton != null){
+            decrementButton.setForeground(defaultForegroundColor);
+            decrementButton.setBackground(defaultBackgroundColor);
+        }
+
+        return cache;
+    }
+
+    private static JButton getSpinnerButton(JSpinner spinner, String name){
+        Component[] components = spinner.getComponents();
+        for (Component component : components){
+            if (component instanceof JButton && name.equals(component.getName())){
+                return (JButton) component;
+            }
+        }
+        return null;
+    }
+
+    //methods to read images from the resources folder
     private ImageIcon readImg (String imageName){
         BufferedImage img = null;
         try {
