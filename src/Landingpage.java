@@ -146,7 +146,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         setSize(550, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(defaultForegroundColor);
+        getContentPane().setBackground(getDefaultBackgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
