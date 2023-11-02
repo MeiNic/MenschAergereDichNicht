@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Landingpage extends JFrame implements ActionListener, ChangeListener {
+public class Landingpage extends JFrame implements ChangeListener {
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -22,7 +22,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JCheckBox understood;
     private JLabel notChecked;
     private ImageTextPanel rulesButton;
-    private JButton startGame;
+    private ImageTextPanel startGame;
     private Font jetBrainsMonoSemiBold;
     private static Color defaultForegroundColor = Color.decode("#f3f5f9");
     private static Color defaultBackgroundColor = Color.decode("#6c6f85");
@@ -77,7 +77,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         understood = new JCheckBox("I read and understood the rules of the game", false);
         notChecked = new JLabel("<html> <body> You have to read the rules and accept <br> them first! </body> </html>");
         rulesButton = new ImageTextPanel("button-idle", "rules");
-        startGame = new JButton("start game");
+        startGame = new ImageTextPanel("button-idle", "start game");
 
         //Apply Font to JComponents
         labelPlayerNumber.setFont(jetBrainsMonoSemiBold);
@@ -90,6 +90,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setFont(jetBrainsMonoSemiBold);
         understood.setFont(jetBrainsMonoSemiBold);
         rulesButton.setFont(jetBrainsMonoSemiBold);
+        startGame.setFont(jetBrainsMonoSemiBold);
 
         // Font adjustments for notChecked
         Font fontNotChecked = new Font(jetBrainsMonoSemiBold.getName(), Font.PLAIN, 15);
@@ -106,6 +107,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setForeground(defaultForegroundColor);
         understood.setForeground(defaultForegroundColor);
         rulesButton.setForeground(defaultForegroundColor);
+        startGame.setForeground(defaultForegroundColor);
 
         //Set Background
         bots.setBackground(defaultBackgroundColor);
@@ -115,6 +117,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[3].setBackground(defaultBackgroundColor);
         understood.setBackground(defaultBackgroundColor);
         rulesButton.setBackground(defaultBackgroundColor);
+        startGame.setBackground(defaultBackgroundColor);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 300, 32);
@@ -131,21 +134,10 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         understood.setBounds(20, 535, 370, 32);
         notChecked.setBounds(20, 570, 350, 50);
         rulesButton.setBounds(390, 535, 100, 32);
-        startGame.setBounds(390, 585, 120, 32);
-        startGame.setBackground(Color.red);
+        startGame.setBounds(390, 585, 100, 32);
 
         // Add listeners
-        startGame.addActionListener(this);
         playerNumber.addChangeListener(this);
-        understood.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED){
-                startGame.setBackground(Color.GREEN);
-                repaint();
-            }else {
-                startGame.setBackground(Color.RED);
-                repaint();
-            }
-        });
         rulesButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -161,6 +153,43 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
             @Override
             public void mouseExited(MouseEvent e) {
                 rulesButton.setImage("button-idle");
+                repaint();
+            }
+        });
+
+        startGame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (getUnderstoodStatus()) {
+                    setVisible(false);
+
+                    String[] names = getNames();
+                    int numberOfHumanPlayers = getNumberOfHumanPlayers();
+                    boolean fillWithBots = getBotsSelection();
+
+                    logger.info("Displaying GameBoardGui.");
+                    new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
+                } else {
+                    add(notChecked);
+                    repaint();
+                    logger.warn("User tried to start the game without accepting the rules.");
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (getUnderstoodStatus()){
+                    startGame.setImage("button-hovered-green");
+                    repaint();
+                }else {
+                    startGame.setImage("button-hovered-red");
+                    repaint();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startGame.setImage("button-idle");
                 repaint();
             }
         });
@@ -214,24 +243,6 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
     private boolean getUnderstoodStatus(){
         return understood.isSelected();
-    }
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startGame) {
-            if (getUnderstoodStatus()) {
-                setVisible(false);
-
-                String[] names = getNames();
-                int numberOfHumanPlayers = getNumberOfHumanPlayers();
-                boolean fillWithBots = getBotsSelection();
-
-                logger.info("Displaying GameBoardGui.");
-                new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
-            } else {
-                add(notChecked);
-                repaint();
-                logger.warn("User tried to start the game without accepting the rules.");
-            }
-        }
     }
 
     public void openRules(){
