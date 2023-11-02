@@ -180,11 +180,10 @@ public class Landingpage extends JFrame implements ChangeListener {
             public void mouseEntered(MouseEvent e) {
                 if (getUnderstoodStatus()){
                     startGame.setImage("button-hovered-green");
-                    repaint();
                 }else {
                     startGame.setImage("button-hovered-red");
-                    repaint();
                 }
+                repaint();
             }
 
             @Override
