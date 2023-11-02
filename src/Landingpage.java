@@ -1,18 +1,15 @@
 package src;
 
-import jdk.dynalink.StandardNamespace;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Landingpage extends JFrame implements ActionListener, ChangeListener {
     private JLabel head;
@@ -24,7 +21,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
     private JTextField[] userNames;
     private JCheckBox understood;
     private JLabel notChecked;
-    private JButton rulesButton;
+    private ImageTextPanel rulesButton;
     private JButton startGame;
     private Font jetBrainsMonoSemiBold;
     private static Color defaultForegroundColor = Color.decode("#f3f5f9");
@@ -57,9 +54,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                     new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -81,7 +76,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
         notChecked = new JLabel("<html> <body> You have to read the rules and accept <br> them first! </body> </html>");
-        rulesButton = new JButton("rules");
+        rulesButton = new ImageTextPanel("button-idle", "rules");
         startGame = new JButton("start game");
 
         //Apply Font to JComponents
@@ -94,6 +89,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[2].setFont(jetBrainsMonoSemiBold);
         userNames[3].setFont(jetBrainsMonoSemiBold);
         understood.setFont(jetBrainsMonoSemiBold);
+        rulesButton.setFont(jetBrainsMonoSemiBold);
 
         // Font adjustments for notChecked
         Font fontNotChecked = new Font(jetBrainsMonoSemiBold.getName(), Font.PLAIN, 15);
@@ -109,6 +105,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[2].setForeground(defaultForegroundColor);
         userNames[3].setForeground(defaultForegroundColor);
         understood.setForeground(defaultForegroundColor);
+        rulesButton.setForeground(defaultForegroundColor);
 
         //Set Background
         bots.setBackground(defaultBackgroundColor);
@@ -117,6 +114,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         userNames[2].setBackground(defaultBackgroundColor);
         userNames[3].setBackground(defaultBackgroundColor);
         understood.setBackground(defaultBackgroundColor);
+        rulesButton.setBackground(defaultBackgroundColor);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 250, 32);
@@ -132,8 +130,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
 
         understood.setBounds(20, 535, 350, 32);
         notChecked.setBounds(20, 570, 350, 50);
-        rulesButton.setBounds(390, 535, 120, 32);
-
+        rulesButton.setBounds(390, 535, 100, 32);
         startGame.setBounds(390, 585, 120, 32);
         startGame.setBackground(Color.red);
 
@@ -149,7 +146,24 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 repaint();
             }
         });
-        rulesButton.addActionListener(this);
+        rulesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openRules();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                rulesButton.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                rulesButton.setImage("button-idle");
+                repaint();
+            }
+        });
 
         // Add UI Elements
         add(head);
@@ -217,12 +231,13 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
                 repaint();
                 logger.warn("User tried to start the game without accepting the rules.");
             }
-
-        } else if (e.getSource() == rulesButton) {
-            setVisible(false);
-            logger.info("Displaying rules.");
-            new Rules(this);
         }
+    }
+
+    public void openRules(){
+        setVisible(false);
+        logger.info("Displaying rules.");
+        new Rules(this);
     }
 
     public String[] getNames() {
@@ -292,7 +307,7 @@ public class Landingpage extends JFrame implements ActionListener, ChangeListene
         }catch (IOException e){
             e.printStackTrace();
         }
-        return new ImageIcon(img);
+        return new ImageIcon(Objects.requireNonNull(img));
     }
 
     private ImageIcon readScaledImg (String imageName, int width, int height){
