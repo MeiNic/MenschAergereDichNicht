@@ -1,11 +1,16 @@
 package src;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
     private enum FieldColor {
@@ -430,5 +435,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             g.setColor(Color.BLACK);
             g.drawOval(x, y, radius, diameter);
         }
+    }
+
+    private ImageIcon readImg (String imageName){
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("res/"+imageName+".png"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return new ImageIcon(Objects.requireNonNull(img));
     }
 }
