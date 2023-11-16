@@ -103,9 +103,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         //insert images to the new graphics elements
         for (int i = 0; i < fields.length; i++){
-            logger.info("Setting values for field" + i);
-            int x = fieldPositionsX[i];
-            int y = fieldPositionsY[i];
+            int x = fieldPositionsX[i] -8;
+            int y = fieldPositionsY[i] -30;
             fields[i] = new JLabel(readImg("field-white"));
             fields[i].setBounds(x, y, 50, 50);
             add(fields[i]);
