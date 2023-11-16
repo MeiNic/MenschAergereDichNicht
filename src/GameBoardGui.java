@@ -173,7 +173,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         setSize(1300, 940);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setBackground(Color.BLACK);
+        getContentPane().setBackground(Color.decode("#6c6f85"));
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
