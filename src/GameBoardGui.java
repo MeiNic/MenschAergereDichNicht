@@ -50,6 +50,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private Circle[] figuresOld;
     private Circle[] housesOld;
     private Circle[] basesOld;
+    private JLabel[] bases;
     private Circle[] fieldsOld;
     private JLabel[] fields;
 
@@ -79,6 +80,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         figuresOld = new Circle[16];
         housesOld = new Circle[16];
         basesOld = new Circle[16];
+        bases = new JLabel[16];
         fieldsOld = new Circle[40];
         fields = new JLabel[40];
 
@@ -102,6 +104,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
 
         //insert images to the new graphics elements
+        for (int i = 0; i < bases.length; i++){
+            int x = basePositionsX[i]-8;
+            int y = basePositionsY[i]-30;
+            switch (i){
+                case 0, 1, 2, 3 -> fields[i] = new JLabel(readImg("field-orange"));
+                case 4, 5, 6, 7 -> fields[i] = new JLabel(readImg("field-green"));
+                case 8, 9, 10, 11 -> fields[i] = new JLabel(readImg("field-blue"));
+                case 12, 13, 14, 15 -> fields[i] = new JLabel(readImg("field-red"));
+            }
+            fields[i].setBounds(x, y, 50, 50);
+            add(fields[i]);
+        }
         for (int i = 0; i < fields.length; i++){
             int x = fieldPositionsX[i] -8;
             int y = fieldPositionsY[i] -30;
