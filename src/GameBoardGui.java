@@ -105,7 +105,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         for (int i = 0; i < fields.length; i++){
             int x = fieldPositionsX[i] -8;
             int y = fieldPositionsY[i] -30;
-            fields[i] = new JLabel(readImg("field-white"));
+            switch (i){
+                case 0 -> fields[i] = new JLabel(readImg("field-orange"));
+                case 10 -> fields[i] = new JLabel(readImg("field-green"));
+                case 20 -> fields[i] = new JLabel(readImg("field-blue"));
+                case 30 -> fields[i] = new JLabel(readImg("field-red"));
+                default -> fields[i] = new JLabel(readImg("field-white"));
+            }
             fields[i].setBounds(x, y, 50, 50);
             add(fields[i]);
         }
