@@ -49,6 +49,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     private Circle[] figuresOld;
     private Circle[] housesOld;
+    private JLabel[] houses;
     private Circle[] basesOld;
     private JLabel[] bases;
     private Circle[] fieldsOld;
@@ -79,6 +80,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         figuresOld = new Circle[16];
         housesOld = new Circle[16];
+        houses = new JLabel[16];
         basesOld = new Circle[16];
         bases = new JLabel[16];
         fieldsOld = new Circle[40];
@@ -104,17 +106,29 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
 
         //insert images to the new graphics elements
+        for (int i = 0; i < houses.length; i++){
+            int x = housePositionsX[i] -3;
+            int y = housePositionsY[i] -25;
+            switch (i){
+                case 0, 1, 2, 3 -> houses[i] = new JLabel(readImg("field-orange-inner"));
+                case 4, 5, 6, 7 -> houses[i] = new JLabel(readImg("field-green-inner"));
+                case 8, 9, 10, 11 -> houses[i] = new JLabel(readImg("field-blue-inner"));
+                case 12, 13, 14, 15 -> houses[i] = new JLabel(readImg("field-red-inner"));
+            }
+            houses[i].setBounds(x, y, 40, 40);
+            add(houses[i]);
+        }
         for (int i = 0; i < bases.length; i++){
             int x = basePositionsX[i]-8;
             int y = basePositionsY[i]-30;
             switch (i){
-                case 0, 1, 2, 3 -> fields[i] = new JLabel(readImg("field-orange"));
-                case 4, 5, 6, 7 -> fields[i] = new JLabel(readImg("field-green"));
-                case 8, 9, 10, 11 -> fields[i] = new JLabel(readImg("field-blue"));
-                case 12, 13, 14, 15 -> fields[i] = new JLabel(readImg("field-red"));
+                case 0, 1, 2, 3 -> bases[i] = new JLabel(readImg("field-orange"));
+                case 4, 5, 6, 7 -> bases[i] = new JLabel(readImg("field-green"));
+                case 8, 9, 10, 11 -> bases[i] = new JLabel(readImg("field-blue"));
+                case 12, 13, 14, 15 -> bases[i] = new JLabel(readImg("field-red"));
             }
-            fields[i].setBounds(x, y, 50, 50);
-            add(fields[i]);
+            bases[i].setBounds(x, y, 50, 50);
+            add(bases[i]);
         }
         for (int i = 0; i < fields.length; i++){
             int x = fieldPositionsX[i] -8;
