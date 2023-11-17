@@ -48,6 +48,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
 
     private Circle[] figuresOld;
+    private JLabel[] figures;
     private Circle[] housesOld;
     private JLabel[] houses;
     private Circle[] basesOld;
@@ -79,6 +80,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
         figuresOld = new Circle[16];
+        figures = new JLabel[16];
         housesOld = new Circle[16];
         houses = new JLabel[16];
         basesOld = new Circle[16];
@@ -86,7 +88,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         fieldsOld = new Circle[40];
         fields = new JLabel[40];
 
-        replaceFigures();
+
         int diameter = 50;
 
         for (int i = 0; i < housesOld.length; i++) {
@@ -106,6 +108,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
 
         //insert images to the new graphics elements
+        for (int i = 0; i < figures.length; i++){
+            switch (i){
+                case 0, 1, 2, 3 -> figures[i] = new JLabel(readImg("figure-orange"));
+                case 4, 5, 6, 7 -> figures[i] = new JLabel(readImg("figure-green"));
+                case 8, 9, 10, 11 -> figures[i] = new JLabel(readImg("figure-blue"));
+                case 12, 13, 14, 15 -> figures[i] = new JLabel(readImg("figure-red"));
+            }
+            add(figures[i]);
+        }
         for (int i = 0; i < houses.length; i++){
             int x = housePositionsX[i] -3;
             int y = housePositionsY[i] -25;
@@ -176,7 +187,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesAdvice.setText("Click this button, to view the rules again");
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
-		      "</html>");
+              "</html>");
         nextPlayer.setText("next player");
 
         // Set bounds
@@ -193,6 +204,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesButton.addActionListener(this);
         nextPlayer.addActionListener(this);
         addMouseListener(this);
+
+        replaceFigures();
 
         // Add UI Elements
         add(rollDice);
@@ -242,8 +255,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mousePositionX = e.getX();
         int mousePositionY = e.getY();
         int diameter = 50;
-
-	String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
+        String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
 
         for (int i = 0; i < fieldPositionsX.length; i++) {
             int differenceX = mousePositionX - fieldPositionsX[i];
@@ -269,7 +281,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
@@ -325,10 +337,10 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveOutOfBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
-	logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
+        logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
     }
 
     private void prepareNextMove() {
@@ -385,14 +397,33 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void replaceFigures(){
         Figure[] input = backend.figures;
         int diameter = 50;
+        int dimensionX = 39;
+        int dimensionY = 56;
+
+        for (int i = 0; i < input.length && i < figures.length; i++){
+            int x;
+            int y;
+
+            if (input[i].isInBase()) {
+                x = basePositionsX[input[i].field];
+                y = basePositionsY[input[i].field];
+            } else if (input[i].isInHouse() || input[i].isFinished()) {
+                x = housePositionsX[input[i].field];
+                y = housePositionsY[input[i].field];
+            } else {
+                x = fieldPositionsX[input[i].field];
+                y = fieldPositionsY[input[i].field];
+            }
+            figures[i].setBounds(x, y, dimensionX, dimensionY);
+        }
 
         for (int i = 0; i < input.length && i < figuresOld.length; i++){
             String color = switch (input[i].color) {
-	    case 0 -> FigureColor.YELLOW.getHexCode();
-	    case 1 -> FigureColor.GREEN.getHexCode();
-	    case 2 -> FigureColor.BLUE.getHexCode();
-	    case 3 -> FigureColor.RED.getHexCode();
-	    default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
+                case 0 -> FigureColor.YELLOW.getHexCode();
+                case 1 -> FigureColor.GREEN.getHexCode();
+                case 2 -> FigureColor.BLUE.getHexCode();
+                case 3 -> FigureColor.RED.getHexCode();
+                default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
             };
 
             int x;
