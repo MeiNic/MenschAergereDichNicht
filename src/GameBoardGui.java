@@ -49,11 +49,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     private Circle[] figuresOld;
     private JLabel[] figures;
-    private Circle[] housesOld;
     private JLabel[] houses;
-    private Circle[] basesOld;
     private JLabel[] bases;
-    private Circle[] fieldsOld;
     private JLabel[] fields;
 
     private final int[] housePositionsX = {442, 442, 442, 442, 122, 202, 282, 362, 442, 442, 442, 442, 762, 682, 602, 522};
@@ -81,31 +78,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         figuresOld = new Circle[16];
         figures = new JLabel[16];
-        housesOld = new Circle[16];
         houses = new JLabel[16];
-        basesOld = new Circle[16];
         bases = new JLabel[16];
-        fieldsOld = new Circle[40];
         fields = new JLabel[40];
 
-
         int diameter = 50;
-
-        for (int i = 0; i < housesOld.length; i++) {
-            int x = housePositionsX[i];
-            int y = housePositionsY[i];
-            housesOld[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
-        }
-        for (int i = 0; i < basesOld.length; i++) {
-            int x = basePositionsX[i];
-            int y = basePositionsY[i];
-            basesOld[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
-        }
-        for (int i = 0; i < fieldsOld.length; i++) {
-            int x = fieldPositionsX[i];
-            int y = fieldPositionsY[i];
-            fieldsOld[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
-        }
 
         //insert images to the new graphics elements
         for (int i = 0; i < figures.length; i++){
@@ -154,22 +131,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             fields[i].setBounds(x, y, 50, 50);
             add(fields[i]);
         }
-
-        for (int i = 0; i < 4; i++) {
-            housesOld[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            housesOld[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            housesOld[i + 12].setColor(FieldColor.RED.getHexCode());
-
-            basesOld[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            basesOld[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            basesOld[i + 12].setColor(FieldColor.RED.getHexCode());
-        }
-
-        //Set color for start fields
-        fieldsOld[0].setColor(FieldColor.YELLOW.getHexCode());
-        fieldsOld[10].setColor(FieldColor.GREEN.getHexCode());
-        fieldsOld[20].setColor(FieldColor.BLUE.getHexCode());
-        fieldsOld[30].setColor(FieldColor.RED.getHexCode());
 
         // Initialize UI Elements
         userAdvice = new JLabel();
@@ -478,9 +439,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public void paint(Graphics g) {
         super.paint(g);
 
-        paintFields(g, housesOld);
-        paintFields(g, basesOld);
-        paintFields(g, fieldsOld);
         paintFigures(g, figuresOld);
     }
 
