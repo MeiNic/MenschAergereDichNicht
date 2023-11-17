@@ -56,14 +56,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private Circle[] fieldsOld;
     private JLabel[] fields;
 
-    private final int[] housePositionsX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
-    private final int[] housePositionsY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
+    private final int[] housePositionsX = {442, 442, 442, 442, 122, 202, 282, 362, 442, 442, 442, 442, 762, 682, 602, 522};
+    private final int[] housePositionsY = {740, 660, 580, 500, 420, 420, 420, 420, 100, 180, 260, 340, 420, 420, 420, 420};
 
-    private final int[] basePositionsX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
-    private final int[] basePositionsY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
+    private final int[] basePositionsX = {37, 102, 37, 102, 37, 102, 37, 102, 772, 837, 772, 837, 772, 837, 772, 837};
+    private final int[] basePositionsY = {815, 815, 750, 750, 80, 80, 15, 15, 80, 80, 15, 15, 815, 815, 750, 750};
 
-    private final int[] fieldPositionsX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
-    private final int[] fieldPositionsY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
+    private final int[] fieldPositionsX = {352, 357, 357, 357, 357, 277, 197, 117, 37, 37, 32, 117, 197, 277, 357, 357, 357, 357, 357, 437, 512, 517, 517, 517, 517, 597, 677, 757, 837, 837, 832, 757, 677, 597, 517, 517, 517, 517, 517, 437};
+    private final int[] fieldPositionsY = {810, 735, 655, 575, 495, 495, 495, 495, 495, 415, 330, 335, 335, 335, 335, 255, 175, 95, 15, 15, 10, 95, 175, 255, 335, 335, 335, 335, 335, 415, 490, 495, 495, 495, 495, 575, 655, 735, 815, 815};
 
     JLabel userAdvice;
     JButton rollDice;
@@ -118,8 +118,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             add(figures[i]);
         }
         for (int i = 0; i < houses.length; i++){
-            int x = housePositionsX[i] -3;
-            int y = housePositionsY[i] -25;
+            int x = housePositionsX[i];
+            int y = housePositionsY[i];
             switch (i){
                 case 0, 1, 2, 3 -> houses[i] = new JLabel(readImg("field-orange-inner"));
                 case 4, 5, 6, 7 -> houses[i] = new JLabel(readImg("field-green-inner"));
@@ -130,8 +130,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             add(houses[i]);
         }
         for (int i = 0; i < bases.length; i++){
-            int x = basePositionsX[i]-8;
-            int y = basePositionsY[i]-30;
+            int x = basePositionsX[i];
+            int y = basePositionsY[i];
             switch (i){
                 case 0, 1, 2, 3 -> bases[i] = new JLabel(readImg("field-orange"));
                 case 4, 5, 6, 7 -> bases[i] = new JLabel(readImg("field-green"));
@@ -142,8 +142,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             add(bases[i]);
         }
         for (int i = 0; i < fields.length; i++){
-            int x = fieldPositionsX[i] -8;
-            int y = fieldPositionsY[i] -30;
+            int x = fieldPositionsX[i];
+            int y = fieldPositionsY[i];
             switch (i){
                 case 0 -> fields[i] = new JLabel(readImg("field-orange"));
                 case 10 -> fields[i] = new JLabel(readImg("field-green"));
