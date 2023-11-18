@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static java.lang.Thread.sleep;
+
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
     private enum FieldColor {
 	YELLOW("#FFC957"),
@@ -61,6 +63,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     private final int[] fieldPositionsX = {352, 357, 357, 357, 357, 277, 197, 117, 37, 37, 32, 117, 197, 277, 357, 357, 357, 357, 357, 437, 512, 517, 517, 517, 517, 597, 677, 757, 837, 837, 832, 757, 677, 597, 517, 517, 517, 517, 517, 437};
     private final int[] fieldPositionsY = {810, 735, 655, 575, 495, 495, 495, 495, 495, 415, 330, 335, 335, 335, 335, 255, 175, 95, 15, 15, 10, 95, 175, 255, 335, 335, 335, 335, 335, 415, 490, 495, 495, 495, 495, 575, 655, 735, 815, 815};
+
+    private final int[] figurePositionsHouseX = {442, 442, 442, 442, 122, 202, 282, 362, 442, 442, 442, 442, 762, 682, 602, 522};
+    private final int[] figurePositionsHouseY = {715, 635, 555, 475, 395, 395, 395, 395, 75, 155, 235, 315, 395, 395, 395, 395};
+
+    private final int[] figurePositionsBaseX = {42, 107, 42, 107, 42, 107, 42, 107, 777, 842, 777, 842, 777, 842, 777, 842};
+    private final int[] figurePositionsBaseY = {802, 802, 737, 737, 67, 67, 2, 2, 67, 67, 2, 2, 802, 802, 737, 737};
+
+    private final int[] figurePositionsFieldX = {357, 362, 362, 362, 362, 282, 202, 122, 42, 42, 37, 122, 202, 282, 362, 362, 362, 362, 362, 442, 517, 522, 522, 522, 522, 602, 682, 762, 842, 842, 837, 762, 682, 602, 522, 522, 522, 522, 522, 442};
+    private final int[] figurePositionsFieldY = {795, 720, 640, 560, 480, 480, 480, 480, 480, 400, 315, 320, 320, 320, 320, 240, 160, 80, 0, 0, -5, 80, 160, 240, 320, 320, 320, 320, 320, 400, 475, 480, 480, 480, 480, 560, 640, 720, 800, 800};
 
     JLabel userAdvice;
     JButton rollDice;
@@ -272,7 +283,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
@@ -331,7 +342,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         if (playerState == 1) {
             setBotAdvice();
             try {
-                Thread.sleep(1000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -366,14 +377,14 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             int y;
 
             if (input[i].isInBase()) {
-                x = basePositionsX[input[i].field];
-                y = basePositionsY[input[i].field];
+                x = figurePositionsBaseX[input[i].field];
+                y = figurePositionsBaseY[input[i].field];
             } else if (input[i].isInHouse() || input[i].isFinished()) {
-                x = housePositionsX[input[i].field];
-                y = housePositionsY[input[i].field];
+                x = figurePositionsHouseX[input[i].field];
+                y = figurePositionsHouseY[input[i].field];
             } else {
-                x = fieldPositionsX[input[i].field];
-                y = fieldPositionsY[input[i].field];
+                x = figurePositionsFieldX[input[i].field];
+                y = figurePositionsFieldY[input[i].field];
             }
             figures[i].setBounds(x, y, dimensionX, dimensionY);
         }
