@@ -124,7 +124,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         // Set bounds
         userAdvice.setBounds(970, 22, 450, 64);
         rollDice.setBounds(970, 80, 75, 75);
-        result.setBounds(970, 80, 100, 32);
         rulesAdvice.setBounds(980, 820, 250, 32);
         rulesButton.setBounds(980, 860, 120, 32);
         noSix.setBounds(970, 22, 450, 32);
@@ -157,7 +156,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         // Add UI Elements
         add(rollDice);
         add(userAdvice);
-        add(result);
         add(rulesAdvice);
         add(rulesButton);
 
@@ -352,14 +350,24 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     }
 
     public void displayResult(int randomNumber){
-        result.setText("Result: " + randomNumber);
+        switch (randomNumber){
+            case 1 -> result = new JLabel(readImg("dice-1"));
+            case 2 -> result = new JLabel(readImg("dice-2"));
+            case 3 -> result = new JLabel(readImg("dice-3"));
+            case 4 -> result = new JLabel(readImg("dice-4"));
+            case 5 -> result = new JLabel(readImg("dice-5"));
+            case 6 -> result = new JLabel(readImg("dice-6"));
+            default -> result = new JLabel(readImg("dice-unknown"));
+        }
+        result.setBounds(970, 80, 75, 75);
+        add(result);
         repaint();
     }
 
     public void setActivePlayer(){
         add(rollDice);
         userAdvice.setText("Player " + backend.getNameOfCurrentPlayer() + " is on the turn, click this button");
-        result.setText("");
+        remove(result);
         repaint();
     }
 
