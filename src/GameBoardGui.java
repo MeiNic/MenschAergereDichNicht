@@ -41,14 +41,27 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     JLabel result;
     JLabel figureChooserPrompt;
     JLabel rulesAdvice;
-    JButton rulesButton;
+    ImageTextPanel rulesButton;
     JLabel noSix;
     JButton nextPlayer;
     BackEnd backend;
+    private final Font jetBrainsMonoSemiBold;
+    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
+
+        //Configure Font
+        try {
+            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(jetBrainsMonoSemiBold);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         figures = new JLabel[16];
         houses = new JLabel[16];
@@ -109,7 +122,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
-        rulesButton = new JButton();
+        rulesButton = new ImageTextPanel("button-idle", "rules");
         noSix = new JLabel();
         nextPlayer = new JButton();
 
@@ -125,9 +138,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         userAdvice.setBounds(970, 22, 450, 64);
         rollDice.setBounds(970, 80, 75, 75);
         rulesAdvice.setBounds(980, 820, 250, 32);
-        rulesButton.setBounds(980, 860, 120, 32);
+        rulesButton.setBounds(980, 860, 100, 32);
         noSix.setBounds(970, 22, 450, 32);
         nextPlayer.setBounds(970, 80, 120, 32);
+
+        //Apply Font to JComponents
+        rulesButton.setFont(jetBrainsMonoSemiBold);
+
+        //Change Foreground
+        rulesButton.setForeground(defaultForegroundColor);
+
+        //Change Background
+        rulesButton.setBackground(defaultBackgroundColor);
 
         // Add listeners
         rollDice.addMouseListener(new MouseAdapter() {
@@ -147,7 +169,24 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 }
             }
         });
-        rulesButton.addActionListener(this);
+        rulesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openRules();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                rulesButton.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                rulesButton.setImage("button-idle");
+                repaint();
+            }
+        });
         nextPlayer.addActionListener(this);
         addMouseListener(this);
 
@@ -387,6 +426,11 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
         repaint();
+    }
+
+    private void openRules(){
+        setVisible(false);
+        new Rules(this);
     }
 
     private ImageIcon readImg (String imageName){
