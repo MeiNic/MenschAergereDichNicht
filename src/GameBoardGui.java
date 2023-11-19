@@ -48,8 +48,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 	}
     }
 
-
-    private Circle[] figuresOld;
     private JLabel[] figures;
     private JLabel[] houses;
     private JLabel[] bases;
@@ -87,7 +85,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
-        figuresOld = new Circle[16];
         figures = new JLabel[16];
         houses = new JLabel[16];
         bases = new JLabel[16];
@@ -388,31 +385,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
             }
             figures[i].setBounds(x, y, dimensionX, dimensionY);
         }
-
-        for (int i = 0; i < input.length && i < figuresOld.length; i++){
-            String color = switch (input[i].color) {
-                case 0 -> FigureColor.YELLOW.getHexCode();
-                case 1 -> FigureColor.GREEN.getHexCode();
-                case 2 -> FigureColor.BLUE.getHexCode();
-                case 3 -> FigureColor.RED.getHexCode();
-                default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
-            };
-
-            int x;
-            int y;
-
-            if (input[i].isInBase()) {
-                x = basePositionsX[input[i].field];
-                y = basePositionsY[input[i].field];
-            } else if (input[i].isInHouse() || input[i].isFinished()) {
-                x = housePositionsX[input[i].field];
-                y = housePositionsY[input[i].field];
-            } else {
-                x = fieldPositionsX[input[i].field];
-                y = fieldPositionsY[input[i].field];
-            }
-            figuresOld[i] = new Circle(x, y, diameter, color);
-        }
         repaint();
     }
 
@@ -449,8 +421,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-        paintFigures(g, figuresOld);
     }
 
     private void paintFields(Graphics g, Circle[] circles) {
