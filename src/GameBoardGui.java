@@ -119,7 +119,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
         // Initialize UI Elements
         userAdvice = new JLabel();
         rollDice = new JLabel(readImg("dice-unknown"));
-        result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
         rulesButton = new ImageTextPanel("button-idle", "rules");
@@ -142,14 +141,20 @@ public class GameBoardGui extends JFrame implements MouseListener {
         nextPlayer.setBounds(970, 80, 100, 32);
 
         //Apply Font to JComponents
-        rulesButton.setFont(jetBrainsMonoSemiBold);
+        userAdvice.setFont(jetBrainsMonoSemiBold);
+        figureChooserPrompt.setFont(jetBrainsMonoSemiBold);
         rulesAdvice.setFont(jetBrainsMonoSemiBold);
+        rulesButton.setFont(jetBrainsMonoSemiBold);
+        noSix.setFont(jetBrainsMonoSemiBold);
         nextPlayer.setFont(jetBrainsMonoSemiBold);
 
         //Change Foreground
-        rulesButton.setForeground(defaultForegroundColor);
+        userAdvice.setForeground(defaultForegroundColor);
+        figureChooserPrompt.setForeground(defaultForegroundColor);
         rulesAdvice.setForeground(defaultForegroundColor);
+        rulesButton.setForeground(defaultForegroundColor);
         nextPlayer.setForeground(defaultForegroundColor);
+        noSix.setForeground(defaultForegroundColor);
 
         //Change Background
         rulesButton.setBackground(defaultBackgroundColor);
