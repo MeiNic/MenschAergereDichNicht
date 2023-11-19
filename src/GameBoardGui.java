@@ -15,38 +15,6 @@ import java.util.Objects;
 import static java.lang.Thread.sleep;
 
 public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
-    private enum FieldColor {
-	YELLOW("#FFC957"),
-	GREEN("#2A914E"),
-	BLUE("#1E32FF"),
-	RED("#CC0000"),
-	GRAY("#CCCCCC");
-
-	private final String hexCode;
-
-	FieldColor(String hexCode) {
-	    this.hexCode = hexCode;
-	}
-
-	public String getHexCode() {
-	    return hexCode;
-	}
-    }
-    private enum FigureColor {
-	YELLOW("#FFFF00"),
-	GREEN("#00CC00"),
-	BLUE("#3C93FF"),
-	RED("#FF0000");
-
-	private final String hexCode;
-	FigureColor(String hexCode) {
-	    this.hexCode = hexCode;
-	}
-
-	public String getHexCode() {
-	    return hexCode;
-	}
-    }
 
     private JLabel[] figures;
     private JLabel[] houses;
@@ -89,8 +57,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         houses = new JLabel[16];
         bases = new JLabel[16];
         fields = new JLabel[40];
-
-        int diameter = 50;
 
         //insert images to the new graphics elements
         for (int i = 0; i < figures.length; i++){
@@ -224,7 +190,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mousePositionX = e.getX();
         int mousePositionY = e.getY();
         int diameter = 50;
-        String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
 
         for (int i = 0; i < fieldPositionsX.length; i++) {
             int differenceX = mousePositionX - fieldPositionsX[i] - 3;
@@ -365,7 +330,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void replaceFigures(){
         Figure[] input = backend.figures;
-        int diameter = 50;
         int dimensionX = 39;
         int dimensionY = 56;
 
@@ -416,40 +380,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
         repaint();
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-    }
-
-    private void paintFields(Graphics g, Circle[] circles) {
-        for (Circle circle : circles) {
-            int x = circle.getX();
-            int y = circle.getY();
-            int diameter = circle.getDiameter();
-            Color color = circle.getColor();
-
-            g.setColor(color);
-            g.fillOval(x, y, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, diameter, diameter);
-        }
-    }
-
-    private void paintFigures(Graphics g, Circle[] ovals){
-        for (Circle oval : ovals){
-            int x = oval.getX() + oval.getDiameter() / 4;
-            int y = oval.getY();
-            int diameter = oval.getDiameter();
-            int radius = oval.getDiameter() / 2;
-            Color color = oval.getColor();
-
-            g.setColor(color);
-            g.fillOval(x, y, radius, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, radius, diameter);
-        }
     }
 
     private ImageIcon readImg (String imageName){
