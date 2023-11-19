@@ -128,7 +128,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         // Set text
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-        rulesAdvice.setText("Click this button, to view the rules again");
+        rulesAdvice.setText("<html> <body> Click this button, to view <br> the rules again </body> </html>");
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
               "</html>");
@@ -137,16 +137,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         // Set bounds
         userAdvice.setBounds(970, 22, 450, 64);
         rollDice.setBounds(970, 80, 75, 75);
-        rulesAdvice.setBounds(980, 820, 250, 32);
-        rulesButton.setBounds(980, 860, 100, 32);
+        rulesAdvice.setBounds(980, 790, 260, 32);
+        rulesButton.setBounds(980, 830, 100, 32);
         noSix.setBounds(970, 22, 450, 32);
         nextPlayer.setBounds(970, 80, 120, 32);
 
         //Apply Font to JComponents
         rulesButton.setFont(jetBrainsMonoSemiBold);
+        rulesAdvice.setFont(jetBrainsMonoSemiBold);
 
         //Change Foreground
         rulesButton.setForeground(defaultForegroundColor);
+        rulesAdvice.setForeground(defaultForegroundColor);
 
         //Change Background
         rulesButton.setBackground(defaultBackgroundColor);
