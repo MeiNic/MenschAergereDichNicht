@@ -230,8 +230,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
 
         for (int i = 0; i < fieldPositionsX.length; i++) {
-            int differenceX = mousePositionX - fieldPositionsX[i];
-            int differenceY = mousePositionY - fieldPositionsY[i];
+            int differenceX = mousePositionX - fieldPositionsX[i] - 3;
+            int differenceY = mousePositionY - fieldPositionsY[i] - 20;
 
             if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
                 continue;
@@ -288,8 +288,8 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         }
 
         for (int i = 0; i < basePositionsX.length; i++) {
-            int differenceX = mousePositionX - basePositionsX[i];
-            int differenceY = mousePositionY - basePositionsY[i];
+            int differenceX = mousePositionX - basePositionsX[i] - 5;
+            int differenceY = mousePositionY - basePositionsY[i] - 30;
 
             if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
                 continue;
