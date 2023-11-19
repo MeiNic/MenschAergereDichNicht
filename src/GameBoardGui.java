@@ -36,15 +36,15 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private final int[] figurePositionsFieldX = {357, 362, 362, 362, 362, 282, 202, 122, 42, 42, 37, 122, 202, 282, 362, 362, 362, 362, 362, 442, 517, 522, 522, 522, 522, 602, 682, 762, 842, 842, 837, 762, 682, 602, 522, 522, 522, 522, 522, 442};
     private final int[] figurePositionsFieldY = {795, 720, 640, 560, 480, 480, 480, 480, 480, 400, 315, 320, 320, 320, 320, 240, 160, 80, 0, 0, -5, 80, 160, 240, 320, 320, 320, 320, 320, 400, 475, 480, 480, 480, 480, 560, 640, 720, 800, 800};
 
-    JLabel userAdvice;
-    JLabel rollDice;
-    JLabel result;
-    JLabel figureChooserPrompt;
-    JLabel rulesAdvice;
-    ImageTextPanel rulesButton;
-    JLabel noSix;
-    JButton nextPlayer;
-    BackEnd backend;
+    private JLabel userAdvice;
+    private JLabel rollDice;
+    private JLabel result;
+    private JLabel figureChooserPrompt;
+    private JLabel rulesAdvice;
+    private ImageTextPanel rulesButton;
+    private JLabel noSix;
+    private JButton nextPlayer;
+    private BackEnd backend;
     private final Font jetBrainsMonoSemiBold;
     private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
     private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
