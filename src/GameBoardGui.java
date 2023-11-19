@@ -36,6 +36,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
     private final int[] figurePositionsFieldX = {357, 362, 362, 362, 362, 282, 202, 122, 42, 42, 37, 122, 202, 282, 362, 362, 362, 362, 362, 442, 517, 522, 522, 522, 522, 602, 682, 762, 842, 842, 837, 762, 682, 602, 522, 522, 522, 522, 522, 442};
     private final int[] figurePositionsFieldY = {795, 720, 640, 560, 480, 480, 480, 480, 480, 400, 315, 320, 320, 320, 320, 240, 160, 80, 0, 0, -5, 80, 160, 240, 320, 320, 320, 320, 320, 400, 475, 480, 480, 480, 480, 560, 640, 720, 800, 800};
 
+    private JLabel gameBoardBackground;
     private JLabel userAdvice;
     private JLabel rollDice;
     private JLabel result;
@@ -115,6 +116,10 @@ public class GameBoardGui extends JFrame implements MouseListener {
             fields[i].setBounds(x, y, 50, 50);
             add(fields[i]);
         }
+
+        //configure
+        gameBoardBackground = new JLabel(readImg("board"));
+        gameBoardBackground.setBounds(0, 0, 906, 906);
 
         // Initialize UI Elements
         userAdvice = new JLabel();
@@ -223,6 +228,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
         replaceFigures();
 
         // Add UI Elements
+        add(gameBoardBackground);
         add(rollDice);
         add(userAdvice);
         add(rulesAdvice);
@@ -230,7 +236,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
 
         // Display UI
         setTitle("game field");
-        setSize(1300, 940);
+        setSize(1300, 945);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(Color.decode("#6c6f85"));
