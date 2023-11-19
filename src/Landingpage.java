@@ -24,9 +24,9 @@ public class Landingpage extends JFrame implements ChangeListener {
     private JLabel notChecked;
     private ImageTextPanel rulesButton;
     private ImageTextPanel startGame;
-    private Font jetBrainsMonoSemiBold;
-    private static Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private static Color defaultBackgroundColor = Color.decode("#6c6f85");
+    private final Font jetBrainsMonoSemiBold;
+    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
