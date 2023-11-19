@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static java.lang.Thread.sleep;
 
-public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
+public class GameBoardGui extends JFrame implements MouseListener {
 
     private JLabel[] figures;
     private JLabel[] houses;
@@ -232,19 +232,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        if (rulesButton == e.getSource()) {
-            setVisible(false);
-            new Rules(this);
-        } else if (nextPlayer == e.getSource()) {
-            this.remove(noSix);
-            this.remove(nextPlayer);
-            this.add(userAdvice);
-            repaint();
-            executeNextMove();
-        }
     }
 
     public void mouseClicked(MouseEvent e) {
