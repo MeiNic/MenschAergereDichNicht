@@ -3,10 +3,7 @@ package src;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +37,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private final int[] figurePositionsFieldY = {795, 720, 640, 560, 480, 480, 480, 480, 480, 400, 315, 320, 320, 320, 320, 240, 160, 80, 0, 0, -5, 80, 160, 240, 320, 320, 320, 320, 320, 400, 475, 480, 480, 480, 480, 560, 640, 720, 800, 800};
 
     JLabel userAdvice;
-    JButton rollDice;
+    JLabel rollDice;
     JLabel result;
     JLabel figureChooserPrompt;
     JLabel rulesAdvice;
@@ -108,7 +105,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         // Initialize UI Elements
         userAdvice = new JLabel();
-        rollDice = new JButton();
+        rollDice = new JLabel(readImg("dice-unknown"));
         result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
@@ -118,7 +115,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         // Set text
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-        rollDice.setText("roll the dice");
         rulesAdvice.setText("Click this button, to view the rules again");
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
@@ -127,7 +123,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
         // Set bounds
         userAdvice.setBounds(970, 22, 450, 64);
-        rollDice.setBounds(970, 80, 120, 32);
+        rollDice.setBounds(970, 80, 75, 75);
         result.setBounds(970, 80, 100, 32);
         rulesAdvice.setBounds(980, 820, 250, 32);
         rulesButton.setBounds(980, 860, 120, 32);
@@ -135,7 +131,23 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         nextPlayer.setBounds(970, 80, 120, 32);
 
         // Add listeners
-        rollDice.addActionListener(this);
+        rollDice.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                remove(rollDice);
+                boolean humanCanMoveTheirFigures = backend.playerMove();
+
+                if (humanCanMoveTheirFigures) {
+                    displayResult(backend.randomNumber);
+                    setPromptValues();
+                } else {
+                    remove(userAdvice);
+                    add(noSix);
+                    add(nextPlayer);
+                    repaint();
+                }
+            }
+        });
         rulesButton.addActionListener(this);
         nextPlayer.addActionListener(this);
         addMouseListener(this);
@@ -161,20 +173,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (rollDice == e.getSource()) {
-            remove(rollDice);
-            boolean humanCanMoveTheirFigures = backend.playerMove();
-
-            if (humanCanMoveTheirFigures) {
-                displayResult(backend.randomNumber);
-                setPromptValues();
-            } else {
-                this.remove(userAdvice);
-                this.add(noSix);
-                this.add(nextPlayer);
-                repaint();
-            }
-        } else if (rulesButton == e.getSource()) {
+        if (rulesButton == e.getSource()) {
             setVisible(false);
             new Rules(this);
         } else if (nextPlayer == e.getSource()) {
