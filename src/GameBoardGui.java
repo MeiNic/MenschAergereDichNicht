@@ -43,7 +43,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
     private JLabel rulesAdvice;
     private ImageTextPanel rulesButton;
     private JLabel noSix;
-    private JButton nextPlayer;
+    private ImageTextPanel nextPlayer;
     private BackEnd backend;
     private final Font jetBrainsMonoSemiBold;
     private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
@@ -124,7 +124,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesAdvice = new JLabel();
         rulesButton = new ImageTextPanel("button-idle", "rules");
         noSix = new JLabel();
-        nextPlayer = new JButton();
+        nextPlayer = new ImageTextPanel("button-idle", "next player");
 
         // Set text
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
@@ -132,7 +132,6 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesButton.setText("rules");
         noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
               "</html>");
-        nextPlayer.setText("next player");
 
         // Set bounds
         userAdvice.setBounds(970, 22, 450, 64);
@@ -140,18 +139,21 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         rulesAdvice.setBounds(980, 790, 260, 32);
         rulesButton.setBounds(980, 830, 100, 32);
         noSix.setBounds(970, 22, 450, 32);
-        nextPlayer.setBounds(970, 80, 120, 32);
+        nextPlayer.setBounds(970, 80, 100, 32);
 
         //Apply Font to JComponents
         rulesButton.setFont(jetBrainsMonoSemiBold);
         rulesAdvice.setFont(jetBrainsMonoSemiBold);
+        nextPlayer.setFont(jetBrainsMonoSemiBold);
 
         //Change Foreground
         rulesButton.setForeground(defaultForegroundColor);
         rulesAdvice.setForeground(defaultForegroundColor);
+        nextPlayer.setForeground(defaultForegroundColor);
 
         //Change Background
         rulesButton.setBackground(defaultBackgroundColor);
+        nextPlayer.setBackground(defaultBackgroundColor);
 
         // Add listeners
         rollDice.addMouseListener(new MouseAdapter() {
@@ -189,7 +191,28 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 repaint();
             }
         });
-        nextPlayer.addActionListener(this);
+        nextPlayer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                remove(noSix);
+                remove(nextPlayer);
+                add(userAdvice);
+                repaint();
+                executeNextMove();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                nextPlayer.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                nextPlayer.setImage("button-idle");
+                repaint();
+            }
+        });
         addMouseListener(this);
 
         replaceFigures();
