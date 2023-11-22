@@ -1,191 +1,263 @@
 package src;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
-public class GameBoardGui extends JFrame implements ActionListener, MouseListener {
-    private enum FieldColor {
-	YELLOW("#FFC957"),
-	GREEN("#2A914E"),
-	BLUE("#1E32FF"),
-	RED("#CC0000"),
-	GRAY("#CCCCCC");
+import static java.lang.Thread.sleep;
 
-	private final String hexCode;
+public class GameBoardGui extends JFrame implements MouseListener {
 
-	FieldColor(String hexCode) {
-	    this.hexCode = hexCode;
-	}
+    private JLabel[] figures;
+    private JLabel[] houses;
+    private JLabel[] bases;
+    private JLabel[] fields;
 
-	public String getHexCode() {
-	    return hexCode;
-	}
-    }
-    private enum FigureColor {
-	YELLOW("#FFFF00"),
-	GREEN("#00CC00"),
-	BLUE("#3C93FF"),
-	RED("#FF0000");
+    private final int[] housePositionsX = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673, 593,
+            513};
+    private final int[] housePositionsY = {753, 673, 593, 513, 433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433,
+            433};
 
-	private final String hexCode;
-	FigureColor(String hexCode) {
-	    this.hexCode = hexCode;
-	}
+    private final int[] basePositionsX = {28, 93, 28, 93, 28, 93, 28, 93, 763, 828, 763, 828, 763, 828, 763, 828};
+    private final int[] basePositionsY = {828, 828, 763, 763, 93, 93, 28, 28, 93, 93, 28, 28, 828, 828, 763, 763};
 
-	public String getHexCode() {
-	    return hexCode;
-	}
-    }
+    private final int[] fieldPositionsX = {348, 348, 348, 348, 348, 268, 188, 108, 28, 28, 28, 108, 188, 268, 348, 348,
+            348, 348, 348, 428, 508, 508, 508, 508, 508, 588, 668, 748, 828, 828, 828, 748, 668, 588, 508, 508, 508,
+            508, 508, 428};
+    private final int[] fieldPositionsY = {828, 748, 668, 588, 508, 508, 508, 508, 508, 428, 348, 348, 348, 348, 348,
+            268, 188, 108, 28, 28, 28, 108, 188, 268, 348, 348, 348, 348, 348, 428, 508, 508, 508, 508, 508, 588, 668,
+            748, 828, 828};
 
+    private final int[] figurePositionsHouseX = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673,
+            593, 513};
+    private final int[] figurePositionsHouseY = {728, 648, 568, 488, 408, 408, 408, 408, 88, 168, 248, 328, 408, 408,
+            408, 408};
 
-    private Circle[] figures;
-    private Circle[] houses;
-    private Circle[] bases;
-    private Circle[] fields;
+    private final int[] figurePositionsBaseX = {33, 98, 33, 98, 33, 98, 33, 98, 768, 833, 768, 833, 768, 833, 768,
+            833};
+    private final int[] figurePositionsBaseY = {815, 815, 750, 750, 80, 80, 15, 15, 80, 80, 15, 15, 815, 815, 750, 750};
 
-    private final int[] housePositionsX = {445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445, 765, 685, 605, 525};
-    private final int[] housePositionsY = {765, 685, 605, 525, 445, 445, 445, 445, 125, 205, 285, 365, 445, 445, 445, 445};
+    private final int[] figurePositionsFieldX = {353, 353, 353, 353, 353, 273, 193, 113, 33, 33, 33, 113, 193, 273,
+            353, 353, 353, 353, 353, 433, 513, 513, 513, 513, 513, 593, 673, 753, 833, 833, 833, 753, 673, 593, 513,
+            513, 513, 513, 513, 433};
+    private final int[] figurePositionsFieldY = {813, 733, 653, 573, 493, 493, 493, 493, 493, 413, 333, 333, 333, 333
+            , 333, 253, 173, 93, 13, 13, 13, 93, 173, 253, 333, 333, 333, 333, 333, 413, 493, 493, 493, 493, 493, 573
+            , 653, 733, 813, 813};
 
-    private final int[] basePositionsX = {45, 110, 45, 110, 45, 110, 45, 110, 780, 845, 780, 845, 780, 845, 780, 845};
-    private final int[] basePositionsY = {845, 845, 780, 780, 110, 110, 45, 45, 110, 110, 45, 45, 845, 845, 780, 780};
-
-    private final int[] fieldPositionsX = {360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845, 840, 765, 685, 605, 525, 525, 525, 525, 525, 445};
-    private final int[] fieldPositionsY = {840, 765, 685, 605, 525, 525, 525, 525, 525, 445, 360, 365, 365, 365, 365, 285, 205, 125, 45, 45, 40, 125, 205, 285, 365, 365, 365, 365, 365, 445, 520, 525, 525, 525, 525, 605, 685, 765, 845, 845};
-
-    JLabel userAdvice;
-    JButton rollDice;
-    JLabel result;
-    JLabel figureChooserPrompt;
-    JLabel rulesAdvice;
-    JButton rulesButton;
-    JLabel noSix;
-    JButton nextPlayer;
-    BackEnd backend;
+    private JLabel gameBoardBackground;
+    private JLabel userAdvice;
+    private JLabel rollDice;
+    private JLabel result;
+    private JLabel figureChooserPrompt;
+    private JLabel rulesAdvice;
+    private ImageTextPanel rulesButton;
+    private JLabel noSix;
+    private ImageTextPanel nextPlayer;
+    private BackEnd backend;
+    private final Font jetBrainsMonoSemiBold;
+    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
 
-        figures = new Circle[16];
-        houses = new Circle[16];
-        bases = new Circle[16];
-        fields = new Circle[40];
+        //Configure Font
+        try {
+            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(jetBrainsMonoSemiBold);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        replaceFigures();
-        int diameter = 50;
+        figures = new JLabel[16];
+        houses = new JLabel[16];
+        bases = new JLabel[16];
+        fields = new JLabel[40];
 
-        for (int i = 0; i < houses.length; i++) {
+        //insert images to the new graphics elements
+        for (int i = 0; i < figures.length; i++){
+            switch (i){
+                case 0, 1, 2, 3 -> figures[i] = new JLabel(readImg("figure-orange"));
+                case 4, 5, 6, 7 -> figures[i] = new JLabel(readImg("figure-green"));
+                case 8, 9, 10, 11 -> figures[i] = new JLabel(readImg("figure-blue"));
+                case 12, 13, 14, 15 -> figures[i] = new JLabel(readImg("figure-red"));
+            }
+            add(figures[i]);
+        }
+        for (int i = 0; i < houses.length; i++){
             int x = housePositionsX[i];
             int y = housePositionsY[i];
-            houses[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+            switch (i){
+                case 0, 1, 2, 3 -> houses[i] = new JLabel(readImg("field-orange-inner"));
+                case 4, 5, 6, 7 -> houses[i] = new JLabel(readImg("field-green-inner"));
+                case 8, 9, 10, 11 -> houses[i] = new JLabel(readImg("field-blue-inner"));
+                case 12, 13, 14, 15 -> houses[i] = new JLabel(readImg("field-red-inner"));
+            }
+            houses[i].setBounds(x, y, 40, 40);
+            add(houses[i]);
         }
-        for (int i = 0; i < bases.length; i++) {
+        for (int i = 0; i < bases.length; i++){
             int x = basePositionsX[i];
             int y = basePositionsY[i];
-            bases[i] = new Circle(x, y, diameter, FieldColor.YELLOW.getHexCode());
+            switch (i){
+                case 0, 1, 2, 3 -> bases[i] = new JLabel(readImg("field-orange"));
+                case 4, 5, 6, 7 -> bases[i] = new JLabel(readImg("field-green"));
+                case 8, 9, 10, 11 -> bases[i] = new JLabel(readImg("field-blue"));
+                case 12, 13, 14, 15 -> bases[i] = new JLabel(readImg("field-red"));
+            }
+            bases[i].setBounds(x, y, 50, 50);
+            add(bases[i]);
         }
-        for (int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < fields.length; i++){
             int x = fieldPositionsX[i];
             int y = fieldPositionsY[i];
-            fields[i] = new Circle(x, y, diameter, FieldColor.GRAY.getHexCode());
+            switch (i){
+                case 0 -> fields[i] = new JLabel(readImg("field-orange"));
+                case 10 -> fields[i] = new JLabel(readImg("field-green"));
+                case 20 -> fields[i] = new JLabel(readImg("field-blue"));
+                case 30 -> fields[i] = new JLabel(readImg("field-red"));
+                default -> fields[i] = new JLabel(readImg("field-white"));
+            }
+            fields[i].setBounds(x, y, 50, 50);
+            add(fields[i]);
         }
 
-        for (int i = 0; i < 4; i++) {
-            houses[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            houses[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            houses[i + 12].setColor(FieldColor.RED.getHexCode());
-
-            bases[i + 4].setColor(FieldColor.GREEN.getHexCode());
-            bases[i + 8].setColor(FieldColor.BLUE.getHexCode());
-            bases[i + 12].setColor(FieldColor.RED.getHexCode());
-        }
-
-        // Set color for start fields
-        fields[0].setColor(FieldColor.YELLOW.getHexCode());
-        fields[10].setColor(FieldColor.GREEN.getHexCode());
-        fields[20].setColor(FieldColor.BLUE.getHexCode());
-        fields[30].setColor(FieldColor.RED.getHexCode());
+        //configure
+        gameBoardBackground = new JLabel(readImg("board"));
+        gameBoardBackground.setBounds(0, 0, 906, 906);
 
         // Initialize UI Elements
         userAdvice = new JLabel();
-        rollDice = new JButton();
+        rollDice = new JLabel(readImg("dice-unknown"));
         result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
-        rulesButton = new JButton();
+        rulesButton = new ImageTextPanel("button-idle", "rules");
         noSix = new JLabel();
-        nextPlayer = new JButton();
+        nextPlayer = new ImageTextPanel("button-idle", "next player");
 
         // Set text
-        userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
-        rollDice.setText("roll the dice");
-        rulesAdvice.setText("Click this button, to view the rules again");
+        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
+                "button to roll the dice </body> </html>");
+        rulesAdvice.setText("<html> <body> Click this button, to view <br> the rules again </body> </html>");
         rulesButton.setText("rules");
-        noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
-		      "</html>");
-        nextPlayer.setText("next player");
+        noSix.setText("<html> <body> You didn't got a six. Press this button to <br> move on to the next player " +
+                "</body> </html>");
 
         // Set bounds
-        userAdvice.setBounds(970, 22, 450, 64);
-        rollDice.setBounds(970, 80, 120, 32);
-        result.setBounds(970, 80, 100, 32);
-        rulesAdvice.setBounds(980, 820, 250, 32);
-        rulesButton.setBounds(980, 860, 120, 32);
-        noSix.setBounds(970, 22, 450, 32);
-        nextPlayer.setBounds(970, 80, 120, 32);
+        userAdvice.setBounds(930, 22, 450, 64);
+        rollDice.setBounds(930, 80, 75, 75);
+        rulesAdvice.setBounds(930, 790, 260, 32);
+        rulesButton.setBounds(930, 830, 100, 32);
+        noSix.setBounds(930, 22, 450, 32);
+        nextPlayer.setBounds(930, 80, 100, 32);
+
+        //Apply Font to JComponents
+        userAdvice.setFont(jetBrainsMonoSemiBold);
+        figureChooserPrompt.setFont(jetBrainsMonoSemiBold);
+        rulesAdvice.setFont(jetBrainsMonoSemiBold);
+        rulesButton.setFont(jetBrainsMonoSemiBold);
+        noSix.setFont(jetBrainsMonoSemiBold);
+        nextPlayer.setFont(jetBrainsMonoSemiBold);
+
+        //Change Foreground
+        userAdvice.setForeground(defaultForegroundColor);
+        figureChooserPrompt.setForeground(defaultForegroundColor);
+        rulesAdvice.setForeground(defaultForegroundColor);
+        rulesButton.setForeground(defaultForegroundColor);
+        nextPlayer.setForeground(defaultForegroundColor);
+        noSix.setForeground(defaultForegroundColor);
+
+        //Change Background
+        rulesButton.setBackground(defaultBackgroundColor);
+        nextPlayer.setBackground(defaultBackgroundColor);
 
         // Add listeners
-        rollDice.addActionListener(this);
-        rulesButton.addActionListener(this);
-        nextPlayer.addActionListener(this);
+        rollDice.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                remove(rollDice);
+                boolean humanCanMoveTheirFigures = backend.playerMove();
+
+                if (humanCanMoveTheirFigures) {
+                    displayResult(backend.randomNumber);
+                    setPromptValues();
+                } else {
+                    remove(userAdvice);
+                    add(noSix);
+                    add(nextPlayer);
+                    repaint();
+                }
+            }
+        });
+        rulesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openRules();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                rulesButton.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                rulesButton.setImage("button-idle");
+                repaint();
+            }
+        });
+        nextPlayer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                remove(noSix);
+                remove(nextPlayer);
+                add(userAdvice);
+                repaint();
+                executeNextMove();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                nextPlayer.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                nextPlayer.setImage("button-idle");
+                repaint();
+            }
+        });
         addMouseListener(this);
 
+        replaceFigures();
+
         // Add UI Elements
+        add(gameBoardBackground);
         add(rollDice);
         add(userAdvice);
-        add(result);
         add(rulesAdvice);
         add(rulesButton);
 
         // Display UI
         setTitle("game field");
-        setSize(1300, 940);
+        setSize(1300, 945);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setBackground(Color.BLACK);
+        getContentPane().setBackground(Color.decode("#6c6f85"));
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        if (rollDice == e.getSource()) {
-            remove(rollDice);
-            boolean humanCanMoveTheirFigures = backend.playerMove();
-
-            if (humanCanMoveTheirFigures) {
-                displayResult(backend.randomNumber);
-                setPromptValues();
-            } else {
-                this.remove(userAdvice);
-                this.add(noSix);
-                this.add(nextPlayer);
-                repaint();
-            }
-        } else if (rulesButton == e.getSource()) {
-            setVisible(false);
-            new Rules(this);
-        } else if (nextPlayer == e.getSource()) {
-            this.remove(noSix);
-            this.remove(nextPlayer);
-            this.add(userAdvice);
-            repaint();
-            executeNextMove();
-        }
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -193,11 +265,9 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         int mousePositionY = e.getY();
         int diameter = 50;
 
-	String message = String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true);
-
         for (int i = 0; i < fieldPositionsX.length; i++) {
-            int differenceX = mousePositionX - fieldPositionsX[i];
-            int differenceY = mousePositionY - fieldPositionsY[i];
+            int differenceX = mousePositionX - fieldPositionsX[i] - 3;
+            int differenceY = mousePositionY - fieldPositionsY[i] - 20;
 
             if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
                 continue;
@@ -219,7 +289,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
@@ -249,13 +319,13 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveToBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
 
         for (int i = 0; i < basePositionsX.length; i++) {
-            int differenceX = mousePositionX - basePositionsX[i];
-            int differenceY = mousePositionY - basePositionsY[i];
+            int differenceX = mousePositionX - basePositionsX[i] - 5;
+            int differenceY = mousePositionY - basePositionsY[i] - 30;
 
             if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
                 continue;
@@ -275,10 +345,10 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
                 backend.moveOutOfBase(clickedFigureIndex);
             }
             prepareNextMove();
-	    logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
             return;
         }
-	logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
+        logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
     }
 
     private void prepareNextMove() {
@@ -308,7 +378,7 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         if (playerState == 1) {
             setBotAdvice();
             try {
-                Thread.sleep(1000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -334,51 +404,55 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
 
     public void replaceFigures(){
         Figure[] input = backend.figures;
-        int diameter = 50;
+        int dimensionX = 39;
+        int dimensionY = 56;
 
         for (int i = 0; i < input.length && i < figures.length; i++){
-            String color = switch (input[i].color) {
-	    case 0 -> FigureColor.YELLOW.getHexCode();
-	    case 1 -> FigureColor.GREEN.getHexCode();
-	    case 2 -> FigureColor.BLUE.getHexCode();
-	    case 3 -> FigureColor.RED.getHexCode();
-	    default -> throw new IllegalStateException("Unexpected value: " + input[i].color);
-            };
-
             int x;
             int y;
 
             if (input[i].isInBase()) {
-                x = basePositionsX[input[i].field];
-                y = basePositionsY[input[i].field];
+                x = figurePositionsBaseX[input[i].field];
+                y = figurePositionsBaseY[input[i].field];
             } else if (input[i].isInHouse() || input[i].isFinished()) {
-                x = housePositionsX[input[i].field];
-                y = housePositionsY[input[i].field];
+                x = figurePositionsHouseX[input[i].field];
+                y = figurePositionsHouseY[input[i].field];
             } else {
-                x = fieldPositionsX[input[i].field];
-                y = fieldPositionsY[input[i].field];
+                x = figurePositionsFieldX[input[i].field];
+                y = figurePositionsFieldY[input[i].field];
             }
-            figures[i] = new Circle(x, y, diameter, color);
+            figures[i].setBounds(x, y, dimensionX, dimensionY);
         }
         repaint();
     }
 
     public void displayResult(int randomNumber){
-        result.setText("Result: " + randomNumber);
+        switch (randomNumber){
+            case 1 -> result = new JLabel(readImg("dice-1"));
+            case 2 -> result = new JLabel(readImg("dice-2"));
+            case 3 -> result = new JLabel(readImg("dice-3"));
+            case 4 -> result = new JLabel(readImg("dice-4"));
+            case 5 -> result = new JLabel(readImg("dice-5"));
+            case 6 -> result = new JLabel(readImg("dice-6"));
+            default -> result = new JLabel(readImg("dice-unknown"));
+        }
+        result.setBounds(930, 80, 75, 75);
+        add(result);
         repaint();
     }
 
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.getNameOfCurrentPlayer() + " is on the turn, click this button");
-        result.setText("");
+        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
+                "button to roll the dice </body> </html>");
+        remove(result);
         repaint();
     }
 
     public void setPromptValues(){
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 120, 250, 32);
+        figureChooserPrompt.setBounds(930, 160, 350, 32);
         add(figureChooserPrompt);
     }
 
@@ -393,42 +467,18 @@ public class GameBoardGui extends JFrame implements ActionListener, MouseListene
         repaint();
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        paintFields(g, houses);
-        paintFields(g, bases);
-        paintFields(g, fields);
-        paintFigures(g, figures);
+    private void openRules(){
+        setVisible(false);
+        new Rules(this);
     }
 
-    private void paintFields(Graphics g, Circle[] circles) {
-        for (Circle circle : circles) {
-            int x = circle.getX();
-            int y = circle.getY();
-            int diameter = circle.getDiameter();
-            Color color = circle.getColor();
-
-            g.setColor(color);
-            g.fillOval(x, y, diameter, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, diameter, diameter);
+    private ImageIcon readImg (String imageName){
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("res/"+imageName+".png"));
+        }catch (IOException e){
+            e.printStackTrace();
         }
-    }
-
-    private void paintFigures(Graphics g, Circle[] ovals){
-        for (Circle oval : ovals){
-            int x = oval.getX() + oval.getDiameter() / 4;
-            int y = oval.getY();
-            int diameter = oval.getDiameter();
-            int radius = oval.getDiameter() / 2;
-            Color color = oval.getColor();
-
-            g.setColor(color);
-            g.fillOval(x, y, radius, diameter);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, radius, diameter);
-        }
+        return new ImageIcon(Objects.requireNonNull(img));
     }
 }
