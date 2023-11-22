@@ -14,22 +14,14 @@ public class ImageTextPanel extends JPanel {
     private Color fontColor;
 
     public ImageTextPanel(String imgName, String textNew, Font fontNew, Color fontColorNew) {
-        try {
-            defaultImg = ImageIO.read(new File("res/" + imgName + ".png"));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        setImage(imgName);
         text = textNew;
         font = fontNew;
         fontColor = fontColorNew;
     }
 
     public ImageTextPanel(String imgName, String textNew) {
-        try {
-            defaultImg = ImageIO.read(new File("res/" + imgName + ".png"));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        setImage(imgName);
         text = textNew;
     }
 
