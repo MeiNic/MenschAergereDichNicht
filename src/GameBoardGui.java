@@ -137,6 +137,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
         // Initialize UI Elements
         userAdvice = new JLabel();
         rollDice = new JLabel(readImg("dice-unknown"));
+        result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
         rulesButton = new ImageTextPanel("button-idle", "rules");
@@ -144,19 +145,20 @@ public class GameBoardGui extends JFrame implements MouseListener {
         nextPlayer = new ImageTextPanel("button-idle", "next player");
 
         // Set text
-        userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn, click this button to roll the dice");
+        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
+                "button to roll the dice </body> </html>");
         rulesAdvice.setText("<html> <body> Click this button, to view <br> the rules again </body> </html>");
         rulesButton.setText("rules");
-        noSix.setText("<html> <body> You didn't got a six. Press this button to move on to <br> the next player </body> " +
-              "</html>");
+        noSix.setText("<html> <body> You didn't got a six. Press this button to <br> move on to the next player " +
+                "</body> </html>");
 
         // Set bounds
-        userAdvice.setBounds(970, 22, 450, 64);
-        rollDice.setBounds(970, 80, 75, 75);
-        rulesAdvice.setBounds(980, 790, 260, 32);
-        rulesButton.setBounds(980, 830, 100, 32);
-        noSix.setBounds(970, 22, 450, 32);
-        nextPlayer.setBounds(970, 80, 100, 32);
+        userAdvice.setBounds(930, 22, 450, 64);
+        rollDice.setBounds(930, 80, 75, 75);
+        rulesAdvice.setBounds(930, 790, 260, 32);
+        rulesButton.setBounds(930, 830, 100, 32);
+        noSix.setBounds(930, 22, 450, 32);
+        nextPlayer.setBounds(930, 80, 100, 32);
 
         //Apply Font to JComponents
         userAdvice.setFont(jetBrainsMonoSemiBold);
@@ -434,14 +436,15 @@ public class GameBoardGui extends JFrame implements MouseListener {
             case 6 -> result = new JLabel(readImg("dice-6"));
             default -> result = new JLabel(readImg("dice-unknown"));
         }
-        result.setBounds(970, 80, 75, 75);
+        result.setBounds(930, 80, 75, 75);
         add(result);
         repaint();
     }
 
     public void setActivePlayer(){
         add(rollDice);
-        userAdvice.setText("Player " + backend.getNameOfCurrentPlayer() + " is on the turn, click this button");
+        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
+                "button to roll the dice </body> </html>");
         remove(result);
         repaint();
     }
@@ -449,7 +452,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
     public void setPromptValues(){
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
-        figureChooserPrompt.setBounds(970, 120, 250, 32);
+        figureChooserPrompt.setBounds(930, 160, 350, 32);
         add(figureChooserPrompt);
     }
 

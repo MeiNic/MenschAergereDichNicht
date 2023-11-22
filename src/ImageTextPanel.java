@@ -69,7 +69,7 @@ public class ImageTextPanel extends JPanel {
         int CenterY = getHeight() / 2;
         FontMetrics fm = g.getFontMetrics();
         int textWidth = fm.stringWidth(text);
-        textWidth += textWidth / 4;
+        textWidth += textWidth / 2;
         int textHeight = fm.getHeight();
         int x = CenterX - textWidth / 2;
         int y = CenterY + textHeight / 3;
