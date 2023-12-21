@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
 public class Rules extends JFrame implements ActionListener{
     private JLabel header;
     private JLabel goalHeader;
@@ -22,10 +25,23 @@ public class Rules extends JFrame implements ActionListener{
     private String sr4;
     private String sr5;
     public JFrame executingClass;
+    private final Font jetBrainsMonoSemiBold;
+    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
+    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
+        //Configure Font
+        try {
+            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(jetBrainsMonoSemiBold);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //Declaration of Strings
         sr1 = "1. When a 6 is rolled, you have to move a figure out of base!";
         sr2 = "2. you have to keep your start-field free, as long as there are figures in your Base";
@@ -90,7 +106,7 @@ public class Rules extends JFrame implements ActionListener{
         setSize(785, 510);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setBackground(Color.BLACK);
+        getContentPane().setBackground(defaultBackgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
