@@ -131,7 +131,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
             add(fields[i]);
         }
 
-        //configure
+        //configure background
         gameBoardBackground = new JLabel(readImg("board"));
         gameBoardBackground.setBounds(0, 0, 906, 906);
 
@@ -239,10 +239,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 repaint();
             }
         });
-        //addMouseListener(this);
-
         replaceFigures();
-
         // Add UI Elements
         add(gameBoardBackground);
         add(rollDice);
