@@ -60,7 +60,7 @@ public class Rules extends JFrame{
         goalHeader = new JLabel("Goal of the Game:");
         goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
         goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
-        ruleHeader = new JLabel("ruleHeader: ");
+        ruleHeader = new JLabel("Rules: ");
         rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
         rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
         rule3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
@@ -87,6 +87,13 @@ public class Rules extends JFrame{
         header.setFont(jetBrainsMonoExtraBold);
         goalHeader.setFont(jetBrainsMonoBold);
         ruleHeader.setFont(jetBrainsMonoBold);
+        goal1.setFont(jetBrainsMonoSemiBold);
+        goal2.setFont(jetBrainsMonoSemiBold);
+        rule1.setFont(jetBrainsMonoSemiBold);
+        rule2.setFont(jetBrainsMonoSemiBold);
+        rule3.setFont(jetBrainsMonoSemiBold);
+        rule4.setFont(jetBrainsMonoSemiBold);
+        rule5.setFont(jetBrainsMonoSemiBold);
         close.setFont(jetBrainsMonoSemiBold);
 
         //Set Background
@@ -99,6 +106,14 @@ public class Rules extends JFrame{
         header.setForeground(defaultForegroundColor);
         goalHeader.setForeground(defaultForegroundColor);
         ruleHeader.setForeground(defaultForegroundColor);
+        goal1.setForeground(defaultForegroundColor);
+        goal2.setForeground(defaultForegroundColor);
+        rule1.setForeground(defaultForegroundColor);
+        rule2.setForeground(defaultForegroundColor);
+        rule3.setForeground(defaultForegroundColor);
+        rule4.setForeground(defaultForegroundColor);
+        rule5.setForeground(defaultForegroundColor);
+        close.setForeground(defaultForegroundColor);
         close.setForeground(defaultForegroundColor);
 
         //Button action for close
