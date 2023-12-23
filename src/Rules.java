@@ -19,11 +19,6 @@ public class Rules extends JFrame{
     private JLabel r4;
     private JLabel r5;
     private ImageTextPanel close;
-    private String sr1;
-    private String sr2;
-    private String sr3;
-    private String sr4;
-    private String sr5;
     public JFrame executingClass;
     private final Font jetBrainsMonoSemiBold;
     private final Font jetBrainsMonoBold;
@@ -60,24 +55,19 @@ public class Rules extends JFrame{
             throw new RuntimeException(e);
         }
 
-        //Declaration of Strings
-        sr1 = "1. When a 6 is rolled, you have to move a figure out of base!";
-        sr2 = "2. you have to keep your start-field free, as long as there are figures in your Base";
-        sr3 = "3. If possible, you must kick another person! If you didn't your figure, that was able to kick someone, will get moved to your Base.";
-        sr4 = "4. In order to get into your house you have to get the exact number, you can't go in with a number, that is to high.";
-        sr5 = "5. You cannot jump over your figures in your House.";
-
         //declaration of the JLabels & the JCheckBox
         header = new JLabel("Info");
         goalHeader = new JLabel("Goal of the Game:");
         goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
         goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
         rules = new JLabel("Rules: ");
-        r1 = new JLabel(sr1);
-        r2 = new JLabel(sr2);
-        r3 = new JLabel(sr3);
-        r4 = new JLabel(sr4);
-        r5 = new JLabel(sr5);
+        r1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
+        r2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
+        r3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
+                "able to kick someone, will get moved to your Base.");
+        r4 = new JLabel("4. In order to get into your house you have to get the exact number, you can't " +
+                "go in with a number, that is to high.");
+        r5 = new JLabel("5. You cannot jump over your figures in your House.");
         close = new ImageTextPanel("button-idle", "close");
 
         //position of all j-components
