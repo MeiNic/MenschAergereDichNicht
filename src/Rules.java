@@ -26,16 +26,34 @@ public class Rules extends JFrame{
     private String sr5;
     public JFrame executingClass;
     private final Font jetBrainsMonoSemiBold;
+    private final Font jetBrainsMonoBold;
+    private final Font jetBrainsMonoExtraBold;
     private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
     private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
     Logger logger = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
-        //Configure Font
+        //Configure Fonts
         try {
             jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(jetBrainsMonoSemiBold);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            jetBrainsMonoBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-Bold.ttf")).deriveFont(15f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(jetBrainsMonoSemiBold);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            jetBrainsMonoExtraBold = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/jetBrainsMono/JetBrainsMono-ExtraBold.ttf")).deriveFont(17f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(jetBrainsMonoSemiBold);
         } catch (FontFormatException | IOException e) {
@@ -62,20 +80,10 @@ public class Rules extends JFrame{
         r5 = new JLabel(sr5);
         close = new ImageTextPanel("button-idle", "close");
 
-        //settings of headers
-        Font fontHeading = new Font(header.getFont().getName(), Font.PLAIN, 40);
-        header.setFont(fontHeading);
-        header.setBounds(13, 5, 150, 70);
-
-        Font fontGoalheading = new Font(goalHeader.getFont().getName(), Font.PLAIN, 20);
-        goalHeader.setFont(fontGoalheading);
-        goalHeader.setBounds(40, 80, 300, 50);
-
-        Font fontRules = new Font(rules.getFont().getName(), Font.PLAIN, 20);
-        rules.setFont(fontRules);
-        rules.setBounds(40, 200, 300, 50);
-
         //position of all j-components
+        header.setBounds(13, 5, 150, 70);
+        goalHeader.setBounds(40, 80, 300, 50);
+        rules.setBounds(40, 200, 300, 50);
         goal1.setBounds(40, 130, 700, 32);
         goal2.setBounds(40, 160, 700, 32);
         r1.setBounds(40, 250, 700, 32);
@@ -86,12 +94,21 @@ public class Rules extends JFrame{
         close.setBounds(40, 420, 100, 32);
 
         //Set Font
+        header.setFont(jetBrainsMonoExtraBold);
+        goalHeader.setFont(jetBrainsMonoBold);
+        rules.setFont(jetBrainsMonoBold);
         close.setFont(jetBrainsMonoSemiBold);
 
         //Set Background
+        header.setBackground(defaultBackgroundColor);
+        goalHeader.setBackground(defaultBackgroundColor);
+        rules.setBackground(defaultBackgroundColor);
         close.setBackground(defaultBackgroundColor);
 
         //Set Foreground
+        header.setForeground(defaultForegroundColor);
+        goalHeader.setForeground(defaultForegroundColor);
+        rules.setForeground(defaultForegroundColor);
         close.setForeground(defaultForegroundColor);
 
         //Button action for close
