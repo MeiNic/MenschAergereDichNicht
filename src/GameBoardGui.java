@@ -90,6 +90,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 case 8, 9, 10, 11 -> figures[i] = new JLabel(readImg("figure-blue"));
                 case 12, 13, 14, 15 -> figures[i] = new JLabel(readImg("figure-red"));
             }
+            figures[i].addMouseListener(this);
             add(figures[i]);
         }
         for (int i = 0; i < houses.length; i++){
@@ -130,7 +131,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
             add(fields[i]);
         }
 
-        //configure
+        //configure background
         gameBoardBackground = new JLabel(readImg("board"));
         gameBoardBackground.setBounds(0, 0, 906, 906);
 
@@ -238,10 +239,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 repaint();
             }
         });
-        addMouseListener(this);
-
         replaceFigures();
-
         // Add UI Elements
         add(gameBoardBackground);
         add(rollDice);
@@ -261,94 +259,33 @@ public class GameBoardGui extends JFrame implements MouseListener {
     }
 
     public void mouseClicked(MouseEvent e) {
-        int mousePositionX = e.getX();
-        int mousePositionY = e.getY();
-        int diameter = 50;
-
-        for (int i = 0; i < fieldPositionsX.length; i++) {
-            int differenceX = mousePositionX - fieldPositionsX[i] - 3;
-            int differenceY = mousePositionY - fieldPositionsY[i] - 20;
-
-            if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
-                continue;
+        int clickedFigureIndex = -1;
+        for(int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
+            if (e.getSource() == figures[i]) {
+                clickedFigureIndex = i;
             }
-
-            int clickedFigureIndex = backend.figureOnField(i);
-            if (clickedFigureIndex == -1) {
-                continue;
-            }
-
-            Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-                continue;
-            }
-
-            if (clickedFigure.isPlaceable()) {
-                backend.moveFigure(clickedFigureIndex);
-            } else {
-                backend.moveToBase(clickedFigureIndex);
-            }
-            prepareNextMove();
-            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+        }
+        logger.info("Clicked Figure " + clickedFigureIndex);
+        if (clickedFigureIndex == -1){
+            logger.info("Figure movement aborted - no figure clicked");
             return;
         }
-
-        for (int i = 0; i < housePositionsX.length; i++) {
-            int differenceX = mousePositionX - housePositionsX[i];
-            int differenceY = mousePositionY - housePositionsY[i];
-
-            if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
-                continue;
-            }
-
-            int clickedFigureIndex = backend.figureOnHouseField(i);
-            if (clickedFigureIndex == -1) {
-                continue;
-            }
-
-            Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-                continue;
-            }
-            if (clickedFigure.isFinished()){
-                continue;
-            }
-            if (clickedFigure.isPlaceable()) {
-                backend.moveFigure(clickedFigureIndex);
-            } else {
-                backend.moveToBase(clickedFigureIndex);
-            }
-            prepareNextMove();
-            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+        Figure clickedFigure = backend.figures[clickedFigureIndex];
+        if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
+            logger.info("Figure movement aborted - false color selected");
             return;
         }
-
-        for (int i = 0; i < basePositionsX.length; i++) {
-            int differenceX = mousePositionX - basePositionsX[i] - 5;
-            int differenceY = mousePositionY - basePositionsY[i] - 30;
-
-            if (differenceX <= 0 || diameter <= differenceX || differenceY <= 0 || diameter <= differenceY) {
-                continue;
-            }
-
-            int clickedFigureIndex = backend.figureOnBaseField(i);
-            if (clickedFigureIndex == -1) {
-                continue;
-            }
-
-            Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()) {
-                continue;
-            }
-
-            if (clickedFigure.isPlaceable()) {
-                backend.moveOutOfBase(clickedFigureIndex);
-            }
-            prepareNextMove();
-            logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, true));
+        if (!clickedFigure.isPlaceable()){
+            backend.moveToBase(clickedFigureIndex);
+            logger.info("Figure movement aborted - Wrong figure moved (Moving figure to basse...)");
             return;
         }
-        logger.debug(String.format("Mouse clicked at { x: %3d, y: %3d, hit_figure: %b}", mousePositionX, mousePositionY, false));
+        if (clickedFigure.isInBase()){
+            backend.moveOutOfBase(clickedFigureIndex);
+        } else {
+            backend.moveFigure(clickedFigureIndex);
+        }
+        prepareNextMove();
     }
 
     private void prepareNextMove() {
