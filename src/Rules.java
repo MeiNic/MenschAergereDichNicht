@@ -13,11 +13,11 @@ public class Rules extends JFrame{
     private JLabel goal1;
     private JLabel goal2;
     private JLabel rules;
-    private JLabel r1;
-    private JLabel r2;
-    private JLabel r3;
-    private JLabel r4;
-    private JLabel r5;
+    private JLabel rule1;
+    private JLabel rule2;
+    private JLabel rule3;
+    private JLabel rule4;
+    private JLabel rule5;
     private ImageTextPanel close;
     public JFrame executingClass;
     private final Font jetBrainsMonoSemiBold;
@@ -61,13 +61,13 @@ public class Rules extends JFrame{
         goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
         goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
         rules = new JLabel("Rules: ");
-        r1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
-        r2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
-        r3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
+        rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
+        rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
+        rule3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
                 "able to kick someone, will get moved to your Base.");
-        r4 = new JLabel("4. In order to get into your house you have to get the exact number, you can't " +
+        rule4 = new JLabel("4. In order to get into your house you have to get the exact number, you can't " +
                 "go in with a number, that is to high.");
-        r5 = new JLabel("5. You cannot jump over your figures in your House.");
+        rule5 = new JLabel("5. You cannot jump over your figures in your House.");
         close = new ImageTextPanel("button-idle", "close");
 
         //position of all j-components
@@ -76,11 +76,11 @@ public class Rules extends JFrame{
         rules.setBounds(40, 200, 300, 50);
         goal1.setBounds(40, 130, 700, 32);
         goal2.setBounds(40, 160, 700, 32);
-        r1.setBounds(40, 250, 700, 32);
-        r2.setBounds(40, 280, 700, 32);
-        r3.setBounds(40, 310, 900, 32);
-        r4.setBounds(40, 340, 900, 32);
-        r5.setBounds(40, 370, 700, 32);
+        rule1.setBounds(40, 250, 700, 32);
+        rule2.setBounds(40, 280, 700, 32);
+        rule3.setBounds(40, 310, 900, 32);
+        rule4.setBounds(40, 340, 900, 32);
+        rule5.setBounds(40, 370, 700, 32);
         close.setBounds(40, 420, 100, 32);
 
         //Set Font
@@ -127,11 +127,11 @@ public class Rules extends JFrame{
         add(goal1);
         add(goal2);
         add(rules);
-        add(r1);
-        add(r2);
-        add(r3);
-        add(r4);
-        add(r5);
+        add(rule1);
+        add(rule2);
+        add(rule3);
+        add(rule4);
+        add(rule5);
         add(close);
 
         //display UI
