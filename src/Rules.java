@@ -12,7 +12,7 @@ public class Rules extends JFrame{
     private JLabel goalHeader;
     private JLabel goal1;
     private JLabel goal2;
-    private JLabel rules;
+    private JLabel ruleHeader;
     private JLabel rule1;
     private JLabel rule2;
     private JLabel rule3;
@@ -60,7 +60,7 @@ public class Rules extends JFrame{
         goalHeader = new JLabel("Goal of the Game:");
         goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
         goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
-        rules = new JLabel("Rules: ");
+        ruleHeader = new JLabel("ruleHeader: ");
         rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
         rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
         rule3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
@@ -73,7 +73,7 @@ public class Rules extends JFrame{
         //position of all j-components
         header.setBounds(13, 5, 150, 70);
         goalHeader.setBounds(40, 80, 300, 50);
-        rules.setBounds(40, 200, 300, 50);
+        ruleHeader.setBounds(40, 200, 300, 50);
         goal1.setBounds(40, 130, 700, 32);
         goal2.setBounds(40, 160, 700, 32);
         rule1.setBounds(40, 250, 700, 32);
@@ -86,19 +86,19 @@ public class Rules extends JFrame{
         //Set Font
         header.setFont(jetBrainsMonoExtraBold);
         goalHeader.setFont(jetBrainsMonoBold);
-        rules.setFont(jetBrainsMonoBold);
+        ruleHeader.setFont(jetBrainsMonoBold);
         close.setFont(jetBrainsMonoSemiBold);
 
         //Set Background
         header.setBackground(defaultBackgroundColor);
         goalHeader.setBackground(defaultBackgroundColor);
-        rules.setBackground(defaultBackgroundColor);
+        ruleHeader.setBackground(defaultBackgroundColor);
         close.setBackground(defaultBackgroundColor);
 
         //Set Foreground
         header.setForeground(defaultForegroundColor);
         goalHeader.setForeground(defaultForegroundColor);
-        rules.setForeground(defaultForegroundColor);
+        ruleHeader.setForeground(defaultForegroundColor);
         close.setForeground(defaultForegroundColor);
 
         //Button action for close
@@ -126,7 +126,7 @@ public class Rules extends JFrame{
         add(goalHeader);
         add(goal1);
         add(goal2);
-        add(rules);
+        add(ruleHeader);
         add(rule1);
         add(rule2);
         add(rule3);
@@ -135,7 +135,7 @@ public class Rules extends JFrame{
         add(close);
 
         //display UI
-        setTitle("Overview Rules");
+        setTitle("Overview ruleHeader");
         setSize(785, 510);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -146,7 +146,7 @@ public class Rules extends JFrame{
     }
 
     public void closeWindow(){
-        logger.info("Closing Rules and setting previous window to visible again.");
+        logger.info("Closing ruleHeader and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
     }
