@@ -48,7 +48,7 @@ public class Rules extends JFrame{
         }
         try {
             jetBrainsMonoExtraBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-ExtraBold.ttf")).deriveFont(17f);
+                    new File("fonts/jetBrainsMono/JetBrainsMono-ExtraBold.ttf")).deriveFont(19f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(jetBrainsMonoSemiBold);
         } catch (FontFormatException | IOException e) {
@@ -63,25 +63,25 @@ public class Rules extends JFrame{
         ruleHeader = new JLabel("Rules: ");
         rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
         rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
-        rule3 = new JLabel("3. If possible, you must kick another person! If you didn't your figure, that was " +
-                "able to kick someone, will get moved to your Base.");
-        rule4 = new JLabel("4. In order to get into your house you have to get the exact number, you can't " +
-                "go in with a number, that is to high.");
+        rule3 = new JLabel("<html><body> 3. If possible, you must kick another person! If you didn't your " +
+                "figure, that was able to <br> kick someone, will get moved to your Base. </body></html>");
+        rule4 = new JLabel("<html><body> 4. In order to get into your house you have to get the exact number, " +
+                "you can't go in with <br> a number, that is to high. </body></html>");
         rule5 = new JLabel("5. You cannot jump over your figures in your House.");
         close = new ImageTextPanel("button-idle", "close");
 
         //position of all j-components
-        header.setBounds(13, 5, 150, 70);
-        goalHeader.setBounds(40, 80, 300, 50);
-        ruleHeader.setBounds(40, 200, 300, 50);
-        goal1.setBounds(40, 130, 700, 32);
-        goal2.setBounds(40, 160, 700, 32);
-        rule1.setBounds(40, 250, 700, 32);
-        rule2.setBounds(40, 280, 700, 32);
-        rule3.setBounds(40, 310, 900, 32);
-        rule4.setBounds(40, 340, 900, 32);
-        rule5.setBounds(40, 370, 700, 32);
-        close.setBounds(40, 420, 100, 32);
+        header.setBounds(3, 0, 150, 35);
+        goalHeader.setBounds(3, 40, 300, 35);
+        ruleHeader.setBounds(3, 115, 300, 35);
+        goal1.setBounds(6, 65, 700, 32);
+        goal2.setBounds(6, 85, 700, 32);
+        rule1.setBounds(6, 140, 700, 32);
+        rule2.setBounds(6, 160, 700, 32);
+        rule3.setBounds(6, 190, 900, 32);
+        rule4.setBounds(6, 230, 900, 32);
+        rule5.setBounds(6, 260, 700, 32);
+        close.setBounds(6, 300, 100, 32);
 
         //Set Font
         header.setFont(jetBrainsMonoExtraBold);
@@ -151,7 +151,7 @@ public class Rules extends JFrame{
 
         //display UI
         setTitle("Overview ruleHeader");
-        setSize(785, 510);
+        setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(defaultBackgroundColor);
