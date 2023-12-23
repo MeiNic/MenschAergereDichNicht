@@ -2,12 +2,12 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Rules extends JFrame implements ActionListener{
+public class Rules extends JFrame{
     private JLabel header;
     private JLabel goalHeader;
     private JLabel goal1;
@@ -18,7 +18,7 @@ public class Rules extends JFrame implements ActionListener{
     private JLabel r3;
     private JLabel r4;
     private JLabel r5;
-    private JButton done;
+    private ImageTextPanel close;
     private String sr1;
     private String sr2;
     private String sr3;
@@ -60,7 +60,7 @@ public class Rules extends JFrame implements ActionListener{
         r3 = new JLabel(sr3);
         r4 = new JLabel(sr4);
         r5 = new JLabel(sr5);
-        done = new JButton("close");
+        close = new ImageTextPanel("button-idle", "close");
 
         //settings of headers
         Font fontHeading = new Font(header.getFont().getName(), Font.PLAIN, 40);
@@ -83,10 +83,36 @@ public class Rules extends JFrame implements ActionListener{
         r3.setBounds(40, 310, 900, 32);
         r4.setBounds(40, 340, 900, 32);
         r5.setBounds(40, 370, 700, 32);
+        close.setBounds(40, 420, 100, 32);
 
-        done.setBounds(40, 420, 80, 32);
-        done.addActionListener(this);
-        done.setBackground(Color.green);
+        //Set Font
+        close.setFont(jetBrainsMonoSemiBold);
+
+        //Set Background
+        close.setBackground(defaultBackgroundColor);
+
+        //Set Foreground
+        close.setForeground(defaultForegroundColor);
+
+        //Button action for close
+        close.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                closeWindow();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                close.setImage("button-hovered");
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                close.setImage("button-idle");
+                repaint();
+            }
+        });
 
         //Add UI elements
         add(header);
@@ -99,7 +125,7 @@ public class Rules extends JFrame implements ActionListener{
         add(r3);
         add(r4);
         add(r5);
-        add(done);
+        add(close);
 
         //display UI
         setTitle("Overview Rules");
@@ -112,7 +138,7 @@ public class Rules extends JFrame implements ActionListener{
         logger.info("Displaying Landingpage.");
     }
 
-    public void actionPerformed(ActionEvent e){
+    public void closeWindow(){
         logger.info("Closing Rules and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
