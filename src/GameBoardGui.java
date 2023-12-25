@@ -150,7 +150,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 "button to roll the dice </body> </html>");
         rulesAdvice.setText("<html> <body> Click this button, to view <br> the rules again </body> </html>");
         rulesButton.setText("rules");
-        noSix.setText("<html> <body> You didn't got a six. Press this button to <br> move on to the next player " +
+        noSix.setText("<html> <body> You didn't get a six. Press this button to <br> move on to the next player " +
                 "</body> </html>");
 
         // Set bounds
