@@ -60,26 +60,6 @@ public class Rules extends JFrame{
         goalHeader.setFont(theme.fontBolder);
         ruleHeader.setFont(theme.fontBolder);
 
-        //Set Background
-        header.setBackground(theme.backgroundColor);
-        goalHeader.setBackground(theme.backgroundColor);
-        ruleHeader.setBackground(theme.backgroundColor);
-        close.setBackground(theme.backgroundColor);
-
-        //Set Foreground
-        header.setForeground(theme.foregroundColor);
-        goalHeader.setForeground(theme.foregroundColor);
-        ruleHeader.setForeground(theme.foregroundColor);
-        goal1.setForeground(theme.foregroundColor);
-        goal2.setForeground(theme.foregroundColor);
-        rule1.setForeground(theme.foregroundColor);
-        rule2.setForeground(theme.foregroundColor);
-        rule3.setForeground(theme.foregroundColor);
-        rule4.setForeground(theme.foregroundColor);
-        rule5.setForeground(theme.foregroundColor);
-        close.setForeground(theme.foregroundColor);
-        close.setForeground(theme.foregroundColor);
-
         //Button action for close
         close.addMouseListener(new MouseAdapter() {
             @Override

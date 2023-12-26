@@ -150,18 +150,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
         noSix.setBounds(930, 22, 450, 32);
         nextPlayer.setBounds(930, 80, 100, 32);
 
-        //Change Foreground
-        userAdvice.setForeground(theme.foregroundColor);
-        figureChooserPrompt.setForeground(theme.foregroundColor);
-        rulesAdvice.setForeground(theme.foregroundColor);
-        rulesButton.setForeground(theme.foregroundColor);
-        nextPlayer.setForeground(theme.foregroundColor);
-        noSix.setForeground(theme.foregroundColor);
-
-        //Change Background
-        rulesButton.setBackground(theme.backgroundColor);
-        nextPlayer.setBackground(theme.backgroundColor);
-
         // Add listeners
         rollDice.addMouseListener(new MouseAdapter() {
             @Override

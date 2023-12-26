@@ -37,5 +37,19 @@ public class Main {
 	UIManager.put("CheckBoxMenuItem.font", theme.font);
 	UIManager.put("Panel.font", theme.font);
 	UIManager.put("TextField.font", theme.font);
+
+	UIManager.put("Button.foreground", theme.foregroundColor);
+	UIManager.put("CheckBox.foreground", theme.foregroundColor);
+	UIManager.put("Label.foreground", theme.foregroundColor);
+	UIManager.put("CheckBoxMenuItem.foreground", theme.foregroundColor);
+	UIManager.put("Panel.foreground", theme.foregroundColor);
+	UIManager.put("TextField.foreground", theme.foregroundColor);
+
+	UIManager.put("Button.background", theme.backgroundColor);
+	UIManager.put("CheckBox.background", theme.backgroundColor);
+	UIManager.put("Label.background", theme.backgroundColor);
+	UIManager.put("CheckBoxMenuItem.background", theme.backgroundColor);
+	UIManager.put("Panel.background", theme.backgroundColor);
+	UIManager.put("TextField.background", theme.backgroundColor);
     }
 }

@@ -71,31 +71,9 @@ public class Landingpage extends JFrame implements ChangeListener {
         rulesButton = new ImageTextPanel("button-idle", "rules");
         startGame = new ImageTextPanel("button-idle", "start game");
 
-        // Font adjustments for notChecked	
+        // Small adjustments for notChecked	
         notChecked.setFont(theme.font.deriveFont(15f));
-	
-        // Change Foreground
         notChecked.setForeground(Color.RED);
-        labelPlayerNumber.setForeground(theme.foregroundColor);
-        userNameAdvice.setForeground(theme.foregroundColor);
-        bots.setForeground(theme.foregroundColor);
-        userNames[0].setForeground(theme.foregroundColor);
-        userNames[1].setForeground(theme.foregroundColor);
-        userNames[2].setForeground(theme.foregroundColor);
-        userNames[3].setForeground(theme.foregroundColor);
-        understood.setForeground(theme.foregroundColor);
-        rulesButton.setForeground(theme.foregroundColor);
-        startGame.setForeground(theme.foregroundColor);
-
-        //Set Background
-        bots.setBackground(theme.backgroundColor);
-        userNames[0].setBackground(theme.backgroundColor);
-        userNames[1].setBackground(theme.backgroundColor);
-        userNames[2].setBackground(theme.backgroundColor);
-        userNames[3].setBackground(theme.backgroundColor);
-        understood.setBackground(theme.backgroundColor);
-        rulesButton.setBackground(theme.backgroundColor);
-        startGame.setBackground(theme.backgroundColor);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 300, 32);
