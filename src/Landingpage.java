@@ -71,19 +71,6 @@ public class Landingpage extends JFrame implements ChangeListener {
         rulesButton = new ImageTextPanel("button-idle", "rules");
         startGame = new ImageTextPanel("button-idle", "start game");
 
-        //Apply Font to JComponents
-        labelPlayerNumber.setFont(theme.font);
-        userNameAdvice.setFont(theme.font);
-        playerNumber.setFont(theme.font);
-        bots.setFont(theme.font);
-        userNames[0].setFont(theme.font);
-        userNames[1].setFont(theme.font);
-        userNames[2].setFont(theme.font);
-        userNames[3].setFont(theme.font);
-        understood.setFont(theme.font);
-        rulesButton.setFont(theme.font);
-        startGame.setFont(theme.font);
-
         // Font adjustments for notChecked	
         notChecked.setFont(theme.font.deriveFont(15f));
 	
