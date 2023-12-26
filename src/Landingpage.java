@@ -24,9 +24,8 @@ public class Landingpage extends JFrame implements ChangeListener {
     private JLabel notChecked;
     private ImageTextPanel rulesButton;
     private ImageTextPanel startGame;
-    private final Font jetBrainsMonoSemiBold;
-    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
+
+    private static final Theme theme = new Theme();
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -49,16 +48,8 @@ public class Landingpage extends JFrame implements ChangeListener {
         add(colorMarker[2]);
         add(colorMarker[3]);
 
-        //Configure Font
-        try {
-            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-
+	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	ge.registerFont(theme.font);
 
         // Initialize UI Elements
         head = new JLabel(readScaledImg("title", 250, 179));
@@ -81,44 +72,43 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame = new ImageTextPanel("button-idle", "start game");
 
         //Apply Font to JComponents
-        labelPlayerNumber.setFont(jetBrainsMonoSemiBold);
-        userNameAdvice.setFont(jetBrainsMonoSemiBold);
-        playerNumber.setFont(jetBrainsMonoSemiBold);
-        bots.setFont(jetBrainsMonoSemiBold);
-        userNames[0].setFont(jetBrainsMonoSemiBold);
-        userNames[1].setFont(jetBrainsMonoSemiBold);
-        userNames[2].setFont(jetBrainsMonoSemiBold);
-        userNames[3].setFont(jetBrainsMonoSemiBold);
-        understood.setFont(jetBrainsMonoSemiBold);
-        rulesButton.setFont(jetBrainsMonoSemiBold);
-        startGame.setFont(jetBrainsMonoSemiBold);
+        labelPlayerNumber.setFont(theme.font);
+        userNameAdvice.setFont(theme.font);
+        playerNumber.setFont(theme.font);
+        bots.setFont(theme.font);
+        userNames[0].setFont(theme.font);
+        userNames[1].setFont(theme.font);
+        userNames[2].setFont(theme.font);
+        userNames[3].setFont(theme.font);
+        understood.setFont(theme.font);
+        rulesButton.setFont(theme.font);
+        startGame.setFont(theme.font);
 
-        // Font adjustments for notChecked
-        Font fontNotChecked = new Font(jetBrainsMonoSemiBold.getName(), Font.PLAIN, 15);
-        notChecked.setFont(fontNotChecked);
-
+        // Font adjustments for notChecked	
+        notChecked.setFont(theme.font.deriveFont(15f));
+	
         // Change Foreground
         notChecked.setForeground(Color.RED);
-        labelPlayerNumber.setForeground(defaultForegroundColor);
-        userNameAdvice.setForeground(defaultForegroundColor);
-        bots.setForeground(defaultForegroundColor);
-        userNames[0].setForeground(defaultForegroundColor);
-        userNames[1].setForeground(defaultForegroundColor);
-        userNames[2].setForeground(defaultForegroundColor);
-        userNames[3].setForeground(defaultForegroundColor);
-        understood.setForeground(defaultForegroundColor);
-        rulesButton.setForeground(defaultForegroundColor);
-        startGame.setForeground(defaultForegroundColor);
+        labelPlayerNumber.setForeground(theme.foregroundColor);
+        userNameAdvice.setForeground(theme.foregroundColor);
+        bots.setForeground(theme.foregroundColor);
+        userNames[0].setForeground(theme.foregroundColor);
+        userNames[1].setForeground(theme.foregroundColor);
+        userNames[2].setForeground(theme.foregroundColor);
+        userNames[3].setForeground(theme.foregroundColor);
+        understood.setForeground(theme.foregroundColor);
+        rulesButton.setForeground(theme.foregroundColor);
+        startGame.setForeground(theme.foregroundColor);
 
         //Set Background
-        bots.setBackground(defaultBackgroundColor);
-        userNames[0].setBackground(defaultBackgroundColor);
-        userNames[1].setBackground(defaultBackgroundColor);
-        userNames[2].setBackground(defaultBackgroundColor);
-        userNames[3].setBackground(defaultBackgroundColor);
-        understood.setBackground(defaultBackgroundColor);
-        rulesButton.setBackground(defaultBackgroundColor);
-        startGame.setBackground(defaultBackgroundColor);
+        bots.setBackground(theme.backgroundColor);
+        userNames[0].setBackground(theme.backgroundColor);
+        userNames[1].setBackground(theme.backgroundColor);
+        userNames[2].setBackground(theme.backgroundColor);
+        userNames[3].setBackground(theme.backgroundColor);
+        understood.setBackground(theme.backgroundColor);
+        rulesButton.setBackground(theme.backgroundColor);
+        startGame.setBackground(theme.backgroundColor);
 
         // Set bounds
         labelPlayerNumber.setBounds(40, 190, 300, 32);
@@ -213,7 +203,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         setSize(520, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(defaultBackgroundColor);
+        getContentPane().setBackground(theme.backgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
@@ -281,20 +271,20 @@ public class Landingpage extends JFrame implements ChangeListener {
         JComponent spinnerEditor = cache.getEditor();
         if (spinnerEditor instanceof JSpinner.DefaultEditor){
             JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-            textField.setForeground(defaultForegroundColor);
-            textField.setBackground(defaultBackgroundColor);
+            textField.setForeground(theme.foregroundColor);
+            textField.setBackground(theme.backgroundColor);
         }
 
         JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
         JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
 
         if (incrementButton != null){
-            incrementButton.setForeground(defaultForegroundColor);
-            incrementButton.setBackground(defaultBackgroundColor);
+            incrementButton.setForeground(theme.foregroundColor);
+            incrementButton.setBackground(theme.backgroundColor);
         }
         if (decrementButton != null){
-            decrementButton.setForeground(defaultForegroundColor);
-            decrementButton.setBackground(defaultBackgroundColor);
+            decrementButton.setForeground(theme.foregroundColor);
+            decrementButton.setBackground(theme.backgroundColor);
         }
 
         return cache;
