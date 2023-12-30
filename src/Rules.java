@@ -20,41 +20,13 @@ public class Rules extends JFrame{
     private JLabel rule5;
     private ImageTextPanel close;
     public JFrame executingClass;
-    private final Font jetBrainsMonoSemiBold;
-    private final Font jetBrainsMonoBold;
-    private final Font jetBrainsMonoExtraBold;
-    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
+    
+    private static final Theme theme = new Theme();
     Logger logger = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
-        //Configure Fonts
-        try {
-            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            jetBrainsMonoBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-Bold.ttf")).deriveFont(15f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            jetBrainsMonoExtraBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-ExtraBold.ttf")).deriveFont(19f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-
+	
         //declaration of the JLabels & the JCheckBox
         header = new JLabel("Info");
         goalHeader = new JLabel("Goal of the Game:");
@@ -84,37 +56,9 @@ public class Rules extends JFrame{
         close.setBounds(6, 300, 100, 32);
 
         //Set Font
-        header.setFont(jetBrainsMonoExtraBold);
-        goalHeader.setFont(jetBrainsMonoBold);
-        ruleHeader.setFont(jetBrainsMonoBold);
-        goal1.setFont(jetBrainsMonoSemiBold);
-        goal2.setFont(jetBrainsMonoSemiBold);
-        rule1.setFont(jetBrainsMonoSemiBold);
-        rule2.setFont(jetBrainsMonoSemiBold);
-        rule3.setFont(jetBrainsMonoSemiBold);
-        rule4.setFont(jetBrainsMonoSemiBold);
-        rule5.setFont(jetBrainsMonoSemiBold);
-        close.setFont(jetBrainsMonoSemiBold);
-
-        //Set Background
-        header.setBackground(defaultBackgroundColor);
-        goalHeader.setBackground(defaultBackgroundColor);
-        ruleHeader.setBackground(defaultBackgroundColor);
-        close.setBackground(defaultBackgroundColor);
-
-        //Set Foreground
-        header.setForeground(defaultForegroundColor);
-        goalHeader.setForeground(defaultForegroundColor);
-        ruleHeader.setForeground(defaultForegroundColor);
-        goal1.setForeground(defaultForegroundColor);
-        goal2.setForeground(defaultForegroundColor);
-        rule1.setForeground(defaultForegroundColor);
-        rule2.setForeground(defaultForegroundColor);
-        rule3.setForeground(defaultForegroundColor);
-        rule4.setForeground(defaultForegroundColor);
-        rule5.setForeground(defaultForegroundColor);
-        close.setForeground(defaultForegroundColor);
-        close.setForeground(defaultForegroundColor);
+        header.setFont(theme.fontBold);
+        goalHeader.setFont(theme.fontBolder);
+        ruleHeader.setFont(theme.fontBolder);
 
         //Button action for close
         close.addMouseListener(new MouseAdapter() {
@@ -154,7 +98,7 @@ public class Rules extends JFrame{
         setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(defaultBackgroundColor);
+        getContentPane().setBackground(theme.backgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");

@@ -59,23 +59,12 @@ public class GameBoardGui extends JFrame implements MouseListener {
     private JLabel noSix;
     private ImageTextPanel nextPlayer;
     private BackEnd backend;
-    private final Font jetBrainsMonoSemiBold;
-    private final static Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private final static Color defaultBackgroundColor = Color.decode("#6c6f85");
+
+    private static final Theme theme = new Theme();
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
-
-        //Configure Font
-        try {
-            jetBrainsMonoSemiBold = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf")).deriveFont(13f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
 
         figures = new JLabel[16];
         houses = new JLabel[16];
@@ -160,26 +149,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
         rulesButton.setBounds(930, 830, 100, 32);
         noSix.setBounds(930, 22, 450, 32);
         nextPlayer.setBounds(930, 80, 100, 32);
-
-        //Apply Font to JComponents
-        userAdvice.setFont(jetBrainsMonoSemiBold);
-        figureChooserPrompt.setFont(jetBrainsMonoSemiBold);
-        rulesAdvice.setFont(jetBrainsMonoSemiBold);
-        rulesButton.setFont(jetBrainsMonoSemiBold);
-        noSix.setFont(jetBrainsMonoSemiBold);
-        nextPlayer.setFont(jetBrainsMonoSemiBold);
-
-        //Change Foreground
-        userAdvice.setForeground(defaultForegroundColor);
-        figureChooserPrompt.setForeground(defaultForegroundColor);
-        rulesAdvice.setForeground(defaultForegroundColor);
-        rulesButton.setForeground(defaultForegroundColor);
-        nextPlayer.setForeground(defaultForegroundColor);
-        noSix.setForeground(defaultForegroundColor);
-
-        //Change Background
-        rulesButton.setBackground(defaultBackgroundColor);
-        nextPlayer.setBackground(defaultBackgroundColor);
 
         // Add listeners
         rollDice.addMouseListener(new MouseAdapter() {
