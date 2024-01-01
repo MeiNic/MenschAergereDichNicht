@@ -247,6 +247,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
         if (!clickedFigure.isPlaceable()){
             backend.moveToBase(clickedFigureIndex);
             logger.info("Figure movement aborted - Wrong figure moved (Moving figure to basse...)");
+            prepareNextMove();
             return;
         }
         if (clickedFigure.isInBase()){
