@@ -20,8 +20,7 @@ public class Rules extends JFrame{
     private JLabel rule5;
     private ImageTextPanel close;
     public JFrame executingClass;
-    
-    private static final Theme theme = new Theme();
+
     Logger logger = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
@@ -56,9 +55,9 @@ public class Rules extends JFrame{
         close.setBounds(6, 300, 100, 32);
 
         //Set Font
-        header.setFont(theme.fontBold);
-        goalHeader.setFont(theme.fontBolder);
-        ruleHeader.setFont(theme.fontBolder);
+        header.setFont(Theme.fontBold);
+        goalHeader.setFont(Theme.fontBolder);
+        ruleHeader.setFont(Theme.fontBolder);
 
         //Button action for close
         close.addMouseListener(new MouseAdapter() {
@@ -98,7 +97,7 @@ public class Rules extends JFrame{
         setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(theme.backgroundColor);
+        getContentPane().setBackground(Theme.backgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");

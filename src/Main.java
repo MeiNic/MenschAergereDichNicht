@@ -4,7 +4,6 @@ import javax.swing.*;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLoggerInstance();
-    private static final Theme theme = new Theme();
     
     public static void main(String[] args) {
         logger.info("Starting game.");
@@ -31,25 +30,25 @@ public class Main {
 						UnsupportedLookAndFeelException {
 	UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-	UIManager.put("Button.font", theme.font);
-	UIManager.put("CheckBox.font", theme.font);
-	UIManager.put("Label.font", theme.font);
-	UIManager.put("CheckBoxMenuItem.font", theme.font);
-	UIManager.put("Panel.font", theme.font);
-	UIManager.put("TextField.font", theme.font);
+	UIManager.put("Button.font", Theme.font);
+	UIManager.put("CheckBox.font", Theme.font);
+	UIManager.put("Label.font", Theme.font);
+	UIManager.put("CheckBoxMenuItem.font", Theme.font);
+	UIManager.put("Panel.font", Theme.font);
+	UIManager.put("TextField.font", Theme.font);
 
-	UIManager.put("Button.foreground", theme.foregroundColor);
-	UIManager.put("CheckBox.foreground", theme.foregroundColor);
-	UIManager.put("Label.foreground", theme.foregroundColor);
-	UIManager.put("CheckBoxMenuItem.foreground", theme.foregroundColor);
-	UIManager.put("Panel.foreground", theme.foregroundColor);
-	UIManager.put("TextField.foreground", theme.foregroundColor);
+	UIManager.put("Button.foreground", Theme.foregroundColor);
+	UIManager.put("CheckBox.foreground", Theme.foregroundColor);
+	UIManager.put("Label.foreground", Theme.foregroundColor);
+	UIManager.put("CheckBoxMenuItem.foreground", Theme.foregroundColor);
+	UIManager.put("Panel.foreground", Theme.foregroundColor);
+	UIManager.put("TextField.foreground", Theme.foregroundColor);
 
-	UIManager.put("Button.background", theme.backgroundColor);
-	UIManager.put("CheckBox.background", theme.backgroundColor);
-	UIManager.put("Label.background", theme.backgroundColor);
-	UIManager.put("CheckBoxMenuItem.background", theme.backgroundColor);
-	UIManager.put("Panel.background", theme.backgroundColor);
-	UIManager.put("TextField.background", theme.backgroundColor);
+	UIManager.put("Button.background", Theme.backgroundColor);
+	UIManager.put("CheckBox.background", Theme.backgroundColor);
+	UIManager.put("Label.background", Theme.backgroundColor);
+	UIManager.put("CheckBoxMenuItem.background", Theme.backgroundColor);
+	UIManager.put("Panel.background", Theme.backgroundColor);
+	UIManager.put("TextField.background", Theme.backgroundColor);
     }
 }

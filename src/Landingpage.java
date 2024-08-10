@@ -25,7 +25,6 @@ public class Landingpage extends JFrame implements ChangeListener {
     private ImageTextPanel rulesButton;
     private ImageTextPanel startGame;
 
-    private static final Theme theme = new Theme();
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
@@ -48,8 +47,8 @@ public class Landingpage extends JFrame implements ChangeListener {
         add(colorMarker[2]);
         add(colorMarker[3]);
 
-	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	ge.registerFont(theme.font);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(Theme.font);
 
         // Initialize UI Elements
         head = new JLabel(readScaledImg("title", 250, 179));
@@ -72,7 +71,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame = new ImageTextPanel("button-idle", "start game");
 
         // Small adjustments for notChecked	
-        notChecked.setFont(theme.font.deriveFont(15f));
+        notChecked.setFont(Theme.font.deriveFont(15f));
         notChecked.setForeground(Color.RED);
 
         // Set bounds
@@ -168,7 +167,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         setSize(520, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(theme.backgroundColor);
+        getContentPane().setBackground(Theme.backgroundColor);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
@@ -236,20 +235,20 @@ public class Landingpage extends JFrame implements ChangeListener {
         JComponent spinnerEditor = cache.getEditor();
         if (spinnerEditor instanceof JSpinner.DefaultEditor){
             JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-            textField.setForeground(theme.foregroundColor);
-            textField.setBackground(theme.backgroundColor);
+            textField.setForeground(Theme.foregroundColor);
+            textField.setBackground(Theme.backgroundColor);
         }
 
         JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
         JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
 
         if (incrementButton != null){
-            incrementButton.setForeground(theme.foregroundColor);
-            incrementButton.setBackground(theme.backgroundColor);
+            incrementButton.setForeground(Theme.foregroundColor);
+            incrementButton.setBackground(Theme.backgroundColor);
         }
         if (decrementButton != null){
-            decrementButton.setForeground(theme.foregroundColor);
-            decrementButton.setBackground(theme.backgroundColor);
+            decrementButton.setForeground(Theme.foregroundColor);
+            decrementButton.setBackground(Theme.backgroundColor);
         }
 
         return cache;

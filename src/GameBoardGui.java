@@ -60,7 +60,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
     private ImageTextPanel nextPlayer;
     private BackEnd backend;
 
-    private static final Theme theme = new Theme();
     Logger logger = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
