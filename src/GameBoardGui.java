@@ -61,7 +61,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
     private ImageTextPanel nextPlayer;
     private BackEnd backend;
 
-    Logger logger = LoggerFactory.getLoggerInstance();
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
         this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
@@ -224,7 +224,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
         getContentPane().setBackground(Color.decode("#6c6f85"));
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying Landingpage.");
+        LOGGER.info("Displaying Landingpage.");
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -234,19 +234,19 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 clickedFigureIndex = i;
             }
         }
-        logger.info("Clicked Figure " + clickedFigureIndex);
+        LOGGER.info("Clicked Figure " + clickedFigureIndex);
         if (clickedFigureIndex == -1){
-            logger.info("Figure movement aborted - no figure clicked");
+            LOGGER.info("Figure movement aborted - no figure clicked");
             return;
         }
         Figure clickedFigure = backend.figures[clickedFigureIndex];
         if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
-            logger.info("Figure movement aborted - false color selected");
+            LOGGER.info("Figure movement aborted - false color selected");
             return;
         }
         if (!clickedFigure.isPlaceable()){
             backend.moveToBase(clickedFigureIndex);
-            logger.info("Figure movement aborted - Wrong figure moved (Moving figure to basse...)");
+            LOGGER.info("Figure movement aborted - Wrong figure moved (Moving figure to basse...)");
             prepareNextMove();
             return;
         }

@@ -18,7 +18,7 @@ public class Rules extends JFrame{
     private ImageTextPanel close;
     public JFrame executingClass;
 
-    Logger logger = LoggerFactory.getLoggerInstance();
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
@@ -97,11 +97,11 @@ public class Rules extends JFrame{
         getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying Landingpage.");
+        LOGGER.info("Displaying Landingpage.");
     }
 
     public void closeWindow(){
-        logger.info("Closing ruleHeader and setting previous window to visible again.");
+        LOGGER.info("Closing ruleHeader and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
     }

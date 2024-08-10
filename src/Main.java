@@ -3,24 +3,24 @@ package src;
 import javax.swing.*;
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLoggerInstance();
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
     
     public static void main(String[] args) {
-        logger.info("Starting game.");
+        LOGGER.info("Starting game.");
 
-        Thread quittingHook = new Thread(() -> logger.info("Quitting game."));
+        Thread quittingHook = new Thread(() -> LOGGER.info("Quitting game."));
         Runtime.getRuntime().addShutdownHook(quittingHook);
 
         try {
-	    logger.info("Try setting the look and feel of windows.");
+	    LOGGER.info("Try setting the look and feel of windows.");
 	    setLookAndFeel();
 	} catch (ClassNotFoundException | InstantiationException
 		 | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            logger.fatal("Unable to set the look and feel of windows:" + e);
+            LOGGER.fatal("Unable to set the look and feel of windows:" + e);
 	    System.exit(1);
         }
 
-	logger.info("Instantiating Landingpage.");
+	LOGGER.info("Instantiating Landingpage.");
 	new Landingpage();
     }
 

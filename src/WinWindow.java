@@ -15,14 +15,13 @@ public class WinWindow{
     private final Font jetBrainsMonoSemiBold;
     private static final Color DEFAULT_FOREGROUND_COLOR = Color.decode("#f3f5f9");
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.decode("#6c6f85");
-    Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public WinWindow(String player){
         frame = new JFrame();
         message = new JLabel();
         close = new ImageTextPanel("button-idle", "close");
         nextGame = new ImageTextPanel("button-idle", "new game");
-        logger = LoggerFactory.getLoggerInstance();
 
         //configure font
         try {
@@ -49,7 +48,7 @@ public class WinWindow{
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                logger.info("Closing game.");
+                LOGGER.info("Closing game.");
                 frame.setVisible(false);
             }
 
@@ -74,9 +73,9 @@ public class WinWindow{
         nextGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                logger.info("Closing WinWindow.");
+                LOGGER.info("Closing WinWindow.");
                 frame.setVisible(false);
-                logger.info("Starting new game.");
+                LOGGER.info("Starting new game.");
                 new Main();
             }
 
@@ -106,6 +105,6 @@ public class WinWindow{
         frame.getContentPane().setBackground(DEFAULT_BACKGROUND_COLOR);
         frame.setResizable(true);
         frame.setVisible(true);
-        logger.info("Displaying WinWindow.");
+        LOGGER.info("Displaying WinWindow.");
     }
 }

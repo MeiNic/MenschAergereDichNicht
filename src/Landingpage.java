@@ -25,7 +25,7 @@ public class Landingpage extends JFrame implements ChangeListener {
     private ImageTextPanel rulesButton;
     private ImageTextPanel startGame;
 
-    Logger logger = LoggerFactory.getLoggerInstance();
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
         colorMarker = new JLabel[4];
@@ -122,12 +122,12 @@ public class Landingpage extends JFrame implements ChangeListener {
                     int numberOfHumanPlayers = getNumberOfHumanPlayers();
                     boolean fillWithBots = getBotsSelection();
 
-                    logger.info("Displaying GameBoardGui.");
+                    LOGGER.info("Displaying GameBoardGui.");
                     new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
                 } else {
                     add(notChecked);
                     repaint();
-                    logger.warn("User tried to start the game without accepting the rules.");
+                    LOGGER.warn("User tried to start the game without accepting the rules.");
                 }
             }
 
@@ -170,7 +170,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying Landingpage.");
+        LOGGER.info("Displaying Landingpage.");
     }
     
     public void stateChanged(ChangeEvent e) {
@@ -201,7 +201,7 @@ public class Landingpage extends JFrame implements ChangeListener {
 
     public void openRules(){
         setVisible(false);
-        logger.info("Displaying rules.");
+        LOGGER.info("Displaying rules.");
         new Rules(this);
     }
 
