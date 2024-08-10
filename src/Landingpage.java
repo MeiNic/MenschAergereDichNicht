@@ -177,13 +177,13 @@ public class Landingpage extends JFrame {
         return understood.isSelected();
     }
 
-    public void openRules(){
+    private void openRules(){
         setVisible(false);
         LOGGER.info("Displaying rules.");
         new Rules(this);
     }
 
-    public String[] getNames() {
+    private String[] getNames() {
         String[] defaultNames = {"yellow", "green", "blue", "red"};
         String[] playerNames = new String[4];
 
@@ -196,11 +196,11 @@ public class Landingpage extends JFrame {
         return playerNames;
     }
 
-    public int getNumberOfHumanPlayers() {
+    private int getNumberOfHumanPlayers() {
         return (int)playerNumber.getValue();
     }
 
-    public boolean getBotsSelection() {
+    private boolean getBotsSelection() {
         return bots.isSelected();
     }
 
