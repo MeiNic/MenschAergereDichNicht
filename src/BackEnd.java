@@ -382,7 +382,7 @@ public class BackEnd {
     }
 
     //check which figure is on the normal field
-    public int figureOnField(int fieldNumber) {
+    private int figureOnField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].field == fieldNumber && figures[i].isOnField()) {
                 return i;
@@ -392,7 +392,7 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    public int figureOnHouseField(int fieldNumber) {
+    private int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].field == fieldNumber && ( figures[i].isInHouse()) || figures[i].isFinished()) {
                 return i;
