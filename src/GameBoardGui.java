@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static java.lang.Thread.sleep;
 
-public class GameBoardGui extends JFrame implements MouseListener {
+public class GameBoardGui extends JFrame {
 
     private JLabel[] figures;
     private JLabel[] houses;
@@ -79,7 +79,7 @@ public class GameBoardGui extends JFrame implements MouseListener {
                 case 8, 9, 10, 11 -> figures[i] = new JLabel(readImg("figure-blue"));
                 case 12, 13, 14, 15 -> figures[i] = new JLabel(readImg("figure-red"));
             }
-            figures[i].addMouseListener(this);
+            figures[i].addMouseListener(new MyMouseListener());
             add(figures[i]);
         }
         for (int i = 0; i < houses.length; i++){
@@ -227,37 +227,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
         LOGGER.info("Displaying Landingpage.");
     }
 
-    public void mouseClicked(MouseEvent e) {
-        int clickedFigureIndex = -1;
-        for(int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
-            if (e.getSource() == figures[i]) {
-                clickedFigureIndex = i;
-            }
-        }
-        LOGGER.info("Clicked Figure " + clickedFigureIndex);
-        if (clickedFigureIndex == -1){
-            LOGGER.info("Figure movement aborted - no figure clicked");
-            return;
-        }
-        Figure clickedFigure = backend.figures[clickedFigureIndex];
-        if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
-            LOGGER.info("Figure movement aborted - false color selected");
-            return;
-        }
-        if (!clickedFigure.isPlaceable()){
-            backend.moveToBase(clickedFigureIndex);
-            LOGGER.info("Figure movement aborted - Wrong figure moved (Moving figure to basse...)");
-            prepareNextMove();
-            return;
-        }
-        if (clickedFigure.isInBase()){
-            backend.moveOutOfBase(clickedFigureIndex);
-        } else {
-            backend.moveFigure(clickedFigureIndex);
-        }
-        prepareNextMove();
-    }
-
     private void prepareNextMove() {
         backend.disablePlacementForAllFigures();
 
@@ -301,13 +270,6 @@ public class GameBoardGui extends JFrame implements MouseListener {
             executeNextMove();
         }
     }
-
-    // Even though we neither implement nor use these methods, they
-    // are necessary for implementing `java.awt.event.MouseListener`.
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
 
     public void replaceFigures(){
         Figure[] input = backend.figures;
@@ -387,5 +349,38 @@ public class GameBoardGui extends JFrame implements MouseListener {
             e.printStackTrace();
         }
         return new ImageIcon(Objects.requireNonNull(img));
+    }
+
+    private class MyMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent e) {
+            int clickedFigureIndex = -1;
+            for(int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
+                if (e.getSource() == figures[i]) {
+                    clickedFigureIndex = i;
+                }
+            }
+            LOGGER.info("Clicked Figure " + clickedFigureIndex);
+            if (clickedFigureIndex == -1){
+                LOGGER.info("Figure movement aborted - no figure clicked");
+                return;
+            }
+            Figure clickedFigure = backend.figures[clickedFigureIndex];
+            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
+                LOGGER.info("Figure movement aborted - false color selected");
+                return;
+            }
+            if (!clickedFigure.isPlaceable()){
+                backend.moveToBase(clickedFigureIndex);
+                LOGGER.info("Figure movement aborted - Wrong figure moved (Moving figure to base...)");
+                prepareNextMove();
+                return;
+            }
+            if (clickedFigure.isInBase()){
+                backend.moveOutOfBase(clickedFigureIndex);
+            } else {
+                backend.moveFigure(clickedFigureIndex);
+            }
+            prepareNextMove();
+        }
     }
 }
