@@ -236,7 +236,7 @@ public class GameBoardGui extends JFrame {
         executeNextMove();
     }
 
-    public void displayWinWindowIfNecessary() {
+    private void displayWinWindowIfNecessary() {
         String nameOfWinner = backend.getNameOfWinner();
 
         if (nameOfWinner == null) {
@@ -271,7 +271,7 @@ public class GameBoardGui extends JFrame {
         }
     }
 
-    public void replaceFigures(){
+    private void replaceFigures(){
         Figure[] input = backend.figures;
         int dimensionX = 39;
         int dimensionY = 56;
@@ -295,7 +295,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    public void displayResult(int randomNumber){
+    private void displayResult(int randomNumber){
         switch (randomNumber){
             case 1 -> result = new JLabel(readImg("dice-1"));
             case 2 -> result = new JLabel(readImg("dice-2"));
@@ -310,7 +310,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    public void setActivePlayer(){
+    private void setActivePlayer(){
         add(rollDice);
         userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
                 "button to roll the dice </body> </html>");
@@ -318,18 +318,18 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    public void setPromptValues(){
+    private void setPromptValues(){
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(930, 160, 350, 32);
         add(figureChooserPrompt);
     }
 
-    public void removePrompt(){
+    private void removePrompt(){
         remove(figureChooserPrompt);
     }
 
-    public void setBotAdvice(){
+    private void setBotAdvice(){
         remove(rollDice);
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
