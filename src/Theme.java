@@ -4,11 +4,11 @@ import java.io.*;
 import java.awt.*;
 
 public interface Theme {
-    Color foregroundColor = Color.decode("#f3f5f9");
-    Color backgroundColor = Color.decode("#6c6f85");
-    Font font = getJetBrainsMonoFont("SemiBold");
-    Font fontBolder = getJetBrainsMonoFont("Bold");
-    Font fontBold = getJetBrainsMonoFont("ExtraBold");
+    Color FOREGROUND_COLOR = Color.decode("#f3f5f9");
+    Color BACKGROUND_COLOR = Color.decode("#6c6f85");
+    Font SEMI_BOLD = getJetBrainsMonoFont("SemiBold");
+    Font BOLD = getJetBrainsMonoFont("Bold");
+    Font EXTRA_BOLD = getJetBrainsMonoFont("ExtraBold");
 
     static private Font getJetBrainsMonoFont(String thickness) {
         int fontFormat = Font.TRUETYPE_FONT;

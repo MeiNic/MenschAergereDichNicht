@@ -1,11 +1,8 @@
 package src;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 public class Rules extends JFrame{
     private JLabel header;
@@ -55,9 +52,9 @@ public class Rules extends JFrame{
         close.setBounds(6, 300, 100, 32);
 
         //Set Font
-        header.setFont(Theme.fontBold);
-        goalHeader.setFont(Theme.fontBolder);
-        ruleHeader.setFont(Theme.fontBolder);
+        header.setFont(Theme.EXTRA_BOLD);
+        goalHeader.setFont(Theme.BOLD);
+        ruleHeader.setFont(Theme.BOLD);
 
         //Button action for close
         close.addMouseListener(new MouseAdapter() {
@@ -97,7 +94,7 @@ public class Rules extends JFrame{
         setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(Theme.backgroundColor);
+        getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");

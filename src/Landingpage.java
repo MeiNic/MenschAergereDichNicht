@@ -48,7 +48,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         add(colorMarker[3]);
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        ge.registerFont(Theme.font);
+        ge.registerFont(Theme.SEMI_BOLD);
 
         // Initialize UI Elements
         head = new JLabel(readScaledImg("title", 250, 179));
@@ -71,7 +71,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame = new ImageTextPanel("button-idle", "start game");
 
         // Small adjustments for notChecked	
-        notChecked.setFont(Theme.font.deriveFont(15f));
+        notChecked.setFont(Theme.SEMI_BOLD.deriveFont(15f));
         notChecked.setForeground(Color.RED);
 
         // Set bounds
@@ -167,7 +167,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         setSize(520, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(Theme.backgroundColor);
+        getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
         logger.info("Displaying Landingpage.");
@@ -235,20 +235,20 @@ public class Landingpage extends JFrame implements ChangeListener {
         JComponent spinnerEditor = cache.getEditor();
         if (spinnerEditor instanceof JSpinner.DefaultEditor){
             JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-            textField.setForeground(Theme.foregroundColor);
-            textField.setBackground(Theme.backgroundColor);
+            textField.setForeground(Theme.FOREGROUND_COLOR);
+            textField.setBackground(Theme.BACKGROUND_COLOR);
         }
 
         JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
         JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
 
         if (incrementButton != null){
-            incrementButton.setForeground(Theme.foregroundColor);
-            incrementButton.setBackground(Theme.backgroundColor);
+            incrementButton.setForeground(Theme.FOREGROUND_COLOR);
+            incrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
         if (decrementButton != null){
-            decrementButton.setForeground(Theme.foregroundColor);
-            decrementButton.setBackground(Theme.backgroundColor);
+            decrementButton.setForeground(Theme.FOREGROUND_COLOR);
+            decrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
 
         return cache;
