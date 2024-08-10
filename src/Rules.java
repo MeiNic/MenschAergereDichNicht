@@ -100,7 +100,7 @@ public class Rules extends JFrame{
         LOGGER.info("Displaying Landingpage.");
     }
 
-    public void closeWindow(){
+    private void closeWindow(){
         LOGGER.info("Closing ruleHeader and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
