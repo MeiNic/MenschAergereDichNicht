@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Landingpage extends JFrame implements ChangeListener {
+public class Landingpage extends JFrame {
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -92,7 +92,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame.setBounds(390, 585, 100, 32);
 
         // Add listeners
-        playerNumber.addChangeListener(this);
+        playerNumber.addChangeListener(new MyChangeListener());
         rulesButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -171,28 +171,6 @@ public class Landingpage extends JFrame implements ChangeListener {
         setResizable(true);
         setVisible(true);
         LOGGER.info("Displaying Landingpage.");
-    }
-    
-    public void stateChanged(ChangeEvent e) {
-        for (int i = 0; i < 4; i++) {
-            if (i < getNumberOfHumanPlayers()) {
-                add(userNames[i]);
-                add(colorMarker[i]);
-            } else {
-                remove(userNames[i]);
-                remove(colorMarker[i]);
-            }
-        }
-        if (getNumberOfHumanPlayers() == 1){
-            bots.setSelected(true);
-            userNameAdvice.setText("Enter your name:");
-        } else {
-            if (getNumberOfHumanPlayers() == 4){
-                bots.setSelected(false);
-            }
-            userNameAdvice.setText("Enter names for all the players:");
-        }
-        repaint();
     }
 
     private boolean getUnderstoodStatus(){
@@ -287,5 +265,30 @@ public class Landingpage extends JFrame implements ChangeListener {
             return new ImageIcon(scaledImg);
         }
         return null;
+    }
+
+    class MyChangeListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            for (int i = 0; i < 4; i++) {
+                if (i < getNumberOfHumanPlayers()) {
+                    add(userNames[i]);
+                    add(colorMarker[i]);
+                } else {
+                    remove(userNames[i]);
+                    remove(colorMarker[i]);
+                }
+            }
+            if (getNumberOfHumanPlayers() == 1){
+                bots.setSelected(true);
+                userNameAdvice.setText("Enter your name:");
+            } else {
+                if (getNumberOfHumanPlayers() == 4){
+                    bots.setSelected(false);
+                }
+                userNameAdvice.setText("Enter names for all the players:");
+            }
+            repaint();
+        }
     }
 }
