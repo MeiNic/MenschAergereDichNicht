@@ -252,18 +252,18 @@ public class GameBoardGui extends JFrame {
         int playerState = backend.getPlayerStateOfCurrentPlayer();
 
         if (playerState == 1) {
-            setBotAdvice();
             try {
+                setBotAdvice();
                 sleep(1000);
+                boolean botMovedItsFigures = backend.botMove();
+                if (botMovedItsFigures) {
+                    replaceFigures();
+                    displayWinWindowIfNecessary();
+                }
+                executeNextMove();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            boolean botMovedItsFigures = backend.botMove();
-            if (botMovedItsFigures) {
-                replaceFigures();
-                displayWinWindowIfNecessary();
-            }
-            executeNextMove();
         } else if (playerState == 0) {
             setActivePlayer();
         } else {
@@ -346,7 +346,7 @@ public class GameBoardGui extends JFrame {
         try {
             img = ImageIO.read(new File("res/"+imageName+".png"));
         }catch (IOException e){
-            e.printStackTrace();
+            LOGGER.error("Failed to load img " + imageName);
         }
         return new ImageIcon(Objects.requireNonNull(img));
     }

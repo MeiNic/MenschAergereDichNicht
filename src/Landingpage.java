@@ -248,7 +248,7 @@ public class Landingpage extends JFrame {
         try {
             img = ImageIO.read(new File("res/"+imageName+".png"));
         }catch (IOException e){
-            e.printStackTrace();
+            LOGGER.error("Failed to load img " + imageName);
         }
         return new ImageIcon(Objects.requireNonNull(img));
     }
@@ -257,12 +257,12 @@ public class Landingpage extends JFrame {
         BufferedImage unscaledImg = null;
         try {
             unscaledImg = ImageIO.read(new File("res/"+imageName+".png"));
+            if (unscaledImg != null){
+                Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaledImg);
+            }
         }catch (IOException e){
-            e.printStackTrace();
-        }
-        if (unscaledImg != null){
-            Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            return new ImageIcon(scaledImg);
+            return null;
         }
         return null;
     }
