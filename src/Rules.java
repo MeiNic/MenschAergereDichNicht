@@ -1,11 +1,8 @@
 package src;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 public class Rules extends JFrame{
     private JLabel header;
@@ -20,9 +17,8 @@ public class Rules extends JFrame{
     private JLabel rule5;
     private ImageTextPanel close;
     public JFrame executingClass;
-    
-    private static final Theme theme = new Theme();
-    Logger logger = LoggerFactory.getLoggerInstance();
+
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Rules(JFrame JFrameN){
         executingClass = JFrameN;
@@ -56,9 +52,9 @@ public class Rules extends JFrame{
         close.setBounds(6, 300, 100, 32);
 
         //Set Font
-        header.setFont(theme.fontBold);
-        goalHeader.setFont(theme.fontBolder);
-        ruleHeader.setFont(theme.fontBolder);
+        header.setFont(Theme.EXTRA_BOLD);
+        goalHeader.setFont(Theme.BOLD);
+        ruleHeader.setFont(Theme.BOLD);
 
         //Button action for close
         close.addMouseListener(new MouseAdapter() {
@@ -98,14 +94,14 @@ public class Rules extends JFrame{
         setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(theme.backgroundColor);
+        getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying Landingpage.");
+        LOGGER.info("Displaying Landingpage.");
     }
 
-    public void closeWindow(){
-        logger.info("Closing ruleHeader and setting previous window to visible again.");
+    private void closeWindow(){
+        LOGGER.info("Closing ruleHeader and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);
     }

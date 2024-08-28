@@ -1,10 +1,16 @@
 package src;
 
 interface Player {
-    public String getName();
-    public int getPlayerState();
-    public int getPlayerIndex();
-    public int getIndexOfFirstFigure();
-    public int getIndexOfLastFigure();
-    public int getIndexOfStartField();
+    String getName();
+    int getPlayerState();
+    int getPlayerIndex();
+    default int getIndexOfFirstFigure() {
+        return 4 * getPlayerIndex();
+    }
+    default int getIndexOfLastFigure() {
+        return 4 + getIndexOfFirstFigure();
+    }
+    default int getIndexOfStartField () {
+        return 10 * getPlayerIndex();
+    }
 }
