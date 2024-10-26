@@ -42,7 +42,7 @@ public class BackEnd {
     }
 
     //progress a dice input
-    public boolean playerMove() {
+    public void playerMove() {
         Dice dice = new LaPlaceDice();
         int allowedTries = getNumberOfAllowedTries();
         int tries = 0;
@@ -53,7 +53,7 @@ public class BackEnd {
         } while (tries < allowedTries && randomNumber != 6);
 
         if (randomNumber != 6 && allowedTries == 3) {
-            return false;
+            return;
         }
         
         //cache a much used value, make the code look cleaner
@@ -75,7 +75,6 @@ public class BackEnd {
         } else {
             playerMoveOnField();
         }
-        return true;
     }
 
     //part of the playerMove-method - don't use out of it
