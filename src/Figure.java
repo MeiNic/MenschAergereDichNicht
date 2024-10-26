@@ -13,6 +13,7 @@ public class Figure {
     public int field;
     public int color;
     public String owner;
+    Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
         state = State.IN_BASE;
@@ -26,23 +27,19 @@ public class Figure {
         return this.field;
     }
 
-    public boolean setField(int newField) {
+    public void setField(int newField) {
         switch (state){
             case IN_BASE, IN_HOUSE -> {
                 if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
-                else return false;
-                break;
+                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
             case ON_FIELD -> {
                 if (newField < 40) this.field = newField;
-                else return false;
-                break;
+                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
-            case FINISHED -> {
-                return false;
-            }
+            case FINISHED ->
+                LOGGER.error("Tried to replace finished Figure");
         }
-        return true;
     }
 
     public String getOwner() {
