@@ -10,7 +10,7 @@ public class Figure {
     private State state;
     private boolean placeable;
 
-    public int field;
+    private int field;
     public int color;
     public String owner;
     Logger LOGGER = LoggerFactory.getLoggerInstance();
@@ -40,6 +40,10 @@ public class Figure {
             case FINISHED ->
                 LOGGER.error("Tried to replace finished Figure");
         }
+    }
+
+    public void addField(int value) {
+        setField(this.field + value);
     }
 
     public String getOwner() {
