@@ -2,11 +2,13 @@ package src;
 
 public class BackEnd {
     Figure[] figures;
-    int randomNumber;
+    static int randomNumber;
 
     private Player[] players;
     private Player currentPlayer;
     private int currentPlayerIndex;
+
+    Logger LOGGER = LoggerFactory.getLoggerInstance();
     
     BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
         figures = new Figure[16];
@@ -263,17 +265,16 @@ public class BackEnd {
         }
 
         int newField = figureToBeMoved.getField() + randomNumber;
-        int maxField = (figureToBeMoved.color * 4) + 4;
+        int maxField = ++figureToBeMoved.color * 4;
 
         if (maxField < newField) {
-            // Move would exceed the number of available fields in the game.
+            LOGGER.info("Move would exceed the number of fields in the house. Aborting move...");
             return;
         }
 
-        for (int i = figureToBeMoved.getField(); i < 4; i++){
+        for (int i = figureToBeMoved.getField(); i <= newField; i++){
             if (figureOnField(i) != -1){
-                // Figure would have to jump over other figures in
-                // the house, which is not allowed.
+                LOGGER.info("Figure would have to jump over other figures on field: " + i+ " in the house, which is forbidden. Aborting move...");
                 return;
             }
         }
