@@ -22,6 +22,29 @@ public class Figure {
         this.owner = owner;
     }
 
+    public int getField() {
+        return this.field;
+    }
+
+    public boolean setField(int newField) {
+        switch (state){
+            case IN_BASE, IN_HOUSE -> {
+                if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
+                else return false;
+                break;
+            }
+            case ON_FIELD -> {
+                if (newField < 40) this.field = newField;
+                else return false;
+                break;
+            }
+            case FINISHED -> {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String getOwner() {
         return owner;
     }
