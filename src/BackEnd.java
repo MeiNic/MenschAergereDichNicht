@@ -42,7 +42,7 @@ public class BackEnd {
     }
 
     //progress a dice input
-    public void playerMove() {
+    public boolean playerMove() {
         Dice dice = new LaPlaceDice();
         int allowedTries = getNumberOfAllowedTries();
         int tries = 0;
@@ -53,7 +53,7 @@ public class BackEnd {
         } while (tries < allowedTries && randomNumber != 6);
 
         if (randomNumber != 6 && allowedTries == 3) {
-            return;
+            return false;
         }
         
         //cache a much used value, make the code look cleaner
@@ -75,6 +75,7 @@ public class BackEnd {
         } else {
             playerMoveOnField();
         }
+        return true;
     }
 
     //part of the playerMove-method - don't use out of it
@@ -109,7 +110,7 @@ public class BackEnd {
     }
 
     //bot-move on the "normal" fields
-    public boolean botMove(){
+    public void botMove(){
         Dice dice = new LoadedDice();
 
         int allowedTries = getNumberOfAllowedTries();
@@ -121,7 +122,7 @@ public class BackEnd {
         } while (tries < allowedTries && randomNumber != 6);
 
         if (randomNumber != 6 && allowedTries == 3) {
-            return false;
+            return;
         }
 
         //cache a much used value, make the code look cleaner
@@ -160,7 +161,6 @@ public class BackEnd {
                 }
             }
         }
-        return true;
     }
 
     //move the given figure by the given number
