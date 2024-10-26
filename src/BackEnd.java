@@ -448,9 +448,8 @@ public class BackEnd {
         if (figureOnFirstField != -1) {
             moveToBase(figureOnFirstField);
         }
-
-        figureToBeMoved.setField(firstField);
         figureToBeMoved.setOnField();
+        figureToBeMoved.setField(firstField);
     }
 
     public void setNewCurrentPlayerIfNecessary() {
