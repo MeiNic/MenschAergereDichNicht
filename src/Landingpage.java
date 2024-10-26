@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Landingpage extends JFrame implements ChangeListener {
+public class Landingpage extends JFrame {
     private JLabel head;
     private JLabel labelPlayerNumber;
     private JSpinner playerNumber;
@@ -25,8 +25,7 @@ public class Landingpage extends JFrame implements ChangeListener {
     private ImageTextPanel rulesButton;
     private ImageTextPanel startGame;
 
-    private static final Theme theme = new Theme();
-    Logger logger = LoggerFactory.getLoggerInstance();
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public Landingpage() {
         colorMarker = new JLabel[4];
@@ -48,8 +47,8 @@ public class Landingpage extends JFrame implements ChangeListener {
         add(colorMarker[2]);
         add(colorMarker[3]);
 
-	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	ge.registerFont(theme.font);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(Theme.SEMI_BOLD);
 
         // Initialize UI Elements
         head = new JLabel(readScaledImg("title", 250, 179));
@@ -72,7 +71,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame = new ImageTextPanel("button-idle", "start game");
 
         // Small adjustments for notChecked	
-        notChecked.setFont(theme.font.deriveFont(15f));
+        notChecked.setFont(Theme.SEMI_BOLD.deriveFont(15f));
         notChecked.setForeground(Color.RED);
 
         // Set bounds
@@ -93,7 +92,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         startGame.setBounds(390, 585, 100, 32);
 
         // Add listeners
-        playerNumber.addChangeListener(this);
+        playerNumber.addChangeListener(new MyChangeListener());
         rulesButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -123,12 +122,12 @@ public class Landingpage extends JFrame implements ChangeListener {
                     int numberOfHumanPlayers = getNumberOfHumanPlayers();
                     boolean fillWithBots = getBotsSelection();
 
-                    logger.info("Displaying GameBoardGui.");
+                    LOGGER.info("Displaying GameBoardGui.");
                     new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
                 } else {
                     add(notChecked);
                     repaint();
-                    logger.warn("User tried to start the game without accepting the rules.");
+                    LOGGER.warn("User tried to start the game without accepting the rules.");
                 }
             }
 
@@ -168,45 +167,23 @@ public class Landingpage extends JFrame implements ChangeListener {
         setSize(520, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(theme.backgroundColor);
+        getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         setResizable(true);
         setVisible(true);
-        logger.info("Displaying Landingpage.");
-    }
-    
-    public void stateChanged(ChangeEvent e) {
-        for (int i = 0; i < 4; i++) {
-            if (i < getNumberOfHumanPlayers()) {
-                add(userNames[i]);
-                add(colorMarker[i]);
-            } else {
-                remove(userNames[i]);
-                remove(colorMarker[i]);
-            }
-        }
-        if (getNumberOfHumanPlayers() == 1){
-            bots.setSelected(true);
-            userNameAdvice.setText("Enter your name:");
-        } else {
-            if (getNumberOfHumanPlayers() == 4){
-                bots.setSelected(false);
-            }
-            userNameAdvice.setText("Enter names for all the players:");
-        }
-        repaint();
+        LOGGER.info("Displaying Landingpage.");
     }
 
     private boolean getUnderstoodStatus(){
         return understood.isSelected();
     }
 
-    public void openRules(){
+    private void openRules(){
         setVisible(false);
-        logger.info("Displaying rules.");
+        LOGGER.info("Displaying rules.");
         new Rules(this);
     }
 
-    public String[] getNames() {
+    private String[] getNames() {
         String[] defaultNames = {"yellow", "green", "blue", "red"};
         String[] playerNames = new String[4];
 
@@ -219,11 +196,11 @@ public class Landingpage extends JFrame implements ChangeListener {
         return playerNames;
     }
 
-    public int getNumberOfHumanPlayers() {
+    private int getNumberOfHumanPlayers() {
         return (int)playerNumber.getValue();
     }
 
-    public boolean getBotsSelection() {
+    private boolean getBotsSelection() {
         return bots.isSelected();
     }
 
@@ -236,20 +213,20 @@ public class Landingpage extends JFrame implements ChangeListener {
         JComponent spinnerEditor = cache.getEditor();
         if (spinnerEditor instanceof JSpinner.DefaultEditor){
             JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-            textField.setForeground(theme.foregroundColor);
-            textField.setBackground(theme.backgroundColor);
+            textField.setForeground(Theme.FOREGROUND_COLOR);
+            textField.setBackground(Theme.BACKGROUND_COLOR);
         }
 
         JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
         JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
 
         if (incrementButton != null){
-            incrementButton.setForeground(theme.foregroundColor);
-            incrementButton.setBackground(theme.backgroundColor);
+            incrementButton.setForeground(Theme.FOREGROUND_COLOR);
+            incrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
         if (decrementButton != null){
-            decrementButton.setForeground(theme.foregroundColor);
-            decrementButton.setBackground(theme.backgroundColor);
+            decrementButton.setForeground(Theme.FOREGROUND_COLOR);
+            decrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
 
         return cache;
@@ -271,7 +248,7 @@ public class Landingpage extends JFrame implements ChangeListener {
         try {
             img = ImageIO.read(new File("res/"+imageName+".png"));
         }catch (IOException e){
-            e.printStackTrace();
+            LOGGER.error("Failed to load img " + imageName);
         }
         return new ImageIcon(Objects.requireNonNull(img));
     }
@@ -280,13 +257,38 @@ public class Landingpage extends JFrame implements ChangeListener {
         BufferedImage unscaledImg = null;
         try {
             unscaledImg = ImageIO.read(new File("res/"+imageName+".png"));
+            if (unscaledImg != null){
+                Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaledImg);
+            }
         }catch (IOException e){
-            e.printStackTrace();
-        }
-        if (unscaledImg != null){
-            Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            return new ImageIcon(scaledImg);
+            return null;
         }
         return null;
+    }
+
+    class MyChangeListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            for (int i = 0; i < 4; i++) {
+                if (i < getNumberOfHumanPlayers()) {
+                    add(userNames[i]);
+                    add(colorMarker[i]);
+                } else {
+                    remove(userNames[i]);
+                    remove(colorMarker[i]);
+                }
+            }
+            if (getNumberOfHumanPlayers() == 1){
+                bots.setSelected(true);
+                userNameAdvice.setText("Enter your name:");
+            } else {
+                if (getNumberOfHumanPlayers() == 4){
+                    bots.setSelected(false);
+                }
+                userNameAdvice.setText("Enter names for all the players:");
+            }
+            repaint();
+        }
     }
 }

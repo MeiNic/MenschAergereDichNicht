@@ -13,16 +13,15 @@ public class WinWindow{
     private ImageTextPanel close;
     private ImageTextPanel nextGame;
     private final Font jetBrainsMonoSemiBold;
-    private static final Color defaultForegroundColor = Color.decode("#f3f5f9");
-    private static final Color defaultBackgroundColor = Color.decode("#6c6f85");
-    Logger logger;
+    private static final Color DEFAULT_FOREGROUND_COLOR = Color.decode("#f3f5f9");
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.decode("#6c6f85");
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public WinWindow(String player){
         frame = new JFrame();
         message = new JLabel();
         close = new ImageTextPanel("button-idle", "close");
         nextGame = new ImageTextPanel("button-idle", "new game");
-        logger = LoggerFactory.getLoggerInstance();
 
         //configure font
         try {
@@ -38,18 +37,18 @@ public class WinWindow{
         message.setText("<html><body>Congratulations! Player " + player + " <br> has won this round.</body></html>");
         message.setBounds(10, 10, 295, 32);
         message.setFont(jetBrainsMonoSemiBold);
-        message.setForeground(defaultForegroundColor);
-        message.setBackground(defaultBackgroundColor);
+        message.setForeground(DEFAULT_FOREGROUND_COLOR);
+        message.setBackground(DEFAULT_BACKGROUND_COLOR);
 
         //configure close button
         close.setBounds(140, 50, 100, 32);
         close.setFont(jetBrainsMonoSemiBold);
-        close.setForeground(defaultForegroundColor);
-        close.setBackground(defaultBackgroundColor);
+        close.setForeground(DEFAULT_FOREGROUND_COLOR);
+        close.setBackground(DEFAULT_BACKGROUND_COLOR);
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                logger.info("Closing game.");
+                LOGGER.info("Closing game.");
                 frame.setVisible(false);
             }
 
@@ -69,14 +68,14 @@ public class WinWindow{
         //configure nextGame button
         nextGame.setBounds(20, 50, 100, 32);
         nextGame.setFont(jetBrainsMonoSemiBold);
-        nextGame.setForeground(defaultForegroundColor);
-        nextGame.setBackground(defaultBackgroundColor);
+        nextGame.setForeground(DEFAULT_FOREGROUND_COLOR);
+        nextGame.setBackground(DEFAULT_BACKGROUND_COLOR);
         nextGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                logger.info("Closing WinWindow.");
+                LOGGER.info("Closing WinWindow.");
                 frame.setVisible(false);
-                logger.info("Starting new game.");
+                LOGGER.info("Starting new game.");
                 new Main();
             }
 
@@ -103,9 +102,9 @@ public class WinWindow{
         frame.setSize(315, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(defaultBackgroundColor);
+        frame.getContentPane().setBackground(DEFAULT_BACKGROUND_COLOR);
         frame.setResizable(true);
         frame.setVisible(true);
-        logger.info("Displaying WinWindow.");
+        LOGGER.info("Displaying WinWindow.");
     }
 }

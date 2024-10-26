@@ -6,6 +6,6 @@ class LaPlaceDice implements Dice {
     private static Random rand = new Random();
 
     public int roll() {
-	return 1 + rand.nextInt(6);
+        return 1 + rand.nextInt(6);
     }
 }
