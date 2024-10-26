@@ -255,17 +255,15 @@ public class GameBoardGui extends JFrame {
                 try {
                     setBotAdvice();
                     sleep(1000);
-                    boolean botMovedItsFigures = backend.botMove();
-                    if (botMovedItsFigures) {
-                        replaceFigures();
-                        displayWinWindowIfNecessary();
-                    }
+                    backend.botMove();
+                    replaceFigures();
+                    displayWinWindowIfNecessary();
                     executeNextMove();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
-            default -> setActivePlayer();
+            default -> executeNextMove();
         }
     }
 
