@@ -179,7 +179,7 @@ public class BackEnd {
         }
 
         //store the old and new field-number in local variables
-        int numberOld = figureToBeMoved.field;
+        int numberOld = figureToBeMoved.getField();
         int numberNew = numberOld + randomNumber;
 
         if (numberNew > 39){
@@ -200,7 +200,7 @@ public class BackEnd {
 
         //move the figure, if the new field is free
         if (!goToHouse && figureOnField(numberNew) == -1){
-            figureToBeMoved.field = numberNew;
+            figureToBeMoved.setField(numberNew);
             return;
         }
 
@@ -209,7 +209,7 @@ public class BackEnd {
             //to the base
             if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
                 moveToBase(figureOnField(numberNew));
-                figureToBeMoved.field = numberNew;
+                figureToBeMoved.setField(numberNew);
             } else {
                 //perform the moveFigure-method with the figure,
                 //standing on the field th figure at the moment wants
@@ -220,7 +220,7 @@ public class BackEnd {
         }
 
         int toMove = randomNumber;
-        int figurePosition = figureToBeMoved.field;
+        int figurePosition = figureToBeMoved.getField();
 
         //unifying the values for cleaner code
         if (figureColor == 0){
@@ -249,7 +249,7 @@ public class BackEnd {
         // Move figure into house.
         toMove--;
         figureToBeMoved.setInHouse();
-        figureToBeMoved.field = figureColor * 4;
+        figureToBeMoved.setField(figureColor * 4);
 
         if (toMove > 0) {
             randomNumber = toMove;
@@ -264,7 +264,7 @@ public class BackEnd {
             return;
         }
 
-        int newField = figureToBeMoved.field + randomNumber;
+        int newField = figureToBeMoved.getField() + randomNumber;
         int maxField = (figureToBeMoved.color * 4) + 4;
 
         if (maxField < newField) {
@@ -272,7 +272,7 @@ public class BackEnd {
             return;
         }
 
-        for (int i = figureToBeMoved.field; i < 4; i++){
+        for (int i = figureToBeMoved.getField(); i < 4; i++){
             if (figureOnField(i) != -1){
                 // Figure would have to jump over other figures in
                 // the house, which is not allowed.
@@ -281,7 +281,7 @@ public class BackEnd {
         }
 
         // Finally we can move the figure to its new position.
-        figureToBeMoved.field += randomNumber;
+        figureToBeMoved.addField(randomNumber);
     }
 
     //check if a beat is possible
@@ -293,7 +293,7 @@ public class BackEnd {
         }
 
         int figureColor = figureToBeMoved.color;
-        int oldField = figureToBeMoved.field;
+        int oldField = figureToBeMoved.getField();
         int newField = oldField + randomNumber;
 
         if (newField > 39) {
@@ -321,7 +321,7 @@ public class BackEnd {
     public void moveToBase(int figureNumber){
         Figure figureToBeMoved = figures[figureNumber];
         figureToBeMoved.setInBase();
-        figureToBeMoved.field = figureNumber;
+        figureToBeMoved.setField(figureNumber);
     }
 
     //return to which player the given figure belongs to
@@ -383,7 +383,7 @@ public class BackEnd {
     //check which figure is on the normal field
     private int figureOnField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
-            if (figures[i].field == fieldNumber && figures[i].isOnField()) {
+            if (figures[i].getField() == fieldNumber && figures[i].isOnField()) {
                 return i;
             }
         }
@@ -393,7 +393,7 @@ public class BackEnd {
     //check which figure is on the house field
     private int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
-            if (figures[i].field == fieldNumber && ( figures[i].isInHouse()) || figures[i].isFinished()) {
+            if (figures[i].getField() == fieldNumber && ( figures[i].isInHouse()) || figures[i].isFinished()) {
                 return i;
             }
         }
@@ -402,7 +402,7 @@ public class BackEnd {
 
     public int figureOnBaseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
-            if (figures[i].field == fieldNumber && figures[i].isInBase()) {
+            if (figures[i].getField() == fieldNumber && figures[i].isInBase()) {
                 return i;
             }
         }
@@ -449,7 +449,7 @@ public class BackEnd {
             moveToBase(figureOnFirstField);
         }
 
-        figureToBeMoved.field = firstField;
+        figureToBeMoved.setField(firstField);
         figureToBeMoved.setOnField();
     }
 
