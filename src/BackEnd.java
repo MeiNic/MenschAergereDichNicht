@@ -223,12 +223,10 @@ public class BackEnd {
         int figurePosition = figureToBeMoved.getField();
 
         //unifying the values for cleaner code
-        if (figureColor == 0){
-            figurePosition -= 30;
-        } else if (figureColor == 2) {
-            figurePosition -= 10;
-        } else if (figureColor == 3) {
-            figurePosition -= 20;
+        switch (figureColor){
+            case 0 -> figurePosition -= 30;
+            case 2 -> figurePosition -= 10;
+            case 3 -> figurePosition -= 20;
         }
 
         //move figure in front of the base
