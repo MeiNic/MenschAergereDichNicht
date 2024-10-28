@@ -76,6 +76,10 @@ public class Figure {
         state = FINISHED;
     }
 
+    public FigureState getState() {
+        return state;
+    }
+
     public boolean isInBase() {
         return IN_BASE == state;
     }
