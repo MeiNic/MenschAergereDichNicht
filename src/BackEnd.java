@@ -280,7 +280,7 @@ public class BackEnd {
         }
 
         // Finally we can move the figure to its new position.
-        figureToBeMoved.addField(randomNumber);
+        figureToBeMoved.movebyValue(randomNumber);
     }
 
     //check if a beat is possible

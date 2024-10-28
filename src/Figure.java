@@ -42,7 +42,7 @@ public class Figure {
         }
     }
 
-    public void addField(int value) {
+    public void movebyValue(int value) {
         setField(this.field + value);
     }
 
