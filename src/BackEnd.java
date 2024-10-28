@@ -217,18 +217,17 @@ public class BackEnd {
         }
 
         int toMove = randomNumber;
-        int figurePosition = figureToBeMoved.getField();
 
         //unifying the values for cleaner code
         switch (figureColor){
-            case 0 -> figurePosition -= 30;
-            case 2 -> figurePosition -= 10;
-            case 3 -> figurePosition -= 20;
+            case 0 -> numberOld -= 30;
+            case 2 -> numberOld -= 10;
+            case 3 -> numberOld -= 20;
         }
 
         //move figure in front of the base
-        while (toMove > 0 && figurePosition <= 9){
-            figurePosition++;
+        while (toMove > 0 && numberOld <= 9){
+            numberOld++;
             toMove--;
         }
 
