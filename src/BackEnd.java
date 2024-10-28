@@ -190,28 +190,24 @@ public class BackEnd {
         }
 
         // Figure is about to enter their house.
-        boolean goToHouse = false;
-        if ((numberOld < figureColor * 10 && numberNew >= figureColor * 10) || (figureColor == 0 && numberOld > 34 && numberNew >= 0)){
-            goToHouse = true;
-        }
+        boolean goToHouse = 39 - figureToBeMoved.getProgress() < randomNumber;
 
-        //move the figure, if the new field is free
-        if (!goToHouse && figureOnField(numberNew) == -1){
-            figureToBeMoved.setField(numberNew, randomNumber); //setField should be replaced with moveByValue
-            return;
-        }
-
-        if (!goToHouse) {
-            //move the figure, and move the figure before on the field
-            //to the base
-            if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
-                moveToBase(figureOnField(numberNew));
-                figureToBeMoved.setField(numberNew, randomNumber);
+        if(!goToHouse) {
+            //move the figure, if the new field is free
+            if(figureOnField(numberNew) == -1) {
+                figureToBeMoved.movebyValue(randomNumber);
             } else {
-                //perform the moveFigure-method with the figure,
-                //standing on the field th figure at the moment wants
-                //to move, and the same stepLength
-                moveFigure(figureOnField(numberNew));
+                //move the figure, and move the figure before on the field
+                //to the base
+                if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
+                    moveToBase(figureOnField(numberNew));
+                    figureToBeMoved.setField(numberNew, randomNumber);
+                } else {
+                    //perform the moveFigure-method with the figure,
+                    //standing on the field th figure at the moment wants
+                    //to move, and the same stepLength
+                    moveFigure(figureOnField(numberNew));
+                }
             }
             return;
         }
