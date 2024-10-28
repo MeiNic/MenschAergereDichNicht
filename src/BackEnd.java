@@ -167,18 +167,19 @@ public class BackEnd {
 
     //move the given figure by the given number
     public void moveFigure(int figureNumber) {
+        switch (figures[figureNumber].getState()) {
+            case FINISHED -> LOGGER.info("Finished figure isn't moveable. Aborting...");
+            case IN_HOUSE -> moveInHouse(figureNumber);
+            case IN_BASE -> {
+                if (randomNumber == 6) moveOutOfBase(figureNumber);
+            }
+            case ON_FIELD -> moveOnField(figureNumber);
+        }
+    }
+
+    private void moveOnField(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
         int figureColor = figureToBeMoved.color;
-
-        if (figureToBeMoved.isInBase() && randomNumber == 6) {
-            moveOutOfBase(figureNumber);
-            return;
-        }
-
-        // Figure is not movable.
-        if (!figureToBeMoved.isMovable()) {
-            return;
-        }
 
         //store the old and new field-number in local variables
         int numberOld = figureToBeMoved.getField();
@@ -186,12 +187,6 @@ public class BackEnd {
 
         if (numberNew > 39){
             numberNew -= 40;
-        }
-
-        // Figure is moving in their house.
-        if (figureToBeMoved.isInHouse()) {
-            moveInHouse(figureNumber);
-            return;
         }
 
         // Figure is about to enter their house.
