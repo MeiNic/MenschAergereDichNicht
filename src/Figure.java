@@ -9,8 +9,9 @@ public class Figure {
     private boolean placeable;
     private FigureState state;
     private int field;
-    public int color;
-    public String owner;
+    public final int color;
+    public final String owner;
+    private int progress;
     Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
@@ -19,6 +20,7 @@ public class Figure {
         field = fieldNew;
         color = colorNew;
         this.owner = owner;
+        progress = 0;
     }
 
     public int getField() {
@@ -32,7 +34,10 @@ public class Figure {
                 else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
             case ON_FIELD -> {
-                if (newField < 40) this.field = newField;
+                if (newField < 40) {
+                    progress += newField - field;
+                    this.field = newField;
+                }
                 else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
             case FINISHED ->
@@ -40,8 +45,14 @@ public class Figure {
         }
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
     public void movebyValue(int value) {
-        setField(this.field + value);
+        field += value;
+        if (field > 39) field -= 40;
+        progress += value;
     }
 
     public String getOwner() {
@@ -61,6 +72,7 @@ public class Figure {
     }
 
     public void setInBase() {
+        progress = 0;
         state = IN_BASE;
     }
 

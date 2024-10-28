@@ -197,7 +197,7 @@ public class BackEnd {
 
         //move the figure, if the new field is free
         if (!goToHouse && figureOnField(numberNew) == -1){
-            figureToBeMoved.setField(numberNew);
+            figureToBeMoved.setField(numberNew); //setField should be replaced with moveByValue
             return;
         }
 
@@ -260,7 +260,7 @@ public class BackEnd {
         }
 
         int newField = figureToBeMoved.getField() + randomNumber;
-        int maxField = ++figureToBeMoved.color * 4;
+        int maxField = figureToBeMoved.color * 4 + 4    ;
 
         if (maxField < newField) {
             LOGGER.info("Move would exceed the number of fields in the house. Aborting move...");
