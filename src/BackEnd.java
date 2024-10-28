@@ -197,7 +197,7 @@ public class BackEnd {
 
         //move the figure, if the new field is free
         if (!goToHouse && figureOnField(numberNew) == -1){
-            figureToBeMoved.setField(numberNew); //setField should be replaced with moveByValue
+            figureToBeMoved.setField(numberNew, randomNumber); //setField should be replaced with moveByValue
             return;
         }
 
@@ -206,7 +206,7 @@ public class BackEnd {
             //to the base
             if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
                 moveToBase(figureOnField(numberNew));
-                figureToBeMoved.setField(numberNew);
+                figureToBeMoved.setField(numberNew, randomNumber);
             } else {
                 //perform the moveFigure-method with the figure,
                 //standing on the field th figure at the moment wants
@@ -243,7 +243,7 @@ public class BackEnd {
         // Move figure into house.
         toMove--;
         figureToBeMoved.setInHouse();
-        figureToBeMoved.setField(figureColor * 4);
+        figureToBeMoved.setField(figureColor * 4, randomNumber);
 
         if (toMove > 0) {
             randomNumber = toMove;
@@ -314,7 +314,7 @@ public class BackEnd {
     public void moveToBase(int figureNumber){
         Figure figureToBeMoved = figures[figureNumber];
         figureToBeMoved.setInBase();
-        figureToBeMoved.setField(figureNumber);
+        figureToBeMoved.setField(figureNumber, randomNumber);
     }
 
     //return to which player the given figure belongs to
@@ -442,7 +442,7 @@ public class BackEnd {
             moveToBase(figureOnFirstField);
         }
         figureToBeMoved.setOnField();
-        figureToBeMoved.setField(firstField);
+        figureToBeMoved.setField(firstField, randomNumber);
     }
 
     public void setNewCurrentPlayerIfNecessary() {

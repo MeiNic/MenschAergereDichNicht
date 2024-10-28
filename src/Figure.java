@@ -27,7 +27,7 @@ public class Figure {
         return this.field;
     }
 
-    public void setField(int newField) {
+    public void setField(int newField, int randomNumber) {
         switch (state){
             case IN_BASE, IN_HOUSE -> {
                 if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
@@ -35,13 +35,12 @@ public class Figure {
             }
             case ON_FIELD -> {
                 if (newField < 40) {
-                    progress += newField - field;
+                    progress += randomNumber;
                     this.field = newField;
                 }
                 else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
-            case FINISHED ->
-                LOGGER.error("Tried to replace finished Figure");
+            case FINISHED -> LOGGER.error("Tried to replace finished Figure");
         }
     }
 
@@ -77,14 +76,17 @@ public class Figure {
     }
 
     public void setOnField() {
+        progress = 0;
         state = ON_FIELD;
     }
 
     public void setInHouse() {
+        progress = 0;
         state = IN_HOUSE;
     }
 
     public void setFinished() {
+        progress = 0;
         state = FINISHED;
     }
 
