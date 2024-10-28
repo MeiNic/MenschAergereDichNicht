@@ -1,22 +1,20 @@
 package src;
 
-public class Figure {
-    enum State {
-        IN_BASE,
-        ON_FIELD,
-        IN_HOUSE,
-        FINISHED,
-    }
-    private State state;
-    private boolean placeable;
+import static src.FigureState.IN_BASE;
+import static src.FigureState.ON_FIELD;
+import static src.FigureState.IN_HOUSE;
+import static src.FigureState.FINISHED;
 
+public class Figure {
+    private boolean placeable;
+    private FigureState state;
     private int field;
     public int color;
     public String owner;
     Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
-        state = State.IN_BASE;
+        state = IN_BASE;
         placeable = false;
         field = fieldNew;
         color = colorNew;
@@ -63,38 +61,38 @@ public class Figure {
     }
 
     public void setInBase() {
-        state = State.IN_BASE;
+        state = IN_BASE;
     }
 
     public void setOnField() {
-        state = State.ON_FIELD;
+        state = ON_FIELD;
     }
 
     public void setInHouse() {
-        state = State.IN_HOUSE;
+        state = IN_HOUSE;
     }
 
     public void setFinished() {
-        state = State.FINISHED;
+        state = FINISHED;
     }
 
     public boolean isInBase() {
-        return State.IN_BASE == state;
+        return IN_BASE == state;
     }
 
     public boolean isOnField() {
-        return State.ON_FIELD == state;
+        return ON_FIELD == state;
     }
 
     public boolean isInHouse() {
-        return State.IN_HOUSE == state;
+        return IN_HOUSE == state;
     }
 
     public boolean isFinished() {
-        return State.FINISHED == state;
+        return FINISHED == state;
     }
 
     public boolean isMovable() {
-        return State.ON_FIELD == state || State.IN_HOUSE == state;
+        return ON_FIELD == state || IN_HOUSE == state;
     }
 }
