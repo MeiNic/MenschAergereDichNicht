@@ -209,41 +209,17 @@ public class BackEnd {
                     moveFigure(figureOnField(numberNew));
                 }
             }
-            return;
         }
+        else {
+            int positionInHouse = randomNumber - (39 - figureToBeMoved.getProgress()) - 1;
+            //Move would exceed fields in house
+            if (positionInHouse > 4) return;
 
-        int toMove = randomNumber;
-
-        //unifying the values for cleaner code
-        switch (figureColor){
-            case 0 -> numberOld -= 30;
-            case 2 -> numberOld -= 10;
-            case 3 -> numberOld -= 20;
-        }
-
-        //move figure in front of the base
-        while (toMove > 0 && numberOld <= 9){
-            numberOld++;
-            toMove--;
-        }
-
-        // Don't move figure if entering the house is not possible.
-        if (0 < toMove && toMove < 5) {
-            for (int i = 0; i <= toMove; i++) {
-                if (figureOnField(i + (figureColor * 4)) != -1) {
-                    return;
-                }
+            for (int i = 0; i < positionInHouse; i++) {
+                if (figureOnField(figureToBeMoved.color * 4 + i) != -1) return;
             }
-        }
-
-        // Move figure into house.
-        toMove--;
-        figureToBeMoved.setInHouse();
-        figureToBeMoved.setField(figureColor * 4, randomNumber);
-
-        if (toMove > 0) {
-            randomNumber = toMove;
-            moveInHouse(figureNumber);
+            figureToBeMoved.setInHouse();
+            figureToBeMoved.setField(positionInHouse, randomNumber);
         }
     }
 
@@ -438,7 +414,7 @@ public class BackEnd {
             moveToBase(figureOnFirstField);
         }
         figureToBeMoved.setOnField();
-        figureToBeMoved.setField(firstField, randomNumber);
+        figureToBeMoved.setField(firstField, 0);
     }
 
     public void setNewCurrentPlayerIfNecessary() {
