@@ -284,19 +284,6 @@ public class BackEnd {
         figureToBeMoved.setField(figureNumber, randomNumber);
     }
 
-    //return to which player the given figure belongs to
-    private int giveColor(int figureNumber){
-        if (figureNumber < 4){
-            return 0;
-        } else if (figureNumber < 8) {
-            return 1;
-        } else if (figureNumber < 12) {
-            return 2;
-        } else {
-            return 3;
-        }
-    }
-
     //check which player has won
     public String getNameOfWinner(){
         setFinishedFigures();
@@ -354,15 +341,6 @@ public class BackEnd {
     private int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber && ( figures[i].isInHouse()) || figures[i].isFinished()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int figureOnBaseField(int fieldNumber) {
-        for (int i = 0; i < figures.length; i++) {
-            if (figures[i].getField() == fieldNumber && figures[i].isInBase()) {
                 return i;
             }
         }
