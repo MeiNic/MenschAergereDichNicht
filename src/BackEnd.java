@@ -129,37 +129,32 @@ public class BackEnd {
 
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
-        boolean ownFigureOnStartfield = false;
+        int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
+        int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
 
-        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()) {
-            ownFigureOnStartfield = true;
-        }
-
-        if (ownFigureOnStartfield  && !baseOfCurrentPlayerIsEmpty()){
-            moveFigure(figureOnStartfield);
-        } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
-            for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++){
-                if (figures[i].isInBase()){
-                    moveFigure(i);
-                    break;
-                }
-            }
-        } else {
-            boolean beatsPossible = false;
-            for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
-                if (beatPossible(i)) {
-                    moveFigure(i);
-                    beatsPossible = true;
-                    break;
-                }
-            }
-            //make user figure chooser for all figures of the player
-            if (!beatsPossible){
-                for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
-                    if (figures[i].isMovable()) {
+        if(!baseOfCurrentPlayerIsEmpty()){
+            if(figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
+                moveFigure(figureOnStartfield);
+            } else if (randomNumber == 6) {
+                for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+                    if (figures[i].isInBase()) {
                         moveFigure(i);
                         break;
                     }
+                }
+            }
+        }
+        else {
+            for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+                if(beatPossible(i)) {
+                    moveFigure(i);
+                    return;
+                }
+            }
+            for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+                if (figures[i].isMovable()) {
+                    moveFigure(i);
+                    return;
                 }
             }
         }
