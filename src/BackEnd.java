@@ -260,21 +260,14 @@ public class BackEnd {
             newField -= 40;
         }
 
-        if ((oldField < figureColor * 10 && figureColor * 10 <= newField) || (figureColor == 0 && 34 < oldField && 0 <= newField)) {
+        if (39 - figureToBeMoved.getProgress() < randomNumber) {
             return false;
         }
 
         if (figureOnField(newField) == -1) {
             return false;
         }
-
-        boolean beatableFigureIsOwnedByOtherPlayer = figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
-
-        if (beatableFigureIsOwnedByOtherPlayer) {
-            return true;
-        }
-
-        return false;
+        return figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
     }
 
     //move the given figure to the base
