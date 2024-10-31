@@ -189,7 +189,7 @@ public class GameBoardGui extends JFrame {
         nextPlayer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nextPlayerClicked();
+                buttonActionNextPlayer();
             }
 
             @Override
@@ -208,7 +208,7 @@ public class GameBoardGui extends JFrame {
             @Override
             public void keyTyped(KeyEvent e) {
                 if(e.getKeyChar() == KeyEvent.VK_SPACE){
-                    nextPlayerClicked();
+                    buttonActionNextPlayer();
                 }
             }
         });
@@ -342,7 +342,7 @@ public class GameBoardGui extends JFrame {
         new Rules(this);
     }
 
-    private void nextPlayerClicked(){
+    private void buttonActionNextPlayer(){
         remove(noSix);
         remove(nextPlayer);
         add(userAdvice);
