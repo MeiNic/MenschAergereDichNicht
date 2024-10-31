@@ -154,17 +154,14 @@ public class GameBoardGui extends JFrame {
         rollDice.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                remove(rollDice);
-                boolean humanCanMoveTheirFigures = backend.playerMove();
-
-                if (humanCanMoveTheirFigures) {
-                    displayResult(backend.randomNumber);
-                    setPromptValues();
-                } else {
-                    remove(userAdvice);
-                    add(noSix);
-                    add(nextPlayer);
-                    repaint();
+                buttonActionRollDice();
+            }
+        });
+        rollDice.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar() == KeyEvent.VK_SPACE){
+                    buttonActionRollDice();
                 }
             }
         });
@@ -340,6 +337,21 @@ public class GameBoardGui extends JFrame {
     private void openRules(){
         setVisible(false);
         new Rules(this);
+    }
+
+    private void buttonActionRollDice(){
+        remove(rollDice);
+        boolean humanCanMoveTheirFigures = backend.playerMove();
+
+        if (humanCanMoveTheirFigures) {
+            displayResult(backend.randomNumber);
+            setPromptValues();
+        } else {
+            remove(userAdvice);
+            add(noSix);
+            add(nextPlayer);
+            repaint();
+        }
     }
 
     private void buttonActionNextPlayer(){
