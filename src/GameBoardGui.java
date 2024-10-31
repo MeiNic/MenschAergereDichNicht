@@ -189,11 +189,7 @@ public class GameBoardGui extends JFrame {
         nextPlayer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                remove(noSix);
-                remove(nextPlayer);
-                add(userAdvice);
-                repaint();
-                executeNextMove();
+                nextPlayerClicked();
             }
 
             @Override
@@ -208,6 +204,15 @@ public class GameBoardGui extends JFrame {
                 repaint();
             }
         });
+        nextPlayer.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar() == KeyEvent.VK_SPACE){
+                    nextPlayerClicked();
+                }
+            }
+        });
+
         replaceFigures();
         // Add UI Elements
         add(gameBoardBackground);
@@ -335,6 +340,14 @@ public class GameBoardGui extends JFrame {
     private void openRules(){
         setVisible(false);
         new Rules(this);
+    }
+
+    private void nextPlayerClicked(){
+        remove(noSix);
+        remove(nextPlayer);
+        add(userAdvice);
+        repaint();
+        executeNextMove();
     }
 
     private ImageIcon readImg (String imageName){
