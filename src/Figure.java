@@ -48,7 +48,7 @@ public class Figure {
         return progress;
     }
 
-    public void movebyValue(int value) {
+    public void moveByValue(int value) {
         field += value;
         if (field > 39) field -= 40;
         progress += value;

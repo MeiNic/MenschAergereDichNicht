@@ -190,7 +190,7 @@ public class BackEnd {
         if(!goToHouse) {
             //move the figure, if the new field is free
             if(figureOnField(numberNew) == -1) {
-                figureToBeMoved.movebyValue(randomNumber);
+                figureToBeMoved.moveByValue(randomNumber);
             } else {
                 //move the figure, and move the figure before on the field
                 //to the base
@@ -241,7 +241,7 @@ public class BackEnd {
         }
 
         // Finally we can move the figure to its new position.
-        figureToBeMoved.movebyValue(randomNumber);
+        figureToBeMoved.moveByValue(randomNumber);
     }
 
     //check if a beat is possible
