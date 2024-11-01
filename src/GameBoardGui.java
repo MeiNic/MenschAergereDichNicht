@@ -249,25 +249,21 @@ public class GameBoardGui extends JFrame {
 
     private void executeNextMove() {
         backend.setNewCurrentPlayerIfNecessary();
-        int playerState = backend.getPlayerStateOfCurrentPlayer();
-
-        if (playerState == 1) {
-            try {
-                setBotAdvice();
-                sleep(1000);
-                boolean botMovedItsFigures = backend.botMove();
-                if (botMovedItsFigures) {
+        switch (backend.getPlayerStateOfCurrentPlayer()){
+            case 0 -> setActivePlayer();
+            case 1 -> {
+                try {
+                    setBotAdvice();
+                    sleep(1000);
+                    backend.botMove();
                     replaceFigures();
                     displayWinWindowIfNecessary();
+                    executeNextMove();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-                executeNextMove();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
-        } else if (playerState == 0) {
-            setActivePlayer();
-        } else {
-            executeNextMove();
+            default -> executeNextMove();
         }
     }
 
@@ -281,14 +277,14 @@ public class GameBoardGui extends JFrame {
             int y;
 
             if (input[i].isInBase()) {
-                x = FIGURE_POSITIONS_BASE_X[input[i].field];
-                y = FIGURE_POSITIONS_BASE_Y[input[i].field];
+                x = FIGURE_POSITIONS_BASE_X[input[i].getField()];
+                y = FIGURE_POSITIONS_BASE_Y[input[i].getField()];
             } else if (input[i].isInHouse() || input[i].isFinished()) {
-                x = FIGURE_POSITIONS_HOUSE_X[input[i].field];
-                y = FIGURE_POSITIONS_HOUSE_Y[input[i].field];
+                x = FIGURE_POSITIONS_HOUSE_X[input[i].getField()];
+                y = FIGURE_POSITIONS_HOUSE_Y[input[i].getField()];
             } else {
-                x = FIGURE_POSITIONS_FIELD_X[input[i].field];
-                y = FIGURE_POSITIONS_FIELD_Y[input[i].field];
+                x = FIGURE_POSITIONS_FIELD_X[input[i].getField()];
+                y = FIGURE_POSITIONS_FIELD_Y[input[i].getField()];
             }
             figures[i].setBounds(x, y, dimensionX, dimensionY);
         }

@@ -1,9 +1,9 @@
 package src;
 
 interface Logger {
-    public void debug(String message);
-    public void info(String message);
-    public void warn(String message);
-    public void error(String message);
-    public void fatal(String message);
+    void debug(String message);
+    void info(String message);
+    void warn(String message);
+    void error(String message);
+    void fatal(String message);
 }

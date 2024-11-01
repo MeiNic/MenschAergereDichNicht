@@ -1,25 +1,57 @@
 package src;
 
-public class Figure {
-    enum State {
-        IN_BASE,
-        ON_FIELD,
-        IN_HOUSE,
-        FINISHED,
-    }
-    private State state;
-    private boolean placeable;
+import static src.FigureState.IN_BASE;
+import static src.FigureState.ON_FIELD;
+import static src.FigureState.IN_HOUSE;
+import static src.FigureState.FINISHED;
 
-    public int field;
-    public int color;
-    public String owner;
+public class Figure {
+    private boolean placeable;
+    private FigureState state;
+    private int field;
+    public final int color;
+    public final String owner;
+    private int progress;
+    Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
-        state = State.IN_BASE;
+        state = IN_BASE;
         placeable = false;
         field = fieldNew;
         color = colorNew;
         this.owner = owner;
+        progress = 0;
+    }
+
+    public int getField() {
+        return this.field;
+    }
+
+    public void setField(int newField, int randomNumber) {
+        switch (state){
+            case IN_BASE, IN_HOUSE -> {
+                if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
+                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
+            }
+            case ON_FIELD -> {
+                if (newField < 40) {
+                    progress += randomNumber;
+                    this.field = newField;
+                }
+                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
+            }
+            case FINISHED -> LOGGER.error("Tried to replace finished Figure");
+        }
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void moveByValue(int value) {
+        field += value;
+        if (field > 39) field -= 40;
+        progress += value;
     }
 
     public String getOwner() {
@@ -39,38 +71,46 @@ public class Figure {
     }
 
     public void setInBase() {
-        state = State.IN_BASE;
+        progress = 0;
+        state = IN_BASE;
     }
 
     public void setOnField() {
-        state = State.ON_FIELD;
+        progress = 0;
+        state = ON_FIELD;
     }
 
     public void setInHouse() {
-        state = State.IN_HOUSE;
+        progress = 0;
+        state = IN_HOUSE;
     }
 
     public void setFinished() {
-        state = State.FINISHED;
+        progress = 0;
+        state = FINISHED;
+    }
+
+    public FigureState getState() {
+        return state;
     }
 
     public boolean isInBase() {
-        return State.IN_BASE == state;
+        return IN_BASE == state;
     }
 
     public boolean isOnField() {
-        return State.ON_FIELD == state;
+        return ON_FIELD == state;
     }
 
     public boolean isInHouse() {
-        return State.IN_HOUSE == state;
+        return IN_HOUSE == state;
     }
 
     public boolean isFinished() {
-        return State.FINISHED == state;
+        return FINISHED == state;
     }
 
     public boolean isMovable() {
-        return State.ON_FIELD == state || State.IN_HOUSE == state;
+        return ON_FIELD == state || IN_HOUSE == state;
     }
 }
