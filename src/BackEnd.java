@@ -208,9 +208,9 @@ public class BackEnd {
             int positionInHouse = randomNumber - (39 - figureToBeMoved.getProgress()) - 1;
             //Move would exceed fields in house
             if (positionInHouse > 4) return;
-
-            for (int i = 0; i < positionInHouse; i++) {
-                if (figureOnField(figureToBeMoved.color * 4 + i) != -1) return;
+            positionInHouse += figureToBeMoved.color * 4;
+            for (int i = figureToBeMoved.color; i < positionInHouse; i++) {
+                if (figureOnHouseField(i) != -1) return;
             }
             figureToBeMoved.setInHouse();
             figureToBeMoved.setField(positionInHouse, randomNumber);
