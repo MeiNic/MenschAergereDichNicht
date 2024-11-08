@@ -60,6 +60,8 @@ public class GameBoardGui extends JFrame {
     private JLabel noSix;
     private ImageTextPanel nextPlayer;
     private BackEnd backend;
+    private enum Prompt {ROLL_DICE, NEXT_PLAYER, DEFAULT}
+    private Prompt promptState = Prompt.DEFAULT;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -154,18 +156,7 @@ public class GameBoardGui extends JFrame {
         rollDice.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                remove(rollDice);
-                boolean humanCanMoveTheirFigures = backend.playerMove();
-
-                if (humanCanMoveTheirFigures) {
-                    displayResult(backend.randomNumber);
-                    setPromptValues();
-                } else {
-                    remove(userAdvice);
-                    add(noSix);
-                    add(nextPlayer);
-                    repaint();
-                }
+                buttonActionMouseKey();
             }
         });
         rulesButton.addMouseListener(new MouseAdapter() {
@@ -189,11 +180,7 @@ public class GameBoardGui extends JFrame {
         nextPlayer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                remove(noSix);
-                remove(nextPlayer);
-                add(userAdvice);
-                repaint();
-                executeNextMove();
+                buttonActionMouseKey();
             }
 
             @Override
@@ -208,6 +195,7 @@ public class GameBoardGui extends JFrame {
                 repaint();
             }
         });
+
         replaceFigures();
         // Add UI Elements
         add(gameBoardBackground);
@@ -216,10 +204,19 @@ public class GameBoardGui extends JFrame {
         add(rulesAdvice);
         add(rulesButton);
 
+        promptState = Prompt.ROLL_DICE;
         // Display UI
         setTitle("game field");
         setSize(1300, 945);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_SPACE) {
+                    buttonActionMouseKey();
+                }
+            }
+        });
         setLayout(null);
         getContentPane().setBackground(Color.decode("#6c6f85"));
         setResizable(true);
@@ -308,6 +305,7 @@ public class GameBoardGui extends JFrame {
 
     private void setActivePlayer(){
         add(rollDice);
+        promptState = Prompt.ROLL_DICE;
         userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
                 "button to roll the dice </body> </html>");
         remove(result);
@@ -327,6 +325,7 @@ public class GameBoardGui extends JFrame {
 
     private void setBotAdvice(){
         remove(rollDice);
+        promptState = Prompt.DEFAULT;
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
         result.setText("");
         repaint();
@@ -335,6 +334,34 @@ public class GameBoardGui extends JFrame {
     private void openRules(){
         setVisible(false);
         new Rules(this);
+    }
+
+    private void buttonActionMouseKey() {
+        switch (promptState){
+            case ROLL_DICE -> {
+                remove(rollDice);
+                boolean humanCanMoveTheirFigures = backend.playerMove();
+                if (humanCanMoveTheirFigures) {
+                    displayResult(BackEnd.randomNumber);
+                    promptState = Prompt.DEFAULT;
+                    setPromptValues();
+                } else {
+                    remove(userAdvice);
+                    add(noSix);
+                    add(nextPlayer);
+                    promptState = Prompt.NEXT_PLAYER;
+                    repaint();
+                }
+            }
+            case NEXT_PLAYER -> {
+                remove(noSix);
+                remove(nextPlayer);
+                promptState = Prompt.DEFAULT;
+                add(userAdvice);
+                repaint();
+                executeNextMove();
+            }
+        }
     }
 
     private ImageIcon readImg (String imageName){

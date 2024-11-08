@@ -60,7 +60,7 @@ public class Landingpage extends JFrame {
         bots = new JCheckBox("Fill the game with bots", false);
 
         userNames = new JTextField[4];
-        userNames[0] = new JTextField("yellow");
+        userNames[0] = new JTextField("orange");
         userNames[1] = new JTextField("green");
         userNames[2] = new JTextField("blue");
         userNames[3] = new JTextField("red");
@@ -184,7 +184,7 @@ public class Landingpage extends JFrame {
     }
 
     private String[] getNames() {
-        String[] defaultNames = {"yellow", "green", "blue", "red"};
+        String[] defaultNames = {"orange", "green", "blue", "red"};
         String[] playerNames = new String[4];
 
         for (int i = 0; i < 4; i++) {
