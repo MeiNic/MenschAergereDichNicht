@@ -229,7 +229,7 @@ public class BackEnd {
             return;
         }
 
-        for (int i = figureToBeMoved.getField(); i <= newField; i++){
+        for (int i = figureToBeMoved.getField() + 1; i <= newField; i++){
             if (figureOnHouseField(i) != -1){
                 LOGGER.info("Figure would have to jump over other figures on field: " + i+ " in the house, which is forbidden. Aborting move...");
                 return;
