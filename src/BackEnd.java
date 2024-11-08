@@ -174,7 +174,6 @@ public class BackEnd {
 
     private void moveOnField(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
-        int figureColor = figureToBeMoved.color;
 
         //store the old and new field-number in local variables
         int numberOld = figureToBeMoved.getField();
@@ -249,7 +248,6 @@ public class BackEnd {
             return false;
         }
 
-        int figureColor = figureToBeMoved.color;
         int oldField = figureToBeMoved.getField();
         int newField = oldField + randomNumber;
 
