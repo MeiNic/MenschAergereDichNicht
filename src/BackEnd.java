@@ -221,9 +221,6 @@ public class BackEnd {
     //move figure in the house by the given value
     private void moveInHouse(int figureNumber){
         Figure figureToBeMoved = figures[figureNumber];
-        if (!figureToBeMoved.isInHouse()) {
-            return;
-        }
 
         int newField = figureToBeMoved.getField() + randomNumber;
         int maxField = figureToBeMoved.color * 4 + 4    ;
@@ -234,7 +231,7 @@ public class BackEnd {
         }
 
         for (int i = figureToBeMoved.getField(); i <= newField; i++){
-            if (figureOnField(i) != -1){
+            if (figureOnHouseField(i) != -1){
                 LOGGER.info("Figure would have to jump over other figures on field: " + i+ " in the house, which is forbidden. Aborting move...");
                 return;
             }
