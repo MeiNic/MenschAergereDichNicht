@@ -133,7 +133,7 @@ public class BackEnd {
         int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
 
         if(!baseOfCurrentPlayerIsEmpty()){
-            if(figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
+            if(figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
                 moveFigure(figureOnStartfield);
             } else if (randomNumber == 6) {
                 for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
@@ -176,8 +176,7 @@ public class BackEnd {
         Figure figureToBeMoved = figures[figureNumber];
 
         //store the old and new field-number in local variables
-        int numberOld = figureToBeMoved.getField();
-        int numberNew = numberOld + randomNumber;
+        int numberNew = figureToBeMoved.getField() + randomNumber;
 
         if (numberNew > 39){
             numberNew -= 40;
@@ -207,9 +206,9 @@ public class BackEnd {
         else {
             int positionInHouse = randomNumber - (39 - figureToBeMoved.getProgress()) - 1;
             //Move would exceed fields in house
-            if (positionInHouse > 4) return;
+            if (positionInHouse >= 4) return;
             positionInHouse += figureToBeMoved.color * 4;
-            for (int i = figureToBeMoved.color; i < positionInHouse; i++) {
+            for (int i = figureToBeMoved.color * 4; i <= positionInHouse; i++) {
                 if (figureOnHouseField(i) != -1) return;
             }
             figureToBeMoved.setInHouse();
@@ -224,7 +223,7 @@ public class BackEnd {
         int newField = figureToBeMoved.getField() + randomNumber;
         int maxField = figureToBeMoved.color * 4 + 4    ;
 
-        if (maxField < newField) {
+        if (maxField <= newField) {
             LOGGER.info("Move would exceed the number of fields in the house. Aborting move...");
             return;
         }
