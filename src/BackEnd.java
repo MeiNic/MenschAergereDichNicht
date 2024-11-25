@@ -45,19 +45,10 @@ public class BackEnd {
 
     //progress a dice input
     public boolean playerMove() {
-        Dice dice = new LaPlaceDice();
-        int allowedTries = getNumberOfAllowedTries();
-        int tries = 0;
-
-        do {
-            randomNumber = dice.roll();
-            tries++;
-        } while (tries < allowedTries && randomNumber != 6);
-
-        if (randomNumber != 6 && allowedTries == 3) {
+        if (!generateRandomNumber()) {
             return false;
         }
-        
+
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
@@ -113,17 +104,7 @@ public class BackEnd {
 
     //bot-move on the "normal" fields
     public void botMove(){
-        Dice dice = new LoadedDice();
-
-        int allowedTries = getNumberOfAllowedTries();
-        int tries = 0;
-
-        do {
-            randomNumber = dice.roll();
-            tries++;
-        } while (tries < allowedTries && randomNumber != 6);
-
-        if (randomNumber != 6 && allowedTries == 3) {
+        if(!generateRandomNumber()) {
             return;
         }
 
@@ -388,5 +369,23 @@ public class BackEnd {
 
     private boolean currentPlayerIsAllowedToRollTheDiceAgain() {
         return 6 == randomNumber;
+    }
+
+    private boolean generateRandomNumber() {
+        Dice dice = new LaPlaceDice();
+        if (getPlayerStateOfCurrentPlayer() == 1) {
+            dice = new LoadedDice();
+        }
+        int allowedTries = getNumberOfAllowedTries();
+        int tries = 0;
+        do {
+            randomNumber = dice.roll();
+            tries++;
+        } while (tries < allowedTries && randomNumber != 6);
+
+        if (randomNumber != 6 && allowedTries == 3) {
+            return false;
+        }
+        return true;
     }
 }
