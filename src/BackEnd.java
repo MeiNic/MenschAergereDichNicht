@@ -382,10 +382,6 @@ public class BackEnd {
             randomNumber = dice.roll();
             tries++;
         } while (tries < allowedTries && randomNumber != 6);
-
-        if (randomNumber != 6 && allowedTries == 3) {
-            return false;
-        }
-        return true;
+        return randomNumber == 6 || allowedTries != 3;
     }
 }
