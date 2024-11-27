@@ -138,7 +138,7 @@ public class BackEnd {
         }
         //LOGGER.info("Bot " + currentPlayer.getName() + " couldn't beat any figure.");
         for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (figures[i].isMovable()) {
+            if (moveSensible(i)) {
                 moveFigure(i);
                 //LOGGER.info("Bot " + currentPlayer.getName() + " moved figure " + i);
                 return;
@@ -248,6 +248,28 @@ public class BackEnd {
             return false;
         }
         return figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
+    }
+
+    private boolean moveSensible(int figureNumber){
+        Figure figureToBeMoved = figures[figureNumber];
+
+        switch (figureToBeMoved.getState()) {
+            case IN_HOUSE -> {
+                int newField = figureToBeMoved.getField() + randomNumber;
+                int maxField = figureToBeMoved.color * 4 + 4    ;
+                return maxField > newField;
+            }
+            case ON_FIELD -> {
+                int color = figureToBeMoved.color;
+                for (int i = color * 4; i < (color + 1) * 4; i++){
+                    if(figureToBeMoved.getProgress() < figures[i].getProgress()) return false;
+                }
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
     }
 
     //move the given figure to the base
