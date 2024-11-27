@@ -4,7 +4,7 @@ public class BackEnd {
     Figure[] figures;
     static int randomNumber;
 
-    private Player[] players;
+    private final Player[] players;
     private Player currentPlayer;
     private int currentPlayerIndex;
 

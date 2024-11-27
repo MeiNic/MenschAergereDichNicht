@@ -9,14 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import static java.lang.Thread.sleep;
-
 public class GameBoardGui extends JFrame {
 
-    private JLabel[] figures;
-    private JLabel[] houses;
-    private JLabel[] bases;
-    private JLabel[] fields;
+    private final JLabel[] figures;
+    private final JLabel[] houses;
+    private final JLabel[] bases;
+    private final JLabel[] fields;
 
     private static final int[] HOUSE_POSITIONS_X = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673,
             593, 513};
