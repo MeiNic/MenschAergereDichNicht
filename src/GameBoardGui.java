@@ -249,16 +249,11 @@ public class GameBoardGui extends JFrame {
         switch (backend.getPlayerStateOfCurrentPlayer()){
             case 0 -> setActivePlayer();
             case 1 -> {
-                try {
-                    setBotAdvice();
-                    sleep(1000);
-                    backend.botMove();
-                    replaceFigures();
-                    displayWinWindowIfNecessary();
-                    executeNextMove();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                setBotAdvice();
+                backend.botMove();
+                replaceFigures();
+                displayWinWindowIfNecessary();
+                executeNextMove();
             }
             default -> executeNextMove();
         }

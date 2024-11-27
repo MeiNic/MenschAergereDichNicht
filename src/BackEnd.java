@@ -113,30 +113,35 @@ public class BackEnd {
         int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
         int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
 
+        //LOGGER.info("Bot " + currentPlayer.getName() + " rolled a " + randomNumber);
         if(!baseOfCurrentPlayerIsEmpty()){
             if(figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
                 moveFigure(figureOnStartfield);
+                //LOGGER.info("Bot " + currentPlayer.getName() + " moved figure " + figureOnStartfield + " away from startfield.");
+                return;
             } else if (randomNumber == 6) {
                 for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
                     if (figures[i].isInBase()) {
                         moveFigure(i);
-                        break;
+                        //LOGGER.info("Bot " + currentPlayer.getName() + " moved figure " + i + " out of base.");
+                        return;
                     }
                 }
             }
         }
-        else {
-            for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                if(beatPossible(i)) {
-                    moveFigure(i);
-                    return;
-                }
+        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+            if(beatPossible(i)) {
+                moveFigure(i);
+                //LOGGER.info("Bot " + currentPlayer.getName() + " beat figure " + figureOnField(figures[i].getField()) + " with figure " + i);
+                return;
             }
-            for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                if (figures[i].isMovable()) {
-                    moveFigure(i);
-                    return;
-                }
+        }
+        //LOGGER.info("Bot " + currentPlayer.getName() + " couldn't beat any figure.");
+        for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+            if (figures[i].isMovable()) {
+                moveFigure(i);
+                //LOGGER.info("Bot " + currentPlayer.getName() + " moved figure " + i);
+                return;
             }
         }
     }
@@ -359,23 +364,19 @@ public class BackEnd {
     }
 
     public void setNewCurrentPlayerIfNecessary() {
-        if (currentPlayerIsAllowedToRollTheDiceAgain()) {
+        if (6 == randomNumber) {
             return;
         }
-
         currentPlayerIndex = ++currentPlayerIndex % 4;
         currentPlayer = players[currentPlayerIndex];
     }
 
-    private boolean currentPlayerIsAllowedToRollTheDiceAgain() {
-        return 6 == randomNumber;
-    }
-
     private boolean generateRandomNumber() {
         Dice dice = new LaPlaceDice();
-        if (getPlayerStateOfCurrentPlayer() == 1) {
+        /*if (getPlayerStateOfCurrentPlayer() == 1) {
             dice = new LoadedDice();
-        }
+        }*/
+
         int allowedTries = getNumberOfAllowedTries();
         int tries = 0;
         do {
