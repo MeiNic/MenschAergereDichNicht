@@ -5,18 +5,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Rules extends JFrame{
-    private JLabel header;
-    private JLabel goalHeader;
-    private JLabel goal1;
-    private JLabel goal2;
-    private JLabel ruleHeader;
-    private JLabel rule1;
-    private JLabel rule2;
-    private JLabel rule3;
-    private JLabel rule4;
-    private JLabel rule5;
-    private ImageTextPanel close;
-    public JFrame executingClass;
+    private final JLabel header;
+    private final JLabel goalHeader;
+    private final JLabel goal1;
+    private final JLabel goal2;
+    private final JLabel ruleHeader;
+    private final JLabel rule1;
+    private final JLabel rule2;
+    private final JLabel rule3;
+    private final JLabel rule4;
+    private final JLabel rule5;
+    private final ImageTextPanel close;
+    public final JFrame executingClass;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 

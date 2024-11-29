@@ -48,16 +48,16 @@ public class GameBoardGui extends JFrame {
             , 333, 253, 173, 93, 13, 13, 13, 93, 173, 253, 333, 333, 333, 333, 333, 413, 493, 493, 493, 493, 493, 573
             , 653, 733, 813, 813};
 
-    private JLabel gameBoardBackground;
-    private JLabel userAdvice;
-    private JLabel rollDice;
+    private final JLabel gameBoardBackground;
+    private final JLabel userAdvice;
+    private final JLabel rollDice;
     private JLabel result;
-    private JLabel figureChooserPrompt;
-    private JLabel rulesAdvice;
-    private ImageTextPanel rulesButton;
-    private JLabel noSix;
-    private ImageTextPanel nextPlayer;
-    private BackEnd backend;
+    private final JLabel figureChooserPrompt;
+    private final JLabel rulesAdvice;
+    private final ImageTextPanel rulesButton;
+    private final JLabel noSix;
+    private final ImageTextPanel nextPlayer;
+    private final BackEnd backend;
     private enum Prompt {ROLL_DICE, NEXT_PLAYER, DEFAULT}
     private Prompt promptState = Prompt.DEFAULT;
 
@@ -381,7 +381,7 @@ public class GameBoardGui extends JFrame {
                 return;
             }
             Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
+            if (!clickedFigure.getOwner().equals(backend.getNameOfCurrentPlayer())){
                 LOGGER.info("Figure movement aborted - false color selected");
                 return;
             }

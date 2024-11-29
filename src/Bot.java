@@ -1,8 +1,8 @@
 package src;
 
 class Bot implements Player {
-    private String name;
-    private int playerIndex;
+    private final String name;
+    private final int playerIndex;
 
     public Bot(String name, int playerIndex) {
 	this.name = name;

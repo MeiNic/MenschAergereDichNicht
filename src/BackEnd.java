@@ -1,14 +1,14 @@
 package src;
 
 public class BackEnd {
-    Figure[] figures;
+    final Figure[] figures;
     static int randomNumber;
 
     private final Player[] players;
     private Player currentPlayer;
     private int currentPlayerIndex;
 
-    Logger LOGGER = LoggerFactory.getLoggerInstance();
+    final Logger LOGGER = LoggerFactory.getLoggerInstance();
     
     BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
         figures = new Figure[16];
@@ -53,7 +53,7 @@ public class BackEnd {
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 
-        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
+        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
             ownFigureOnStartfield = true;
         }
 
@@ -174,11 +174,11 @@ public class BackEnd {
         if(!goToHouse) {
             //move the figure, if the new field is free
             if(figureOnField(numberNew) == -1) {
-                figureToBeMoved.movebyValue(randomNumber);
+                figureToBeMoved.moveByValue(randomNumber);
             } else {
                 //move the figure, and move the figure before on the field
                 //to the base
-                if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
+                if (!figures[figureOnField(numberNew)].getOwner().equals(figureToBeMoved.getOwner())){
                     moveToBase(figureOnField(numberNew));
                     figureToBeMoved.setField(numberNew, randomNumber);
                 } else {
@@ -222,7 +222,7 @@ public class BackEnd {
         }
 
         // Finally we can move the figure to its new position.
-        figureToBeMoved.movebyValue(randomNumber);
+        figureToBeMoved.moveByValue(randomNumber);
     }
 
     //check if a beat is possible
@@ -247,7 +247,7 @@ public class BackEnd {
         if (figureOnField(newField) == -1) {
             return false;
         }
-        return figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
+        return !figures[figureOnField(newField)].getOwner().equals(figureToBeMoved.getOwner());
     }
 
     private boolean moveSensible(int figureNumber){

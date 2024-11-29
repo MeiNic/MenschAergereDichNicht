@@ -12,7 +12,7 @@ public class Figure {
     public final int color;
     public final String owner;
     private int progress;
-    Logger LOGGER = LoggerFactory.getLoggerInstance();
+    final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
         state = IN_BASE;
@@ -48,7 +48,7 @@ public class Figure {
         return progress;
     }
 
-    public void movebyValue(int value) {
+    public void moveByValue(int value) {
         field += value;
         if (field > 39) field -= 40;
         progress += value;
