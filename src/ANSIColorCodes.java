@@ -13,8 +13,8 @@ public enum ANSIColorCodes {
 
     private final String code;
 
-    private ANSIColorCodes(String code) {
-	this.code = code;
+    ANSIColorCodes(String code) {
+        this.code = code;
     }
 
     public String getCode() {

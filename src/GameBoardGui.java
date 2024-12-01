@@ -9,14 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import static java.lang.Thread.sleep;
-
 public class GameBoardGui extends JFrame {
 
-    private JLabel[] figures;
-    private JLabel[] houses;
-    private JLabel[] bases;
-    private JLabel[] fields;
+    private final JLabel[] figures;
+    private final JLabel[] houses;
+    private final JLabel[] bases;
+    private final JLabel[] fields;
 
     private static final int[] HOUSE_POSITIONS_X = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673,
             593, 513};
@@ -50,16 +48,16 @@ public class GameBoardGui extends JFrame {
             , 333, 253, 173, 93, 13, 13, 13, 93, 173, 253, 333, 333, 333, 333, 333, 413, 493, 493, 493, 493, 493, 573
             , 653, 733, 813, 813};
 
-    private JLabel gameBoardBackground;
-    private JLabel userAdvice;
-    private JLabel rollDice;
+    private final JLabel gameBoardBackground;
+    private final JLabel userAdvice;
+    private final JLabel rollDice;
     private JLabel result;
-    private JLabel figureChooserPrompt;
-    private JLabel rulesAdvice;
-    private ImageTextPanel rulesButton;
-    private JLabel noSix;
-    private ImageTextPanel nextPlayer;
-    private BackEnd backend;
+    private final JLabel figureChooserPrompt;
+    private final JLabel rulesAdvice;
+    private final ImageTextPanel rulesButton;
+    private final JLabel noSix;
+    private final ImageTextPanel nextPlayer;
+    private final BackEnd backend;
     private enum Prompt {ROLL_DICE, NEXT_PLAYER, DEFAULT}
     private Prompt promptState = Prompt.DEFAULT;
 
@@ -249,16 +247,11 @@ public class GameBoardGui extends JFrame {
         switch (backend.getPlayerStateOfCurrentPlayer()){
             case 0 -> setActivePlayer();
             case 1 -> {
-                try {
-                    setBotAdvice();
-                    sleep(1000);
-                    backend.botMove();
-                    replaceFigures();
-                    displayWinWindowIfNecessary();
-                    executeNextMove();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                setBotAdvice();
+                backend.botMove();
+                replaceFigures();
+                displayWinWindowIfNecessary();
+                executeNextMove();
             }
             default -> executeNextMove();
         }
@@ -388,7 +381,7 @@ public class GameBoardGui extends JFrame {
                 return;
             }
             Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (clickedFigure.getOwner() != backend.getNameOfCurrentPlayer()){
+            if (!clickedFigure.getOwner().equals(backend.getNameOfCurrentPlayer())){
                 LOGGER.info("Figure movement aborted - false color selected");
                 return;
             }

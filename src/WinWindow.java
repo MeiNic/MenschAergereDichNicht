@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class WinWindow{
-    private JFrame frame;
-    private JLabel message;
-    private ImageTextPanel close;
-    private ImageTextPanel nextGame;
+    private final JFrame frame;
+    private final JLabel message;
+    private final ImageTextPanel close;
+    private final ImageTextPanel nextGame;
     private final Font jetBrainsMonoSemiBold;
     private static final Color DEFAULT_FOREGROUND_COLOR = Color.decode("#f3f5f9");
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.decode("#6c6f85");

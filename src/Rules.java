@@ -5,18 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Rules extends JFrame{
-    private JLabel header;
-    private JLabel goalHeader;
-    private JLabel goal1;
-    private JLabel goal2;
-    private JLabel ruleHeader;
-    private JLabel rule1;
-    private JLabel rule2;
-    private JLabel rule3;
-    private JLabel rule4;
-    private JLabel rule5;
-    private ImageTextPanel close;
-    public JFrame executingClass;
+    private final ImageTextPanel close;
+    public final JFrame executingClass;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -24,18 +14,18 @@ public class Rules extends JFrame{
         executingClass = JFrameN;
 	
         //declaration of the JLabels & the JCheckBox
-        header = new JLabel("Info");
-        goalHeader = new JLabel("Goal of the Game:");
-        goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
-        goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
-        ruleHeader = new JLabel("Rules: ");
-        rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
-        rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
-        rule3 = new JLabel("<html><body> 3. If possible, you must kick another person! If you didn't your " +
+        JLabel header = new JLabel("Info");
+        JLabel goalHeader = new JLabel("Goal of the Game:");
+        JLabel goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
+        JLabel goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
+        JLabel ruleHeader = new JLabel("Rules: ");
+        JLabel rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
+        JLabel rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
+        JLabel rule3 = new JLabel("<html><body> 3. If possible, you must kick another person! If you didn't your " +
                 "figure, that was able to <br> kick someone, will get moved to your Base. </body></html>");
-        rule4 = new JLabel("<html><body> 4. In order to get into your house you have to get the exact number, " +
+        JLabel rule4 = new JLabel("<html><body> 4. In order to get into your house you have to get the exact number, " +
                 "you can't go in with <br> a number, that is to high. </body></html>");
-        rule5 = new JLabel("5. You cannot jump over your figures in your House.");
+        JLabel rule5 = new JLabel("5. You cannot jump over your figures in your House.");
         close = new ImageTextPanel("button-idle", "close");
 
         //position of all j-components

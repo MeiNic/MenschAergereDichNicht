@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Landingpage extends JFrame {
-    private JLabel head;
-    private JLabel labelPlayerNumber;
+    private final JLabel head;
+    private final JLabel labelPlayerNumber;
     private JSpinner playerNumber;
-    private JCheckBox bots;
-    private JLabel[] colorMarker;
-    private JLabel userNameAdvice;
-    private JTextField[] userNames;
-    private JCheckBox understood;
-    private JLabel notChecked;
-    private ImageTextPanel rulesButton;
-    private ImageTextPanel startGame;
+    private final JCheckBox bots;
+    private final JLabel[] colorMarker;
+    private final JLabel userNameAdvice;
+    private final JTextField[] userNames;
+    private final JCheckBox understood;
+    private final JLabel notChecked;
+    private final ImageTextPanel rulesButton;
+    private final ImageTextPanel startGame;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -190,7 +190,7 @@ public class Landingpage extends JFrame {
         for (int i = 0; i < 4; i++) {
             String currentPlayerName = userNames[i].getText();
 
-            playerNames[i] = "" == currentPlayerName ? defaultNames[i] : currentPlayerName;
+            playerNames[i] = "".equals(currentPlayerName) ? defaultNames[i] : currentPlayerName;
         }
 
         return playerNames;

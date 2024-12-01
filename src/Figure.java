@@ -12,7 +12,7 @@ public class Figure {
     public final int color;
     public final String owner;
     private int progress;
-    Logger LOGGER = LoggerFactory.getLoggerInstance();
+    final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     Figure(int fieldNew, int colorNew, String owner){
         state = IN_BASE;
