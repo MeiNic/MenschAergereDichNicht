@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 class Human implements Player {
     private final String name;

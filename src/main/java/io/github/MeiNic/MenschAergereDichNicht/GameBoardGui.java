@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

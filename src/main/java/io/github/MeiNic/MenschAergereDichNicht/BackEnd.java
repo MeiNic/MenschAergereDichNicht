@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 public class BackEnd {
     final Figure[] figures;

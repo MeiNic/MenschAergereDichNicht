@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
