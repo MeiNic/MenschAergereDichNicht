@@ -1,23 +1,23 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
-class Human implements Player {
+class Dummy implements Player {
     private final String name;
     private final int playerIndex;
 
-    public Human(String name, int playerIndex) {
+    public Dummy(String name, int playerIndex) {
 	this.name = name;
 	this.playerIndex = playerIndex;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public int getPlayerState() {
-	return 0;
+        return -1;
     }
 
     public int getPlayerIndex() {
-	return playerIndex;
+        return playerIndex;
     }
 }

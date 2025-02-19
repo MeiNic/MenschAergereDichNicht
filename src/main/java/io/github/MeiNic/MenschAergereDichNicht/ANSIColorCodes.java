@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 public enum ANSIColorCodes {
     RESET("\u001B[0m"),

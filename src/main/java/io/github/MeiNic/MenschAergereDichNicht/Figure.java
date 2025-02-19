@@ -1,9 +1,9 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
-import static src.FigureState.IN_BASE;
-import static src.FigureState.ON_FIELD;
-import static src.FigureState.IN_HOUSE;
-import static src.FigureState.FINISHED;
+import static io.github.MeiNic.MenschAergereDichNicht.FigureState.IN_BASE;
+import static io.github.MeiNic.MenschAergereDichNicht.FigureState.ON_FIELD;
+import static io.github.MeiNic.MenschAergereDichNicht.FigureState.IN_HOUSE;
+import static io.github.MeiNic.MenschAergereDichNicht.FigureState.FINISHED;
 
 public class Figure {
     private boolean placeable;

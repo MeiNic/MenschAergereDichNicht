@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -246,7 +246,7 @@ public class Landingpage extends JFrame {
     private ImageIcon readImg (String imageName){
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("res/"+imageName+".png"));
+            img = ImageIO.read(new File("images/"+imageName+".png"));
         }catch (IOException e){
             LOGGER.error("Failed to load img " + imageName);
         }
@@ -256,7 +256,7 @@ public class Landingpage extends JFrame {
     private ImageIcon readScaledImg (String imageName, int width, int height){
         BufferedImage unscaledImg = null;
         try {
-            unscaledImg = ImageIO.read(new File("res/"+imageName+".png"));
+            unscaledImg = ImageIO.read(new File("images/"+imageName+".png"));
             if (unscaledImg != null){
                 Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
                 return new ImageIcon(scaledImg);

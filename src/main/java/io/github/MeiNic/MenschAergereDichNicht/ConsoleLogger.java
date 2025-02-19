@@ -1,4 +1,4 @@
-package src;
+package io.github.MeiNic.MenschAergereDichNicht;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
