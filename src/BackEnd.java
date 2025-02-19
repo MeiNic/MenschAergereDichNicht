@@ -1,14 +1,14 @@
 package src;
 
 public class BackEnd {
-    Figure[] figures;
+    final Figure[] figures;
     static int randomNumber;
 
-    private Player[] players;
+    private final Player[] players;
     private Player currentPlayer;
     private int currentPlayerIndex;
 
-    Logger LOGGER = LoggerFactory.getLoggerInstance();
+    final Logger LOGGER = LoggerFactory.getLoggerInstance();
     
     BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
         figures = new Figure[16];
@@ -45,24 +45,15 @@ public class BackEnd {
 
     //progress a dice input
     public boolean playerMove() {
-        Dice dice = new LaPlaceDice();
-        int allowedTries = getNumberOfAllowedTries();
-        int tries = 0;
-
-        do {
-            randomNumber = dice.roll();
-            tries++;
-        } while (tries < allowedTries && randomNumber != 6);
-
-        if (randomNumber != 6 && allowedTries == 3) {
+        if (!generateRandomNumber()) {
             return false;
         }
-        
+
         //cache a much used value, make the code look cleaner
         int figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield = false;
 
-        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner() == currentPlayer.getName()){
+        if (figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
             ownFigureOnStartfield = true;
         }
 
@@ -113,17 +104,7 @@ public class BackEnd {
 
     //bot-move on the "normal" fields
     public void botMove(){
-        Dice dice = new LoadedDice();
-
-        int allowedTries = getNumberOfAllowedTries();
-        int tries = 0;
-
-        do {
-            randomNumber = dice.roll();
-            tries++;
-        } while (tries < allowedTries && randomNumber != 6);
-
-        if (randomNumber != 6 && allowedTries == 3) {
+        if(!generateRandomNumber()) {
             return;
         }
 
@@ -132,30 +113,30 @@ public class BackEnd {
         int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
         int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
 
+        //LOGGER.info("Bot " + currentPlayer.getName() + " rolled a " + randomNumber);
         if(!baseOfCurrentPlayerIsEmpty()){
-            if(figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
+            if(figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
                 moveFigure(figureOnStartfield);
+                return;
             } else if (randomNumber == 6) {
                 for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
                     if (figures[i].isInBase()) {
                         moveFigure(i);
-                        break;
+                        return;
                     }
                 }
             }
         }
-        else {
-            for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                if(beatPossible(i)) {
-                    moveFigure(i);
-                    return;
-                }
+        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+            if(beatPossible(i)) {
+                moveFigure(i);
+                return;
             }
-            for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                if (figures[i].isMovable()) {
-                    moveFigure(i);
-                    return;
-                }
+        }
+        for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
+            if (moveSensible(i)) {
+                moveFigure(i);
+                return;
             }
         }
     }
@@ -174,11 +155,9 @@ public class BackEnd {
 
     private void moveOnField(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
-        int figureColor = figureToBeMoved.color;
 
         //store the old and new field-number in local variables
-        int numberOld = figureToBeMoved.getField();
-        int numberNew = numberOld + randomNumber;
+        int numberNew = figureToBeMoved.getField() + randomNumber;
 
         if (numberNew > 39){
             numberNew -= 40;
@@ -194,7 +173,7 @@ public class BackEnd {
             } else {
                 //move the figure, and move the figure before on the field
                 //to the base
-                if (figures[figureOnField(numberNew)].getOwner() != figureToBeMoved.getOwner()){
+                if (!figures[figureOnField(numberNew)].getOwner().equals(figureToBeMoved.getOwner())){
                     moveToBase(figureOnField(numberNew));
                     figureToBeMoved.setField(numberNew, randomNumber);
                 } else {
@@ -208,10 +187,10 @@ public class BackEnd {
         else {
             int positionInHouse = randomNumber - (39 - figureToBeMoved.getProgress()) - 1;
             //Move would exceed fields in house
-            if (positionInHouse > 4) return;
-
-            for (int i = 0; i < positionInHouse; i++) {
-                if (figureOnField(figureToBeMoved.color * 4 + i) != -1) return;
+            if (positionInHouse >= 4) return;
+            positionInHouse += figureToBeMoved.color * 4;
+            for (int i = figureToBeMoved.color * 4; i <= positionInHouse; i++) {
+                if (figureOnHouseField(i) != -1) return;
             }
             figureToBeMoved.setInHouse();
             figureToBeMoved.setField(positionInHouse, randomNumber);
@@ -221,20 +200,17 @@ public class BackEnd {
     //move figure in the house by the given value
     private void moveInHouse(int figureNumber){
         Figure figureToBeMoved = figures[figureNumber];
-        if (!figureToBeMoved.isInHouse()) {
-            return;
-        }
 
         int newField = figureToBeMoved.getField() + randomNumber;
-        int maxField = figureToBeMoved.color * 4 + 4    ;
+        int maxField = figureToBeMoved.color * 4 + 4;
 
-        if (maxField < newField) {
+        if (maxField <= newField) {
             LOGGER.info("Move would exceed the number of fields in the house. Aborting move...");
             return;
         }
 
-        for (int i = figureToBeMoved.getField(); i <= newField; i++){
-            if (figureOnField(i) != -1){
+        for (int i = figureToBeMoved.getField() + 1; i <= newField; i++){
+            if (figureOnHouseField(i) != -1){
                 LOGGER.info("Figure would have to jump over other figures on field: " + i+ " in the house, which is forbidden. Aborting move...");
                 return;
             }
@@ -252,7 +228,6 @@ public class BackEnd {
             return false;
         }
 
-        int figureColor = figureToBeMoved.color;
         int oldField = figureToBeMoved.getField();
         int newField = oldField + randomNumber;
 
@@ -267,7 +242,29 @@ public class BackEnd {
         if (figureOnField(newField) == -1) {
             return false;
         }
-        return figures[figureOnField(newField)].getOwner() != figureToBeMoved.getOwner();
+        return !figures[figureOnField(newField)].getOwner().equals(figureToBeMoved.getOwner());
+    }
+
+    private boolean moveSensible(int figureNumber){
+        Figure figureToBeMoved = figures[figureNumber];
+
+        switch (figureToBeMoved.getState()) {
+            case IN_HOUSE -> {
+                int newField = figureToBeMoved.getField() + randomNumber;
+                int maxField = figureToBeMoved.color * 4 + 4;
+                return maxField > newField;
+            }
+            case ON_FIELD -> {
+                int color = figureToBeMoved.color;
+                for (int i = color * 4; i < (color + 1) * 4; i++){
+                    if(figureToBeMoved.getProgress() < figures[i].getProgress()) return false;
+                }
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
     }
 
     //move the given figure to the base
@@ -384,15 +381,25 @@ public class BackEnd {
     }
 
     public void setNewCurrentPlayerIfNecessary() {
-        if (currentPlayerIsAllowedToRollTheDiceAgain()) {
+        if (6 == randomNumber) {
             return;
         }
-
         currentPlayerIndex = ++currentPlayerIndex % 4;
         currentPlayer = players[currentPlayerIndex];
     }
 
-    private boolean currentPlayerIsAllowedToRollTheDiceAgain() {
-        return 6 == randomNumber;
+    private boolean generateRandomNumber() {
+        Dice dice = new LaPlaceDice();
+        if (getPlayerStateOfCurrentPlayer() == 1) {
+            dice = new LoadedDice();
+        }
+
+        int allowedTries = getNumberOfAllowedTries();
+        int tries = 0;
+        do {
+            randomNumber = dice.roll();
+            tries++;
+        } while (tries < allowedTries && randomNumber != 6);
+        return randomNumber == 6 || allowedTries != 3;
     }
 }

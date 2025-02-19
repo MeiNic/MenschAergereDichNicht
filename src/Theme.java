@@ -23,7 +23,7 @@ public interface Theme {
             System.exit(1);
         }
 
-        // Will be never reached.  But otherwise freaking Java will
+        // Will never be reached.  But otherwise freaking Java will
         // complain about a missing return statement...
         return new Font("Default", Font.PLAIN, 13);
     }
