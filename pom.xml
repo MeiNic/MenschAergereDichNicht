@@ -13,16 +13,26 @@
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.11.4</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
-     <resource>
-       <directory>src/resources</directory>
-     </resource>
-   </resources>
+      <resource>
+	<directory>src/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-jar-plugin</artifactId>
+	<version>3.4.1</version>
 	<configuration>
           <archive>
             <manifest>
@@ -36,6 +46,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
+	<version>3.3.1</version>
 	<configuration>
 	  <outputDirectory>target</outputDirectory>
 	</configuration>
