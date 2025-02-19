@@ -202,7 +202,7 @@ public class BackEnd {
         Figure figureToBeMoved = figures[figureNumber];
 
         int newField = figureToBeMoved.getField() + randomNumber;
-        int maxField = figureToBeMoved.color * 4 + 4    ;
+        int maxField = figureToBeMoved.color * 4 + 4;
 
         if (maxField <= newField) {
             LOGGER.info("Move would exceed the number of fields in the house. Aborting move...");
@@ -251,7 +251,7 @@ public class BackEnd {
         switch (figureToBeMoved.getState()) {
             case IN_HOUSE -> {
                 int newField = figureToBeMoved.getField() + randomNumber;
-                int maxField = figureToBeMoved.color * 4 + 4    ;
+                int maxField = figureToBeMoved.color * 4 + 4;
                 return maxField > newField;
             }
             case ON_FIELD -> {
