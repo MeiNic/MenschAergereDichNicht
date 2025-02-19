@@ -14,6 +14,11 @@
   </properties>
 
   <build>
+    <resources>
+     <resource>
+       <directory>src/resources</directory>
+     </resource>
+   </resources>
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
@@ -26,6 +31,13 @@
               <mainClass>io.github.MeiNic.MenschAergereDichNicht.Main</mainClass>
             </manifest>
           </archive>
+	</configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+	<configuration>
+	  <outputDirectory>target</outputDirectory>
 	</configuration>
       </plugin>
     </plugins>

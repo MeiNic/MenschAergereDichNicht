@@ -32,7 +32,7 @@ public class ImageTextPanel extends JPanel {
 
     public void setImage(String newImgName){
         try {
-            defaultImg = ImageIO.read(new File("res/" + newImgName + ".png"));
+            defaultImg = ImageIO.read(new File("images/" + newImgName + ".png"));
         } catch (IOException e){
             e.printStackTrace();
         }

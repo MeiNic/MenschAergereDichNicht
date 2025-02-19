@@ -360,7 +360,7 @@ public class GameBoardGui extends JFrame {
     private ImageIcon readImg (String imageName){
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("res/"+imageName+".png"));
+            img = ImageIO.read(new File("images/"+imageName+".png"));
         }catch (IOException e){
             LOGGER.error("Failed to load img " + imageName);
         }
