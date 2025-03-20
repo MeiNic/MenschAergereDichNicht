@@ -29,7 +29,7 @@ public interface Theme {
     static private Font getJetBrainsMonoFont(String thickness) {
         int fontFormat = Font.TRUETYPE_FONT;
         float fontSize = 13f;
-        File fontFile = new File("fonts/jetBrainsMono/JetBrainsMono-" + thickness + ".ttf");
+        File fontFile = new File("src/resources/fonts/jetBrainsMono/JetBrainsMono-" + thickness + ".ttf");
 
         try {
             return Font.createFont(fontFormat, fontFile).deriveFont(fontSize);

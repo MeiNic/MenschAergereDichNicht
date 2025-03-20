@@ -376,7 +376,7 @@ public class GameBoardGui extends JFrame {
     private ImageIcon readImg (String imageName){
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("images/"+imageName+".png"));
+            img = ImageIO.read(new File("src/resources/images/"+imageName+".png"));
         }catch (IOException e){
             LOGGER.error("Failed to load img " + imageName);
         }
