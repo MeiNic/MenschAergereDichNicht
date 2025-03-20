@@ -16,6 +16,9 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BackEnd {
     final Figure[] figures;
     static int randomNumber;
@@ -134,7 +137,8 @@ public class BackEnd {
             if(figureOnStartfield != -1 && figures[figureOnStartfield].getOwner().equals(currentPlayer.getName())){
                 moveFigure(figureOnStartfield);
                 return;
-            } else if (randomNumber == 6) {
+            }
+            if (randomNumber == 6) {
                 for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
                     if (figures[i].isInBase()) {
                         moveFigure(i);
@@ -143,11 +147,24 @@ public class BackEnd {
                 }
             }
         }
+        //List of figures that can beat another figure
+        List<Integer> figuresBeatPossibleBeat = new ArrayList<>();
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if(beatPossible(i)) {
-                moveFigure(i);
-                return;
+            if (beatPossible(i)) {
+                figuresBeatPossibleBeat.add(i);
             }
+        }
+        //Index of Figure with the highest progress
+        int indexMaxProgress = -1;
+        for (Integer index : figuresBeatPossibleBeat) {
+            if (indexMaxProgress == -1 || figures[index].getProgress() > figures[indexMaxProgress].getProgress()) {
+                indexMaxProgress = index;
+            }
+        }
+        //Beat with figure with the highest Progress
+        if (indexMaxProgress != -1) {
+            moveFigure(indexMaxProgress);
+            return;
         }
         for(int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
             if (moveSensible(i)) {
