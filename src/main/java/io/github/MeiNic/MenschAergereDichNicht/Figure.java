@@ -46,7 +46,10 @@ public class Figure {
     public void setField(int newField, int randomNumber) {
         switch (state){
             case IN_BASE, IN_HOUSE -> {
-                if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
+                if (newField >= color * 4 && newField <= color * 4 + 4){
+                    this.field = newField;
+                    this.progress = newField - color * 4;
+                }
                 else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
             }
             case ON_FIELD -> {
