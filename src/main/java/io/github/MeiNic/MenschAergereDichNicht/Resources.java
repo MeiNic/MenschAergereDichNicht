@@ -59,4 +59,29 @@ public class Resources {
 	    .getScaledInstance(width, height, Image.SCALE_SMOOTH);
 	return new ImageIcon(image);
     }
+
+    public static Font loadFont(String name) {
+	String fontPath = "fonts/jetBrainsMono/JetBrainsMono-"
+	    + name + ".ttf";
+
+	InputStream fontStream = Resources.class.getClassLoader()
+	    .getResourceAsStream(fontPath);
+	if (fontStream == null) {
+            LOGGER.fatal("Unable to find font \"" + fontPath + "\".");
+            System.exit(1);
+	}
+
+	Font font = null;
+
+        try {
+	    font = Font.createFont(Font.TRUETYPE_FONT, fontStream)
+		.deriveFont(13f);
+	} catch (IOException | FontFormatException e) {
+	    LOGGER.fatal("Unable to load font \"" + fontPath + "\": "
+			 + e.getMessage());
+	    System.exit(1);
+	}
+
+	return font;
+    }
 }

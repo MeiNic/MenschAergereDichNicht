@@ -29,27 +29,6 @@ public interface Theme {
     static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     static private Font getJetBrainsMonoFont(String thickness) {
-	String fontName = "fonts/jetBrainsMono/JetBrainsMono-" +
-	    thickness + ".ttf";
-        int fontFormat = Font.TRUETYPE_FONT;
-        float fontSize = 13f;
-
-	InputStream fontStream = Theme.class.getClassLoader().
-	    getResourceAsStream(fontName);
-	if (fontStream == null) {
-            LOGGER.fatal("Unable to load font: " + fontName);
-            System.exit(1);
-	}
-
-        try {
-            return Font.createFont(fontFormat, fontStream).deriveFont(fontSize);
-        } catch (IOException | FontFormatException e) {
-            LOGGER.fatal("Unable to initialize font: " + e);
-            System.exit(1);
-        }
-
-        // Will never be reached.  But otherwise freaking Java will
-        // complain about a missing return statement...
-	return new Font("Default", Font.PLAIN, 13);
+	return Resources.loadFont(thickness);
     }
 }
