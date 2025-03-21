@@ -16,7 +16,6 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
-import java.io.*;
 import java.awt.*;
 
 public interface Theme {
@@ -25,8 +24,6 @@ public interface Theme {
     Font SEMI_BOLD = getJetBrainsMonoFont("SemiBold");
     Font BOLD = getJetBrainsMonoFont("Bold");
     Font EXTRA_BOLD = getJetBrainsMonoFont("ExtraBold");
-
-    static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     static private Font getJetBrainsMonoFont(String thickness) {
 	return Resources.loadFont(thickness);

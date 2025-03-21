@@ -16,7 +16,6 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -24,10 +23,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Landingpage extends JFrame {
     private final JLabel head;
