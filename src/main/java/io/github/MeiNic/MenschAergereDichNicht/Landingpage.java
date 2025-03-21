@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -259,28 +260,48 @@ public class Landingpage extends JFrame {
     }
 
     //methods to read images from the resources folder
-    private ImageIcon readImg (String imageName){
-        BufferedImage img = null;
+    private ImageIcon readImg(String imageName){
+	String imgName = "images/" + imageName + ".png";
+
+	InputStream imgStream = Landingpage.class.getClassLoader().
+	    getResourceAsStream(imgName);
+	if (imgStream == null) {
+	    LOGGER.fatal("Unable to load image: " + imgName);
+	    System.exit(1);
+	}
+
+        ImageIcon img = null;
+
         try {
-            img = ImageIO.read(new File("images/"+imageName+".png"));
-        }catch (IOException e){
-            LOGGER.error("Failed to load img " + imageName);
+	    img = new ImageIcon(ImageIO.read(imgStream));
+        } catch (IOException e){
+            LOGGER.fatal("Failed to load image: " + imgName);
+	    System.exit(1);
         }
-        return new ImageIcon(Objects.requireNonNull(img));
+
+	return img;
     }
 
     private ImageIcon readScaledImg (String imageName, int width, int height){
-        BufferedImage unscaledImg = null;
+	String imgName = "images/" + imageName + ".png";
+
+	InputStream imgStream = Landingpage.class.getClassLoader().
+	    getResourceAsStream(imgName);
+	if (imgStream == null) {
+	    LOGGER.fatal("Unable to load image: " + imgName);
+	    System.exit(1);
+	}
+
+        ImageIcon img = null;
+
         try {
-            unscaledImg = ImageIO.read(new File("images/"+imageName+".png"));
-            if (unscaledImg != null){
-                Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                return new ImageIcon(scaledImg);
-            }
-        }catch (IOException e){
-            return null;
+	    img = new ImageIcon(ImageIO.read(imgStream).getScaledInstance(width, height, Image.SCALE_SMOOTH));
+        } catch (IOException e){
+            LOGGER.fatal("Failed to load image: " + imgName);
+	    System.exit(1);
         }
-        return null;
+
+	return img;
     }
 
     class MyChangeListener implements ChangeListener {

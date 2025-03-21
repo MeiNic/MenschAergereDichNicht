@@ -22,12 +22,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageTextPanel extends JPanel {
     private BufferedImage defaultImg;
     private String text;
     private Font font;
     private Color fontColor;
+
+    private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public ImageTextPanel(String imgName, String textNew, Font fontNew, Color fontColorNew) {
         setImage(imgName);
@@ -47,8 +50,17 @@ public class ImageTextPanel extends JPanel {
     }
 
     public void setImage(String newImgName){
+	String imgName = "images/" + newImgName + ".png";
+
+	InputStream imgStream = ImageTextPanel.class.getClassLoader().
+	    getResourceAsStream(imgName);
+	if (imgStream == null) {
+	    LOGGER.fatal("Unable to load image: " + imgName);
+	    System.exit(1);
+	}
+
         try {
-            defaultImg = ImageIO.read(new File("images/" + newImgName + ".png"));
+            defaultImg = ImageIO.read(imgStream);
         } catch (IOException e){
             e.printStackTrace();
         }

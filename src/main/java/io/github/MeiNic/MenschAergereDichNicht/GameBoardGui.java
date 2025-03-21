@@ -22,6 +22,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -374,13 +375,25 @@ public class GameBoardGui extends JFrame {
     }
 
     private ImageIcon readImg (String imageName){
-        BufferedImage img = null;
+	String imgName = "images/" + imageName + ".png";
+
+	InputStream imgStream = Landingpage.class.getClassLoader().
+	    getResourceAsStream(imgName);
+	if (imgStream == null) {
+	    LOGGER.fatal("Unable to load image: " + imgName);
+	    System.exit(1);
+	}
+
+        ImageIcon img = null;
+
         try {
-            img = ImageIO.read(new File("images/"+imageName+".png"));
-        }catch (IOException e){
-            LOGGER.error("Failed to load img " + imageName);
+	    img = new ImageIcon(ImageIO.read(imgStream));
+        } catch (IOException e){
+            LOGGER.fatal("Failed to load image: " + imgName);
+	    System.exit(1);
         }
-        return new ImageIcon(Objects.requireNonNull(img));
+
+	return img;
     }
 
     private class MyMouseListener extends MouseAdapter {
