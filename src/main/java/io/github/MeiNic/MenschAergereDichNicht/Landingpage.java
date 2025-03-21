@@ -47,10 +47,10 @@ public class Landingpage extends JFrame {
     public Landingpage() {
         colorMarker = new JLabel[4];
         //Insert image-files to the color markers
-        colorMarker[0] = new JLabel(readImg("figure-orange"));
-        colorMarker[1] = new JLabel(readImg("figure-green"));
-        colorMarker[2] = new JLabel(readImg("figure-blue"));
-        colorMarker[3] = new JLabel(readImg("figure-red"));
+        colorMarker[0] = new JLabel(Resources.loadImageIcon("figure-orange"));
+        colorMarker[1] = new JLabel(Resources.loadImageIcon("figure-green"));
+        colorMarker[2] = new JLabel(Resources.loadImageIcon("figure-blue"));
+        colorMarker[3] = new JLabel(Resources.loadImageIcon("figure-red"));
 
         //Set positions of the color markers
         colorMarker[0].setBounds(40, 281, 39, 56);
@@ -68,7 +68,7 @@ public class Landingpage extends JFrame {
         ge.registerFont(Theme.SEMI_BOLD);
 
         // Initialize UI Elements
-        head = new JLabel(readScaledImg("title", 250, 179));
+        head = new JLabel(Resources.loadScaledImageIcon("title", 250, 179));
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         userNameAdvice = new JLabel("Enter names for all the players:");
 
@@ -257,51 +257,6 @@ public class Landingpage extends JFrame {
             }
         }
         return null;
-    }
-
-    //methods to read images from the resources folder
-    private ImageIcon readImg(String imageName){
-	String imgName = "images/" + imageName + ".png";
-
-	InputStream imgStream = Landingpage.class.getClassLoader().
-	    getResourceAsStream(imgName);
-	if (imgStream == null) {
-	    LOGGER.fatal("Unable to load image: " + imgName);
-	    System.exit(1);
-	}
-
-        ImageIcon img = null;
-
-        try {
-	    img = new ImageIcon(ImageIO.read(imgStream));
-        } catch (IOException e){
-            LOGGER.fatal("Failed to load image: " + imgName);
-	    System.exit(1);
-        }
-
-	return img;
-    }
-
-    private ImageIcon readScaledImg (String imageName, int width, int height){
-	String imgName = "images/" + imageName + ".png";
-
-	InputStream imgStream = Landingpage.class.getClassLoader().
-	    getResourceAsStream(imgName);
-	if (imgStream == null) {
-	    LOGGER.fatal("Unable to load image: " + imgName);
-	    System.exit(1);
-	}
-
-        ImageIcon img = null;
-
-        try {
-	    img = new ImageIcon(ImageIO.read(imgStream).getScaledInstance(width, height, Image.SCALE_SMOOTH));
-        } catch (IOException e){
-            LOGGER.fatal("Failed to load image: " + imgName);
-	    System.exit(1);
-        }
-
-	return img;
     }
 
     class MyChangeListener implements ChangeListener {
