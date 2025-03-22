@@ -16,14 +16,9 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 
 public class GameBoardGui extends JFrame {
 
@@ -90,10 +85,10 @@ public class GameBoardGui extends JFrame {
         //insert images to the new graphics elements
         for (int i = 0; i < figures.length; i++){
             switch (i){
-                case 0, 1, 2, 3 -> figures[i] = new JLabel(readImg("figure-orange"));
-                case 4, 5, 6, 7 -> figures[i] = new JLabel(readImg("figure-green"));
-                case 8, 9, 10, 11 -> figures[i] = new JLabel(readImg("figure-blue"));
-                case 12, 13, 14, 15 -> figures[i] = new JLabel(readImg("figure-red"));
+                case 0, 1, 2, 3 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-orange"));
+                case 4, 5, 6, 7 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-green"));
+                case 8, 9, 10, 11 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-blue"));
+                case 12, 13, 14, 15 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-red"));
             }
             figures[i].addMouseListener(new MyMouseListener());
             add(figures[i]);
@@ -102,10 +97,10 @@ public class GameBoardGui extends JFrame {
             int x = HOUSE_POSITIONS_X[i];
             int y = HOUSE_POSITIONS_Y[i];
             switch (i){
-                case 0, 1, 2, 3 -> houses[i] = new JLabel(readImg("field-orange-inner"));
-                case 4, 5, 6, 7 -> houses[i] = new JLabel(readImg("field-green-inner"));
-                case 8, 9, 10, 11 -> houses[i] = new JLabel(readImg("field-blue-inner"));
-                case 12, 13, 14, 15 -> houses[i] = new JLabel(readImg("field-red-inner"));
+                case 0, 1, 2, 3 -> houses[i] = new JLabel(Resources.loadImageIcon("field-orange-inner"));
+                case 4, 5, 6, 7 -> houses[i] = new JLabel(Resources.loadImageIcon("field-green-inner"));
+                case 8, 9, 10, 11 -> houses[i] = new JLabel(Resources.loadImageIcon("field-blue-inner"));
+                case 12, 13, 14, 15 -> houses[i] = new JLabel(Resources.loadImageIcon("field-red-inner"));
             }
             houses[i].setBounds(x, y, 40, 40);
             add(houses[i]);
@@ -114,10 +109,10 @@ public class GameBoardGui extends JFrame {
             int x = BASE_POSITIONS_X[i];
             int y = BASE_POSITIONS_Y[i];
             switch (i){
-                case 0, 1, 2, 3 -> bases[i] = new JLabel(readImg("field-orange"));
-                case 4, 5, 6, 7 -> bases[i] = new JLabel(readImg("field-green"));
-                case 8, 9, 10, 11 -> bases[i] = new JLabel(readImg("field-blue"));
-                case 12, 13, 14, 15 -> bases[i] = new JLabel(readImg("field-red"));
+                case 0, 1, 2, 3 -> bases[i] = new JLabel(Resources.loadImageIcon("field-orange"));
+                case 4, 5, 6, 7 -> bases[i] = new JLabel(Resources.loadImageIcon("field-green"));
+                case 8, 9, 10, 11 -> bases[i] = new JLabel(Resources.loadImageIcon("field-blue"));
+                case 12, 13, 14, 15 -> bases[i] = new JLabel(Resources.loadImageIcon("field-red"));
             }
             bases[i].setBounds(x, y, 50, 50);
             add(bases[i]);
@@ -126,23 +121,23 @@ public class GameBoardGui extends JFrame {
             int x = FIELD_POSITIONS_X[i];
             int y = FIELD_POSITIONS_Y[i];
             switch (i){
-                case 0 -> fields[i] = new JLabel(readImg("field-orange"));
-                case 10 -> fields[i] = new JLabel(readImg("field-green"));
-                case 20 -> fields[i] = new JLabel(readImg("field-blue"));
-                case 30 -> fields[i] = new JLabel(readImg("field-red"));
-                default -> fields[i] = new JLabel(readImg("field-white"));
+                case 0 -> fields[i] = new JLabel(Resources.loadImageIcon("field-orange"));
+                case 10 -> fields[i] = new JLabel(Resources.loadImageIcon("field-green"));
+                case 20 -> fields[i] = new JLabel(Resources.loadImageIcon("field-blue"));
+                case 30 -> fields[i] = new JLabel(Resources.loadImageIcon("field-red"));
+                default -> fields[i] = new JLabel(Resources.loadImageIcon("field-white"));
             }
             fields[i].setBounds(x, y, 50, 50);
             add(fields[i]);
         }
 
         //configure background
-        gameBoardBackground = new JLabel(readImg("board"));
+        gameBoardBackground = new JLabel(Resources.loadImageIcon("board"));
         gameBoardBackground.setBounds(0, 0, 906, 906);
 
         // Initialize UI Elements
         userAdvice = new JLabel();
-        rollDice = new JLabel(readImg("dice-unknown"));
+        rollDice = new JLabel(Resources.loadImageIcon("dice-unknown"));
         result = new JLabel();
         figureChooserPrompt = new JLabel();
         rulesAdvice = new JLabel();
@@ -299,13 +294,13 @@ public class GameBoardGui extends JFrame {
 
     private void displayResult(int randomNumber){
         switch (randomNumber){
-            case 1 -> result = new JLabel(readImg("dice-1"));
-            case 2 -> result = new JLabel(readImg("dice-2"));
-            case 3 -> result = new JLabel(readImg("dice-3"));
-            case 4 -> result = new JLabel(readImg("dice-4"));
-            case 5 -> result = new JLabel(readImg("dice-5"));
-            case 6 -> result = new JLabel(readImg("dice-6"));
-            default -> result = new JLabel(readImg("dice-unknown"));
+            case 1 -> result = new JLabel(Resources.loadImageIcon("dice-1"));
+            case 2 -> result = new JLabel(Resources.loadImageIcon("dice-2"));
+            case 3 -> result = new JLabel(Resources.loadImageIcon("dice-3"));
+            case 4 -> result = new JLabel(Resources.loadImageIcon("dice-4"));
+            case 5 -> result = new JLabel(Resources.loadImageIcon("dice-5"));
+            case 6 -> result = new JLabel(Resources.loadImageIcon("dice-6"));
+            default -> result = new JLabel(Resources.loadImageIcon("dice-unknown"));
         }
         result.setBounds(930, 80, 75, 75);
         add(result);
@@ -371,16 +366,6 @@ public class GameBoardGui extends JFrame {
                 executeNextMove();
             }
         }
-    }
-
-    private ImageIcon readImg (String imageName){
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File("images/"+imageName+".png"));
-        }catch (IOException e){
-            LOGGER.error("Failed to load img " + imageName);
-        }
-        return new ImageIcon(Objects.requireNonNull(img));
     }
 
     private class MyMouseListener extends MouseAdapter {

@@ -23,11 +23,6 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-	<directory>src/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
@@ -41,14 +36,6 @@
               <mainClass>io.github.MeiNic.MenschAergereDichNicht.Main</mainClass>
             </manifest>
           </archive>
-	</configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-	<version>3.3.1</version>
-	<configuration>
-	  <outputDirectory>target</outputDirectory>
 	</configuration>
       </plugin>
     </plugins>

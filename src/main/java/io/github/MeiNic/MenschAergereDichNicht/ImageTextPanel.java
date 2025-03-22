@@ -16,12 +16,9 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ImageTextPanel extends JPanel {
     private BufferedImage defaultImg;
@@ -46,12 +43,8 @@ public class ImageTextPanel extends JPanel {
         repaint();
     }
 
-    public void setImage(String newImgName){
-        try {
-            defaultImg = ImageIO.read(new File("images/" + newImgName + ".png"));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+    public void setImage(String name){
+	defaultImg = Resources.loadBufferedImage(name);
         repaint();
     }
 

@@ -16,7 +16,6 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -24,9 +23,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Landingpage extends JFrame {
     private final JLabel head;
@@ -46,10 +42,10 @@ public class Landingpage extends JFrame {
     public Landingpage() {
         colorMarker = new JLabel[4];
         //Insert image-files to the color markers
-        colorMarker[0] = new JLabel(readImg("figure-orange"));
-        colorMarker[1] = new JLabel(readImg("figure-green"));
-        colorMarker[2] = new JLabel(readImg("figure-blue"));
-        colorMarker[3] = new JLabel(readImg("figure-red"));
+        colorMarker[0] = new JLabel(Resources.loadImageIcon("figure-orange"));
+        colorMarker[1] = new JLabel(Resources.loadImageIcon("figure-green"));
+        colorMarker[2] = new JLabel(Resources.loadImageIcon("figure-blue"));
+        colorMarker[3] = new JLabel(Resources.loadImageIcon("figure-red"));
 
         //Set positions of the color markers
         colorMarker[0].setBounds(40, 281, 39, 56);
@@ -67,7 +63,7 @@ public class Landingpage extends JFrame {
         ge.registerFont(Theme.SEMI_BOLD);
 
         // Initialize UI Elements
-        head = new JLabel(readScaledImg("title", 250, 179));
+        head = new JLabel(Resources.loadScaledImageIcon("title", 250, 179));
         labelPlayerNumber = new JLabel("Please enter the number of players:");
         userNameAdvice = new JLabel("Enter names for all the players:");
 
@@ -254,31 +250,6 @@ public class Landingpage extends JFrame {
             if (component instanceof JButton && name.equals(component.getName())){
                 return (JButton) component;
             }
-        }
-        return null;
-    }
-
-    //methods to read images from the resources folder
-    private ImageIcon readImg (String imageName){
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File("images/"+imageName+".png"));
-        }catch (IOException e){
-            LOGGER.error("Failed to load img " + imageName);
-        }
-        return new ImageIcon(Objects.requireNonNull(img));
-    }
-
-    private ImageIcon readScaledImg (String imageName, int width, int height){
-        BufferedImage unscaledImg = null;
-        try {
-            unscaledImg = ImageIO.read(new File("images/"+imageName+".png"));
-            if (unscaledImg != null){
-                Image scaledImg = unscaledImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                return new ImageIcon(scaledImg);
-            }
-        }catch (IOException e){
-            return null;
         }
         return null;
     }
