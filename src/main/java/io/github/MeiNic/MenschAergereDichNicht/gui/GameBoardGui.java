@@ -14,11 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.gui;
+
+import io.github.MeiNic.MenschAergereDichNicht.BackEnd;
+import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameBoardGui extends JFrame {
 
@@ -69,7 +77,9 @@ public class GameBoardGui extends JFrame {
     private final JLabel noSix;
     private final ImageTextPanel nextPlayer;
     private final BackEnd backend;
+
     private enum Prompt {ROLL_DICE, NEXT_PLAYER, DEFAULT}
+
     private Prompt promptState = Prompt.DEFAULT;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
@@ -83,8 +93,8 @@ public class GameBoardGui extends JFrame {
         fields = new JLabel[40];
 
         //insert images to the new graphics elements
-        for (int i = 0; i < figures.length; i++){
-            switch (i){
+        for (int i = 0; i < figures.length; i++) {
+            switch (i) {
                 case 0, 1, 2, 3 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-orange"));
                 case 4, 5, 6, 7 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-green"));
                 case 8, 9, 10, 11 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-blue"));
@@ -93,10 +103,10 @@ public class GameBoardGui extends JFrame {
             figures[i].addMouseListener(new MyMouseListener());
             add(figures[i]);
         }
-        for (int i = 0; i < houses.length; i++){
+        for (int i = 0; i < houses.length; i++) {
             int x = HOUSE_POSITIONS_X[i];
             int y = HOUSE_POSITIONS_Y[i];
-            switch (i){
+            switch (i) {
                 case 0, 1, 2, 3 -> houses[i] = new JLabel(Resources.loadImageIcon("field-orange-inner"));
                 case 4, 5, 6, 7 -> houses[i] = new JLabel(Resources.loadImageIcon("field-green-inner"));
                 case 8, 9, 10, 11 -> houses[i] = new JLabel(Resources.loadImageIcon("field-blue-inner"));
@@ -105,10 +115,10 @@ public class GameBoardGui extends JFrame {
             houses[i].setBounds(x, y, 40, 40);
             add(houses[i]);
         }
-        for (int i = 0; i < bases.length; i++){
+        for (int i = 0; i < bases.length; i++) {
             int x = BASE_POSITIONS_X[i];
             int y = BASE_POSITIONS_Y[i];
-            switch (i){
+            switch (i) {
                 case 0, 1, 2, 3 -> bases[i] = new JLabel(Resources.loadImageIcon("field-orange"));
                 case 4, 5, 6, 7 -> bases[i] = new JLabel(Resources.loadImageIcon("field-green"));
                 case 8, 9, 10, 11 -> bases[i] = new JLabel(Resources.loadImageIcon("field-blue"));
@@ -117,10 +127,10 @@ public class GameBoardGui extends JFrame {
             bases[i].setBounds(x, y, 50, 50);
             add(bases[i]);
         }
-        for (int i = 0; i < fields.length; i++){
+        for (int i = 0; i < fields.length; i++) {
             int x = FIELD_POSITIONS_X[i];
             int y = FIELD_POSITIONS_Y[i];
-            switch (i){
+            switch (i) {
                 case 0 -> fields[i] = new JLabel(Resources.loadImageIcon("field-orange"));
                 case 10 -> fields[i] = new JLabel(Resources.loadImageIcon("field-green"));
                 case 20 -> fields[i] = new JLabel(Resources.loadImageIcon("field-blue"));
@@ -255,7 +265,7 @@ public class GameBoardGui extends JFrame {
 
     private void executeNextMove() {
         backend.setNewCurrentPlayerIfNecessary();
-        switch (backend.getPlayerStateOfCurrentPlayer()){
+        switch (backend.getPlayerStateOfCurrentPlayer()) {
             case 0 -> setActivePlayer();
             case 1 -> {
                 setBotAdvice();
@@ -268,12 +278,12 @@ public class GameBoardGui extends JFrame {
         }
     }
 
-    private void replaceFigures(){
+    private void replaceFigures() {
         Figure[] input = backend.figures;
         int dimensionX = 39;
         int dimensionY = 56;
 
-        for (int i = 0; i < input.length && i < figures.length; i++){
+        for (int i = 0; i < input.length && i < figures.length; i++) {
             int x;
             int y;
 
@@ -292,8 +302,8 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void displayResult(int randomNumber){
-        switch (randomNumber){
+    private void displayResult(int randomNumber) {
+        switch (randomNumber) {
             case 1 -> result = new JLabel(Resources.loadImageIcon("dice-1"));
             case 2 -> result = new JLabel(Resources.loadImageIcon("dice-2"));
             case 3 -> result = new JLabel(Resources.loadImageIcon("dice-3"));
@@ -307,7 +317,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void setActivePlayer(){
+    private void setActivePlayer() {
         add(rollDice);
         promptState = Prompt.ROLL_DICE;
         userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
@@ -316,18 +326,18 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void setPromptValues(){
+    private void setPromptValues() {
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(930, 160, 350, 32);
         add(figureChooserPrompt);
     }
 
-    private void removePrompt(){
+    private void removePrompt() {
         remove(figureChooserPrompt);
     }
 
-    private void setBotAdvice(){
+    private void setBotAdvice() {
         remove(rollDice);
         promptState = Prompt.DEFAULT;
         userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
@@ -335,13 +345,13 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void openRules(){
+    private void openRules() {
         setVisible(false);
         new Rules(this);
     }
 
     private void buttonActionMouseKey() {
-        switch (promptState){
+        switch (promptState) {
             case ROLL_DICE -> {
                 remove(rollDice);
                 boolean humanCanMoveTheirFigures = backend.playerMove();
@@ -371,28 +381,28 @@ public class GameBoardGui extends JFrame {
     private class MyMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             int clickedFigureIndex = -1;
-            for(int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
+            for (int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
                 if (e.getSource() == figures[i]) {
                     clickedFigureIndex = i;
                 }
             }
             LOGGER.info("Clicked Figure " + clickedFigureIndex);
-            if (clickedFigureIndex == -1){
+            if (clickedFigureIndex == -1) {
                 LOGGER.info("Figure movement aborted - no figure clicked");
                 return;
             }
             Figure clickedFigure = backend.figures[clickedFigureIndex];
-            if (!clickedFigure.getOwner().equals(backend.getNameOfCurrentPlayer())){
+            if (!clickedFigure.getOwner().equals(backend.getNameOfCurrentPlayer())) {
                 LOGGER.info("Figure movement aborted - false color selected");
                 return;
             }
-            if (!clickedFigure.isPlaceable()){
+            if (!clickedFigure.isPlaceable()) {
                 backend.moveToBase(clickedFigureIndex);
                 LOGGER.info("Figure movement aborted - Wrong figure moved (Moving figure to base...)");
                 prepareNextMove();
                 return;
             }
-            if (clickedFigure.isInBase()){
+            if (clickedFigure.isInBase()) {
                 backend.moveOutOfBase(clickedFigureIndex);
             } else {
                 backend.moveFigure(clickedFigureIndex);

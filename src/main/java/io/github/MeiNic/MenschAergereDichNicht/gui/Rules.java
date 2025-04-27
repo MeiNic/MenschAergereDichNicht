@@ -14,21 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.gui;
+
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Rules extends JFrame{
+public class Rules extends JFrame {
     private final ImageTextPanel close;
     public final JFrame executingClass;
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    Rules(JFrame JFrameN){
+    Rules(JFrame JFrameN) {
         executingClass = JFrameN;
-	
+
         //declaration of the JLabels & the JCheckBox
         JLabel header = new JLabel("Info");
         JLabel goalHeader = new JLabel("Goal of the Game:");
@@ -106,7 +109,7 @@ public class Rules extends JFrame{
         LOGGER.info("Displaying Landingpage.");
     }
 
-    private void closeWindow(){
+    private void closeWindow() {
         LOGGER.info("Closing ruleHeader and setting previous window to visible again.");
         setVisible(false);
         executingClass.setVisible(true);

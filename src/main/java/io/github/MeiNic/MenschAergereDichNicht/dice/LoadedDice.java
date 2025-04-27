@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.dice;
 
-interface Logger {
-    void debug(String message);
-    void info(String message);
-    void warn(String message);
-    void error(String message);
-    void fatal(String message);
+import java.util.Random;
+
+public class LoadedDice implements Dice {
+    private static final Random rand = new Random();
+
+    public int roll() {
+	int[] sampleSpace = {1, 1, 2, 2, 3, 3, 4, 4, 5, 6};
+	return sampleSpace[rand.nextInt(sampleSpace.length)];
+    }
 }

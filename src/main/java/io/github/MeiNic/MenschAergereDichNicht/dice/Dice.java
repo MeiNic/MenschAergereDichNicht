@@ -14,14 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.dice;
 
-import java.util.Random;
-
-class LaPlaceDice implements Dice {
-    private static final Random rand = new Random();
-
-    public int roll() {
-        return 1 + rand.nextInt(6);
-    }
+public interface Dice {
+    int roll();
 }

@@ -14,12 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.gui;
 
-public enum Level {
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    FATAL,
+import java.awt.*;
+
+public interface Theme {
+    Color FOREGROUND_COLOR = Color.decode("#f3f5f9");
+    Color BACKGROUND_COLOR = Color.decode("#6c6f85");
+    Font SEMI_BOLD = getJetBrainsMonoFont("SemiBold");
+    Font BOLD = getJetBrainsMonoFont("Bold");
+    Font EXTRA_BOLD = getJetBrainsMonoFont("ExtraBold");
+
+    static private Font getJetBrainsMonoFont(String thickness) {
+        return Resources.loadFont(thickness);
+    }
 }

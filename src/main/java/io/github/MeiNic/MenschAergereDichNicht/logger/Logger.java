@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.logger;
 
-public class LoggerFactory {
-    private LoggerFactory() {}
-    
-    public static Logger getLoggerInstance() {
-        return ConsoleLogger.getInstance(Level.DEBUG);
-    }
+public interface Logger {
+    void debug(String message);
+    void info(String message);
+    void warn(String message);
+    void error(String message);
+    void fatal(String message);
 }

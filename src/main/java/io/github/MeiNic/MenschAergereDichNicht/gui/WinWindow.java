@@ -14,7 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.gui;
+
+import io.github.MeiNic.MenschAergereDichNicht.Main;
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +27,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class WinWindow{
+public class WinWindow {
     private final JFrame frame;
     private final JLabel message;
     private final ImageTextPanel close;
@@ -33,7 +37,7 @@ public class WinWindow{
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.decode("#6c6f85");
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    public WinWindow(String player){
+    public WinWindow(String player) {
         frame = new JFrame();
         message = new JLabel();
         close = new ImageTextPanel("button-idle", "close");

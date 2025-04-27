@@ -16,6 +16,11 @@
 
 package io.github.MeiNic.MenschAergereDichNicht;
 
+import io.github.MeiNic.MenschAergereDichNicht.gui.Landingpage;
+import io.github.MeiNic.MenschAergereDichNicht.gui.Theme;
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
+
 import javax.swing.*;
 
 public class Main {

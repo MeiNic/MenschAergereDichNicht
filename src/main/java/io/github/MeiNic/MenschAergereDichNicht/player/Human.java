@@ -14,18 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.player;
 
-import java.awt.*;
+public class Human implements Player {
+    private final String name;
+    private final int playerIndex;
 
-public interface Theme {
-    Color FOREGROUND_COLOR = Color.decode("#f3f5f9");
-    Color BACKGROUND_COLOR = Color.decode("#6c6f85");
-    Font SEMI_BOLD = getJetBrainsMonoFont("SemiBold");
-    Font BOLD = getJetBrainsMonoFont("Bold");
-    Font EXTRA_BOLD = getJetBrainsMonoFont("ExtraBold");
+    public Human(String name, int playerIndex) {
+	this.name = name;
+	this.playerIndex = playerIndex;
+    }
 
-    static private Font getJetBrainsMonoFont(String thickness) {
-	return Resources.loadFont(thickness);
+    public String getName() {
+	return name;
+    }
+
+    public int getPlayerState() {
+	return 0;
+    }
+
+    public int getPlayerIndex() {
+	return playerIndex;
     }
 }

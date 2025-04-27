@@ -14,8 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.player;
 
-interface Dice {
-    int roll();
+public class Bot implements Player {
+    private final String name;
+    private final int playerIndex;
+
+    public Bot(String name, int playerIndex) {
+        this.name = name;
+        this.playerIndex = playerIndex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPlayerState() {
+        return 1;
+    }
+
+    public int getPlayerIndex() {
+        return playerIndex;
+    }
 }
