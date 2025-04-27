@@ -33,7 +33,7 @@ public class Figure {
     private int progress;
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    Figure(int fieldNew, int colorNew, String owner){
+    public Figure(int fieldNew, int colorNew, String owner){
         state = IN_BASE;
         placeable = false;
         field = fieldNew;

@@ -37,7 +37,7 @@ public class BackEnd {
 
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
+    public BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
         figures = new Figure[16];
         players = new Player[4];
 
