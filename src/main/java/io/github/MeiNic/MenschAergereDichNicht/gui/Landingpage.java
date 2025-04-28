@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.gui;
+
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -22,7 +25,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class Landingpage extends JFrame {
     private final JLabel head;
@@ -145,9 +147,9 @@ public class Landingpage extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (getUnderstoodStatus()){
+                if (getUnderstoodStatus()) {
                     startGame.setImage("button-hovered-green");
-                }else {
+                } else {
                     startGame.setImage("button-hovered-red");
                 }
                 repaint();
@@ -185,11 +187,11 @@ public class Landingpage extends JFrame {
         LOGGER.info("Displaying Landingpage.");
     }
 
-    private boolean getUnderstoodStatus(){
+    private boolean getUnderstoodStatus() {
         return understood.isSelected();
     }
 
-    private void openRules(){
+    private void openRules() {
         setVisible(false);
         LOGGER.info("Displaying rules.");
         new Rules(this);
@@ -209,7 +211,7 @@ public class Landingpage extends JFrame {
     }
 
     private int getNumberOfHumanPlayers() {
-        return (int)playerNumber.getValue();
+        return (int) playerNumber.getValue();
     }
 
     private boolean getBotsSelection() {
@@ -217,13 +219,13 @@ public class Landingpage extends JFrame {
     }
 
     //Two methods used to change the stile of the JSpinner
-    private static JSpinner createCustomizedSpinner(JSpinner spinnerInput){
+    private static JSpinner createCustomizedSpinner(JSpinner spinnerInput) {
         SpinnerModel spinnerModel = spinnerInput.getModel();
 
         JSpinner cache = new JSpinner(spinnerModel);
 
         JComponent spinnerEditor = cache.getEditor();
-        if (spinnerEditor instanceof JSpinner.DefaultEditor){
+        if (spinnerEditor instanceof JSpinner.DefaultEditor) {
             JFormattedTextField textField = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
             textField.setForeground(Theme.FOREGROUND_COLOR);
             textField.setBackground(Theme.BACKGROUND_COLOR);
@@ -232,11 +234,11 @@ public class Landingpage extends JFrame {
         JButton incrementButton = getSpinnerButton(cache, "Spinner.nextButton");
         JButton decrementButton = getSpinnerButton(cache, "Spinner.previousButton");
 
-        if (incrementButton != null){
+        if (incrementButton != null) {
             incrementButton.setForeground(Theme.FOREGROUND_COLOR);
             incrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
-        if (decrementButton != null){
+        if (decrementButton != null) {
             decrementButton.setForeground(Theme.FOREGROUND_COLOR);
             decrementButton.setBackground(Theme.BACKGROUND_COLOR);
         }
@@ -244,10 +246,10 @@ public class Landingpage extends JFrame {
         return cache;
     }
 
-    private static JButton getSpinnerButton(JSpinner spinner, String name){
+    private static JButton getSpinnerButton(JSpinner spinner, String name) {
         Component[] components = spinner.getComponents();
-        for (Component component : components){
-            if (component instanceof JButton && name.equals(component.getName())){
+        for (Component component : components) {
+            if (component instanceof JButton && name.equals(component.getName())) {
                 return (JButton) component;
             }
         }
@@ -266,11 +268,11 @@ public class Landingpage extends JFrame {
                     remove(colorMarker[i]);
                 }
             }
-            if (getNumberOfHumanPlayers() == 1){
+            if (getNumberOfHumanPlayers() == 1) {
                 bots.setSelected(true);
                 userNameAdvice.setText("Enter your name:");
             } else {
-                if (getNumberOfHumanPlayers() == 4){
+                if (getNumberOfHumanPlayers() == 4) {
                     bots.setSelected(false);
                 }
                 userNameAdvice.setText("Enter names for all the players:");

@@ -14,26 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.player;
 
-public enum ANSIColorCodes {
-    RESET("\u001B[0m"),
-    BLACK("\u001B[30m"),
-    RED("\u001B[31m"),
-    GREEN("\u001B[32m"),
-    YELLOW("\u001B[33m"),
-    BLUE("\u001B[34m"),
-    PURPLE("\u001B[35m"),
-    CYAN("\u001B[36m"),
-    WHITE("\u001B[37m");
-
-    private final String code;
-
-    ANSIColorCodes(String code) {
-        this.code = code;
+public interface Player {
+    String getName();
+    int getPlayerState();
+    int getPlayerIndex();
+    default int getIndexOfFirstFigure() {
+        return 4 * getPlayerIndex();
     }
-
-    public String getCode() {
-	return code;
+    default int getIndexOfLastFigure() {
+        return 4 + getIndexOfFirstFigure();
+    }
+    default int getIndexOfStartField () {
+        return 10 * getPlayerIndex();
     }
 }

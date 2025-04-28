@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.figure;
 
-import static io.github.MeiNic.MenschAergereDichNicht.FigureState.IN_BASE;
-import static io.github.MeiNic.MenschAergereDichNicht.FigureState.ON_FIELD;
-import static io.github.MeiNic.MenschAergereDichNicht.FigureState.IN_HOUSE;
-import static io.github.MeiNic.MenschAergereDichNicht.FigureState.FINISHED;
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
+import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
+
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_BASE;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.ON_FIELD;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_HOUSE;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.FINISHED;
 
 public class Figure {
     private boolean placeable;
@@ -30,7 +33,7 @@ public class Figure {
     private int progress;
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    Figure(int fieldNew, int colorNew, String owner){
+    public Figure(int fieldNew, int colorNew, String owner){
         state = IN_BASE;
         placeable = false;
         field = fieldNew;

@@ -14,15 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.logger;
 
-import java.util.Random;
+public enum ANSIColorCodes {
+    RESET("\u001B[0m"),
+    BLACK("\u001B[30m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
+    CYAN("\u001B[36m"),
+    WHITE("\u001B[37m");
 
-class LoadedDice implements Dice {
-    private static final Random rand = new Random();
+    private final String code;
 
-    public int roll() {
-	int[] sampleSpace = {1, 1, 2, 2, 3, 3, 4, 4, 5, 6};
-	return sampleSpace[rand.nextInt(sampleSpace.length)];
+    ANSIColorCodes(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+	return code;
     }
 }

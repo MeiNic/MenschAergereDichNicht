@@ -14,26 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht;
+package io.github.MeiNic.MenschAergereDichNicht.logger;
 
-class Human implements Player {
-    private final String name;
-    private final int playerIndex;
-
-    public Human(String name, int playerIndex) {
-	this.name = name;
-	this.playerIndex = playerIndex;
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public int getPlayerState() {
-	return 0;
-    }
-
-    public int getPlayerIndex() {
-	return playerIndex;
-    }
+public enum Level {
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL,
 }
