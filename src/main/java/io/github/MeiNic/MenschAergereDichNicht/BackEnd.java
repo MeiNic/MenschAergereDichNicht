@@ -31,9 +31,9 @@ public class BackEnd {
     public final Figure[] figures;
     public static int randomNumber;
 
-    private final Player[] players;
-    private Player currentPlayer;
-    private int currentPlayerIndex;
+    protected final Player[] players;
+    protected Player currentPlayer;
+    protected int currentPlayerIndex;
 
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -371,7 +371,7 @@ public class BackEnd {
         return true;
     }
 
-    private int getNumberOfAllowedTries() {
+    protected int getNumberOfAllowedTries() {
         int numberOfFiguresInBase = 0;
         int numberOfFinishedFigures = 0;
 
