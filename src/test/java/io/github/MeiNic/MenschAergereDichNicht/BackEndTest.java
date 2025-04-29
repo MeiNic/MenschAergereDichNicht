@@ -4,6 +4,7 @@ import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -108,6 +109,33 @@ public class BackEndTest {
                     () -> assertEquals(exopecetdFieldFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getField()),
                     () -> assertEquals(expectedStateFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getState())
             );
+        }
+    }
+
+    @Nested
+    class setNewCurrentPlayerIfNecessary{
+        @BeforeEach
+        void setup() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenRandomNumberIsNotSix_whenSetNewCurrentPlayer_thenCurrentPlayerChanged(int playerIndex){
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = 5;
+            backEnd.setNewCurrentPlayerIfNecessary();
+            int expectedPlayerIndex = (playerIndex + 1) % 4;
+            assertEquals(expectedPlayerIndex, backEnd.currentPlayerIndex);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenRandomNumberIsSix_whenSetNewCurrentPlayer_thenCurrentPlayerNotChanged(int playerIndex){
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = 6;
+            backEnd.setNewCurrentPlayerIfNecessary();
+            assertEquals(playerIndex, backEnd.currentPlayerIndex);
         }
     }
 
