@@ -30,7 +30,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresInBase_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = playerIndex * 4; i < playerIndex * 4 + 4; i++) {
+            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setInBase();
             }
             int expected = 3;
@@ -41,7 +41,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = playerIndex * 4; i < playerIndex * 4 + 4; i++) {
+            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setOnField();
                 backEnd.figures[i].setField(rand.nextInt(40), 0);
             }
@@ -53,7 +53,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresFinishd_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = playerIndex * 4; i < playerIndex * 4 + 4; i++) {
+            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setFinished();
             }
             int expected = 3;
@@ -63,7 +63,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenOneFigureOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = playerIndex * 4; i < playerIndex * 4 + 4; i++) {
+            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setInBase();
             }
             backEnd.figures[playerIndex * 4].setOnField();
@@ -83,5 +83,15 @@ public class BackEndTest {
             throw new IllegalArgumentException("Invalid player index");
         }
 
+    }
+
+    // Method to get the first figure of the current player
+    private int getFirstFigureOfCurrentPlayer() {
+        return backEnd.currentPlayerIndex * 4;
+    }
+
+    // Method to get the figure after of the current player
+    private int getFigureAfterOfCurrentPlayer() {
+        return (backEnd.currentPlayerIndex + 1) * 4;
     }
 }
