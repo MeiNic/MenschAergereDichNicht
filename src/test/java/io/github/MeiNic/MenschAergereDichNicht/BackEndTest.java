@@ -1,5 +1,6 @@
 package io.github.MeiNic.MenschAergereDichNicht;
 
+import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -8,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BackEndTest {
     BackEnd backEnd;
@@ -30,9 +31,6 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresInBase_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
-                backEnd.figures[i].setInBase();
-            }
             int expected = 3;
             assertEquals(expected, backEnd.getNumberOfAllowedTries());
         }
@@ -51,12 +49,13 @@ public class BackEndTest {
 
         @ParameterizedTest
         @ValueSource(ints = {0, 1, 2, 3})
-        void givenAllFiguresFinishd_whenCalculateTries_thanReturnThree(int playerIndex) {
+        void givenAllFiguresFinished_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setFinished();
             }
             int expected = 3;
+            assertEquals(expected, backEnd.getNumberOfAllowedTries());
         }
 
         @ParameterizedTest
@@ -70,6 +69,45 @@ public class BackEndTest {
             backEnd.figures[playerIndex * 4].setField(rand.nextInt(40), 0);
             int expected = 1;
             assertEquals(expected, backEnd.getNumberOfAllowedTries());
+        }
+    }
+
+    @Nested
+    class moveOutOfBaseTest {
+        @BeforeEach
+        void setup() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureInBase_whenMoveOutOfBase_thenFigureOnStartField(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure());
+            int expectedField = playerIndex * 10;
+            FigureState expectedState = FigureState.ON_FIELD;
+            assertAll(
+                    () -> assertEquals(expectedField, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getField()),
+                    () -> assertEquals(expectedState, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getState())
+            );
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnStartField_whenMoveOutOfBase_thenFigureInBase(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = 6;
+            backEnd.moveOutOfBase(getFirstFigureOfCurrentPlayer() + 1);backEnd.moveOutOfBase(getFirstFigureOfCurrentPlayer());
+            FigureState expectedStateFigureToMove = FigureState.ON_FIELD;
+            FigureState expectedStateFigureOnStartField = FigureState.IN_BASE;
+            int expectedFieldFigureToMove = playerIndex * 10;
+            int exopecetdFieldFigureOnStartField = getFirstFigureOfCurrentPlayer() + 1;
+            assertAll(
+                    () -> assertEquals(expectedFieldFigureToMove, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getField()),
+                    () -> assertEquals(expectedStateFigureToMove, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getState()),
+                    () -> assertEquals(exopecetdFieldFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getField()),
+                    () -> assertEquals(expectedStateFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getState())
+            );
         }
     }
 
