@@ -360,9 +360,8 @@ public class BackEnd {
     }
 
     private boolean baseOfCurrentPlayerIsEmpty() {
-        int firstOwnedFigureIndex = currentPlayer.getPlayerIndex() * 4;
+        int firstOwnedFigureIndex = currentPlayerIndex * 4;
         int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
-
         for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
             if (figures[i].isInBase()) {
                 return false;
