@@ -4,6 +4,7 @@ import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -109,6 +110,11 @@ public class BackEndTest {
                     () -> assertEquals(expectedStateFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getState())
             );
         }
+    }
+
+    @Test
+    void testTest(){
+        assertEquals(1, 2);
     }
 
     //Method for easier setting of the current player
