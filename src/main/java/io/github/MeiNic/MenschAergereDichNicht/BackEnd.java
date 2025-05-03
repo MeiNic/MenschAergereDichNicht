@@ -350,7 +350,7 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    private int figureOnHouseField(int fieldNumber) {
+    protected int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber && (figures[i].isInHouse()) || figures[i].isFinished()) {
                 return i;
