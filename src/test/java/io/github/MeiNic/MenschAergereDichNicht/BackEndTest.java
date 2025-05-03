@@ -5,10 +5,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import javax.swing.*;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +22,57 @@ public class BackEndTest {
     @BeforeAll
     static void setUpAll() {
         rand = new  Random();
+    }
+
+    @Nested
+    class setFinishedFiguresTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @Test
+        void givenNoFiguresToFinish_whenSetFinishedFigures_thenNoFiguresFinished() {
+            backEnd.setFinishedFigures();
+            assertAll(IntStream.range(0, 16)
+                    .mapToObj(i -> (Executable)(() -> assertFalse(backEnd.figures[i].isFinished())))
+                    .toArray(Executable[]::new));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenOneFigureOnLastHouseField_whenSetFinishedFigures_thenFigureFinished(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 3, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
+            backEnd.setFinishedFigures();
+            assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenOneFigureOnHouseField_whenSetFinishedFigures_thenFigureNotFinished(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 2, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
+            backEnd.setFinishedFigures();
+            assertFalse(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenTwoFiguresToFinish_whenSetFinishedFigures_thenTwoFiguresFinished(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 3, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setField(playerIndex * 4 + 2, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
+            backEnd.setFinishedFigures();
+            assertAll(
+                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished())//,
+                    //() -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].isFinished())
+            );
+        }
     }
 
     @Nested

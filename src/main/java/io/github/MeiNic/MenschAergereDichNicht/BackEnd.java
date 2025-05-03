@@ -309,7 +309,7 @@ public class BackEnd {
     }
 
     //check all figures if they are finished
-    private void setFinishedFigures() {
+    protected void setFinishedFigures() {
         for (int i = figures.length - 1; 0 <= i; i--) {
             int figureNumber = figureOnHouseField(i);
 
