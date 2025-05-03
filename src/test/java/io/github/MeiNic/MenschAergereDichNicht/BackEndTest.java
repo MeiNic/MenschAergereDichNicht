@@ -22,6 +22,28 @@ public class BackEndTest {
     }
 
     @Nested
+    class figureOnFieldTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @Test
+        void givenNoFigureOnField_whenGetFigureOnField_thenReturnMinusOne() {
+            int expected = -1;
+            assertEquals(expected, backEnd.figureOnField(0));
+        }
+
+        @Test
+        void givenFigureOnField_whenGetFigureOnField_thenReturnFigureIndex() {
+            backEnd.figures[0].setOnField();
+            backEnd.figures[0].setField(0, 0);
+            int expected = 0;
+            assertEquals(expected, backEnd.figureOnField(0));
+        }
+    }
+
+    @Nested
     class figureOnHouseField{
         @BeforeEach
         void setUp() {
