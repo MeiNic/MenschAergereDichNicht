@@ -359,7 +359,7 @@ public class BackEnd {
         return -1;
     }
 
-    private boolean baseOfCurrentPlayerIsEmpty() {
+    protected boolean baseOfCurrentPlayerIsEmpty() {
         int firstOwnedFigureIndex = currentPlayerIndex * 4;
         int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
         for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
