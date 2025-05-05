@@ -151,7 +151,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresInBase_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setInBase();
             }
             assertFalse(backEnd.baseOfCurrentPlayerIsEmpty());
@@ -161,10 +161,10 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenOneFigureInBas_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setInBase();
             }
-            backEnd.moveOutOfBase(getFirstFigureOfCurrentPlayer());
+            backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure());
             assertFalse(backEnd.baseOfCurrentPlayerIsEmpty());
         }
 
@@ -172,7 +172,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresOnField_whenCheckIfBaseIsEmpty_thanReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setOnField();
                 backEnd.figures[i].setField(rand.nextInt(40), 0);
             }
@@ -199,7 +199,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setOnField();
                 backEnd.figures[i].setField(rand.nextInt(40), 0);
             }
@@ -211,7 +211,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenAllFiguresFinished_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setFinished();
             }
             int expected = 3;
@@ -222,7 +222,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenOneFigureOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            for (int i = getFirstFigureOfCurrentPlayer(); i < getFigureAfterOfCurrentPlayer(); i++) {
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
                 backEnd.figures[i].setInBase();
             }
             backEnd.figures[playerIndex * 4].setOnField();
@@ -257,16 +257,16 @@ public class BackEndTest {
         void givenFigureOnStartField_whenMoveOutOfBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             BackEnd.randomNumber = 6;
-            backEnd.moveOutOfBase(getFirstFigureOfCurrentPlayer() + 1);backEnd.moveOutOfBase(getFirstFigureOfCurrentPlayer());
+            backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure() + 1);backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure());
             FigureState expectedStateFigureToMove = FigureState.ON_FIELD;
             FigureState expectedStateFigureOnStartField = FigureState.IN_BASE;
             int expectedFieldFigureToMove = playerIndex * 10;
-            int exopecetdFieldFigureOnStartField = getFirstFigureOfCurrentPlayer() + 1;
+            int exopecetdFieldFigureOnStartField = backEnd.currentPlayer.getIndexOfFirstFigure() + 1;
             assertAll(
                     () -> assertEquals(expectedFieldFigureToMove, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getField()),
                     () -> assertEquals(expectedStateFigureToMove, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getState()),
-                    () -> assertEquals(exopecetdFieldFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getField()),
-                    () -> assertEquals(expectedStateFigureOnStartField, backEnd.figures[getFirstFigureOfCurrentPlayer() + 1].getState())
+                    () -> assertEquals(exopecetdFieldFigureOnStartField, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].getField()),
+                    () -> assertEquals(expectedStateFigureOnStartField, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].getState())
             );
         }
     }
@@ -308,11 +308,6 @@ public class BackEndTest {
             throw new IllegalArgumentException("Invalid player index");
         }
 
-    }
-
-    // Method to get the first figure of the current player
-    private int getFirstFigureOfCurrentPlayer() {
-        return backEnd.currentPlayerIndex * 4;
     }
 
     // Method to get the figure after of the current player
