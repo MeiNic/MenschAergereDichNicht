@@ -69,8 +69,8 @@ public class BackEndTest {
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
             backEnd.setFinishedFigures();
             assertAll(
-                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished())//,
-                    //() -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].isFinished())
+                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished()),
+                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].isFinished())
             );
         }
     }
@@ -98,7 +98,7 @@ public class BackEndTest {
     }
 
     @Nested
-    class figureOnHouseField{
+    class figureOnHouseFieldTest{
         @BeforeEach
         void setUp() {
             backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
@@ -125,6 +125,18 @@ public class BackEndTest {
             backEnd.figures[0].setFinished();
             int expected = 0;
             assertEquals(expected, backEnd.figureOnHouseField(0));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenOneFigureFinishedAndOneInHouse_whenGetFigureOnHouseField_thenReturnFigureIndex(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 3, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setField(playerIndex * 4 + 2, 0);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setFinished();
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
+            int expected = backEnd.currentPlayer.getIndexOfFirstFigure() + 1;
+            assertEquals(expected, backEnd.figureOnHouseField(playerIndex * 4 + 2));
         }
     }
 
