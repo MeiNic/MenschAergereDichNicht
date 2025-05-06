@@ -25,6 +25,45 @@ public class BackEndTest {
     }
 
     @Nested
+    class moveToBaseTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnField_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setOnField();
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(30, 0);
+            int expected = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.moveToBase(backEnd.currentPlayer.getIndexOfFirstFigure());
+            assertAll(
+                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isInBase()),
+                    () -> assertEquals(expected, backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].getField())
+            );
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureInHouse_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
+            backEnd.moveToBase(backEnd.currentPlayer.getIndexOfFirstFigure());
+            assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isInBase());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureInBase_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.moveToBase(backEnd.currentPlayer.getIndexOfFirstFigure());
+            assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isInBase());
+        }
+    }
+
+    @Nested
     class getNameOfWinnerTest{
         @BeforeEach
         void setUp() {
