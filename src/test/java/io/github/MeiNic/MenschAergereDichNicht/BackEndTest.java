@@ -25,6 +25,35 @@ public class BackEndTest {
     }
 
     @Nested
+    class getNameOfWinnerTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenNotAllFiguresFinished_whenGetNameOfWinner_thenReturnNull(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
+                backEnd.figures[i].setOnField();
+            }
+            assertNull(backEnd.getNameOfWinner());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenAllFiguresFinished_whenGetNameOfWinner_thenReturnPlayerName(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure(); i < getFigureAfterOfCurrentPlayer(); i++) {
+                backEnd.figures[i].setFinished();
+            }
+            String expected = backEnd.players[playerIndex].getName();
+            assertEquals(expected, backEnd.getNameOfWinner());
+        }
+    }
+
+    @Nested
     class setFinishedFiguresTest{
         @BeforeEach
         void setUp() {
