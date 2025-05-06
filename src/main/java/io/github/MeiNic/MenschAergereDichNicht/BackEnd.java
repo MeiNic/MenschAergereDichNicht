@@ -31,9 +31,9 @@ public class BackEnd {
     public final Figure[] figures;
     public static int randomNumber;
 
-    private final Player[] players;
-    private Player currentPlayer;
-    private int currentPlayerIndex;
+    protected final Player[] players;
+    protected Player currentPlayer;
+    protected int currentPlayerIndex;
 
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -309,7 +309,7 @@ public class BackEnd {
     }
 
     //check all figures if they are finished
-    private void setFinishedFigures() {
+    protected void setFinishedFigures() {
         for (int i = figures.length - 1; 0 <= i; i--) {
             int figureNumber = figureOnHouseField(i);
 
@@ -340,7 +340,7 @@ public class BackEnd {
     }
 
     //check which figure is on the normal field
-    private int figureOnField(int fieldNumber) {
+    protected int figureOnField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber && figures[i].isOnField()) {
                 return i;
@@ -350,19 +350,18 @@ public class BackEnd {
     }
 
     //check which figure is on the house field
-    private int figureOnHouseField(int fieldNumber) {
+    protected int figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
-            if (figures[i].getField() == fieldNumber && (figures[i].isInHouse()) || figures[i].isFinished()) {
+            if (figures[i].getField() == fieldNumber && (figures[i].isInHouse() || figures[i].isFinished())) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean baseOfCurrentPlayerIsEmpty() {
-        int firstOwnedFigureIndex = currentPlayer.getPlayerIndex() * 4;
+    protected boolean baseOfCurrentPlayerIsEmpty() {
+        int firstOwnedFigureIndex = currentPlayerIndex * 4;
         int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
-
         for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
             if (figures[i].isInBase()) {
                 return false;
@@ -371,7 +370,7 @@ public class BackEnd {
         return true;
     }
 
-    private int getNumberOfAllowedTries() {
+    protected int getNumberOfAllowedTries() {
         int numberOfFiguresInBase = 0;
         int numberOfFinishedFigures = 0;
 
