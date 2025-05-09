@@ -16,7 +16,7 @@
 
 ![Logo of Mensch ärgere Dich nicht](res/title.png)
 
-Mensch ärgere Dich nicht is a digital version of the [same-named
+*Mensch ärgere Dich nicht* is a digital version of the [same-named
 German board
 game](https://en.wikipedia.org/wiki/Mensch_%C3%A4rgere_Dich_nicht).
 
@@ -25,15 +25,15 @@ round.](res/screenshot.png)
 
 ## Installation
 
-Mensch ärgere Dich nicht currently expects the Java Runtime
+*Mensch ärgere Dich nicht* currently expects the Java Runtime
 Environment to be installed on your computer.  We might provide native
 executables in the future.
 
 Go to the [latest
 release](https://github.com/MeiNic/MenschAergereDichNicht/releases/tag/latest)
-of Mensch ärgere Dich nicht and download the `.jar` file at the bottom
-of the page.  Open a terminal in the same directory as the downloaded
-file and run:
+of *Mensch ärgere Dich nicht* and download the `.jar` file at the
+bottom of the page.  Open a terminal in the same directory as the
+downloaded file and run:
 
 ``` shell
 java -jar <your-jar-file>
@@ -49,7 +49,7 @@ have a question, please [open an
 issue](https://github.com/MeiNic/MenschAergereDichNicht/issues/new)
 here on GitHub.
 
-If you would like to help develop Mensch ärgere Dich nicht, go ahead
+If you would like to help develop *Mensch ärgere Dich nicht*, go ahead
 and fork this repository. See [Getting Started with
 GitHub](https://docs.github.com/en/get-started) if you haven't worked
 with Git and/or GitHub before.
@@ -59,7 +59,7 @@ To run tests with Maven, use `mvn test`, to run the game, `mvn compile
 
 ## License
 
-Mensch ärgere Dich nicht is available under the
+*Mensch ärgere Dich nicht* is available under the
 [GPL-3.0-or-later](./COPYING).
 
 Copyright (C) 2024-2025 MeiNic, TastingComb and contributors.
