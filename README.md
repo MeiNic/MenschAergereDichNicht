@@ -25,7 +25,7 @@ round.](res/screenshot.png)
 
 ## Installation
 
-*Mensch ärgere Dich nicht* currently expects the Java Runtime
+*Mensch ärgere Dich nicht* currently requires the Java Runtime
 Environment to be installed on your computer.  We might provide native
 executables in the future.
 
@@ -60,6 +60,6 @@ To run tests with Maven, use `mvn test`, to run the game, `mvn compile
 ## License
 
 *Mensch ärgere Dich nicht* is available under the
-[GPL-3.0-or-later](./COPYING).
+[GPL-3.0-or-later](./COPYING) license.
 
 Copyright (C) 2024-2025 MeiNic, TastingComb and contributors.
