@@ -127,6 +127,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [#4]: https://github.com/MeiNic/MenschAergereDichNicht/pull/4
 [#1]: https://github.com/MeiNic/MenschAergereDichNicht/pull/1
 
-[unreleased]: https://github.com/MeiNic/MenschAergereDichNicht/compare/latest...HEAD
+[unreleased]: https://github.com/MeiNic/MenschAergereDichNicht/compare/v2.0.0...HEAD
 [v2.0.0]: https://github.com/MeiNic/MenschAergereDichNicht/compare/v1.0.0...v2.0.0
 [v1.0.0]: https://github.com/MeiNic/MenschAergereDichNicht/compare/15dd1fdde8c027b6df9a789522ba0752b2b185fe...v1.0.0
