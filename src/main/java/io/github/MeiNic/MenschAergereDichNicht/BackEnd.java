@@ -267,7 +267,7 @@ public class BackEnd {
         return !figures[figureOnField(newField)].getOwner().equals(figureToBeMoved.getOwner());
     }
 
-    private boolean moveSensible(int figureNumber) {
+    protected boolean moveSensible(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         switch (figureToBeMoved.getState()) {

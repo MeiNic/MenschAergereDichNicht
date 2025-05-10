@@ -25,6 +25,43 @@ public class BackEndTest {
     }
 
     @Nested
+    class moveSensibleTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @Test
+        void givenFigureInBase_whenCheckSensibleMove_thenReturnFalse() {
+            assertAll(IntStream.range(0, 16)
+                    .mapToObj(i -> (Executable)(() -> assertFalse(backEnd.moveSensible(i))))
+                    .toArray(Executable[]::new));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureInMaxHouseField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setField(4 * ++playerIndex, 0);
+            backEnd.figures[testFigureIndex].setInHouse();
+            assertFalse(backEnd.moveSensible(testFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnFieldAndFigureHigherProgressOnField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setField(8, 0);
+            backEnd.figures[testFigureIndex].setInHouse();
+            backEnd.figures[testFigureIndex + 1].setField(4 * ++playerIndex, 0);
+            backEnd.figures[testFigureIndex + 1].setInHouse();
+            assertFalse(backEnd.moveSensible(testFigureIndex));
+        }
+    }
+
+    @Nested
     class moveToBaseTest{
         @BeforeEach
         void setUp() {
