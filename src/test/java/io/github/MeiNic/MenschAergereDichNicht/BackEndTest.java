@@ -53,10 +53,10 @@ public class BackEndTest {
         void givenFigureOnFieldAndFigureHigherProgressOnField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setField(8, 0);
-            backEnd.figures[testFigureIndex].setInHouse();
-            backEnd.figures[testFigureIndex + 1].setField(4 * ++playerIndex, 0);
-            backEnd.figures[testFigureIndex + 1].setInHouse();
+            backEnd.figures[testFigureIndex].setOnField();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
+            backEnd.figures[testFigureIndex + 1].setOnField();
+            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + 5, 5);
             assertFalse(backEnd.moveSensible(testFigureIndex));
         }
     }
