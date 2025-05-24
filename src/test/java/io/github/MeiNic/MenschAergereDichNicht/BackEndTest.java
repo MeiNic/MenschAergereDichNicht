@@ -50,6 +50,17 @@ public class BackEndTest {
 
         @ParameterizedTest
         @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureInHouse_whenCheckSensibleMove_thenReturnTrue(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = 2;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setInHouse();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 4, 0);
+            assertTrue(backEnd.moveSensible(testFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldAndFigureHigherProgressOnField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -58,6 +69,18 @@ public class BackEndTest {
             backEnd.figures[testFigureIndex + 1].setOnField();
             backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + 5, 5);
             assertFalse(backEnd.moveSensible(testFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void fivenFigureOnFieldAndFigureLowerProgressOnField_whenCheckSensibleMove_thenReturnTrue(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setOnField();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 10 + 5, 4);
+            backEnd.figures[testFigureIndex + 1].setOnField();
+            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10, 0);
+            assertTrue(backEnd.moveSensible(testFigureIndex));
         }
     }
 
