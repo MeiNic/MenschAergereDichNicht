@@ -243,7 +243,7 @@ public class BackEnd {
     }
 
     //check if a beat is possible
-    private boolean beatPossible(int figureNumber) {
+    protected boolean beatPossible(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         if (!figureToBeMoved.isOnField()) {

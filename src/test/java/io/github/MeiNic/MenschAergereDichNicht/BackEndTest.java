@@ -1,6 +1,7 @@
 package io.github.MeiNic.MenschAergereDichNicht;
 
 import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
+import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import javax.swing.*;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -21,7 +21,56 @@ public class BackEndTest {
 
     @BeforeAll
     static void setUpAll() {
-        rand = new  Random();
+        rand = new Random();
+    }
+
+    @Nested
+    class beatPossibleTest{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @Test
+        void givenFigureInBase_whenCheckSensibleMove_thenReturnFalse() {
+            assertAll(IntStream.range(0, 16)
+                    .mapToObj(i -> (Executable)(() -> assertFalse(backEnd.beatPossible(i))))
+                    .toArray(Executable[]::new));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnField_whenCheckIfBeatPossible_thenReturnFalse(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setOnField();
+            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 10 + 5, 5);
+            assertFalse(backEnd.beatPossible(backEnd.currentPlayer.getIndexOfFirstFigure()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnFieldBeatOwnFigure_whenCheckIfBeatPossible_thenReturnFalse(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setOnField();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 10 + 2, 5);
+            backEnd.figures[testFigureIndex + 1].setOnField();
+            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + BackEnd.randomNumber, 5);
+            assertFalse(backEnd.beatPossible(testFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnFieldBeatOtherFigure_whenCheckIfBeatPossible_thenReturnTrue(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = rand.nextInt(0, 6) + 1;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setOnField();
+            backEnd.figures[testFigureIndex].setField(0, 0);
+            backEnd.figures[(testFigureIndex + 4) % 16].setOnField();
+            backEnd.figures[(testFigureIndex + 4) % 16].setField(BackEnd.randomNumber, 0);
+            assertTrue(backEnd.beatPossible(testFigureIndex));
+        }
     }
 
     @Nested
