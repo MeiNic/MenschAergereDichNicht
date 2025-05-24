@@ -220,7 +220,7 @@ public class BackEnd {
     }
 
     //move figure in the house by the given value
-    private void moveInHouse(int figureNumber) {
+    protected void moveInHouse(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         int newField = figureToBeMoved.getField() + randomNumber;

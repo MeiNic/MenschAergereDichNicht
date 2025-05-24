@@ -1,7 +1,6 @@
 package io.github.MeiNic.MenschAergereDichNicht;
 
 import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
-import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -22,6 +21,52 @@ public class BackEndTest {
     @BeforeAll
     static void setUpAll() {
         rand = new Random();
+    }
+
+    @Nested
+    class moveInHouse{
+        @BeforeEach
+        void setUp() {
+            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnMaxHosueField_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            final int expectedField = playerIndex * 4 + 3;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setInHouse();
+            backEnd.figures[testFigureIndex].setField(expectedField, 0);
+            backEnd.moveInHouse(testFigureIndex);
+            assertEquals(expectedField, backEnd.figures[testFigureIndex].getField());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigurInHouseAndMovable_whenMoveFigureInHouse_thenFigureMoved(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = rand.nextInt(0, 3) + 1;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            final int expectedField = playerIndex * 4 + BackEnd.randomNumber;
+            backEnd.figures[testFigureIndex].setInHouse();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 4, 0);
+            backEnd.moveInHouse(testFigureIndex);
+            assertEquals(expectedField, backEnd.figures[testFigureIndex].getField());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnFieldNotMovable_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = rand.nextInt(4, 6) + 1;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            final int expectedField = playerIndex * 4 + 2;
+            backEnd.figures[testFigureIndex].setInHouse();
+            backEnd.figures[testFigureIndex].setField(expectedField, 0);
+            backEnd.moveInHouse(testFigureIndex);
+            assertEquals(expectedField, backEnd.figures[testFigureIndex].getField());
+        }
     }
 
     @Nested
