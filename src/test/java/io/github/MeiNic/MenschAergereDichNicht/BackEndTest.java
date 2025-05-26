@@ -41,6 +41,22 @@ public class BackEndTest {
             backEnd.botMove();
             assertEquals(playerIndex * 10 + BackEnd.randomNumber, backEnd.figures[testFigureIndex].getField());
         }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void givenFigureOnStartfieldAndEmptyBase_whenBotMove_thenFigureNotMoved(int playerIndex) {
+            setCurrentPlayer(playerIndex);
+            BackEnd.randomNumber = 6;
+            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
+            backEnd.figures[testFigureIndex].setOnField();
+            backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
+            backEnd.figures[testFigureIndex + 1].setInHouse();
+            backEnd.figures[testFigureIndex + 2].setInHouse();
+            backEnd.figures[testFigureIndex + 3].setOnField();
+            backEnd.figures[testFigureIndex + 3].setField(playerIndex * 10 + 7, 7);
+            backEnd.botMove();
+            assertEquals(playerIndex * 10, backEnd.figures[testFigureIndex].getField());
+        }
     }
 
     @Nested
