@@ -34,19 +34,19 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenPlayerOnStartfield_whenBotMove_thenFigureMovedToStartField(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 6;
+            backEnd.randomNumber = 6;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
             backEnd.botMove();
-            assertEquals(playerIndex * 10 + BackEnd.randomNumber, backEnd.figures[testFigureIndex].getField());
+            assertEquals(playerIndex * 10 + backEnd.randomNumber, backEnd.figures[testFigureIndex].getField());
         }
 
         @ParameterizedTest
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnStartfieldAndEmptyBase_whenBotMove_thenFigureNotMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 6;
+            backEnd.randomNumber = 6;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
@@ -70,11 +70,11 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnField_whenMoveFigureOnField_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(6) + 1;
+            backEnd.randomNumber = rand.nextInt(6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
-            final int expectedField = backEnd.figures[testFigureIndex].getField() + BackEnd.randomNumber;
+            final int expectedField = backEnd.figures[testFigureIndex].getField() + backEnd.randomNumber;
             backEnd.moveOnField(testFigureIndex);
             assertEquals(expectedField, backEnd.figures[testFigureIndex].getField());
         }
@@ -83,11 +83,11 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnMaxField_whenMoveFigureOnField_thenFigureMovedOverBoarder(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(6) + 1;
+            backEnd.randomNumber = rand.nextInt(6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(39, 0);
-            final int expectedField = BackEnd.randomNumber - 1;
+            final int expectedField = backEnd.randomNumber - 1;
             backEnd.moveOnField(testFigureIndex);
             assertEquals(expectedField, backEnd.figures[testFigureIndex].getField());
         }
@@ -96,13 +96,13 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureBeatOtherFigure_whenMoveFigureOnField_thenFigureMovedAndOtherFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(6) + 1;
+            backEnd.randomNumber = rand.nextInt(6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
             backEnd.figures[(testFigureIndex + 4) % 16].setOnField();
-            backEnd.figures[(testFigureIndex + 4) % 16].setField(playerIndex * 10 + BackEnd.randomNumber, 0);
-            final int expectedField = playerIndex * 10 + BackEnd.randomNumber;
+            backEnd.figures[(testFigureIndex + 4) % 16].setField(playerIndex * 10 + backEnd.randomNumber, 0);
+            final int expectedField = playerIndex * 10 + backEnd.randomNumber;
             backEnd.moveOnField(testFigureIndex);
             assertAll(
                     () -> assertEquals(expectedField, backEnd.figures[testFigureIndex].getField()),
@@ -114,14 +114,14 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldWouldBeatOwnFigure_whenMoveFigureOnField_thenFigureNotMovedOtherFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(6) + 1;
+            backEnd.randomNumber = rand.nextInt(6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             final int expectedFieldFirstFigure = 0;
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(expectedFieldFirstFigure, 0);
             backEnd.figures[testFigureIndex + 1].setOnField();
-            backEnd.figures[testFigureIndex + 1].setField(BackEnd.randomNumber, 0);
-            final int expectedFieldSecondFigure = BackEnd.randomNumber * 2;
+            backEnd.figures[testFigureIndex + 1].setField(backEnd.randomNumber, 0);
+            final int expectedFieldSecondFigure = backEnd.randomNumber * 2;
             backEnd.moveOnField(testFigureIndex);
             assertAll(
                     () -> assertEquals(expectedFieldFirstFigure, backEnd.figures[testFigureIndex].getField()),
@@ -133,9 +133,9 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldMovetoFreeBase_whenMoveFigureOnField_thenFigureMovedToBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(4) + 1;
+            backEnd.randomNumber = rand.nextInt(4) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            final int expectedField = playerIndex * 4 + BackEnd.randomNumber - 1;
+            final int expectedField = playerIndex * 4 + backEnd.randomNumber - 1;
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField((playerIndex * 10 + 39) % 40, 39);
             backEnd.moveOnField(testFigureIndex);
@@ -146,7 +146,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldNotAbleToMoveInHouse_whenMoveFigureOnField_thenFigureNotMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(4, 6) + 1;
+            backEnd.randomNumber = rand.nextInt(4, 6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             final int expectedField = (playerIndex * 10 + 39) % 40;
             backEnd.figures[testFigureIndex].setOnField();
@@ -161,7 +161,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldWouldExceedMaxHouseField_whenMoveFigureOnField_thenFigureNotMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(4,6) + 1;
+            backEnd.randomNumber = rand.nextInt(4,6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             final int expectedField = (playerIndex * 10 + 39) % 40;
             backEnd.figures[testFigureIndex].setOnField();
@@ -194,9 +194,9 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigurInHouseAndMovable_whenMoveFigureInHouse_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(0, 3) + 1;
+            backEnd.randomNumber = rand.nextInt(0, 3) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            final int expectedField = playerIndex * 4 + BackEnd.randomNumber;
+            final int expectedField = playerIndex * 4 + backEnd.randomNumber;
             backEnd.figures[testFigureIndex].setInHouse();
             backEnd.figures[testFigureIndex].setField(playerIndex * 4, 0);
             backEnd.moveInHouse(testFigureIndex);
@@ -207,7 +207,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldNotMovable_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(4, 6) + 1;
+            backEnd.randomNumber = rand.nextInt(4, 6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             final int expectedField = playerIndex * 4 + 2;
             backEnd.figures[testFigureIndex].setInHouse();
@@ -248,7 +248,7 @@ public class BackEndTest {
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(playerIndex * 10 + 2, 5);
             backEnd.figures[testFigureIndex + 1].setOnField();
-            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + BackEnd.randomNumber, 5);
+            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + backEnd.randomNumber, 5);
             assertFalse(backEnd.beatPossible(testFigureIndex));
         }
 
@@ -256,12 +256,12 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnFieldBeatOtherFigure_whenCheckIfBeatPossible_thenReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = rand.nextInt(0, 6) + 1;
+            backEnd.randomNumber = rand.nextInt(0, 6) + 1;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setOnField();
             backEnd.figures[testFigureIndex].setField(0, 0);
             backEnd.figures[(testFigureIndex + 4) % 16].setOnField();
-            backEnd.figures[(testFigureIndex + 4) % 16].setField(BackEnd.randomNumber, 0);
+            backEnd.figures[(testFigureIndex + 4) % 16].setField(backEnd.randomNumber, 0);
             assertTrue(backEnd.beatPossible(testFigureIndex));
         }
     }
@@ -294,7 +294,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureInHouse_whenCheckSensibleMove_thenReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 2;
+            backEnd.randomNumber = 2;
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
             backEnd.figures[testFigureIndex].setInHouse();
             backEnd.figures[testFigureIndex].setField(playerIndex * 4, 0);
@@ -626,7 +626,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenFigureOnStartField_whenMoveOutOfBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 6;
+            backEnd.randomNumber = 6;
             backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure() + 1);backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure());
             FigureState expectedStateFigureToMove = FigureState.ON_FIELD;
             FigureState expectedStateFigureOnStartField = FigureState.IN_BASE;
@@ -652,7 +652,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenRandomNumberIsNotSix_whenSetNewCurrentPlayer_thenCurrentPlayerChanged(int playerIndex){
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 5;
+            backEnd.randomNumber = 5;
             backEnd.setNewCurrentPlayerIfNecessary();
             int expectedPlayerIndex = (playerIndex + 1) % 4;
             assertEquals(expectedPlayerIndex, backEnd.currentPlayerIndex);
@@ -662,7 +662,7 @@ public class BackEndTest {
         @ValueSource(ints = {0, 1, 2, 3})
         void givenRandomNumberIsSix_whenSetNewCurrentPlayer_thenCurrentPlayerNotChanged(int playerIndex){
             setCurrentPlayer(playerIndex);
-            BackEnd.randomNumber = 6;
+            backEnd.randomNumber = 6;
             backEnd.setNewCurrentPlayerIfNecessary();
             assertEquals(playerIndex, backEnd.currentPlayerIndex);
         }

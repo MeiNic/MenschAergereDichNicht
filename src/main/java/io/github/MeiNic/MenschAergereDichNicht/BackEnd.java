@@ -30,8 +30,7 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 public class BackEnd {
     public final Figure[] figures;
 
-    // TODO: Make this not static, but rather an instance variable. Currently it could cause issues if more than one game is played in the same JVM instance.
-    public static int randomNumber;
+    public int randomNumber;
 
     protected final Player[] players;
     protected Player currentPlayer;
