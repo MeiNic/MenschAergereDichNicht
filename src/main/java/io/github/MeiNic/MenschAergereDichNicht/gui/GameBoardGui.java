@@ -356,7 +356,7 @@ public class GameBoardGui extends JFrame {
                 remove(rollDice);
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
-                    displayResult(BackEnd.randomNumber);
+                    displayResult(backend.randomNumber);
                     promptState = Prompt.DEFAULT;
                     setPromptValues();
                 } else {

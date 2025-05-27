@@ -29,7 +29,8 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 
 public class BackEnd {
     public final Figure[] figures;
-    public static int randomNumber;
+
+    public int randomNumber;
 
     protected final Player[] players;
     protected Player currentPlayer;
@@ -176,7 +177,7 @@ public class BackEnd {
         }
     }
 
-    private void moveOnField(int figureNumber) {
+    protected void moveOnField(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         //store the old and new field-number in local variables
@@ -220,7 +221,7 @@ public class BackEnd {
     }
 
     //move figure in the house by the given value
-    private void moveInHouse(int figureNumber) {
+    protected void moveInHouse(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         int newField = figureToBeMoved.getField() + randomNumber;
@@ -243,7 +244,7 @@ public class BackEnd {
     }
 
     //check if a beat is possible
-    private boolean beatPossible(int figureNumber) {
+    protected boolean beatPossible(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         if (!figureToBeMoved.isOnField()) {
@@ -267,7 +268,7 @@ public class BackEnd {
         return !figures[figureOnField(newField)].getOwner().equals(figureToBeMoved.getOwner());
     }
 
-    private boolean moveSensible(int figureNumber) {
+    protected boolean moveSensible(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         switch (figureToBeMoved.getState()) {
