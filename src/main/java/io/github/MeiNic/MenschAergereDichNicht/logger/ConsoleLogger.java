@@ -75,7 +75,7 @@ public final class ConsoleLogger implements Logger {
 
     public void info(String message) {
         if (shouldLog(Level.INFO)) {
-            System.out.println(ANSIColorCodes.WHITE.getCode()
+            System.out.println(ANSIColorCodes.FOREGROUND.getCode()
                     + format(Level.INFO, message)
                     + ANSIColorCodes.RESET.getCode());
         }

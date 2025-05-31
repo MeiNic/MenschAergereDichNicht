@@ -19,7 +19,7 @@ package io.github.MeiNic.MenschAergereDichNicht.logger;
 public enum ANSIColorCodes {
     RESET("\u001B[0m"),
     BLUE("\u001B[34m"),
-    WHITE("\u001B[37m"),
+    FOREGROUND("\u001B[39m"),
     YELLOW("\u001B[33m"),
     PURPLE("\u001B[35m"),
     RED("\u001B[31m");
