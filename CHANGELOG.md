@@ -25,6 +25,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+* Info logging statements not visible on light-mode terminals
+  (reported by [@guemax] in [#119])
+
 ## [v2.0.0] - 2025-05-10
 
 ### Added
@@ -106,6 +111,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [@TastingComb]: https://github.com/TastingComb
 [@MeiNic]: https://github.com/MeiNic
 
+[#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
 [#100]: https://github.com/MeiNic/MenschAergereDichNicht/pull/100
 [#95]: https://github.com/MeiNic/MenschAergereDichNicht/pull/95
 [#94]: https://github.com/MeiNic/MenschAergereDichNicht/pull/94
