@@ -21,19 +21,19 @@ public class Human implements Player {
     private final int playerIndex;
 
     public Human(String name, int playerIndex) {
-	this.name = name;
-	this.playerIndex = playerIndex;
+        this.name = name;
+        this.playerIndex = playerIndex;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public int getPlayerState() {
-	return 0;
+        return 0;
     }
 
     public int getPlayerIndex() {
-	return playerIndex;
+        return playerIndex;
     }
 }

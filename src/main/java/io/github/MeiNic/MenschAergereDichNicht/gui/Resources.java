@@ -18,13 +18,12 @@ package io.github.MeiNic.MenschAergereDichNicht.gui;
 
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class Resources {
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
@@ -37,8 +36,7 @@ public class Resources {
     public static BufferedImage loadBufferedImage(String name) {
         String imagePath = "images/" + name + ".png";
 
-        InputStream imageStream = Resources.class.getClassLoader()
-                .getResourceAsStream(imagePath);
+        InputStream imageStream = Resources.class.getClassLoader().getResourceAsStream(imagePath);
         if (imageStream == null) {
             LOGGER.fatal("Unable to find image \"" + imagePath + "\".");
             System.exit(1);
@@ -49,27 +47,22 @@ public class Resources {
         try {
             image = ImageIO.read(imageStream);
         } catch (IOException e) {
-            LOGGER.fatal("Unable to load image \"" + imagePath + "\":"
-                    + e.getMessage());
+            LOGGER.fatal("Unable to load image \"" + imagePath + "\":" + e.getMessage());
             System.exit(1);
         }
 
         return image;
     }
 
-    public static ImageIcon loadScaledImageIcon(String name,
-                                                int width, int height) {
-        Image image = loadBufferedImage(name)
-                .getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    public static ImageIcon loadScaledImageIcon(String name, int width, int height) {
+        Image image = loadBufferedImage(name).getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(image);
     }
 
     public static Font loadFont(String name) {
-        String fontPath = "fonts/jetBrainsMono/JetBrainsMono-"
-                + name + ".ttf";
+        String fontPath = "fonts/jetBrainsMono/JetBrainsMono-" + name + ".ttf";
 
-        InputStream fontStream = Resources.class.getClassLoader()
-                .getResourceAsStream(fontPath);
+        InputStream fontStream = Resources.class.getClassLoader().getResourceAsStream(fontPath);
         if (fontStream == null) {
             LOGGER.fatal("Unable to find font \"" + fontPath + "\".");
             System.exit(1);
@@ -78,11 +71,9 @@ public class Resources {
         Font font = null;
 
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, fontStream)
-                    .deriveFont(13f);
+            font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(13f);
         } catch (IOException | FontFormatException e) {
-            LOGGER.fatal("Unable to load font \"" + fontPath + "\": "
-                    + e.getMessage());
+            LOGGER.fatal("Unable to load font \"" + fontPath + "\": " + e.getMessage());
             System.exit(1);
         }
 

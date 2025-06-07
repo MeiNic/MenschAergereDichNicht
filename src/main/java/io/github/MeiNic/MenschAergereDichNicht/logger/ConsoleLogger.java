@@ -16,8 +16,8 @@
 
 package io.github.MeiNic.MenschAergereDichNicht.logger;
 
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public final class ConsoleLogger implements Logger {
     private static ConsoleLogger instance;
@@ -38,9 +38,10 @@ public final class ConsoleLogger implements Logger {
 
     public void debug(String message) {
         if (shouldLog(Level.DEBUG)) {
-            System.out.println(ANSIColorCodes.BLUE.getCode()
-                    + format(Level.DEBUG, message)
-                    + ANSIColorCodes.RESET.getCode());
+            System.out.println(
+                    ANSIColorCodes.BLUE.getCode()
+                            + format(Level.DEBUG, message)
+                            + ANSIColorCodes.RESET.getCode());
         }
     }
 
@@ -51,7 +52,6 @@ public final class ConsoleLogger implements Logger {
         // messages.
         return logForLevelEqualOrAbove.ordinal() <= level.ordinal();
     }
-
 
     private String format(Level level, String message) {
         String levelEnclosingStart = "[";
@@ -75,30 +75,37 @@ public final class ConsoleLogger implements Logger {
 
     public void info(String message) {
         if (shouldLog(Level.INFO)) {
-            System.out.println(ANSIColorCodes.FOREGROUND.getCode()
-                    + format(Level.INFO, message)
-                    + ANSIColorCodes.RESET.getCode());
+            System.out.println(
+                    ANSIColorCodes.FOREGROUND.getCode()
+                            + format(Level.INFO, message)
+                            + ANSIColorCodes.RESET.getCode());
         }
     }
+
     public void warn(String message) {
         if (shouldLog(Level.WARN)) {
-            System.out.println(ANSIColorCodes.YELLOW.getCode()
-                    + format(Level.WARN, message)
-                    + ANSIColorCodes.RESET.getCode());
+            System.out.println(
+                    ANSIColorCodes.YELLOW.getCode()
+                            + format(Level.WARN, message)
+                            + ANSIColorCodes.RESET.getCode());
         }
     }
+
     public void error(String message) {
         if (shouldLog(Level.ERROR)) {
-            System.out.println(ANSIColorCodes.PURPLE.getCode()
-                    + format(Level.ERROR, message)
-                    + ANSIColorCodes.RESET.getCode());
+            System.out.println(
+                    ANSIColorCodes.PURPLE.getCode()
+                            + format(Level.ERROR, message)
+                            + ANSIColorCodes.RESET.getCode());
         }
     }
+
     public void fatal(String message) {
         if (shouldLog(Level.FATAL)) {
-            System.out.println(ANSIColorCodes.RED.getCode()
-                    + format(Level.FATAL, message)
-                    + ANSIColorCodes.RESET.getCode());
+            System.out.println(
+                    ANSIColorCodes.RED.getCode()
+                            + format(Level.FATAL, message)
+                            + ANSIColorCodes.RESET.getCode());
         }
     }
 }

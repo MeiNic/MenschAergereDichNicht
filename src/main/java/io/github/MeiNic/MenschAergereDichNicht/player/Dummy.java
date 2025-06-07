@@ -21,8 +21,8 @@ public class Dummy implements Player {
     private final int playerIndex;
 
     public Dummy(String name, int playerIndex) {
-	this.name = name;
-	this.playerIndex = playerIndex;
+        this.name = name;
+        this.playerIndex = playerIndex;
     }
 
     public String getName() {

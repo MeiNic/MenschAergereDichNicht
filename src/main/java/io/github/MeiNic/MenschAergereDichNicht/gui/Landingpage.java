@@ -18,13 +18,12 @@ package io.github.MeiNic.MenschAergereDichNicht.gui;
 
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Landingpage extends JFrame {
     private final JLabel head;
@@ -43,19 +42,19 @@ public class Landingpage extends JFrame {
 
     public Landingpage() {
         colorMarker = new JLabel[4];
-        //Insert image-files to the color markers
+        // Insert image-files to the color markers
         colorMarker[0] = new JLabel(Resources.loadImageIcon("figure-orange"));
         colorMarker[1] = new JLabel(Resources.loadImageIcon("figure-green"));
         colorMarker[2] = new JLabel(Resources.loadImageIcon("figure-blue"));
         colorMarker[3] = new JLabel(Resources.loadImageIcon("figure-red"));
 
-        //Set positions of the color markers
+        // Set positions of the color markers
         colorMarker[0].setBounds(40, 281, 39, 56);
         colorMarker[1].setBounds(40, 343, 39, 56);
         colorMarker[2].setBounds(40, 405, 39, 56);
         colorMarker[3].setBounds(40, 467, 39, 56);
 
-        //add circles to jframe
+        // add circles to jframe
         add(colorMarker[0]);
         add(colorMarker[1]);
         add(colorMarker[2]);
@@ -80,11 +79,14 @@ public class Landingpage extends JFrame {
         userNames[3] = new JTextField("red");
 
         understood = new JCheckBox("I read and understood the rules of the game", false);
-        notChecked = new JLabel("<html> <body> You have to read the rules and accept <br> them first! </body> </html>");
+        notChecked =
+                new JLabel(
+                        "<html> <body> You have to read the rules and accept <br> them first!"
+                                + " </body> </html>");
         rulesButton = new ImageTextPanel("button-idle", "rules");
         startGame = new ImageTextPanel("button-idle", "start game");
 
-        // Small adjustments for notChecked	
+        // Small adjustments for notChecked
         notChecked.setFont(Theme.SEMI_BOLD.deriveFont(15f));
         notChecked.setForeground(Color.RED);
 
@@ -107,60 +109,63 @@ public class Landingpage extends JFrame {
 
         // Add listeners
         playerNumber.addChangeListener(new MyChangeListener());
-        rulesButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                openRules();
-            }
+        rulesButton.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        openRules();
+                    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                rulesButton.setImage("button-hovered");
-                repaint();
-            }
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        rulesButton.setImage("button-hovered");
+                        repaint();
+                    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                rulesButton.setImage("button-idle");
-                repaint();
-            }
-        });
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        rulesButton.setImage("button-idle");
+                        repaint();
+                    }
+                });
 
-        startGame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (getUnderstoodStatus()) {
-                    setVisible(false);
+        startGame.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (getUnderstoodStatus()) {
+                            setVisible(false);
 
-                    String[] names = getNames();
-                    int numberOfHumanPlayers = getNumberOfHumanPlayers();
-                    boolean fillWithBots = getBotsSelection();
+                            String[] names = getNames();
+                            int numberOfHumanPlayers = getNumberOfHumanPlayers();
+                            boolean fillWithBots = getBotsSelection();
 
-                    LOGGER.info("Displaying GameBoardGui.");
-                    new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
-                } else {
-                    add(notChecked);
-                    repaint();
-                    LOGGER.warn("User tried to start the game without accepting the rules.");
-                }
-            }
+                            LOGGER.info("Displaying GameBoardGui.");
+                            new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
+                        } else {
+                            add(notChecked);
+                            repaint();
+                            LOGGER.warn(
+                                    "User tried to start the game without accepting the rules.");
+                        }
+                    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (getUnderstoodStatus()) {
-                    startGame.setImage("button-hovered-green");
-                } else {
-                    startGame.setImage("button-hovered-red");
-                }
-                repaint();
-            }
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        if (getUnderstoodStatus()) {
+                            startGame.setImage("button-hovered-green");
+                        } else {
+                            startGame.setImage("button-hovered-red");
+                        }
+                        repaint();
+                    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                startGame.setImage("button-idle");
-                repaint();
-            }
-        });
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        startGame.setImage("button-idle");
+                        repaint();
+                    }
+                });
 
         // Add UI Elements
         add(head);
@@ -218,7 +223,7 @@ public class Landingpage extends JFrame {
         return bots.isSelected();
     }
 
-    //Two methods used to change the stile of the JSpinner
+    // Two methods used to change the stile of the JSpinner
     private static JSpinner createCustomizedSpinner(JSpinner spinnerInput) {
         SpinnerModel spinnerModel = spinnerInput.getModel();
 

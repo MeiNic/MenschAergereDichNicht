@@ -25,7 +25,7 @@ public interface Theme {
     Font BOLD = getJetBrainsMonoFont("Bold");
     Font EXTRA_BOLD = getJetBrainsMonoFont("ExtraBold");
 
-    static private Font getJetBrainsMonoFont(String thickness) {
+    private static Font getJetBrainsMonoFont(String thickness) {
         return Resources.loadFont(thickness);
     }
 }

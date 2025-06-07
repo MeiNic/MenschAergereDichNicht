@@ -20,13 +20,12 @@ import io.github.MeiNic.MenschAergereDichNicht.BackEnd;
 import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.*;
 
 public class GameBoardGui extends JFrame {
 
@@ -35,37 +34,55 @@ public class GameBoardGui extends JFrame {
     private final JLabel[] bases;
     private final JLabel[] fields;
 
-    private static final int[] HOUSE_POSITIONS_X = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673,
-            593, 513};
-    private static final int[] HOUSE_POSITIONS_Y = {753, 673, 593, 513, 433, 433, 433, 433, 113, 193, 273, 353, 433,
-            433, 433, 433};
+    private static final int[] HOUSE_POSITIONS_X = {
+        433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673, 593, 513
+    };
+    private static final int[] HOUSE_POSITIONS_Y = {
+        753, 673, 593, 513, 433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433
+    };
 
-    private static final int[] BASE_POSITIONS_X = {28, 93, 28, 93, 28, 93, 28, 93, 763, 828, 763, 828, 763, 828, 763, 828};
-    private static final int[] BASE_POSITIONS_Y = {828, 828, 763, 763, 93, 93, 28, 28, 93, 93, 28, 28, 828, 828, 763, 763};
+    private static final int[] BASE_POSITIONS_X = {
+        28, 93, 28, 93, 28, 93, 28, 93, 763, 828, 763, 828, 763, 828, 763, 828
+    };
+    private static final int[] BASE_POSITIONS_Y = {
+        828, 828, 763, 763, 93, 93, 28, 28, 93, 93, 28, 28, 828, 828, 763, 763
+    };
 
-    private static final int[] FIELD_POSITIONS_X = {348, 348, 348, 348, 348, 268, 188, 108, 28, 28, 28, 108, 188, 268, 348,
-            348, 348, 348, 348, 428, 508, 508, 508, 508, 508, 588, 668, 748, 828, 828, 828, 748, 668, 588, 508, 508, 508,
-            508, 508, 428};
-    private static final int[] FIELD_POSITIONS_Y = {828, 748, 668, 588, 508, 508, 508, 508, 508, 428, 348, 348, 348, 348, 348,
-            268, 188, 108, 28, 28, 28, 108, 188, 268, 348, 348, 348, 348, 348, 428, 508, 508, 508, 508, 508, 588, 668,
-            748, 828, 828};
+    private static final int[] FIELD_POSITIONS_X = {
+        348, 348, 348, 348, 348, 268, 188, 108, 28, 28, 28, 108, 188, 268, 348, 348, 348, 348, 348,
+        428, 508, 508, 508, 508, 508, 588, 668, 748, 828, 828, 828, 748, 668, 588, 508, 508, 508,
+        508, 508, 428
+    };
+    private static final int[] FIELD_POSITIONS_Y = {
+        828, 748, 668, 588, 508, 508, 508, 508, 508, 428, 348, 348, 348, 348, 348, 268, 188, 108,
+        28, 28, 28, 108, 188, 268, 348, 348, 348, 348, 348, 428, 508, 508, 508, 508, 508, 588, 668,
+        748, 828, 828
+    };
 
-    private static final int[] FIGURE_POSITIONS_HOUSE_X = {433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673,
-            593, 513};
-    private static final int[] FIGURE_POSITIONS_HOUSE_Y = {728, 648, 568, 488, 408, 408, 408, 408, 88, 168, 248, 328, 408, 408,
-            408, 408};
+    private static final int[] FIGURE_POSITIONS_HOUSE_X = {
+        433, 433, 433, 433, 113, 193, 273, 353, 433, 433, 433, 433, 753, 673, 593, 513
+    };
+    private static final int[] FIGURE_POSITIONS_HOUSE_Y = {
+        728, 648, 568, 488, 408, 408, 408, 408, 88, 168, 248, 328, 408, 408, 408, 408
+    };
 
-    private static final int[] FIGURE_POSITIONS_BASE_X = {33, 98, 33, 98, 33, 98, 33, 98, 768, 833, 768, 833, 768, 833, 768,
-            833};
-    private static final int[] FIGURE_POSITIONS_BASE_Y = {815, 815, 750, 750, 80, 80, 15, 15, 80, 80, 15, 15, 815, 815, 750,
-            750};
+    private static final int[] FIGURE_POSITIONS_BASE_X = {
+        33, 98, 33, 98, 33, 98, 33, 98, 768, 833, 768, 833, 768, 833, 768, 833
+    };
+    private static final int[] FIGURE_POSITIONS_BASE_Y = {
+        815, 815, 750, 750, 80, 80, 15, 15, 80, 80, 15, 15, 815, 815, 750, 750
+    };
 
-    private static final int[] FIGURE_POSITIONS_FIELD_X = {353, 353, 353, 353, 353, 273, 193, 113, 33, 33, 33, 113, 193, 273,
-            353, 353, 353, 353, 353, 433, 513, 513, 513, 513, 513, 593, 673, 753, 833, 833, 833, 753, 673, 593, 513,
-            513, 513, 513, 513, 433};
-    private static final int[] FIGURE_POSITIONS_FIELD_Y = {813, 733, 653, 573, 493, 493, 493, 493, 493, 413, 333, 333, 333, 333
-            , 333, 253, 173, 93, 13, 13, 13, 93, 173, 253, 333, 333, 333, 333, 333, 413, 493, 493, 493, 493, 493, 573
-            , 653, 733, 813, 813};
+    private static final int[] FIGURE_POSITIONS_FIELD_X = {
+        353, 353, 353, 353, 353, 273, 193, 113, 33, 33, 33, 113, 193, 273, 353, 353, 353, 353, 353,
+        433, 513, 513, 513, 513, 513, 593, 673, 753, 833, 833, 833, 753, 673, 593, 513, 513, 513,
+        513, 513, 433
+    };
+    private static final int[] FIGURE_POSITIONS_FIELD_Y = {
+        813, 733, 653, 573, 493, 493, 493, 493, 493, 413, 333, 333, 333, 333, 333, 253, 173, 93, 13,
+        13, 13, 93, 173, 253, 333, 333, 333, 333, 333, 413, 493, 493, 493, 493, 493, 573, 653, 733,
+        813, 813
+    };
 
     private final JLabel gameBoardBackground;
     private final JLabel userAdvice;
@@ -78,7 +95,11 @@ public class GameBoardGui extends JFrame {
     private final ImageTextPanel nextPlayer;
     private final BackEnd backend;
 
-    private enum Prompt {ROLL_DICE, NEXT_PLAYER, DEFAULT}
+    private enum Prompt {
+        ROLL_DICE,
+        NEXT_PLAYER,
+        DEFAULT
+    }
 
     private Prompt promptState = Prompt.DEFAULT;
 
@@ -92,13 +113,16 @@ public class GameBoardGui extends JFrame {
         bases = new JLabel[16];
         fields = new JLabel[40];
 
-        //insert images to the new graphics elements
+        // insert images to the new graphics elements
         for (int i = 0; i < figures.length; i++) {
             switch (i) {
-                case 0, 1, 2, 3 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-orange"));
+                case 0, 1, 2, 3 ->
+                        figures[i] = new JLabel(Resources.loadImageIcon("figure-orange"));
                 case 4, 5, 6, 7 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-green"));
-                case 8, 9, 10, 11 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-blue"));
-                case 12, 13, 14, 15 -> figures[i] = new JLabel(Resources.loadImageIcon("figure-red"));
+                case 8, 9, 10, 11 ->
+                        figures[i] = new JLabel(Resources.loadImageIcon("figure-blue"));
+                case 12, 13, 14, 15 ->
+                        figures[i] = new JLabel(Resources.loadImageIcon("figure-red"));
             }
             figures[i].addMouseListener(new MyMouseListener());
             add(figures[i]);
@@ -107,10 +131,14 @@ public class GameBoardGui extends JFrame {
             int x = HOUSE_POSITIONS_X[i];
             int y = HOUSE_POSITIONS_Y[i];
             switch (i) {
-                case 0, 1, 2, 3 -> houses[i] = new JLabel(Resources.loadImageIcon("field-orange-inner"));
-                case 4, 5, 6, 7 -> houses[i] = new JLabel(Resources.loadImageIcon("field-green-inner"));
-                case 8, 9, 10, 11 -> houses[i] = new JLabel(Resources.loadImageIcon("field-blue-inner"));
-                case 12, 13, 14, 15 -> houses[i] = new JLabel(Resources.loadImageIcon("field-red-inner"));
+                case 0, 1, 2, 3 ->
+                        houses[i] = new JLabel(Resources.loadImageIcon("field-orange-inner"));
+                case 4, 5, 6, 7 ->
+                        houses[i] = new JLabel(Resources.loadImageIcon("field-green-inner"));
+                case 8, 9, 10, 11 ->
+                        houses[i] = new JLabel(Resources.loadImageIcon("field-blue-inner"));
+                case 12, 13, 14, 15 ->
+                        houses[i] = new JLabel(Resources.loadImageIcon("field-red-inner"));
             }
             houses[i].setBounds(x, y, 40, 40);
             add(houses[i]);
@@ -141,7 +169,7 @@ public class GameBoardGui extends JFrame {
             add(fields[i]);
         }
 
-        //configure background
+        // configure background
         gameBoardBackground = new JLabel(Resources.loadImageIcon("board"));
         gameBoardBackground.setBounds(0, 0, 906, 906);
 
@@ -156,12 +184,17 @@ public class GameBoardGui extends JFrame {
         nextPlayer = new ImageTextPanel("button-idle", "next player");
 
         // Set text
-        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
-                "button to roll the dice </body> </html>");
-        rulesAdvice.setText("<html> <body> Click this button, to view <br> the rules again </body> </html>");
+        userAdvice.setText(
+                "<html> <body> It's "
+                        + backend.getNameOfCurrentPlayer()
+                        + "s turn, click this <br> "
+                        + "button to roll the dice </body> </html>");
+        rulesAdvice.setText(
+                "<html> <body> Click this button, to view <br> the rules again </body> </html>");
         rulesButton.setText("rules");
-        noSix.setText("<html> <body> You didn't get a six. Press this button to <br> move on to the next player " +
-                "</body> </html>");
+        noSix.setText(
+                "<html> <body> You didn't get a six. Press this button to <br> move on to the next"
+                        + " player </body> </html>");
 
         // Set bounds
         userAdvice.setBounds(930, 22, 450, 64);
@@ -172,48 +205,51 @@ public class GameBoardGui extends JFrame {
         nextPlayer.setBounds(930, 80, 100, 32);
 
         // Add listeners
-        rollDice.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                buttonActionMouseKey();
-            }
-        });
-        rulesButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                openRules();
-            }
+        rollDice.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        buttonActionMouseKey();
+                    }
+                });
+        rulesButton.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        openRules();
+                    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                rulesButton.setImage("button-hovered");
-                repaint();
-            }
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        rulesButton.setImage("button-hovered");
+                        repaint();
+                    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                rulesButton.setImage("button-idle");
-                repaint();
-            }
-        });
-        nextPlayer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                buttonActionMouseKey();
-            }
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        rulesButton.setImage("button-idle");
+                        repaint();
+                    }
+                });
+        nextPlayer.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        buttonActionMouseKey();
+                    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                nextPlayer.setImage("button-hovered");
-                repaint();
-            }
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        nextPlayer.setImage("button-hovered");
+                        repaint();
+                    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                nextPlayer.setImage("button-idle");
-                repaint();
-            }
-        });
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        nextPlayer.setImage("button-idle");
+                        repaint();
+                    }
+                });
 
         replaceFigures();
         // Add UI Elements
@@ -228,14 +264,15 @@ public class GameBoardGui extends JFrame {
         setTitle("game field");
         setSize(1300, 945);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-                    buttonActionMouseKey();
-                }
-            }
-        });
+        addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        if (e.getKeyChar() == KeyEvent.VK_SPACE) {
+                            buttonActionMouseKey();
+                        }
+                    }
+                });
         setLayout(null);
         getContentPane().setBackground(Color.decode("#6c6f85"));
         setResizable(true);
@@ -320,8 +357,11 @@ public class GameBoardGui extends JFrame {
     private void setActivePlayer() {
         add(rollDice);
         promptState = Prompt.ROLL_DICE;
-        userAdvice.setText("<html> <body> It's " + backend.getNameOfCurrentPlayer() + "s turn, click this <br> " +
-                "button to roll the dice </body> </html>");
+        userAdvice.setText(
+                "<html> <body> It's "
+                        + backend.getNameOfCurrentPlayer()
+                        + "s turn, click this <br> "
+                        + "button to roll the dice </body> </html>");
         remove(result);
         repaint();
     }
@@ -340,7 +380,9 @@ public class GameBoardGui extends JFrame {
     private void setBotAdvice() {
         remove(rollDice);
         promptState = Prompt.DEFAULT;
-        userAdvice.setText("The bots are moving... Please wait, it will be the next players turn in a few seconds!");
+        userAdvice.setText(
+                "The bots are moving... Please wait, it will be the next players turn in a few"
+                        + " seconds!");
         result.setText("");
         repaint();
     }
@@ -398,7 +440,8 @@ public class GameBoardGui extends JFrame {
             }
             if (!clickedFigure.isPlaceable()) {
                 backend.moveToBase(clickedFigureIndex);
-                LOGGER.info("Figure movement aborted - Wrong figure moved (Moving figure to base...)");
+                LOGGER.info(
+                        "Figure movement aborted - Wrong figure moved (Moving figure to base...)");
                 prepareNextMove();
                 return;
             }
