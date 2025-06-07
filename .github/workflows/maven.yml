@@ -27,5 +27,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Lint with Maven
+      run: mvn -B spotless:check
     - name: Tests with Maven
       run: mvn -B test
