@@ -309,35 +309,16 @@ public class BackEnd {
         return null;
     }
 
-    //check all figures if they are finished
     protected void setFinishedFigures() {
-        for (int i = figures.length - 1; 0 <= i; i--) {
-            int figureNumber = figureOnHouseField(i);
-
-            if (figureNumber == -1) {
-                continue;
-            }
-
-            Figure currentFigure = figures[figureNumber];
-
-            // If figure is on the last field in the house, this one
-            // is definitely finished and does not have to be moved
-            // any further.
-            if (i == 15 || i == 11 || i == 7 || i == 3) {
-                currentFigure.setFinished();
-                continue;
-            }
-
-            int nextFigureNumber = figureOnHouseField(i + 1);
-            if (nextFigureNumber == -1) {
-                continue;
-            }
-
-            Figure nextFigureInHouse = figures[nextFigureNumber];
-            if (nextFigureInHouse.isFinished()) {
-                currentFigure.setFinished();
-            }
-        }
+	for (int i = 0; i < players.length; i++) {
+	    for (int j = 4*i + 3; j >= 4*i; j--) {
+		int figureIndex = figureOnHouseField(j);
+		if (figureIndex == -1) {
+		    break;
+		}
+		figures[figureIndex].setFinished();
+	    }
+	}
     }
 
     //check which figure is on the normal field
