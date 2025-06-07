@@ -22,7 +22,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Tests with Maven
+    - name: Test with Maven
       run: mvn -B test
 
   lint:
