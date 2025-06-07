@@ -1,5 +1,6 @@
 package io.github.MeiNic.MenschAergereDichNicht;
 
+import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
 import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -395,53 +396,243 @@ public class BackEndTest {
     }
 
     @Nested
-    class setFinishedFiguresTest{
+    class setFinishedFiguresTest {
         @BeforeEach
         void setUp() {
-            backEnd = new BackEnd(new String[]{"orange", "blue", "green", "red"}, 4, false);
+            backEnd = new BackEnd(new String[]{"orange", "green", "blue", "red"}, 4, false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oooo(int i) {
+            placeFiguresInHouse(false, false, false, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oooi(int i) {
+            placeFiguresInHouse(false, false, false, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void ooio(int i) {
+            placeFiguresInHouse(false, false, true, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void ooii(int i) {
+            placeFiguresInHouse(false, false, true, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oioo(int i) {
+            placeFiguresInHouse(false, true, false, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oioi(int i) {
+            placeFiguresInHouse(false, true, false, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oiio(int i) {
+            placeFiguresInHouse(false, true, true, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void oiii(int i) {
+            placeFiguresInHouse(false, true, true, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iooo(int i) {
+            placeFiguresInHouse(true, false, false, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iooi(int i) {
+            placeFiguresInHouse(true, false, false, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void ioio(int i) {
+            placeFiguresInHouse(true, false, true, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void ioii(int i) {
+            placeFiguresInHouse(true, false, true, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iioo(int i) {
+            placeFiguresInHouse(true, true, false, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iioi(int i) {
+            placeFiguresInHouse(true, true, false, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iiio(int i) {
+            placeFiguresInHouse(true, true, true, false, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void iiii(int i) {
+            placeFiguresInHouse(true, true, true, true, i);
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(0, i).isFinished()));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 3})
+        void alreadyFinishedFiguresAreStillFinished(int i) {
+            placeFiguresInHouse(true, false, false, false, i);
+            backEnd.setFinishedFigures();
+            backEnd.setFinishedFigures();
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
         }
 
         @Test
-        void givenNoFiguresToFinish_whenSetFinishedFigures_thenNoFiguresFinished() {
+        void multiplePlayersMayHaveFinishedFigures() {
+            placeFiguresInHouse(true, false, false, false, 0);
+            placeFiguresInHouse(true, false, true,  false, 1);
+            placeFiguresInHouse(true, true,  false, false, 2);
+            placeFiguresInHouse(true, true,  true,  true,  3);
             backEnd.setFinishedFigures();
-            assertAll(IntStream.range(0, 16)
-                    .mapToObj(i -> (Executable)(() -> assertFalse(backEnd.figures[i].isFinished())))
-                    .toArray(Executable[]::new));
+            assertAll(() ->  assertTrue(nthFigureOfCurrentPlayer(3, 0).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, 0).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, 0).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, 0).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(3, 1).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(2, 1).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, 1).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, 1).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(3, 2).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, 2).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(1, 2).isFinished()),
+                      () -> assertFalse(nthFigureOfCurrentPlayer(0, 2).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(3, 3).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(2, 3).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(1, 3).isFinished()),
+                      () ->  assertTrue(nthFigureOfCurrentPlayer(0, 3).isFinished()));
         }
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenOneFigureOnLastHouseField_whenSetFinishedFigures_thenFigureFinished(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 3, 0);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
-            backEnd.setFinishedFigures();
-            assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished());
+        void placeFiguresInHouse(boolean third, boolean second,
+                                 boolean first, boolean zeroth, int i) {
+            boolean[] figuresInHouse = {third, second, first, zeroth};
+            int figureIndex, houseFieldIndex;
+            figureIndex = houseFieldIndex = 4*i + 3;
+
+            for (boolean figureIsOnHouseField : figuresInHouse) {
+                if (figureIsOnHouseField) {
+                    backEnd.figures[figureIndex].setInHouse();
+                    backEnd.figures[figureIndex].setField(houseFieldIndex, 0);
+                    figureIndex--;
+                }
+                houseFieldIndex--;
+            }
         }
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenOneFigureOnHouseField_whenSetFinishedFigures_thenFigureNotFinished(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 2, 0);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
-            backEnd.setFinishedFigures();
-            assertFalse(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished());
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenTwoFiguresToFinish_whenSetFinishedFigures_thenTwoFiguresFinished(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(playerIndex * 4 + 3, 0);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setField(playerIndex * 4 + 2, 0);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].isFinished()),
-                    () -> assertTrue(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].isFinished())
-            );
+        Figure nthFigureOfCurrentPlayer(int n, int i) {
+            return backEnd.figures[4*i + n];
         }
     }
 
