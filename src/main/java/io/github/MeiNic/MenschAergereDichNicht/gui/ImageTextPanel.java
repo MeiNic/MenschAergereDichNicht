@@ -16,9 +16,9 @@
 
 package io.github.MeiNic.MenschAergereDichNicht.gui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 public class ImageTextPanel extends JPanel {
     private BufferedImage defaultImg;
@@ -65,7 +65,7 @@ public class ImageTextPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(defaultImg, 0, 0, this);
 
-        //calculations for center placement of text
+        // calculations for center placement of text
         int CenterX = getWidth() / 2;
         int CenterY = getHeight() / 2;
         FontMetrics fm = g.getFontMetrics();

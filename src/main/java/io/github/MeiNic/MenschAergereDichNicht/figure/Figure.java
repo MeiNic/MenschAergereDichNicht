@@ -16,13 +16,13 @@
 
 package io.github.MeiNic.MenschAergereDichNicht.figure;
 
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.FINISHED;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_BASE;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_HOUSE;
+import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.ON_FIELD;
+
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-
-import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_BASE;
-import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.ON_FIELD;
-import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_HOUSE;
-import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.FINISHED;
 
 public class Figure {
     private boolean placeable;
@@ -33,7 +33,7 @@ public class Figure {
     private int progress;
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    public Figure(int fieldNew, int colorNew, String owner){
+    public Figure(int fieldNew, int colorNew, String owner) {
         state = IN_BASE;
         placeable = false;
         field = fieldNew;
@@ -47,17 +47,34 @@ public class Figure {
     }
 
     public void setField(int newField, int randomNumber) {
-        switch (state){
+        switch (state) {
             case IN_BASE, IN_HOUSE -> {
                 if (newField >= color * 4 && newField <= color * 4 + 4) this.field = newField;
-                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
+                else
+                    LOGGER.error(
+                            "Tried to set figure on invalid field. \n Current Field: "
+                                    + this.field
+                                    + " New Field: "
+                                    + newField
+                                    + " Color "
+                                    + this.color
+                                    + " State: "
+                                    + this.state);
             }
             case ON_FIELD -> {
                 if (newField < 40) {
                     progress += randomNumber;
                     this.field = newField;
-                }
-                else LOGGER.error("Tried to set figure on invalid field. \n Current Field: " + this.field + " New Field: " + newField + " Color " + this.color + " State: " + this.state);
+                } else
+                    LOGGER.error(
+                            "Tried to set figure on invalid field. \n Current Field: "
+                                    + this.field
+                                    + " New Field: "
+                                    + newField
+                                    + " Color "
+                                    + this.color
+                                    + " State: "
+                                    + this.state);
             }
             case FINISHED -> LOGGER.error("Tried to replace finished Figure");
         }

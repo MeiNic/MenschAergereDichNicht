@@ -18,10 +18,9 @@ package io.github.MeiNic.MenschAergereDichNicht.gui;
 
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.*;
 
 public class Rules extends JFrame {
     private final ImageTextPanel close;
@@ -32,22 +31,31 @@ public class Rules extends JFrame {
     Rules(JFrame JFrameN) {
         executingClass = JFrameN;
 
-        //declaration of the JLabels & the JCheckBox
+        // declaration of the JLabels & the JCheckBox
         JLabel header = new JLabel("Info");
         JLabel goalHeader = new JLabel("Goal of the Game:");
         JLabel goal1 = new JLabel("The Goal is to get all of your 4 figures into your House.");
         JLabel goal2 = new JLabel("In order to get there you have to kick your opponents figures.");
         JLabel ruleHeader = new JLabel("Rules: ");
         JLabel rule1 = new JLabel("1. When a 6 is rolled, you have to move a figure out of base!");
-        JLabel rule2 = new JLabel("2. you have to keep your start-field free, as long as there are figures in your Base");
-        JLabel rule3 = new JLabel("<html><body> 3. If possible, you must kick another person! If you didn't your " +
-                "figure, that was able to <br> kick someone, will get moved to your Base. </body></html>");
-        JLabel rule4 = new JLabel("<html><body> 4. In order to get into your house you have to get the exact number, " +
-                "you can't go in with <br> a number, that is to high. </body></html>");
+        JLabel rule2 =
+                new JLabel(
+                        "2. you have to keep your start-field free, as long as there are figures in"
+                                + " your Base");
+        JLabel rule3 =
+                new JLabel(
+                        "<html><body> 3. If possible, you must kick another person! If you didn't"
+                            + " your figure, that was able to <br> kick someone, will get moved to"
+                            + " your Base. </body></html>");
+        JLabel rule4 =
+                new JLabel(
+                        "<html><body> 4. In order to get into your house you have to get the exact"
+                                + " number, you can't go in with <br> a number, that is to high."
+                                + " </body></html>");
         JLabel rule5 = new JLabel("5. You cannot jump over your figures in your House.");
         close = new ImageTextPanel("button-idle", "close");
 
-        //position of all j-components
+        // position of all j-components
         header.setBounds(3, 0, 150, 35);
         goalHeader.setBounds(3, 40, 300, 35);
         ruleHeader.setBounds(3, 115, 300, 35);
@@ -60,32 +68,33 @@ public class Rules extends JFrame {
         rule5.setBounds(6, 260, 700, 32);
         close.setBounds(6, 300, 100, 32);
 
-        //Set Font
+        // Set Font
         header.setFont(Theme.EXTRA_BOLD);
         goalHeader.setFont(Theme.BOLD);
         ruleHeader.setFont(Theme.BOLD);
 
-        //Button action for close
-        close.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                closeWindow();
-            }
+        // Button action for close
+        close.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        closeWindow();
+                    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                close.setImage("button-hovered");
-                repaint();
-            }
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        close.setImage("button-hovered");
+                        repaint();
+                    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                close.setImage("button-idle");
-                repaint();
-            }
-        });
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        close.setImage("button-idle");
+                        repaint();
+                    }
+                });
 
-        //Add UI elements
+        // Add UI elements
         add(header);
         add(goalHeader);
         add(goal1);
@@ -98,7 +107,7 @@ public class Rules extends JFrame {
         add(rule5);
         add(close);
 
-        //display UI
+        // display UI
         setTitle("Overview ruleHeader");
         setSize(750, 375);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

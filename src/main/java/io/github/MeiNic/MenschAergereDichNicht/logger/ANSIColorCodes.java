@@ -31,6 +31,6 @@ public enum ANSIColorCodes {
     }
 
     public String getCode() {
-	return code;
+        return code;
     }
 }
