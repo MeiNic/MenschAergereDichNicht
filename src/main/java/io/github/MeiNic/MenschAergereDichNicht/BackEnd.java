@@ -26,6 +26,7 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Bot;
 import io.github.MeiNic.MenschAergereDichNicht.player.Dummy;
 import io.github.MeiNic.MenschAergereDichNicht.player.Human;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
+import java.util.Optional;
 
 public class BackEnd {
     public final Figure[] figures;
@@ -312,7 +313,7 @@ public class BackEnd {
     }
 
     // check which player has won
-    public String getNameOfWinner() {
+    public Optional<String> getNameOfWinner() {
         setFinishedFigures();
 
         for (int i = 0; i < 16; i += 4) {
@@ -320,10 +321,10 @@ public class BackEnd {
                     && figures[i + 1].isFinished()
                     && figures[i + 2].isFinished()
                     && figures[i + 3].isFinished()) {
-                return figures[i].getOwner();
+                return Optional.of(figures[i].getOwner());
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     protected void setFinishedFigures() {

@@ -412,7 +412,7 @@ public class BackEndTest {
                     i++) {
                 backEnd.figures[i].setOnField();
             }
-            assertNull(backEnd.getNameOfWinner());
+            assertFalse(backEnd.getNameOfWinner().isPresent());
         }
 
         @ParameterizedTest
@@ -425,7 +425,7 @@ public class BackEndTest {
                 backEnd.figures[i].setFinished();
             }
             String expected = backEnd.players[playerIndex].getName();
-            assertEquals(expected, backEnd.getNameOfWinner());
+            assertEquals(expected, backEnd.getNameOfWinner().get());
         }
     }
 
