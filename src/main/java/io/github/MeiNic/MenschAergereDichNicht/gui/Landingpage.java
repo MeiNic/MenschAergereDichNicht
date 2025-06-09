@@ -16,6 +16,7 @@
 
 package io.github.MeiNic.MenschAergereDichNicht.gui;
 
+import io.github.MeiNic.MenschAergereDichNicht.BackEnd;
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 import java.awt.*;
@@ -141,7 +142,8 @@ public class Landingpage extends JFrame {
                             boolean fillWithBots = getBotsSelection();
 
                             LOGGER.info("Displaying GameBoardGui.");
-                            new GameBoardGui(names, numberOfHumanPlayers, fillWithBots);
+                            new GameBoardGui(
+                                    new BackEnd(names, numberOfHumanPlayers, fillWithBots));
                         } else {
                             add(notChecked);
                             repaint();

@@ -105,8 +105,8 @@ public class GameBoardGui extends JFrame {
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
-        this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
+    public GameBoardGui(BackEnd backendInput) {
+        this.backend = backendInput;
 
         figures = new JLabel[16];
         houses = new JLabel[16];
@@ -280,7 +280,7 @@ public class GameBoardGui extends JFrame {
         LOGGER.info("Displaying Landingpage.");
     }
 
-    private void prepareNextMove() {
+    protected void prepareNextMove() {
         backend.disablePlacementForAllFigures();
 
         removePrompt();
@@ -300,7 +300,7 @@ public class GameBoardGui extends JFrame {
         setVisible(false);
     }
 
-    private void executeNextMove() {
+    protected void executeNextMove() {
         backend.setNewCurrentPlayerIfNecessary();
         switch (backend.getPlayerStateOfCurrentPlayer()) {
             case 0 -> setActivePlayer();
@@ -315,7 +315,7 @@ public class GameBoardGui extends JFrame {
         }
     }
 
-    private void replaceFigures() {
+    protected void replaceFigures() {
         Figure[] input = backend.figures;
         int dimensionX = 39;
         int dimensionY = 56;
@@ -339,7 +339,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void displayResult(int randomNumber) {
+    void displayResult(int randomNumber) {
         switch (randomNumber) {
             case 1 -> result = new JLabel(Resources.loadImageIcon("dice-1"));
             case 2 -> result = new JLabel(Resources.loadImageIcon("dice-2"));
@@ -354,7 +354,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void setActivePlayer() {
+    protected void setActivePlayer() {
         add(rollDice);
         promptState = Prompt.ROLL_DICE;
         userAdvice.setText(
@@ -366,7 +366,7 @@ public class GameBoardGui extends JFrame {
         repaint();
     }
 
-    private void setPromptValues() {
+    void setPromptValues() {
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(930, 160, 350, 32);
@@ -392,7 +392,7 @@ public class GameBoardGui extends JFrame {
         new Rules(this);
     }
 
-    private void buttonActionMouseKey() {
+    protected void buttonActionMouseKey() {
         switch (promptState) {
             case ROLL_DICE -> {
                 remove(rollDice);
