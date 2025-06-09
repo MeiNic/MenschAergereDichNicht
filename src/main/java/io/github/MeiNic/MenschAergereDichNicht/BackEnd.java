@@ -229,7 +229,7 @@ public class BackEnd {
             if (positionInHouse >= 4) return;
             positionInHouse += figureToBeMoved.color * 4;
             for (int i = figureToBeMoved.color * 4; i <= positionInHouse; i++) {
-                if (figureOnHouseField(i) != -1) return;
+                if (figureOnHouseField(i).isPresent()) return;
             }
             figureToBeMoved.setInHouse();
             figureToBeMoved.setField(positionInHouse, randomNumber);
@@ -249,7 +249,7 @@ public class BackEnd {
         }
 
         for (int i = figureToBeMoved.getField() + 1; i <= newField; i++) {
-            if (figureOnHouseField(i) != -1) {
+            if (figureOnHouseField(i).isPresent()) {
                 LOGGER.info(
                         "Figure would have to jump over other figures on field: "
                                 + i
@@ -336,11 +336,11 @@ public class BackEnd {
     protected void setFinishedFigures() {
         for (int i = 0; i < players.length; i++) {
             for (int j = 4 * i + 3; j >= 4 * i; j--) {
-                int figureIndex = figureOnHouseField(j);
-                if (figureIndex == -1) {
+                Optional<Integer> figureIndex = figureOnHouseField(j);
+                if (!figureIndex.isPresent()) {
                     break;
                 }
-                figures[figureIndex].setFinished();
+                figures[figureIndex.get()].setFinished();
             }
         }
     }
@@ -356,14 +356,14 @@ public class BackEnd {
     }
 
     // check which figure is on the house field
-    protected int figureOnHouseField(int fieldNumber) {
+    protected Optional<Integer> figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber
                     && (figures[i].isInHouse() || figures[i].isFinished())) {
-                return i;
+                return Optional.of(i);
             }
         }
-        return -1;
+        return Optional.empty();
     }
 
     protected boolean baseOfCurrentPlayerIsEmpty() {
