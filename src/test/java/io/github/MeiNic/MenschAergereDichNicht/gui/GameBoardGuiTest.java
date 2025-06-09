@@ -13,7 +13,7 @@ public class GameBoardGuiTest {
 
     @BeforeEach
     public void setUp() {
-        System.setProperty("java.awt.headless", "false");
+        System.setProperty("java.awt.headless", "true");
 
 
         BackEnd backEnd = new BackEnd(new String[]{"Test", "Test", "Test", "Test"}, 4, false);
