@@ -412,7 +412,7 @@ public class BackEndTest {
                     i++) {
                 backEnd.figures[i].setOnField();
             }
-            assertNull(backEnd.getNameOfWinner());
+            assertFalse(backEnd.getNameOfWinner().isPresent());
         }
 
         @ParameterizedTest
@@ -425,7 +425,7 @@ public class BackEndTest {
                 backEnd.figures[i].setFinished();
             }
             String expected = backEnd.players[playerIndex].getName();
-            assertEquals(expected, backEnd.getNameOfWinner());
+            assertEquals(expected, backEnd.getNameOfWinner().get());
         }
     }
 
@@ -697,8 +697,7 @@ public class BackEndTest {
 
         @Test
         void givenNoFigureOnField_whenGetFigureOnField_thenReturnMinusOne() {
-            int expected = -1;
-            assertEquals(expected, backEnd.figureOnField(0));
+            assertFalse(backEnd.figureOnField(0).isPresent());
         }
 
         @Test
@@ -706,7 +705,7 @@ public class BackEndTest {
             backEnd.figures[0].setOnField();
             backEnd.figures[0].setField(0, 0);
             int expected = 0;
-            assertEquals(expected, backEnd.figureOnField(0));
+            assertEquals(expected, backEnd.figureOnField(0).get());
         }
     }
 
@@ -720,8 +719,7 @@ public class BackEndTest {
         @Test
         void givenNoFigureOnHouseField_whenGetFigureOnHouseField_thenReturnMinusOne() {
             setCurrentPlayer(0);
-            int expected = -1;
-            assertEquals(expected, backEnd.figureOnHouseField(0));
+            assertFalse(backEnd.figureOnHouseField(0).isPresent());
         }
 
         @Test
@@ -729,7 +727,7 @@ public class BackEndTest {
             backEnd.figures[0].setInHouse();
             backEnd.figures[0].setField(0, 0);
             int expected = 0;
-            assertEquals(expected, backEnd.figureOnHouseField(0));
+            assertEquals(expected, backEnd.figureOnHouseField(0).get());
         }
 
         @Test
@@ -737,7 +735,7 @@ public class BackEndTest {
             backEnd.figures[0].setField(0, 0);
             backEnd.figures[0].setFinished();
             int expected = 0;
-            assertEquals(expected, backEnd.figureOnHouseField(0));
+            assertEquals(expected, backEnd.figureOnHouseField(0).get());
         }
 
         @ParameterizedTest
@@ -752,7 +750,7 @@ public class BackEndTest {
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setFinished();
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
             int expected = backEnd.currentPlayer.getIndexOfFirstFigure() + 1;
-            assertEquals(expected, backEnd.figureOnHouseField(playerIndex * 4 + 2));
+            assertEquals(expected, backEnd.figureOnHouseField(playerIndex * 4 + 2).get());
         }
     }
 
