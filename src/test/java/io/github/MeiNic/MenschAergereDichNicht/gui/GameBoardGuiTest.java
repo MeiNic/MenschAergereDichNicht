@@ -23,19 +23,19 @@ public class GameBoardGuiTest {
 
     @BeforeEach
     public void setUp() {
-        // Setze Headless-Modus für Sicherheit
+        // set headless mode to avoid AWT exceptions in headless environments
         System.setProperty("java.awt.headless", "true");
 
-        // Testdaten
+        // testdata
         String[] names = {"Player1", "Player2", "Player3", "Player4"};
         backEnd = new BackEnd(names, 4, false);
 
-        // Verwende MockedConstruction für den JFrame-Konstruktor
+        // using Mockito to mock JFrame construction
         mockedJFrame =
                 Mockito.mockConstruction(
                         JFrame.class,
                         (mock, context) -> {
-                            // Konfiguriere den Mock
+                            // Mock configuration for JFrame;
                             Container mockContainer = mock(Container.class);
                             when(mock.getContentPane()).thenReturn(mockContainer);
                         });
