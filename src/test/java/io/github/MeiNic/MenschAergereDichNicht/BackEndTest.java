@@ -241,24 +241,45 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
-        void noBeatIsPossibleIfFigureIsInBase(int i) {
-            backEnd.figures[i].setInBase();
-            assertFalse(backEnd.beatIsPossible(i));
+        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        void noBeatIsPossibleIfFigureIsInBase(int randomNumber) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(backEnd.figures[4], randomNumber);
+            backEnd.figures[0].setInBase();
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
-        void noBeatIsPossibleIfFigureIsInHouse(int i) {
-            backEnd.figures[i].setInHouse();
-            assertFalse(backEnd.beatIsPossible(i));
+        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        void noBeatIsPossibleIfFigureIsInHouse(int randomNumber) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(backEnd.figures[4], randomNumber);
+            backEnd.figures[0].setInHouse();
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
-        void noBeatIsPossibleIfFigureIsFinished(int i) {
-            backEnd.figures[i].setFinished();
-            assertFalse(backEnd.beatIsPossible(i));
+        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        void noBeatIsPossibleIfFigureIsFinished(int randomNumber) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(backEnd.figures[4], randomNumber);
+            backEnd.figures[0].setFinished();
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
         }
 
         @ParameterizedTest
@@ -339,13 +360,39 @@ public class BackEndTest {
             assertTrue(backEnd.beatIsPossible(currentFigureIndex));
         }
 
+        @Test
+        void newFieldIsNotWrapped() {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(otherFigure, 39);
+            placeFigureOnField(currentFigure, 38);
+            backEnd.randomNumber = 1;
+
+            assertTrue(backEnd.beatIsPossible(currentFigureIndex));
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1", "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
+            })
+        void newFieldIsWrapped(int randomNumber, int offset) {
+            int currentFigureIndex = 4;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[0];
+
+            placeFigureOnField(otherFigure, randomNumber - 1 - offset);
+            placeFigureOnField(currentFigure, 39 - offset);
+            backEnd.randomNumber = randomNumber;
+
+            assertTrue(backEnd.beatIsPossible(currentFigureIndex));
+        }
+
         void placeFigureOnField(Figure figure, int value) {
             figure.setOnField();
             figure.setField(value, 0);
             figure.setProgress(value - (10 * figure.color));
-            if (0 < figure.getProgress()) {
-                figure.setProgress(figure.getProgress() + 40);
-            }
         }
     }
 
