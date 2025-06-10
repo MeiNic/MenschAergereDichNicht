@@ -267,24 +267,24 @@ public class BackEnd {
             return false;
         }
 
-	boolean thisFigureIsAboutToEnterTheHouse = thisFigure.getProgress() + randomNumber > 39;
-	if (thisFigureIsAboutToEnterTheHouse) {
+        boolean thisFigureIsAboutToEnterTheHouse = thisFigure.getProgress() + randomNumber > 39;
+        if (thisFigureIsAboutToEnterTheHouse) {
             return false;
         }
 
-	int oldField = thisFigure.getField();
+        int oldField = thisFigure.getField();
         int newField = oldField + randomNumber;
         if (newField > 39) {
             newField -= 40;
         }
 
-	boolean newFieldIsEmpty = !figureOnField(newField).isPresent();
+        boolean newFieldIsEmpty = !figureOnField(newField).isPresent();
         if (newFieldIsEmpty) {
             return false;
         }
 
-	Figure otherFigure = figures[figureOnField(newField).get()];
-	return !thisFigure.getOwner().equals(otherFigure.getOwner());
+        Figure otherFigure = figures[figureOnField(newField).get()];
+        return !thisFigure.getOwner().equals(otherFigure.getOwner());
     }
 
     protected boolean moveSensible(int figureNumber) {

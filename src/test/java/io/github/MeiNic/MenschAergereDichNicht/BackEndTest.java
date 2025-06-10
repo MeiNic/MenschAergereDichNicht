@@ -366,8 +366,9 @@ public class BackEndTest {
 
         @ParameterizedTest
         @CsvSource({
-                "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1", "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
-            })
+            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
+            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
+        })
         void newFieldIsWrapped(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[4];
             Figure otherFigure = backEnd.figures[0];
