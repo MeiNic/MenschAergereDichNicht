@@ -521,7 +521,7 @@ public class BackEndTest {
                     i++) {
                 backEnd.figures[i].setOnField();
             }
-            assertFalse(backEnd.getNameOfWinner().isPresent());
+            assertTrue(backEnd.getNameOfWinner().isEmpty());
         }
 
         @ParameterizedTest
@@ -806,7 +806,7 @@ public class BackEndTest {
 
         @Test
         void givenNoFigureOnField_whenGetFigureOnField_thenReturnMinusOne() {
-            assertFalse(backEnd.figureOnField(0).isPresent());
+            assertTrue(backEnd.figureOnField(0).isEmpty());
         }
 
         @Test
@@ -828,7 +828,7 @@ public class BackEndTest {
         @Test
         void givenNoFigureOnHouseField_whenGetFigureOnHouseField_thenReturnMinusOne() {
             setCurrentPlayer(0);
-            assertFalse(backEnd.figureOnHouseField(0).isPresent());
+            assertTrue(backEnd.figureOnHouseField(0).isEmpty());
         }
 
         @Test
