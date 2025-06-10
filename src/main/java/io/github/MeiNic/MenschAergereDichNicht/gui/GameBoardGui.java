@@ -25,6 +25,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Optional;
 import javax.swing.*;
 
 public class GameBoardGui {
@@ -293,14 +294,12 @@ public class GameBoardGui {
     }
 
     private void displayWinWindowIfNecessary() {
-        String nameOfWinner = backend.getNameOfWinner();
+        Optional<String> nameOfWinner = backend.getNameOfWinner();
 
-        if (nameOfWinner == null) {
-            return;
+        if (nameOfWinner.isPresent()) {
+            new WinWindow(nameOfWinner.get());
+            frame.setVisible(false);
         }
-
-        new WinWindow(nameOfWinner);
-        frame.setVisible(false);
     }
 
     protected void executeNextMove() {
