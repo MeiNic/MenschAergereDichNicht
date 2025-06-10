@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class BackEndTest {
@@ -233,57 +234,118 @@ public class BackEndTest {
     }
 
     @Nested
-    class beatPossibleTest {
+    class beatIsPossibleTest {
         @BeforeEach
         void setUp() {
-            backEnd = new BackEnd(new String[] {"orange", "blue", "green", "red"}, 4, false);
-        }
-
-        @Test
-        void givenFigureInBase_whenCheckSensibleMove_thenReturnFalse() {
-            assertAll(
-                    IntStream.range(0, 16)
-                            .mapToObj(
-                                    i -> (Executable) (() -> assertFalse(backEnd.beatPossible(i))))
-                            .toArray(Executable[]::new));
+            backEnd = new BackEnd(new String[] {"orange", "green", "blue", "red"}, 4, false);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureOnField_whenCheckIfBeatPossible_thenReturnFalse(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setOnField();
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(
-                    playerIndex * 10 + 5, 5);
-            assertFalse(backEnd.beatPossible(backEnd.currentPlayer.getIndexOfFirstFigure()));
+        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
+        void noBeatIsPossibleIfFigureIsInBase(int i) {
+            backEnd.figures[i].setInBase();
+            assertFalse(backEnd.beatPossible(i));
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureOnFieldBeatOwnFigure_whenCheckIfBeatPossible_thenReturnFalse(
-                int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setOnField();
-            backEnd.figures[testFigureIndex].setField(playerIndex * 10 + 2, 5);
-            backEnd.figures[testFigureIndex + 1].setOnField();
-            backEnd.figures[testFigureIndex + 1].setField(
-                    playerIndex * 10 + backEnd.randomNumber, 5);
-            assertFalse(backEnd.beatPossible(testFigureIndex));
+        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
+        void noBeatIsPossibleIfFigureIsInHouse(int i) {
+            backEnd.figures[i].setInHouse();
+            assertFalse(backEnd.beatPossible(i));
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureOnFieldBeatOtherFigure_whenCheckIfBeatPossible_thenReturnTrue(
-                int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.randomNumber = rand.nextInt(0, 6) + 1;
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setOnField();
-            backEnd.figures[testFigureIndex].setField(0, 0);
-            backEnd.figures[(testFigureIndex + 4) % 16].setOnField();
-            backEnd.figures[(testFigureIndex + 4) % 16].setField(backEnd.randomNumber, 0);
-            assertTrue(backEnd.beatPossible(testFigureIndex));
+        @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
+        void noBeatIsPossibleIfFigureIsFinished(int i) {
+            backEnd.figures[i].setFinished();
+            assertFalse(backEnd.beatPossible(i));
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
+            "5,2", "5,3", "6,0", "6,1", "6,2", "6,3",
+        })
+        void noBeatIsPossibleIfFigureIsAboutToEnterTheHouse(int randomNumber, int offset) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(otherFigure, 0 + offset);
+            placeFigureOnField(currentFigure, 40 - randomNumber + offset);
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatPossible(currentFigureIndex));
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
+            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
+        })
+        void noBeatIsPossibleIfFigureCannotReachToOtherFigure(int randomNumber, int offset) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(otherFigure, randomNumber + 1);
+            placeFigureOnField(currentFigure, 0);
+            backEnd.randomNumber = randomNumber - offset;
+
+            assertFalse(backEnd.beatPossible(currentFigureIndex));
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
+        })
+        void noBeatIsPossibleIfFigureJumpsOverOtherFigure(int randomNumber, int offset) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(otherFigure, offset + 1);
+            placeFigureOnField(currentFigure, 0);
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatPossible(currentFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        void noBeatIsPossibleIfFigureOnNewFieldIsFromTheSamePlayer(int randomNumber) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[1];
+
+            placeFigureOnField(otherFigure, randomNumber);
+            placeFigureOnField(currentFigure, 0);
+            backEnd.randomNumber = randomNumber;
+
+            assertFalse(backEnd.beatPossible(currentFigureIndex));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        void beatIsPossible(int randomNumber) {
+            int currentFigureIndex = 0;
+            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure otherFigure = backEnd.figures[4];
+
+            placeFigureOnField(otherFigure, randomNumber);
+            placeFigureOnField(currentFigure, 0);
+            backEnd.randomNumber = randomNumber;
+
+            assertTrue(backEnd.beatPossible(currentFigureIndex));
+        }
+
+        void placeFigureOnField(Figure figure, int value) {
+            figure.setOnField();
+            figure.setField(value, 0);
+            figure.setProgress(value - (10 * figure.color));
+            if (0 < figure.getProgress()) {
+                figure.setProgress(figure.getProgress() + 40);
+            }
         }
     }
 
