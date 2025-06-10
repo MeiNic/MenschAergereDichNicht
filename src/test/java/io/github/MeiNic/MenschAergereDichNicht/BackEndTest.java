@@ -243,43 +243,40 @@ public class BackEndTest {
         @ParameterizedTest
         @ValueSource(ints = {1, 2, 3, 4, 5, 6})
         void noBeatIsPossibleIfFigureIsInBase(int randomNumber) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(backEnd.figures[4], randomNumber);
             backEnd.figures[0].setInBase();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
         @ValueSource(ints = {1, 2, 3, 4, 5, 6})
         void noBeatIsPossibleIfFigureIsInHouse(int randomNumber) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(backEnd.figures[4], randomNumber);
             backEnd.figures[0].setInHouse();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
         @ValueSource(ints = {1, 2, 3, 4, 5, 6})
         void noBeatIsPossibleIfFigureIsFinished(int randomNumber) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(backEnd.figures[4], randomNumber);
             backEnd.figures[0].setFinished();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
@@ -288,15 +285,14 @@ public class BackEndTest {
             "5,2", "5,3", "6,0", "6,1", "6,2", "6,3",
         })
         void noBeatIsPossibleIfFigureIsAboutToEnterTheHouse(int randomNumber, int offset) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(otherFigure, 0 + offset);
-            placeFigureOnField(currentFigure, 40 - randomNumber + offset);
+            placeFigureOnField(thisFigure, 40 - randomNumber + offset);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
@@ -305,15 +301,14 @@ public class BackEndTest {
             "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
         })
         void noBeatIsPossibleIfFigureCannotReachToOtherFigure(int randomNumber, int offset) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(otherFigure, randomNumber + 1);
-            placeFigureOnField(currentFigure, 0);
+            placeFigureOnField(thisFigure, 0);
             backEnd.randomNumber = randomNumber - offset;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
@@ -321,56 +316,52 @@ public class BackEndTest {
             "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
         })
         void noBeatIsPossibleIfFigureJumpsOverOtherFigure(int randomNumber, int offset) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(otherFigure, offset + 1);
-            placeFigureOnField(currentFigure, 0);
+            placeFigureOnField(thisFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
         @ValueSource(ints = {1, 2, 3, 4, 5, 6})
         void noBeatIsPossibleIfFigureOnNewFieldIsFromTheSamePlayer(int randomNumber) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[1];
 
             placeFigureOnField(otherFigure, randomNumber);
-            placeFigureOnField(currentFigure, 0);
+            placeFigureOnField(thisFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigure));
+            assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
         @ValueSource(ints = {1, 2, 3, 4, 5, 6})
         void beatIsPossible(int randomNumber) {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(otherFigure, randomNumber);
-            placeFigureOnField(currentFigure, 0);
+            placeFigureOnField(thisFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertTrue(backEnd.beatIsPossible(currentFigure));
+            assertTrue(backEnd.beatIsPossible(thisFigure));
         }
 
         @Test
         void newFieldIsNotWrapped() {
-            int currentFigureIndex = 0;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(otherFigure, 39);
-            placeFigureOnField(currentFigure, 38);
+            placeFigureOnField(thisFigure, 38);
             backEnd.randomNumber = 1;
 
-            assertTrue(backEnd.beatIsPossible(currentFigure));
+            assertTrue(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
@@ -378,15 +369,14 @@ public class BackEndTest {
                 "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1", "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
             })
         void newFieldIsWrapped(int randomNumber, int offset) {
-            int currentFigureIndex = 4;
-            Figure currentFigure = backEnd.figures[currentFigureIndex];
+            Figure thisFigure = backEnd.figures[4];
             Figure otherFigure = backEnd.figures[0];
 
             placeFigureOnField(otherFigure, randomNumber - 1 - offset);
-            placeFigureOnField(currentFigure, 39 - offset);
+            placeFigureOnField(thisFigure, 39 - offset);
             backEnd.randomNumber = randomNumber;
 
-            assertTrue(backEnd.beatIsPossible(currentFigure));
+            assertTrue(backEnd.beatIsPossible(thisFigure));
         }
 
         void placeFigureOnField(Figure figure, int value) {
