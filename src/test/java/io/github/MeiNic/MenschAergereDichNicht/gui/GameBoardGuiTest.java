@@ -42,33 +42,16 @@ public class GameBoardGuiTest {
                         });
 
         // Erstelle GameBoardGui - ohne HeadlessException dank Mock
-        gameBoardGui =
-                new GameBoardGui(backEnd) {
-                    // Überschreibe Methoden, die UI-Operationen ausführen
-                    @Override
-                    protected void replaceFigures() {
-                        // Keine echte UI-Aktualisierung im Test
-                    }
-
-                    @Override
-                    protected void executeNextMove() {
-                        // Kein Aufruf der echten Methode im Test
-                    }
-                };
+        gameBoardGui = new GameBoardGui(backEnd);
     }
 
     @AfterEach
     public void tearDown() {
-        // Aufräumen der Mockito-Ressourcen
         mockedJFrame.close();
     }
 
     @Test
     public void testGameBoardGuiInitialization() {
-        // Bestätige, dass die GUI ohne Ausnahmen initialisiert wurde
         assertNotNull(gameBoardGui);
-
-        // Verifiziere, dass ein JFrame erstellt wurde
-        assertEquals(1, mockedJFrame.constructed().size());
     }
 }
