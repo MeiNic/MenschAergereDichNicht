@@ -109,7 +109,7 @@ public class BackEnd {
         for (int i = currentPlayer.getIndexOfFirstFigure();
                 i < currentPlayer.getIndexOfLastFigure();
                 i++) {
-            if (beatPossible(i)) {
+            if (beatIsPossible(i)) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
             }
@@ -166,7 +166,7 @@ public class BackEnd {
             }
         }
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (beatPossible(i)) {
+            if (beatIsPossible(i)) {
                 moveFigure(i);
                 return;
             }
@@ -263,7 +263,7 @@ public class BackEnd {
     }
 
     // check if a beat is possible
-    protected boolean beatPossible(int figureNumber) {
+    protected boolean beatIsPossible(int figureNumber) {
         Figure figureToBeMoved = figures[figureNumber];
 
         if (!figureToBeMoved.isOnField()) {
