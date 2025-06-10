@@ -109,7 +109,7 @@ public class BackEnd {
         for (int i = currentPlayer.getIndexOfFirstFigure();
                 i < currentPlayer.getIndexOfLastFigure();
                 i++) {
-            if (beatPossible(i)) {
+            if (beatIsPossible(figures[i])) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
             }
@@ -166,7 +166,7 @@ public class BackEnd {
             }
         }
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (beatPossible(i)) {
+            if (beatIsPossible(figures[i])) {
                 moveFigure(i);
                 return;
             }
@@ -262,31 +262,29 @@ public class BackEnd {
         figureToBeMoved.moveByValue(randomNumber);
     }
 
-    // check if a beat is possible
-    protected boolean beatPossible(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
-
-        if (!figureToBeMoved.isOnField()) {
+    protected boolean beatIsPossible(Figure thisFigure) {
+        if (!thisFigure.isOnField()) {
             return false;
         }
 
-        int oldField = figureToBeMoved.getField();
-        int newField = oldField + randomNumber;
+        boolean thisFigureIsAboutToEnterTheHouse = thisFigure.getProgress() + randomNumber > 39;
+        if (thisFigureIsAboutToEnterTheHouse) {
+            return false;
+        }
 
+        int oldField = thisFigure.getField();
+        int newField = oldField + randomNumber;
         if (newField > 39) {
             newField -= 40;
         }
 
-        if (39 - figureToBeMoved.getProgress() < randomNumber) {
+        boolean newFieldIsEmpty = !figureOnField(newField).isPresent();
+        if (newFieldIsEmpty) {
             return false;
         }
 
-        if (!figureOnField(newField).isPresent()) {
-            return false;
-        }
-        return !figures[figureOnField(newField).get()]
-                .getOwner()
-                .equals(figureToBeMoved.getOwner());
+        Figure otherFigure = figures[figureOnField(newField).get()];
+        return !thisFigure.getOwner().equals(otherFigure.getOwner());
     }
 
     protected boolean moveSensible(int figureNumber) {
