@@ -109,7 +109,7 @@ public class BackEnd {
         for (int i = currentPlayer.getIndexOfFirstFigure();
                 i < currentPlayer.getIndexOfLastFigure();
                 i++) {
-            if (beatIsPossible(i)) {
+            if (beatIsPossible(figures[i])) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
             }
@@ -166,7 +166,7 @@ public class BackEnd {
             }
         }
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (beatIsPossible(i)) {
+            if (beatIsPossible(figures[i])) {
                 moveFigure(i);
                 return;
             }
@@ -262,9 +262,7 @@ public class BackEnd {
         figureToBeMoved.moveByValue(randomNumber);
     }
 
-    protected boolean beatIsPossible(int figureNumber) {
-	Figure thisFigure = figures[figureNumber];
-
+    protected boolean beatIsPossible(Figure thisFigure) {
         if (!thisFigure.isOnField()) {
             return false;
         }

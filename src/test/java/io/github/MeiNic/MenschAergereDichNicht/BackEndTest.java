@@ -251,7 +251,7 @@ public class BackEndTest {
             backEnd.figures[0].setInBase();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -265,7 +265,7 @@ public class BackEndTest {
             backEnd.figures[0].setInHouse();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -279,7 +279,7 @@ public class BackEndTest {
             backEnd.figures[0].setFinished();
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -296,7 +296,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 40 - randomNumber + offset);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -313,7 +313,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 0);
             backEnd.randomNumber = randomNumber - offset;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -329,7 +329,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -343,7 +343,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertFalse(backEnd.beatIsPossible(currentFigureIndex));
+            assertFalse(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -357,7 +357,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 0);
             backEnd.randomNumber = randomNumber;
 
-            assertTrue(backEnd.beatIsPossible(currentFigureIndex));
+            assertTrue(backEnd.beatIsPossible(currentFigure));
         }
 
         @Test
@@ -370,7 +370,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 38);
             backEnd.randomNumber = 1;
 
-            assertTrue(backEnd.beatIsPossible(currentFigureIndex));
+            assertTrue(backEnd.beatIsPossible(currentFigure));
         }
 
         @ParameterizedTest
@@ -386,7 +386,7 @@ public class BackEndTest {
             placeFigureOnField(currentFigure, 39 - offset);
             backEnd.randomNumber = randomNumber;
 
-            assertTrue(backEnd.beatIsPossible(currentFigureIndex));
+            assertTrue(backEnd.beatIsPossible(currentFigure));
         }
 
         void placeFigureOnField(Figure figure, int value) {
