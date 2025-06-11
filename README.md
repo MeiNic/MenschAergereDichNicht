@@ -54,12 +54,33 @@ and fork this repository. See [Getting Started with
 GitHub](https://docs.github.com/en/get-started) if you haven't worked
 with Git and/or GitHub before.
 
-To run tests with Maven, use `mvn test`, to run the game, `mvn compile
-&& java -jar target/MenschAergereDichNicht-*.jar`.
+## Development
+
+The game uses [Maven](https://maven.apache.org/) as a build tool. To run the game, use these commands:
+
+```bash
+mvn compile && java -jar target/MenschAergereDichNicht-*.jar
+```
+
+For now the project has some tests implemented, which can be run with:
+
+```bash
+mvn test
+```
+
+We use the Google Java Format for formatting the code. To format the code or check if the code is formatted correctly, you can use these commands:
+
+```bash
+# Check formatting
+mvn spotless:check
+
+# Apply formatting
+mvn spotless:apply
+```
 
 ## License
 
 *Mensch ärgere Dich nicht* is available under the
 [GPL-3.0-or-later](./COPYING) license.
 
-Copyright (C) 2024-2025 MeiNic, TastingComb and contributors.
+Copyright (C) 2023–2025 MeiNic, TastingComb and contributors.
