@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 import java.util.Optional;
 import javax.swing.*;
 
-public class GameBoardGui extends JFrame {
+public class GameBoardGui {
 
     private final JLabel[] figures;
     private final JLabel[] houses;
@@ -106,8 +106,11 @@ public class GameBoardGui extends JFrame {
 
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    public GameBoardGui(String[] playerNames, int numberOfPlayers, boolean fillWithBots) {
-        this.backend = new BackEnd(playerNames, numberOfPlayers, fillWithBots);
+    protected JFrame frame;
+
+    public GameBoardGui(BackEnd backendInput) {
+        this.backend = backendInput;
+        frame = new JFrame();
 
         figures = new JLabel[16];
         houses = new JLabel[16];
@@ -126,7 +129,7 @@ public class GameBoardGui extends JFrame {
                         figures[i] = new JLabel(Resources.loadImageIcon("figure-red"));
             }
             figures[i].addMouseListener(new MyMouseListener());
-            add(figures[i]);
+            frame.add(figures[i]);
         }
         for (int i = 0; i < houses.length; i++) {
             int x = HOUSE_POSITIONS_X[i];
@@ -142,7 +145,7 @@ public class GameBoardGui extends JFrame {
                         houses[i] = new JLabel(Resources.loadImageIcon("field-red-inner"));
             }
             houses[i].setBounds(x, y, 40, 40);
-            add(houses[i]);
+            frame.add(houses[i]);
         }
         for (int i = 0; i < bases.length; i++) {
             int x = BASE_POSITIONS_X[i];
@@ -154,7 +157,7 @@ public class GameBoardGui extends JFrame {
                 case 12, 13, 14, 15 -> bases[i] = new JLabel(Resources.loadImageIcon("field-red"));
             }
             bases[i].setBounds(x, y, 50, 50);
-            add(bases[i]);
+            frame.add(bases[i]);
         }
         for (int i = 0; i < fields.length; i++) {
             int x = FIELD_POSITIONS_X[i];
@@ -167,7 +170,7 @@ public class GameBoardGui extends JFrame {
                 default -> fields[i] = new JLabel(Resources.loadImageIcon("field-white"));
             }
             fields[i].setBounds(x, y, 50, 50);
-            add(fields[i]);
+            frame.add(fields[i]);
         }
 
         // configure background
@@ -223,13 +226,13 @@ public class GameBoardGui extends JFrame {
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         rulesButton.setImage("button-hovered");
-                        repaint();
+                        frame.repaint();
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
                         rulesButton.setImage("button-idle");
-                        repaint();
+                        frame.repaint();
                     }
                 });
         nextPlayer.addMouseListener(
@@ -242,30 +245,30 @@ public class GameBoardGui extends JFrame {
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         nextPlayer.setImage("button-hovered");
-                        repaint();
+                        frame.repaint();
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
                         nextPlayer.setImage("button-idle");
-                        repaint();
+                        frame.repaint();
                     }
                 });
 
         replaceFigures();
         // Add UI Elements
-        add(gameBoardBackground);
-        add(rollDice);
-        add(userAdvice);
-        add(rulesAdvice);
-        add(rulesButton);
+        frame.add(gameBoardBackground);
+        frame.add(rollDice);
+        frame.add(userAdvice);
+        frame.add(rulesAdvice);
+        frame.add(rulesButton);
 
         promptState = Prompt.ROLL_DICE;
         // Display UI
-        setTitle("game field");
-        setSize(1300, 945);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addKeyListener(
+        frame.setTitle("game field");
+        frame.setSize(1300, 945);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addKeyListener(
                 new KeyAdapter() {
                     @Override
                     public void keyTyped(KeyEvent e) {
@@ -274,14 +277,14 @@ public class GameBoardGui extends JFrame {
                         }
                     }
                 });
-        setLayout(null);
-        getContentPane().setBackground(Color.decode("#6c6f85"));
-        setResizable(true);
-        setVisible(true);
-        LOGGER.info("Displaying Landingpage.");
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(Color.decode("#6c6f85"));
+        frame.setResizable(true);
+        frame.setVisible(true);
+        LOGGER.info("Displaying Gui for game board");
     }
 
-    private void prepareNextMove() {
+    protected void prepareNextMove() {
         backend.disablePlacementForAllFigures();
 
         removePrompt();
@@ -295,11 +298,11 @@ public class GameBoardGui extends JFrame {
 
         if (nameOfWinner.isPresent()) {
             new WinWindow(nameOfWinner.get());
-            setVisible(false);
+            frame.setVisible(false);
         }
     }
 
-    private void executeNextMove() {
+    protected void executeNextMove() {
         backend.setNewCurrentPlayerIfNecessary();
         switch (backend.getPlayerStateOfCurrentPlayer()) {
             case 0 -> setActivePlayer();
@@ -314,7 +317,7 @@ public class GameBoardGui extends JFrame {
         }
     }
 
-    private void replaceFigures() {
+    protected void replaceFigures() {
         Figure[] input = backend.figures;
         int dimensionX = 39;
         int dimensionY = 56;
@@ -335,10 +338,10 @@ public class GameBoardGui extends JFrame {
             }
             figures[i].setBounds(x, y, dimensionX, dimensionY);
         }
-        repaint();
+        frame.repaint();
     }
 
-    private void displayResult(int randomNumber) {
+    void displayResult(int randomNumber) {
         switch (randomNumber) {
             case 1 -> result = new JLabel(Resources.loadImageIcon("dice-1"));
             case 2 -> result = new JLabel(Resources.loadImageIcon("dice-2"));
@@ -349,71 +352,71 @@ public class GameBoardGui extends JFrame {
             default -> result = new JLabel(Resources.loadImageIcon("dice-unknown"));
         }
         result.setBounds(930, 80, 75, 75);
-        add(result);
-        repaint();
+        frame.add(result);
+        frame.repaint();
     }
 
-    private void setActivePlayer() {
-        add(rollDice);
+    protected void setActivePlayer() {
+        frame.add(rollDice);
         promptState = Prompt.ROLL_DICE;
         userAdvice.setText(
                 "<html> <body> It's "
                         + backend.getNameOfCurrentPlayer()
                         + "s turn, click this <br> "
                         + "button to roll the dice </body> </html>");
-        remove(result);
-        repaint();
+        frame.remove(result);
+        frame.repaint();
     }
 
-    private void setPromptValues() {
+    void setPromptValues() {
         userAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
         figureChooserPrompt.setText("Choose the figure you want to move!");
         figureChooserPrompt.setBounds(930, 160, 350, 32);
-        add(figureChooserPrompt);
+        frame.add(figureChooserPrompt);
     }
 
     private void removePrompt() {
-        remove(figureChooserPrompt);
+        frame.remove(figureChooserPrompt);
     }
 
     private void setBotAdvice() {
-        remove(rollDice);
+        frame.remove(rollDice);
         promptState = Prompt.DEFAULT;
         userAdvice.setText(
                 "The bots are moving... Please wait, it will be the next players turn in a few"
                         + " seconds!");
         result.setText("");
-        repaint();
+        frame.repaint();
     }
 
     private void openRules() {
-        setVisible(false);
-        new Rules(this);
+        frame.setVisible(false);
+        new Rules(frame);
     }
 
-    private void buttonActionMouseKey() {
+    protected void buttonActionMouseKey() {
         switch (promptState) {
             case ROLL_DICE -> {
-                remove(rollDice);
+                frame.remove(rollDice);
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
                     displayResult(backend.randomNumber);
                     promptState = Prompt.DEFAULT;
                     setPromptValues();
                 } else {
-                    remove(userAdvice);
-                    add(noSix);
-                    add(nextPlayer);
+                    frame.remove(userAdvice);
+                    frame.add(noSix);
+                    frame.add(nextPlayer);
                     promptState = Prompt.NEXT_PLAYER;
-                    repaint();
+                    frame.repaint();
                 }
             }
             case NEXT_PLAYER -> {
-                remove(noSix);
-                remove(nextPlayer);
+                frame.remove(noSix);
+                frame.remove(nextPlayer);
                 promptState = Prompt.DEFAULT;
-                add(userAdvice);
-                repaint();
+                frame.add(userAdvice);
+                frame.repaint();
                 executeNextMove();
             }
         }
