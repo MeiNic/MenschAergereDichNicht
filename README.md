@@ -56,7 +56,7 @@ with Git and/or GitHub before.
 
 ## Development
 
-The game uses [Maven](https://maven.apache.org/) as a build tool. To run the game use this commands:
+The game uses [Maven](https://maven.apache.org/) as a build tool. To run the game, use these commands:
 
 ```bash
 mvn compile && java -jar target/MenschAergereDichNicht-*.jar
