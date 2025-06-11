@@ -1,5 +1,5 @@
 // This file is part of MenschAergereDichNicht.
-// Copyright (C) 2024-2025 MeiNic, TastingComb and contributors.
+// Copyright (C) 2023-2025 MeiNic, TastingComb and contributors.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
