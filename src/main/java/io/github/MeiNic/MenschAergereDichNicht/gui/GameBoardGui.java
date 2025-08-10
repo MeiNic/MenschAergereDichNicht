@@ -441,16 +441,16 @@ public class GameBoardGui {
                 return;
             }
             if (!clickedFigure.isPlaceable()) {
-                backend.moveToBase(clickedFigureIndex);
+                backend.moveToBase(backend.figures[clickedFigureIndex]);
                 LOGGER.info(
                         "Figure movement aborted - Wrong figure moved (Moving figure to base...)");
                 prepareNextMove();
                 return;
             }
             if (clickedFigure.isInBase()) {
-                backend.moveOutOfBase(clickedFigureIndex);
+                backend.moveOutOfBase(backend.figures[clickedFigureIndex]);
             } else {
-                backend.moveFigure(clickedFigureIndex);
+                backend.moveFigure(backend.figures[clickedFigureIndex]);
             }
             prepareNextMove();
         }
