@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -76,20 +77,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1,3", "0,2,3", "0,3,3", "0,4,3", "0,5,3", "0,6,3",
-            "1,1,3", "1,2,3", "1,3,3", "1,4,3", "1,5,3", "1,6,3",
-            "2,1,3", "2,2,3", "2,3,3", "2,4,3", "2,5,3", "2,6,3",
-            "3,1,3", "3,2,3", "3,3,3", "3,4,3", "3,5,3", "3,6,3",
-            "0,1,2", "0,2,2", "0,3,2", "0,4,2", "0,5,2", "0,6,2",
-            "1,1,2", "1,2,2", "1,3,2", "1,4,2", "1,5,2", "1,6,2",
-            "2,1,2", "2,2,2", "2,3,2", "2,4,2", "2,5,2", "2,6,2",
-            "3,1,2", "3,2,2", "3,3,2", "3,4,2", "3,5,2", "3,6,2",
-            "0,1,1", "0,2,1", "0,3,1", "0,4,1", "0,5,1", "0,6,1",
-            "1,1,1", "1,2,1", "1,3,1", "1,4,1", "1,5,1", "1,6,1",
-            "2,1,1", "2,2,1", "2,3,1", "2,4,1", "2,5,1", "2,6,1",
-            "3,1,1", "3,2,1", "3,3,1", "3,4,1", "3,5,1", "3,6,1",
-        })
+        @CsvFileSource(resources = "/csv/ownFigureOnStartFieldIsMoved.csv", numLinesToSkip = 1)
         void ownFigureOnStartFieldIsMoved(
                 int playerIndex, int randomNumber, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -117,12 +105,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
-        })
+        @CsvFileSource(resources = "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv", numLinesToSkip = 1)
         void otherFigureOnStartFieldIsBeaten(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure = backEnd.figures[player.getIndexOfFirstFigure()];
@@ -151,12 +134,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
-        })
+        @CsvFileSource(resources = "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv", numLinesToSkip = 1)
         void ownFigureIsPlacedOnStartField(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure =
@@ -180,12 +158,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5", "0,6",
-            "1,1", "1,2", "1,3", "1,4", "1,5", "1,6",
-            "2,1", "2,2", "2,3", "2,4", "2,5", "2,6",
-            "3,1", "3,2", "3,3", "3,4", "3,5", "3,6",
-        })
+        @CsvFileSource(resources = "/csv/ownFigureThatCanBeatOtherFigureIsMoved.csv", numLinesToSkip = 1)
         void ownFigureThatCanBeatOtherFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
             Player otherPlayer = backEnd.players[(player.getPlayerIndex() + 1) % 4];
@@ -215,12 +188,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5",
-            "1,1", "1,2", "1,3", "1,4", "1,5",
-            "2,1", "2,2", "2,3", "2,4", "2,5",
-            "3,1", "3,2", "3,3", "3,4", "3,5",
-        })
+        @CsvFileSource(resources = "/csv/ownFigureIsMoved.csv", numLinesToSkip = 1)
         void ownFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure = backEnd.figures[player.getIndexOfLastFigure() - 1];
@@ -483,10 +451,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "6,0", "6,1", "6,2", "6,3",
-        })
+        @CsvFileSource(resources = "/csv/noBeatIsPossibleIfFigureIsAboutToEnterTheHouse.csv", numLinesToSkip = 1)
         void noBeatIsPossibleIfFigureIsAboutToEnterTheHouse(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -499,10 +464,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
-        })
+        @CsvFileSource(resources = "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv", numLinesToSkip = 1)
         void noBeatIsPossibleIfFigureCannotReachToOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -516,7 +478,7 @@ public class BackEndTest {
 
         @ParameterizedTest
         @CsvSource({
-            "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
+                "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
         })
         void noBeatIsPossibleIfFigureJumpsOverOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
@@ -568,10 +530,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
-        })
+        @CsvFileSource(resources = "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv", numLinesToSkip = 1)
         void newFieldIsWrapped(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[4];
             Figure otherFigure = backEnd.figures[0];
