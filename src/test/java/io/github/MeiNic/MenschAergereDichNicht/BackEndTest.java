@@ -105,7 +105,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources =
+                        "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv",
+                numLinesToSkip = 1)
         void otherFigureOnStartFieldIsBeaten(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure = backEnd.figures[player.getIndexOfFirstFigure()];
@@ -134,7 +137,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources =
+                        "/csv/ownFigureIsPlacedOnStartField_otherFigureOnStartFieldIsBeaten.csv",
+                numLinesToSkip = 1)
         void ownFigureIsPlacedOnStartField(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure =
@@ -158,7 +164,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/ownFigureThatCanBeatOtherFigureIsMoved.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources = "/csv/ownFigureThatCanBeatOtherFigureIsMoved.csv",
+                numLinesToSkip = 1)
         void ownFigureThatCanBeatOtherFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
             Player otherPlayer = backEnd.players[(player.getPlayerIndex() + 1) % 4];
@@ -451,7 +459,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/noBeatIsPossibleIfFigureIsAboutToEnterTheHouse.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources = "/csv/noBeatIsPossibleIfFigureIsAboutToEnterTheHouse.csv",
+                numLinesToSkip = 1)
         void noBeatIsPossibleIfFigureIsAboutToEnterTheHouse(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -464,7 +474,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources =
+                        "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv",
+                numLinesToSkip = 1)
         void noBeatIsPossibleIfFigureCannotReachToOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -478,7 +491,7 @@ public class BackEndTest {
 
         @ParameterizedTest
         @CsvSource({
-                "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
+            "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
         })
         void noBeatIsPossibleIfFigureJumpsOverOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
@@ -530,7 +543,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvFileSource(resources = "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv", numLinesToSkip = 1)
+        @CsvFileSource(
+                resources =
+                        "/csv/newFieldIsWrapped_noBeatIsPossibleIfFigureCannotReachToOtherFigure.csv",
+                numLinesToSkip = 1)
         void newFieldIsWrapped(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[4];
             Figure otherFigure = backEnd.figures[0];
