@@ -416,7 +416,7 @@ public class BackEnd {
         currentPlayer = players[currentPlayerIndex];
     }
 
-    private boolean generateRandomNumber() {
+    protected boolean generateRandomNumber() {
         Dice dice = new LaPlaceDice();
         if (getPlayerStateOfCurrentPlayer() == 1) {
             dice = new LoadedDice();
