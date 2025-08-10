@@ -141,38 +141,62 @@ public class BackEnd {
             return;
         }
 
-        // cache a much used value, make the code look cleaner
-        Optional<Figure> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
-        int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
-        int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
+        Figure[] figuresThatMustBeMoved = getFiguresThatMustBeMoved();
+        if (figuresThatMustBeMoved.length > 0) {
+            moveFigure(figuresThatMustBeMoved[0]);
+            return;
+        }
 
-        // LOGGER.info("Bot " + currentPlayer.getName() + " rolled a " + randomNumber);
+        Figure[] figuresThatShouldBeMoved = getFiguresThatShouldBeMoved();
+        if (figuresThatShouldBeMoved.length > 0) {
+            moveFigure(figuresThatShouldBeMoved[0]);
+            return;
+        }
+    }
+
+    protected Figure[] getFiguresThatMustBeMoved() {
         if (!baseOfCurrentPlayerIsEmpty()) {
-            if (figureOnStartfield.isPresent()
-                    && figureOnStartfield.get().getOwner().equals(currentPlayer.getName())) {
-                moveFigure(figureOnStartfield.get());
-                return;
-            } else if (randomNumber == 6) {
-                for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                    if (figures[i].isInBase()) {
-                        moveFigure(figures[i]);
-                        return;
+            Optional<Figure> figureOnStartField =
+                    figureOnField(currentPlayer.getIndexOfStartField());
+            if (figureOnStartField.isPresent()
+                    && figureOnStartField.get().getOwner().equals(currentPlayer.getName())) {
+                return new Figure[] {figureOnStartField.get()};
+            }
+            if (randomNumber == 6) {
+                for (int i = currentPlayer.getIndexOfFirstFigure();
+                        i < currentPlayer.getIndexOfLastFigure();
+                        i++) {
+                    Figure ownIthFigure = figures[i];
+                    if (ownIthFigure.isInBase()) {
+                        return new Figure[] {ownIthFigure};
                     }
                 }
             }
         }
-        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (beatIsPossible(figures[i])) {
-                moveFigure(figures[i]);
-                return;
+
+        for (int i = currentPlayer.getIndexOfFirstFigure();
+                i < currentPlayer.getIndexOfLastFigure();
+                i++) {
+            Figure ownIthFigure = figures[i];
+            if (beatIsPossible(ownIthFigure)) {
+                return new Figure[] {ownIthFigure};
             }
         }
-        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (moveSensible(figures[i])) {
-                moveFigure(figures[i]);
-                return;
+
+        return new Figure[] {};
+    }
+
+    protected Figure[] getFiguresThatShouldBeMoved() {
+        for (int i = currentPlayer.getIndexOfFirstFigure();
+                i < currentPlayer.getIndexOfLastFigure();
+                i++) {
+            Figure ownIthFigure = figures[i];
+            if (moveSensible(ownIthFigure)) {
+                return new Figure[] {ownIthFigure};
             }
         }
+
+        return new Figure[] {};
     }
 
     // move the given figure by the given number
