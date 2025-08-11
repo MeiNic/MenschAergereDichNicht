@@ -195,8 +195,20 @@ public class BackEnd {
             playerFigures[i - currentPlayer.getIndexOfFirstFigure()] = figures[i];
         }
 
+        outer:
         for (Figure figure : playerFigures) {
-            if (moveSensible(figure)) {
+            if (figure.isInHouse()) {
+                int newField = figure.getField() + randomNumber;
+                int maxField = currentPlayer.getIndexOfLastFigure();
+                if (newField < maxField) {
+                    return Optional.of(figure);
+                }
+            } else if (figure.isOnField()) {
+                for (Figure figure2 : playerFigures) {
+                    if (figure.getProgress() < figure2.getProgress()) {
+                        continue outer;
+                    }
+                }
                 return Optional.of(figure);
             }
         }
@@ -304,26 +316,6 @@ public class BackEnd {
 
         Figure otherFigure = figureOnField(newField).get();
         return !thisFigure.getOwner().equals(otherFigure.getOwner());
-    }
-
-    protected boolean moveSensible(Figure figure) {
-        switch (figure.getState()) {
-            case IN_HOUSE -> {
-                int newField = figure.getField() + randomNumber;
-                int maxField = figure.color * 4 + 4;
-                return maxField > newField;
-            }
-            case ON_FIELD -> {
-                int color = figure.color;
-                for (int i = color * 4; i < (color + 1) * 4; i++) {
-                    if (figure.getProgress() < figures[i].getProgress()) return false;
-                }
-                return true;
-            }
-            default -> {
-                return false;
-            }
-        }
     }
 
     // move the given figure to the base

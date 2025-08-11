@@ -7,12 +7,10 @@ import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -821,75 +819,6 @@ public class BackEndTest {
             backEnd.randomNumber = randomNumber;
 
             assertTrue(backEnd.beatIsPossible(thisFigure));
-        }
-    }
-
-    @Nested
-    class moveSensibleTest {
-        @BeforeEach
-        void setUp() {
-            backEnd = new BackEnd(new String[] {"orange", "blue", "green", "red"}, 4, false);
-        }
-
-        @Test
-        void givenFigureInBase_whenCheckSensibleMove_thenReturnFalse() {
-            assertAll(
-                    IntStream.range(0, 16)
-                            .mapToObj(
-                                    i ->
-                                            (Executable)
-                                                    (() ->
-                                                            assertFalse(
-                                                                    backEnd.moveSensible(
-                                                                            backEnd.figures[i]))))
-                            .toArray(Executable[]::new));
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureInMaxHouseField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setField(4 * ++playerIndex, 0);
-            backEnd.figures[testFigureIndex].setInHouse();
-            assertFalse(backEnd.moveSensible(backEnd.figures[testFigureIndex]));
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureInHouse_whenCheckSensibleMove_thenReturnTrue(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            backEnd.randomNumber = 2;
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setInHouse();
-            backEnd.figures[testFigureIndex].setField(playerIndex * 4, 0);
-            assertTrue(backEnd.moveSensible(backEnd.figures[testFigureIndex]));
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenFigureOnFieldAndFigureHigherProgressOnField_whenCheckSensibleMove_thenReturnFalse(
-                int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setOnField();
-            backEnd.figures[testFigureIndex].setField(playerIndex * 10, 0);
-            backEnd.figures[testFigureIndex + 1].setOnField();
-            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10 + 5, 5);
-            assertFalse(backEnd.moveSensible(backEnd.figures[testFigureIndex]));
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void fivenFigureOnFieldAndFigureLowerProgressOnField_whenCheckSensibleMove_thenReturnTrue(
-                int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
-            backEnd.figures[testFigureIndex].setOnField();
-            backEnd.figures[testFigureIndex].setField(playerIndex * 10 + 5, 4);
-            backEnd.figures[testFigureIndex + 1].setOnField();
-            backEnd.figures[testFigureIndex + 1].setField(playerIndex * 10, 0);
-            assertTrue(backEnd.moveSensible(backEnd.figures[testFigureIndex]));
         }
     }
 
