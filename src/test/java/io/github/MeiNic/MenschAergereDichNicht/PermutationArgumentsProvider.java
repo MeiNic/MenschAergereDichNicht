@@ -22,11 +22,11 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-public class MutationArgumentsProvider implements ArgumentsProvider {
+public class PermutationArgumentsProvider implements ArgumentsProvider {
     @Override
     public Stream<Arguments> provideArguments(ExtensionContext context) {
         Range[] ranges =
-                context.getRequiredTestMethod().getAnnotation(MutationSource.class).value();
+                context.getRequiredTestMethod().getAnnotation(PermutationSource.class).value();
 
         switch (ranges.length) {
             case 0:

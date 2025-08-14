@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ArgumentsSource(MutationArgumentsProvider.class)
-public @interface MutationSource {
+@ArgumentsSource(PermutationArgumentsProvider.class)
+public @interface PermutationSource {
     Range[] value();
 }
