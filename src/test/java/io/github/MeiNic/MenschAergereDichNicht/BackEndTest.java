@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 public class BackEndTest {
     BackEnd backEnd;
@@ -39,7 +38,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({@Range(lower = 0, upper = 3)})
         void noFigureIsMoved(int playerIndex) {
             Player player = backEnd.players[playerIndex];
             BackEnd backEnd =
@@ -58,7 +57,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({@Range(lower = 0, upper = 3)})
         void noFigureIsMoved2(int playerIndex) {
             Player player = backEnd.players[playerIndex];
 
@@ -76,19 +75,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1,3", "0,2,3", "0,3,3", "0,4,3", "0,5,3", "0,6,3",
-            "1,1,3", "1,2,3", "1,3,3", "1,4,3", "1,5,3", "1,6,3",
-            "2,1,3", "2,2,3", "2,3,3", "2,4,3", "2,5,3", "2,6,3",
-            "3,1,3", "3,2,3", "3,3,3", "3,4,3", "3,5,3", "3,6,3",
-            "0,1,2", "0,2,2", "0,3,2", "0,4,2", "0,5,2", "0,6,2",
-            "1,1,2", "1,2,2", "1,3,2", "1,4,2", "1,5,2", "1,6,2",
-            "2,1,2", "2,2,2", "2,3,2", "2,4,2", "2,5,2", "2,6,2",
-            "3,1,2", "3,2,2", "3,3,2", "3,4,2", "3,5,2", "3,6,2",
-            "0,1,1", "0,2,1", "0,3,1", "0,4,1", "0,5,1", "0,6,1",
-            "1,1,1", "1,2,1", "1,3,1", "1,4,1", "1,5,1", "1,6,1",
-            "2,1,1", "2,2,1", "2,3,1", "2,4,1", "2,5,1", "2,6,1",
-            "3,1,1", "3,2,1", "3,3,1", "3,4,1", "3,5,1", "3,6,1",
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureOnStartFieldIsMoved(
                 int playerIndex, int randomNumber, int numberOfFiguresInBase) {
@@ -117,11 +107,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void otherFigureOnStartFieldIsBeaten(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -151,11 +139,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureIsPlacedOnStartField(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -180,11 +166,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5", "0,6",
-            "1,1", "1,2", "1,3", "1,4", "1,5", "1,6",
-            "2,1", "2,2", "2,3", "2,4", "2,5", "2,6",
-            "3,1", "3,2", "3,3", "3,4", "3,5", "3,6",
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
         })
         void ownFigureThatCanBeatOtherFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -215,11 +199,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5",
-            "1,1", "1,2", "1,3", "1,4", "1,5",
-            "2,1", "2,2", "2,3", "2,4", "2,5",
-            "3,1", "3,2", "3,3", "3,4", "3,5",
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 5), // Exclude six so we don't have to move out of the base
         })
         void ownFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -273,7 +255,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnField_whenMoveFigureOnField_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(6) + 1;
@@ -287,7 +271,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnMaxField_whenMoveFigureOnField_thenFigureMovedOverBoarder(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -301,7 +287,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureBeatOtherFigure_whenMoveFigureOnField_thenFigureMovedAndOtherFigureInBase(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -320,7 +308,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void
                 givenFigureOnFieldWouldBeatOwnFigure_whenMoveFigureOnField_thenFigureNotMovedOtherFigureMoved(
                         int playerIndex) {
@@ -346,7 +336,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldMovetoFreeBase_whenMoveFigureOnField_thenFigureMovedToBase(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -360,7 +352,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldNotAbleToMoveInHouse_whenMoveFigureOnField_thenFigureNotMoved(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -376,7 +370,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldWouldExceedMaxHouseField_whenMoveFigureOnField_thenFigureNotMoved(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -398,7 +394,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnMaxHosueField_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
             setCurrentPlayer(playerIndex);
             final int expectedField = playerIndex * 4 + 3;
@@ -410,7 +408,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigurInHouseAndMovable_whenMoveFigureInHouse_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(0, 3) + 1;
@@ -423,7 +423,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldNotMovable_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(4, 6) + 1;
@@ -444,7 +446,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @MutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsInBase(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -457,7 +461,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @MutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsInHouse(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -470,7 +476,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @MutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsFinished(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -530,7 +538,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @MutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureOnNewFieldIsFromTheSamePlayer(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[1];
@@ -543,7 +553,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @MutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void beatIsPossible(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -601,7 +613,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInMaxHouseField_whenCheckSensibleMove_thenReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             final int testFigureIndex = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -611,7 +625,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInHouse_whenCheckSensibleMove_thenReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 2;
@@ -622,7 +638,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldAndFigureHigherProgressOnField_whenCheckSensibleMove_thenReturnFalse(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -635,7 +653,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void fivenFigureOnFieldAndFigureLowerProgressOnField_whenCheckSensibleMove_thenReturnTrue(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -656,7 +676,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnField_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setOnField();
@@ -676,7 +698,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInHouse_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
@@ -685,7 +709,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInBase_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.moveToBase(backEnd.currentPlayer.getIndexOfFirstFigure());
@@ -701,7 +727,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenNotAllFiguresFinished_whenGetNameOfWinner_thenReturnNull(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -713,7 +741,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresFinished_whenGetNameOfWinner_thenReturnPlayerName(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -734,7 +764,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oooo(int i) {
             placeFiguresInHouse(false, false, false, false, i);
             backEnd.setFinishedFigures();
@@ -746,7 +778,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oooi(int i) {
             placeFiguresInHouse(false, false, false, true, i);
             backEnd.setFinishedFigures();
@@ -758,7 +792,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ooio(int i) {
             placeFiguresInHouse(false, false, true, false, i);
             backEnd.setFinishedFigures();
@@ -770,7 +806,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ooii(int i) {
             placeFiguresInHouse(false, false, true, true, i);
             backEnd.setFinishedFigures();
@@ -782,7 +820,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oioo(int i) {
             placeFiguresInHouse(false, true, false, false, i);
             backEnd.setFinishedFigures();
@@ -794,7 +834,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oioi(int i) {
             placeFiguresInHouse(false, true, false, true, i);
             backEnd.setFinishedFigures();
@@ -806,7 +848,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oiio(int i) {
             placeFiguresInHouse(false, true, true, false, i);
             backEnd.setFinishedFigures();
@@ -818,7 +862,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oiii(int i) {
             placeFiguresInHouse(false, true, true, true, i);
             backEnd.setFinishedFigures();
@@ -830,7 +876,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iooo(int i) {
             placeFiguresInHouse(true, false, false, false, i);
             backEnd.setFinishedFigures();
@@ -842,7 +890,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iooi(int i) {
             placeFiguresInHouse(true, false, false, true, i);
             backEnd.setFinishedFigures();
@@ -854,7 +904,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ioio(int i) {
             placeFiguresInHouse(true, false, true, false, i);
             backEnd.setFinishedFigures();
@@ -866,7 +918,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ioii(int i) {
             placeFiguresInHouse(true, false, true, true, i);
             backEnd.setFinishedFigures();
@@ -878,7 +932,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iioo(int i) {
             placeFiguresInHouse(true, true, false, false, i);
             backEnd.setFinishedFigures();
@@ -890,7 +946,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iioi(int i) {
             placeFiguresInHouse(true, true, false, true, i);
             backEnd.setFinishedFigures();
@@ -902,7 +960,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iiio(int i) {
             placeFiguresInHouse(true, true, true, false, i);
             backEnd.setFinishedFigures();
@@ -914,7 +974,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iiii(int i) {
             placeFiguresInHouse(true, true, true, true, i);
             backEnd.setFinishedFigures();
@@ -926,7 +988,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void alreadyFinishedFiguresAreStillFinished(int i) {
             placeFiguresInHouse(true, false, false, false, i);
             backEnd.setFinishedFigures();
@@ -1036,7 +1100,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureFinishedAndOneInHouse_whenGetFigureOnHouseField_thenReturnFigureIndex(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -1059,7 +1125,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresInBase_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1071,7 +1139,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureInBas_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1084,7 +1154,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresOnField_whenCheckIfBaseIsEmpty_thanReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1105,7 +1177,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresInBase_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
             int expected = 3;
@@ -1113,7 +1187,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1127,7 +1203,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresFinished_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1140,7 +1218,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1163,7 +1243,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInBase_whenMoveOutOfBase_thenFigureOnStartField(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.moveOutOfBase(backEnd.currentPlayer.getIndexOfFirstFigure());
@@ -1183,7 +1265,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnStartField_whenMoveOutOfBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 6;
@@ -1230,7 +1314,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenRandomNumberIsNotSix_whenSetNewCurrentPlayer_thenCurrentPlayerChanged(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -1241,7 +1327,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @MutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenRandomNumberIsSix_whenSetNewCurrentPlayer_thenCurrentPlayerNotChanged(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
