@@ -72,10 +72,13 @@ To run the tests, you can use your build-in IDE function or  Maven:
 ```bash
 mvn test
 ```
-We have the goal to increase the test coverage in the future. If you want to help with that, please write tests for the code you are working on. Note that your test must also run in a headless environment, as we use GitHub actions to run the tests on every pull request.
+We have the goal to increase the test coverage in the future. If you want to help with that, please write tests for the 
+code you are working on. Note that your test must also run in a headless environment, as we use GitHub actions to run 
+the tests on every pull request.
 
 ### Code Formatting
-We use the Google Java Format for formatting the code. To format the code or check if the code is formatted correctly, you can use these commands:
+We use the Google Java Format for formatting the code. To format the code or check if the code is formatted correctly, 
+you can use these commands:
 
 ```bash
 # Check formatting
@@ -85,14 +88,18 @@ mvn spotless:check
 mvn spotless:apply
 ```
 
+You find more information about the formatting in the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+
 ### Creating a Pull Request
-When you have made changes to the code and want them to be merged into the main branch, please create a pull request. Make sure to follow these guidelines:
+When you have made changes to the code and want them to be merged into the main branch, please create a pull request. 
+Make sure to follow these guidelines:
 - Make sure your code is formatted correctly.
 - Make sure your code passes all tests.
 - Write a clear description of the changes you made.
 - If your changes are related to a specific issue, please reference it in the description (e.g., "Fixes #123").
 
-Note that on your first pull request the GitHub actions will not run automatically, but require a maintainer to start them manually. After that, the actions will run automatically on every pull request.
+Note that on your first pull request the GitHub actions will not run automatically, but require a maintainer to start 
+them manually. After that, the actions will run automatically on every pull request.
 
 ## License
 
