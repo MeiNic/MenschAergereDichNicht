@@ -56,10 +56,7 @@ with Git and/or GitHub before.
 
 ## Development
 
-For testing purposes you can build the source code and start the main-function in your IDE of choice. 
-
-
-However, the game uses [Maven](https://maven.apache.org/) as a build tool. To build and run the game, use these commands:
+This game uses [Maven](https://maven.apache.org/) as a build tool. To build and run the game, use these commands:
 
 ```bash
 mvn compile && java -jar target/MenschAergereDichNicht-*.jar 
@@ -68,16 +65,19 @@ mvn compile && java -jar target/MenschAergereDichNicht-*.jar
 ### Testing
 
 For now the project has a coverage of about 60% of the code base.
-To run the tests, you can use your build-in IDE function or  Maven:
+To run the tests, you can use your build-in IDE function or Maven:
+
 ```bash
 mvn test
 ```
+
 We have the goal to increase the test coverage in the future. If you want to help with that, please write tests for the 
 code you are working on. Note that your test must also run in a headless environment, as we use GitHub actions to run 
 the tests on every pull request.
 
 ### Code Formatting
-We use the Google Java Format for formatting the code. To format the code or check if the code is formatted correctly, 
+
+We use the Google Java Format for formatting the code. To format the code or check if the code is formatted correctly,
 you can use these commands:
 
 ```bash
@@ -91,12 +91,13 @@ mvn spotless:apply
 You find more information about the formatting in the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
 
 ### Creating a Pull Request
+
 When you have made changes to the code and want them to be merged into the main branch, please create a pull request. 
-Make sure to follow these guidelines:
-- Make sure your code is formatted correctly.
-- Make sure your code passes all tests.
-- Write a clear description of the changes you made.
-- If your changes are related to a specific issue, please reference it in the description (e.g., "Fixes #123").
+Make sure to ...
+- ... format your code correctly,
+- ... run all tests,
+- ... explain the changes you made,
+- ... and reference an issue in the commit description (e.g., "Fixes #123") if applicable.
 
 Note that on your first pull request the GitHub actions will not run automatically, but require a maintainer to start 
 them manually. After that, the actions will run automatically on every pull request.
