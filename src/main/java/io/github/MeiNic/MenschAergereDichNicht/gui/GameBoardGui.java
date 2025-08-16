@@ -329,7 +329,7 @@ public class GameBoardGui {
             if (input[i].isInBase()) {
                 x = FIGURE_POSITIONS_BASE_X[input[i].getField()];
                 y = FIGURE_POSITIONS_BASE_Y[input[i].getField()];
-            } else if (input[i].isInHouse() || input[i].isFinished()) {
+            } else if (input[i].isInHouse()) {
                 x = FIGURE_POSITIONS_HOUSE_X[input[i].getField()];
                 y = FIGURE_POSITIONS_HOUSE_Y[input[i].getField()];
             } else {
