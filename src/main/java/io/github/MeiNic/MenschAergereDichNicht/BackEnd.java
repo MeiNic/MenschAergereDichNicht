@@ -35,7 +35,6 @@ public class BackEnd {
 
     protected final Player[] players;
     protected Player currentPlayer;
-    protected int currentPlayerIndex;
 
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
@@ -60,8 +59,7 @@ public class BackEnd {
             }
         }
 
-        currentPlayerIndex = 0;
-        currentPlayer = players[currentPlayerIndex];
+        currentPlayer = players[0];
     }
 
     public String getNameOfCurrentPlayer() {
@@ -80,18 +78,15 @@ public class BackEnd {
 
         // cache a much used value, make the code look cleaner
         Optional<Integer> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
-        boolean ownFigureOnStartfield =
-                figureOnStartfield.isPresent()
-                        && figures[figureOnStartfield.get()]
-                                .getOwner()
-                                .equals(currentPlayer.getName());
+        boolean ownFigureOnStartfield = figureOnStartfield.isPresent()
+                && figures[figureOnStartfield.get()]
+                        .getOwner()
+                        .equals(currentPlayer.getName());
 
         if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()) {
             figures[figureOnStartfield.get()].enablePlacement();
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
-            for (int i = currentPlayer.getIndexOfFirstFigure();
-                    i < currentPlayer.getIndexOfLastFigure();
-                    i++) {
+            for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
                 if (figures[i].isInBase()) {
                     figures[i].enablePlacement();
                 }
@@ -106,9 +101,7 @@ public class BackEnd {
     private void playerMoveOnField() {
         boolean beatsPossible = false;
 
-        for (int i = currentPlayer.getIndexOfFirstFigure();
-                i < currentPlayer.getIndexOfLastFigure();
-                i++) {
+        for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
             if (beatIsPossible(figures[i])) {
                 figures[i].enablePlacement();
                 beatsPossible = true;
@@ -122,9 +115,7 @@ public class BackEnd {
         }
 
         // Any movable figure should be moved now.
-        for (int i = currentPlayer.getIndexOfFirstFigure();
-                i < currentPlayer.getIndexOfLastFigure();
-                i++) {
+        for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
             if (figures[i].isMovable()) {
                 figures[i].enablePlacement();
             }
@@ -185,7 +176,8 @@ public class BackEnd {
             case FINISHED -> LOGGER.info("Finished figure isn't moveable. Aborting...");
             case IN_HOUSE -> moveInHouse(figureNumber);
             case IN_BASE -> {
-                if (randomNumber == 6) moveOutOfBase(figureNumber);
+                if (randomNumber == 6)
+                    moveOutOfBase(figureNumber);
             }
             case ON_FIELD -> moveOnField(figureNumber);
         }
@@ -226,10 +218,12 @@ public class BackEnd {
         } else {
             int positionInHouse = randomNumber - (39 - figureToBeMoved.getProgress()) - 1;
             // Move would exceed fields in house
-            if (positionInHouse >= 4) return;
+            if (positionInHouse >= 4)
+                return;
             positionInHouse += figureToBeMoved.color * 4;
             for (int i = figureToBeMoved.color * 4; i <= positionInHouse; i++) {
-                if (figureOnHouseField(i).isPresent()) return;
+                if (figureOnHouseField(i).isPresent())
+                    return;
             }
             figureToBeMoved.setInHouse();
             figureToBeMoved.setField(positionInHouse, randomNumber);
@@ -299,7 +293,8 @@ public class BackEnd {
             case ON_FIELD -> {
                 int color = figureToBeMoved.color;
                 for (int i = color * 4; i < (color + 1) * 4; i++) {
-                    if (figureToBeMoved.getProgress() < figures[i].getProgress()) return false;
+                    if (figureToBeMoved.getProgress() < figures[i].getProgress())
+                        return false;
                 }
                 return true;
             }
@@ -365,7 +360,7 @@ public class BackEnd {
     }
 
     protected boolean baseOfCurrentPlayerIsEmpty() {
-        int firstOwnedFigureIndex = currentPlayerIndex * 4;
+        int firstOwnedFigureIndex = currentPlayer.getIndexOfFirstFigure();
         int lastOwnedFigureIndex = firstOwnedFigureIndex + 4;
         for (int i = firstOwnedFigureIndex; i < lastOwnedFigureIndex; i++) {
             if (figures[i].isInBase()) {
@@ -379,9 +374,7 @@ public class BackEnd {
         int numberOfFiguresInBase = 0;
         int numberOfFinishedFigures = 0;
 
-        for (int i = currentPlayer.getIndexOfFirstFigure();
-                i < currentPlayer.getIndexOfLastFigure();
-                i++) {
+        for (int i = currentPlayer.getIndexOfFirstFigure(); i < currentPlayer.getIndexOfLastFigure(); i++) {
             if (figures[i].isInBase()) {
                 numberOfFiguresInBase++;
             } else if (figures[i].isFinished()) {
@@ -412,8 +405,7 @@ public class BackEnd {
         if (6 == randomNumber) {
             return;
         }
-        currentPlayerIndex = ++currentPlayerIndex % 4;
-        currentPlayer = players[currentPlayerIndex];
+        currentPlayer = players[(currentPlayer.getPlayerIndex() + 1) % 4];
     }
 
     protected boolean generateRandomNumber() {
