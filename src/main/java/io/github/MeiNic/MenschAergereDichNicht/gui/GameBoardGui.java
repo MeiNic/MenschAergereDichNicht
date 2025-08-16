@@ -25,7 +25,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Optional;
 import javax.swing.*;
 
 public class GameBoardGui {
@@ -289,17 +288,20 @@ public class GameBoardGui {
 
         removePrompt();
         replaceFigures();
-        displayWinWindowIfNecessary();
+        if (shouldDisplayWinWindow()) {
+            displayWinWindow();
+            return;
+        }
         executeNextMove();
     }
 
-    private void displayWinWindowIfNecessary() {
-        Optional<String> nameOfWinner = backend.getNameOfWinner();
+    private boolean shouldDisplayWinWindow() {
+        return backend.getNameOfWinner().isPresent();
+    }
 
-        if (nameOfWinner.isPresent()) {
-            new WinWindow(nameOfWinner.get());
-            frame.setVisible(false);
-        }
+    private void displayWinWindow() {
+        new WinWindow(backend.getNameOfWinner().get());
+        frame.setVisible(false);
     }
 
     protected void executeNextMove() {
@@ -310,7 +312,10 @@ public class GameBoardGui {
                 setBotAdvice();
                 backend.botMove();
                 replaceFigures();
-                displayWinWindowIfNecessary();
+                if (shouldDisplayWinWindow()) {
+                    displayWinWindow();
+                    return;
+                }
                 executeNextMove();
             }
             default -> executeNextMove();
