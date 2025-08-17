@@ -455,7 +455,7 @@ public class GameBoardGui {
             if (clickedFigure.isInBase()) {
                 backend.moveOutOfBase(backend.figures[clickedFigureIndex]);
             } else {
-                backend.moveFigure(backend.figures[clickedFigureIndex]);
+                backend.moveFigure(clickedFigureIndex);
             }
             prepareNextMove();
         }
