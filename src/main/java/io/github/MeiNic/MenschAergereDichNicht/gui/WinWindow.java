@@ -22,8 +22,6 @@ import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.*;
 
 public class WinWindow {
@@ -31,9 +29,6 @@ public class WinWindow {
     private final JLabel message;
     private final ImageTextPanel close;
     private final ImageTextPanel nextGame;
-    private final Font jetBrainsMonoSemiBold;
-    private static final Color DEFAULT_FOREGROUND_COLOR = Color.decode("#f3f5f9");
-    private static final Color DEFAULT_BACKGROUND_COLOR = Color.decode("#6c6f85");
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public WinWindow(String player) {
@@ -42,34 +37,21 @@ public class WinWindow {
         close = new ImageTextPanel("button-idle", "close");
         nextGame = new ImageTextPanel("button-idle", "new game");
 
-        // configure font
-        try {
-            jetBrainsMonoSemiBold =
-                    Font.createFont(
-                                    Font.TRUETYPE_FONT,
-                                    new File("fonts/jetBrainsMono/JetBrainsMono-SemiBold.ttf"))
-                            .deriveFont(13f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(jetBrainsMonoSemiBold);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-
         // configure the message
         message.setText(
                 "<html><body>Congratulations! Player "
                         + player
                         + " <br> has won this round.</body></html>");
         message.setBounds(10, 10, 295, 32);
-        message.setFont(jetBrainsMonoSemiBold);
-        message.setForeground(DEFAULT_FOREGROUND_COLOR);
-        message.setBackground(DEFAULT_BACKGROUND_COLOR);
+        message.setFont(Theme.SEMI_BOLD);
+        message.setForeground(Theme.FOREGROUND_COLOR);
+        message.setBackground(Theme.BACKGROUND_COLOR);
 
         // configure close button
         close.setBounds(140, 50, 100, 32);
-        close.setFont(jetBrainsMonoSemiBold);
-        close.setForeground(DEFAULT_FOREGROUND_COLOR);
-        close.setBackground(DEFAULT_BACKGROUND_COLOR);
+        close.setFont(Theme.SEMI_BOLD);
+        close.setForeground(Theme.FOREGROUND_COLOR);
+        close.setBackground(Theme.BACKGROUND_COLOR);
         close.addMouseListener(
                 new MouseAdapter() {
                     @Override
@@ -93,9 +75,9 @@ public class WinWindow {
 
         // configure nextGame button
         nextGame.setBounds(20, 50, 100, 32);
-        nextGame.setFont(jetBrainsMonoSemiBold);
-        nextGame.setForeground(DEFAULT_FOREGROUND_COLOR);
-        nextGame.setBackground(DEFAULT_BACKGROUND_COLOR);
+        nextGame.setFont(Theme.SEMI_BOLD);
+        nextGame.setForeground(Theme.FOREGROUND_COLOR);
+        nextGame.setBackground(Theme.BACKGROUND_COLOR);
         nextGame.addMouseListener(
                 new MouseAdapter() {
                     @Override
@@ -129,7 +111,7 @@ public class WinWindow {
         frame.setSize(315, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(DEFAULT_BACKGROUND_COLOR);
+        frame.getContentPane().setBackground(Theme.BACKGROUND_COLOR);
         frame.setResizable(true);
         frame.setVisible(true);
         LOGGER.info("Displaying WinWindow.");

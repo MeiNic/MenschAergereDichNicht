@@ -1,3 +1,19 @@
+// This file is part of MenschAergereDichNicht.
+// Copyright (C) 2023-2025 MeiNic, TastingComb and contributors.
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package io.github.MeiNic.MenschAergereDichNicht;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,13 +23,15 @@ import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class BackEndTest {
     BackEnd backEnd;
@@ -38,7 +56,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({@Range(lower = 0, upper = 3)})
         void noFigureIsMoved(int playerIndex) {
             Player player = backEnd.players[playerIndex];
             BackEnd backEnd =
@@ -50,44 +68,32 @@ public class BackEndTest {
                     };
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.botMove();
 
             assertEquals(4, numberOfFiguresInBase(player));
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({@Range(lower = 0, upper = 3)})
         void noFigureIsMoved2(int playerIndex) {
             Player player = backEnd.players[playerIndex];
 
             for (int i = player.getIndexOfFirstFigure(); i < player.getIndexOfLastFigure(); i++) {
                 Figure ownIthFigure = backEnd.figures[i];
-                placeFigureInHouse(ownIthFigure, i);
-                ownIthFigure.setFinished();
+                placeFigureInHouseDeprecated(ownIthFigure, i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.botMove();
 
             assertEquals(4, numberOfFiguresInHouse(player));
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1,3", "0,2,3", "0,3,3", "0,4,3", "0,5,3", "0,6,3",
-            "1,1,3", "1,2,3", "1,3,3", "1,4,3", "1,5,3", "1,6,3",
-            "2,1,3", "2,2,3", "2,3,3", "2,4,3", "2,5,3", "2,6,3",
-            "3,1,3", "3,2,3", "3,3,3", "3,4,3", "3,5,3", "3,6,3",
-            "0,1,2", "0,2,2", "0,3,2", "0,4,2", "0,5,2", "0,6,2",
-            "1,1,2", "1,2,2", "1,3,2", "1,4,2", "1,5,2", "1,6,2",
-            "2,1,2", "2,2,2", "2,3,2", "2,4,2", "2,5,2", "2,6,2",
-            "3,1,2", "3,2,2", "3,3,2", "3,4,2", "3,5,2", "3,6,2",
-            "0,1,1", "0,2,1", "0,3,1", "0,4,1", "0,5,1", "0,6,1",
-            "1,1,1", "1,2,1", "1,3,1", "1,4,1", "1,5,1", "1,6,1",
-            "2,1,1", "2,2,1", "2,3,1", "2,4,1", "2,5,1", "2,6,1",
-            "3,1,1", "3,2,1", "3,3,1", "3,4,1", "3,5,1", "3,6,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureOnStartFieldIsMoved(
                 int playerIndex, int randomNumber, int numberOfFiguresInBase) {
@@ -98,11 +104,10 @@ public class BackEndTest {
 
             for (int i = 1; i < 4 - numberOfFiguresInBase; i++) {
                 Figure otherOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(otherOwnFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouseDeprecated(otherOwnFigure, player.getIndexOfFirstFigure() + i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             backEnd.botMove();
 
@@ -116,11 +121,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void otherFigureOnStartFieldIsBeaten(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -134,11 +137,10 @@ public class BackEndTest {
 
             for (int i = 1; i < 4 - numberOfFiguresInBase; i++) {
                 Figure otherOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(otherOwnFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouseDeprecated(otherOwnFigure, player.getIndexOfFirstFigure() + i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             backEnd.botMove();
 
@@ -150,11 +152,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureIsPlacedOnStartField(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -164,11 +164,10 @@ public class BackEndTest {
 
             for (int i = 0; i < 4 - numberOfFiguresInBase; i++) {
                 Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(ownIthFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouseDeprecated(ownIthFigure, player.getIndexOfFirstFigure() + i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             backEnd.botMove();
 
@@ -179,11 +178,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5", "0,6",
-            "1,1", "1,2", "1,3", "1,4", "1,5", "1,6",
-            "2,1", "2,2", "2,3", "2,4", "2,5", "2,6",
-            "3,1", "3,2", "3,3", "3,4", "3,5", "3,6",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
         })
         void ownFigureThatCanBeatOtherFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -196,11 +193,10 @@ public class BackEndTest {
 
             for (int i = 0; i < 3; i++) {
                 Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(ownIthFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouseDeprecated(ownIthFigure, player.getIndexOfFirstFigure() + i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             backEnd.botMove();
 
@@ -214,11 +210,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5",
-            "1,1", "1,2", "1,3", "1,4", "1,5",
-            "2,1", "2,2", "2,3", "2,4", "2,5",
-            "3,1", "3,2", "3,3", "3,4", "3,5",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 5), // Exclude six so we don't have to move out of the base
         })
         void ownFigureIsMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -227,7 +221,6 @@ public class BackEndTest {
             placeFigureOnField(ownFigure, player.getIndexOfStartField() + 1);
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             backEnd.botMove();
 
@@ -255,7 +248,7 @@ public class BackEndTest {
             int count = 0;
 
             for (int i = player.getIndexOfFirstFigure(); i < player.getIndexOfLastFigure(); i++) {
-                if (backEnd.figures[i].isInHouse() || backEnd.figures[i].isFinished()) {
+                if (backEnd.figures[i].isInHouse()) {
                     count++;
                 }
             }
@@ -273,19 +266,10 @@ public class BackEndTest {
         ;
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1,3", "0,2,3", "0,3,3", "0,4,3", "0,5,3", "0,6,3",
-            "1,1,3", "1,2,3", "1,3,3", "1,4,3", "1,5,3", "1,6,3",
-            "2,1,3", "2,2,3", "2,3,3", "2,4,3", "2,5,3", "2,6,3",
-            "3,1,3", "3,2,3", "3,3,3", "3,4,3", "3,5,3", "3,6,3",
-            "0,1,2", "0,2,2", "0,3,2", "0,4,2", "0,5,2", "0,6,2",
-            "1,1,2", "1,2,2", "1,3,2", "1,4,2", "1,5,2", "1,6,2",
-            "2,1,2", "2,2,2", "2,3,2", "2,4,2", "2,5,2", "2,6,2",
-            "3,1,2", "3,2,2", "3,3,2", "3,4,2", "3,5,2", "3,6,2",
-            "0,1,1", "0,2,1", "0,3,1", "0,4,1", "0,5,1", "0,6,1",
-            "1,1,1", "1,2,1", "1,3,1", "1,4,1", "1,5,1", "1,6,1",
-            "2,1,1", "2,2,1", "2,3,1", "2,4,1", "2,5,1", "2,6,1",
-            "3,1,1", "3,2,1", "3,3,1", "3,4,1", "3,5,1", "3,6,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureOnStartFieldMustBeMoved(
                 int playerIndex, int randomNumber, int numberOfFiguresInBase) {
@@ -294,13 +278,12 @@ public class BackEndTest {
 
             for (int i = 0; i < 4 - numberOfFiguresInBase - 1; i++) {
                 Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(ownIthFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouse(ownIthFigure, i);
             }
 
             placeFigureOnField(ownFigure, player.getIndexOfStartField());
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatMustBeMoved = backEnd.getFigureThatMustBeMoved();
 
@@ -310,11 +293,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,3", "0,2", "0,1",
-            "1,3", "1,2", "1,1",
-            "2,3", "2,2", "2,1",
-            "3,3", "3,2", "3,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void firstOwnFigureInBaseMustBeMoved(int playerIndex, int numberOfFiguresInBase) {
             Player player = backEnd.players[playerIndex];
@@ -322,11 +303,10 @@ public class BackEndTest {
 
             for (int i = 1; i <= 4 - numberOfFiguresInBase; i++) {
                 Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(ownIthFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouse(ownIthFigure, i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = 6;
             Optional<Figure> figureThatMustBeMoved = backEnd.getFigureThatMustBeMoved();
 
@@ -336,19 +316,10 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1,3", "0,2,3", "0,3,3", "0,4,3", "0,5,3",
-            "1,1,3", "1,2,3", "1,3,3", "1,4,3", "1,5,3",
-            "2,1,3", "2,2,3", "2,3,3", "2,4,3", "2,5,3",
-            "3,1,3", "3,2,3", "3,3,3", "3,4,3", "3,5,3",
-            "0,1,2", "0,2,2", "0,3,2", "0,4,2", "0,5,2",
-            "1,1,2", "1,2,2", "1,3,2", "1,4,2", "1,5,2",
-            "2,1,2", "2,2,2", "2,3,2", "2,4,2", "2,5,2",
-            "3,1,2", "3,2,2", "3,3,2", "3,4,2", "3,5,2",
-            "0,1,1", "0,2,1", "0,3,1", "0,4,1", "0,5,1",
-            "1,1,1", "1,2,1", "1,3,1", "1,4,1", "1,5,1",
-            "2,1,1", "2,2,1", "2,3,1", "2,4,1", "2,5,1",
-            "3,1,1", "3,2,1", "3,3,1", "3,4,1", "3,5,1",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 5),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureInBaseDoesNotHaveToBeMoved(
                 int playerIndex, int randomNumber, int numberOfFiguresInBase) {
@@ -356,11 +327,10 @@ public class BackEndTest {
 
             for (int i = 1; i <= 4 - numberOfFiguresInBase; i++) {
                 Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
-                placeFigureInHouse(ownIthFigure, player.getIndexOfFirstFigure() + i);
+                placeFigureInHouse(ownIthFigure, i);
             }
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatMustBeMoved = backEnd.getFigureThatMustBeMoved();
 
@@ -368,11 +338,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5",
-            "1,1", "1,2", "1,3", "1,4", "1,5",
-            "2,1", "2,2", "2,3", "2,4", "2,5",
-            "3,1", "3,2", "3,3", "3,4", "3,5",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 5),
         })
         void firstOwnFigureThatCanBeatOtherFigureMustBeMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -383,15 +351,14 @@ public class BackEndTest {
             Figure ownFourthFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
             Figure otherFigure = backEnd.figures[otherPlayer.getIndexOfFirstFigure()];
 
-            placeFigureInHouse(ownFigure, ownFigure.getIndex());
-            placeFigureInHouse(ownThirdFigure, ownThirdFigure.getIndex());
-            placeFigureInHouse(ownFourthFigure, ownFourthFigure.getIndex());
+            placeFigureInHouseDeprecated(ownFigure, ownFigure.getIndex());
+            placeFigureInHouseDeprecated(ownThirdFigure, ownThirdFigure.getIndex());
+            placeFigureInHouseDeprecated(ownFourthFigure, ownFourthFigure.getIndex());
 
             placeFigureOnField(ownSecondFigure, player.getIndexOfStartField());
             placeFigureOnField(otherFigure, player.getIndexOfStartField() + randomNumber);
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatMustBeMoved = backEnd.getFigureThatMustBeMoved();
 
@@ -410,21 +377,18 @@ public class BackEndTest {
         ;
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3",
-            "1,1", "1,2", "1,3",
-            "2,1", "2,2", "2,3",
-            "3,1", "3,2", "3,3",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 3),
         })
         void ownFigureInHouseWhichDoesNotExceedFieldsShouldBeMoved(
                 int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure = backEnd.figures[player.getIndexOfFirstFigure()];
 
-            placeFigureInHouse(ownFigure, player.getIndexOfFirstFigure());
+            placeFigureInHouseDeprecated(ownFigure, player.getIndexOfFirstFigure());
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatShouldBeMoved = backEnd.getFigureThatShouldBeMoved();
 
@@ -434,33 +398,34 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,4,0", "0,3,1", "0,2,2", "0,1,3",
-            "1,4,0", "1,3,1", "1,2,2", "1,1,3",
-            "2,4,0", "2,3,1", "2,2,2", "2,1,3",
-            "3,4,0", "3,3,1", "3,2,2", "3,1,3",
-        })
+        @MethodSource
         void ownFigureInHouseWhichExceedsFieldsShouldNotBeMoved(
                 int playerIndex, int randomNumber, int offset) {
             Player player = backEnd.players[playerIndex];
             Figure ownFigure = backEnd.figures[player.getIndexOfFirstFigure()];
 
-            placeFigureInHouse(ownFigure, player.getIndexOfFirstFigure() + offset);
+            placeFigureInHouse(ownFigure, offset);
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatShouldBeMoved = backEnd.getFigureThatShouldBeMoved();
 
             assertFalse(figureThatShouldBeMoved.isPresent());
         }
 
+        static Stream<Arguments> ownFigureInHouseWhichExceedsFieldsShouldNotBeMoved() {
+            return IntStream.rangeClosed(0, 3)
+                    .boxed()
+                    .flatMap(
+                            i ->
+                                    IntStream.rangeClosed(1, 4)
+                                            .mapToObj(j -> Arguments.of(i, j, 4 - j)));
+        }
+
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5",
-            "1,1", "1,2", "1,3", "1,4", "1,5",
-            "2,1", "2,2", "2,3", "2,4", "2,5",
-            "3,1", "3,2", "3,3", "3,4", "3,5",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 5),
         })
         void ownFigureWithHighestProgressShouldBeMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
@@ -475,7 +440,6 @@ public class BackEndTest {
             placeFigureOnField(ownThirdFigure, player.getIndexOfStartField() + 6);
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatShouldBeMoved = backEnd.getFigureThatShouldBeMoved();
 
@@ -485,17 +449,14 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "0,1", "0,2", "0,3", "0,4", "0,5", "0,6",
-            "1,1", "1,2", "1,3", "1,4", "1,5", "1,6",
-            "2,1", "2,2", "2,3", "2,4", "2,5", "2,6",
-            "3,1", "3,2", "3,3", "3,4", "3,5", "3,6",
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
         })
         void ownFigureInBaseShouldNotBeMoved(int playerIndex, int randomNumber) {
             Player player = backEnd.players[playerIndex];
 
             backEnd.currentPlayer = player;
-            backEnd.currentPlayerIndex = player.getPlayerIndex();
             backEnd.randomNumber = randomNumber;
             Optional<Figure> figureThatShouldBeMoved = backEnd.getFigureThatShouldBeMoved();
 
@@ -511,7 +472,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnField_whenMoveFigureOnField_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(6) + 1;
@@ -525,7 +488,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnMaxField_whenMoveFigureOnField_thenFigureMovedOverBoarder(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -539,7 +504,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureBeatOtherFigure_whenMoveFigureOnField_thenFigureMovedAndOtherFigureInBase(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -558,7 +525,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void
                 givenFigureOnFieldWouldBeatOwnFigure_whenMoveFigureOnField_thenFigureNotMovedOtherFigureMoved(
                         int playerIndex) {
@@ -584,7 +553,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldMovetoFreeBase_whenMoveFigureOnField_thenFigureMovedToBase(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -598,7 +569,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldNotAbleToMoveInHouse_whenMoveFigureOnField_thenFigureNotMoved(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -614,7 +587,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldWouldExceedMaxHouseField_whenMoveFigureOnField_thenFigureNotMoved(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
@@ -636,7 +611,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnMaxHosueField_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
             setCurrentPlayer(playerIndex);
             final int expectedField = playerIndex * 4 + 3;
@@ -648,7 +625,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigurInHouseAndMovable_whenMoveFigureInHouse_thenFigureMoved(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(0, 3) + 1;
@@ -661,7 +640,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnFieldNotMovable_whenMoveFigureInHouse_thenNotMoveFigure(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = rand.nextInt(4, 6) + 1;
@@ -682,7 +663,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @PermutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsInBase(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -695,7 +678,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @PermutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsInHouse(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -708,23 +693,22 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @PermutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureIsFinished(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
 
             placeFigureOnField(backEnd.figures[4], randomNumber);
-            backEnd.figures[0].setFinished();
+            placeFigureInHouse(backEnd.figures[0], 3);
             backEnd.randomNumber = randomNumber;
 
             assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "6,0", "6,1", "6,2", "6,3",
-        })
+        @MethodSource
         void noBeatIsPossibleIfFigureIsAboutToEnterTheHouse(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -736,11 +720,17 @@ public class BackEndTest {
             assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
+        static Stream<Arguments> noBeatIsPossibleIfFigureIsAboutToEnterTheHouse() {
+            return IntStream.rangeClosed(1, 6)
+                    .boxed()
+                    .flatMap(
+                            i ->
+                                    IntStream.rangeClosed(0, Math.min(i - 1, 3))
+                                            .mapToObj(j -> Arguments.of(i, j)));
+        }
+
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
-        })
+        @MethodSource
         void noBeatIsPossibleIfFigureCannotReachToOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -752,10 +742,15 @@ public class BackEndTest {
             assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
+        static Stream<Arguments> noBeatIsPossibleIfFigureCannotReachToOtherFigure() {
+            return IntStream.rangeClosed(1, 6)
+                    .boxed()
+                    .flatMap(
+                            i -> IntStream.rangeClosed(0, i - 1).mapToObj(j -> Arguments.of(i, j)));
+        }
+
         @ParameterizedTest
-        @CsvSource({
-            "2,0", "3,0", "3,1", "4,0", "4,1", "4,2", "5,0", "5,1", "5,2", "5,3",
-        })
+        @MethodSource
         void noBeatIsPossibleIfFigureJumpsOverOtherFigure(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -767,8 +762,17 @@ public class BackEndTest {
             assertFalse(backEnd.beatIsPossible(thisFigure));
         }
 
+        static Stream<Arguments> noBeatIsPossibleIfFigureJumpsOverOtherFigure() {
+            return IntStream.rangeClosed(2, 5)
+                    .boxed()
+                    .flatMap(
+                            i -> IntStream.rangeClosed(0, i - 2).mapToObj(j -> Arguments.of(i, j)));
+        }
+
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @PermutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void noBeatIsPossibleIfFigureOnNewFieldIsFromTheSamePlayer(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[1];
@@ -781,7 +785,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+        @PermutationSource({
+            @Range(lower = 1, upper = 6),
+        })
         void beatIsPossible(int randomNumber) {
             Figure thisFigure = backEnd.figures[0];
             Figure otherFigure = backEnd.figures[4];
@@ -806,10 +812,7 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @CsvSource({
-            "1,0", "2,0", "2,1", "3,0", "3,1", "3,2", "4,0", "4,1", "4,2", "4,3", "5,0", "5,1",
-            "5,2", "5,3", "5,4", "6,0", "6,1", "6,2", "6,3", "6,4", "6,5",
-        })
+        @MethodSource
         void newFieldIsWrapped(int randomNumber, int offset) {
             Figure thisFigure = backEnd.figures[4];
             Figure otherFigure = backEnd.figures[0];
@@ -819,6 +822,13 @@ public class BackEndTest {
             backEnd.randomNumber = randomNumber;
 
             assertTrue(backEnd.beatIsPossible(thisFigure));
+        }
+
+        static Stream<Arguments> newFieldIsWrapped() {
+            return IntStream.rangeClosed(1, 6)
+                    .boxed()
+                    .flatMap(
+                            i -> IntStream.rangeClosed(0, i - 1).mapToObj(j -> Arguments.of(i, j)));
         }
     }
 
@@ -830,7 +840,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnField_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setOnField();
@@ -850,7 +862,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInHouse_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setInHouse();
@@ -859,7 +873,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInBase_whenMoveFigureToBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.moveToBase(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()]);
@@ -874,288 +890,299 @@ public class BackEndTest {
             backEnd = new BackEnd(new String[] {"orange", "blue", "green", "red"}, 4, false);
         }
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenNotAllFiguresFinished_whenGetNameOfWinner_thenReturnNull(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
-                    i < getFigureAfterOfCurrentPlayer();
-                    i++) {
-                backEnd.figures[i].setOnField();
+        @Test
+        void noWinnerFoundWhenAllFiguresInBase() {
+            assertTrue(backEnd.getNameOfWinner().isEmpty());
+        }
+
+        @Test
+        void noWinnerFoundWhenAllFiguresOnField() {
+            for (int i = 0; i < backEnd.figures.length; i++) {
+                Figure figure = backEnd.figures[i];
+                placeFigureOnField(figure, i);
             }
             assertTrue(backEnd.getNameOfWinner().isEmpty());
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void givenAllFiguresFinished_whenGetNameOfWinner_thenReturnPlayerName(int playerIndex) {
-            setCurrentPlayer(playerIndex);
-            for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
-                    i < getFigureAfterOfCurrentPlayer();
-                    i++) {
-                backEnd.figures[i].setFinished();
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
+        void winnerFoundWhenAllFiguresOfPlayerAreInHouse(int playerIndex) {
+            Player player = backEnd.players[playerIndex];
+            for (int i = player.getIndexOfFirstFigure(); i < player.getIndexOfLastFigure(); i++) {
+                Figure figure = backEnd.figures[i];
+                placeFigureInHouse(figure, i - player.getIndexOfFirstFigure());
             }
-            String expected = backEnd.players[playerIndex].getName();
-            assertEquals(expected, backEnd.getNameOfWinner().get());
+            assertEquals(player.getName(), backEnd.getNameOfWinner().get());
         }
     }
 
     @Nested
-    class setFinishedFiguresTest {
+    class getFinishedFiguresTest {
         @BeforeEach
         void setUp() {
             backEnd = new BackEnd(new String[] {"orange", "green", "blue", "red"}, 4, false);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oooo(int i) {
-            placeFiguresInHouse(false, false, false, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oooi(int i) {
-            placeFiguresInHouse(false, false, false, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ooio(int i) {
-            placeFiguresInHouse(false, false, true, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 1);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ooii(int i) {
-            placeFiguresInHouse(false, false, true, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 1);
+            placeFigureInHouse(thirdOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oioo(int i) {
-            placeFiguresInHouse(false, true, false, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 2);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oioi(int i) {
-            placeFiguresInHouse(false, true, false, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 2);
+            placeFigureInHouse(thirdOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oiio(int i) {
-            placeFiguresInHouse(false, true, true, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 2);
+            placeFigureInHouse(thirdOwnFigure, 1);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void oiii(int i) {
-            placeFiguresInHouse(false, true, true, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertFalse(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure secondOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 1];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 2);
+            placeFigureInHouse(thirdOwnFigure, 1);
+            placeFigureInHouse(secondOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iooo(int i) {
-            placeFiguresInHouse(true, false, false, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iooi(int i) {
-            placeFiguresInHouse(true, false, false, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ioio(int i) {
-            placeFiguresInHouse(true, false, true, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 1);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void ioii(int i) {
-            placeFiguresInHouse(true, false, true, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure secondOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 1];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 1);
+            placeFigureInHouse(secondOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iioo(int i) {
-            placeFiguresInHouse(true, true, false, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 2);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure, thirdOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iioi(int i) {
-            placeFiguresInHouse(true, true, false, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure secondOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 1];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 2);
+            placeFigureInHouse(secondOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(new Figure[] {fourthOwnFigure, thirdOwnFigure}, finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iiio(int i) {
-            placeFiguresInHouse(true, true, true, false, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
+            Player player = backEnd.players[i];
+            Figure secondOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 1];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
+
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 2);
+            placeFigureInHouse(secondOwnFigure, 1);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
+
+            assertArrayEquals(
+                    new Figure[] {fourthOwnFigure, thirdOwnFigure, secondOwnFigure},
+                    finishedFigures);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void iiii(int i) {
-            placeFiguresInHouse(true, true, true, true, i);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(0, i).isFinished()));
-        }
+            Player player = backEnd.players[i];
+            Figure firstOwnFigure = backEnd.figures[player.getIndexOfFirstFigure()];
+            Figure secondOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 1];
+            Figure thirdOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 2];
+            Figure fourthOwnFigure = backEnd.figures[player.getIndexOfFirstFigure() + 3];
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
-        void alreadyFinishedFiguresAreStillFinished(int i) {
-            placeFiguresInHouse(true, false, false, false, i);
-            backEnd.setFinishedFigures();
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, i).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, i).isFinished()));
-        }
+            placeFigureInHouse(fourthOwnFigure, 3);
+            placeFigureInHouse(thirdOwnFigure, 2);
+            placeFigureInHouse(secondOwnFigure, 1);
+            placeFigureInHouse(firstOwnFigure, 0);
+            Figure[] finishedFigures = backEnd.getFinishedFigures(player);
 
-        @Test
-        void multiplePlayersMayHaveFinishedFigures() {
-            placeFiguresInHouse(true, false, false, false, 0);
-            placeFiguresInHouse(true, false, true, false, 1);
-            placeFiguresInHouse(true, true, false, false, 2);
-            placeFiguresInHouse(true, true, true, true, 3);
-            backEnd.setFinishedFigures();
-            assertAll(
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, 0).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, 0).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, 0).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, 0).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, 1).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(2, 1).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, 1).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, 1).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, 2).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, 2).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(1, 2).isFinished()),
-                    () -> assertFalse(nthFigureOfCurrentPlayer(0, 2).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(3, 3).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(2, 3).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(1, 3).isFinished()),
-                    () -> assertTrue(nthFigureOfCurrentPlayer(0, 3).isFinished()));
-        }
-
-        void placeFiguresInHouse(
-                boolean third, boolean second, boolean first, boolean zeroth, int i) {
-            boolean[] figuresInHouse = {third, second, first, zeroth};
-            int figureIndex, houseFieldIndex;
-            figureIndex = houseFieldIndex = 4 * i + 3;
-
-            for (boolean figureIsOnHouseField : figuresInHouse) {
-                if (figureIsOnHouseField) {
-                    backEnd.figures[figureIndex].setInHouse();
-                    backEnd.figures[figureIndex].setField(houseFieldIndex, 0);
-                    figureIndex--;
-                }
-                houseFieldIndex--;
-            }
-        }
-
-        Figure nthFigureOfCurrentPlayer(int n, int i) {
-            return backEnd.figures[4 * i + n];
+            assertArrayEquals(
+                    new Figure[] {fourthOwnFigure, thirdOwnFigure, secondOwnFigure, firstOwnFigure},
+                    finishedFigures);
         }
     }
 
@@ -1203,22 +1230,21 @@ public class BackEndTest {
 
         @Test
         void givenFinishedFigureOnHouseField_whenGetFigureOnHouseField_thenReturnFigureIndex() {
-            backEnd.figures[0].setField(0, 0);
-            backEnd.figures[0].setFinished();
+            placeFigureInHouse(backEnd.figures[0], 3);
             int expected = 0;
-            assertEquals(expected, backEnd.figureOnHouseField(0).get().getIndex());
+            assertEquals(expected, backEnd.figureOnHouseField(3).get().getIndex());
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureFinishedAndOneInHouse_whenGetFigureOnHouseField_thenReturnFigureIndex(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setField(
-                    playerIndex * 4 + 3, 0);
+            placeFigureInHouse(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()], 3);
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setField(
                     playerIndex * 4 + 2, 0);
-            backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()].setFinished();
             backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure() + 1].setInHouse();
             int expected = backEnd.currentPlayer.getIndexOfFirstFigure() + 1;
             assertEquals(
@@ -1234,7 +1260,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresInBase_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1246,7 +1274,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureInBas_whenCheckIfBaseIsEmpty_thanReturnFalse(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1259,7 +1289,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresOnField_whenCheckIfBaseIsEmpty_thanReturnTrue(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1280,7 +1312,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresInBase_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
             int expected = 3;
@@ -1288,7 +1322,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1302,20 +1338,25 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenAllFiguresFinished_whenCalculateTries_thanReturnThree(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
                     i < getFigureAfterOfCurrentPlayer();
                     i++) {
-                backEnd.figures[i].setFinished();
+                placeFigureInHouse(
+                        backEnd.figures[i], i - backEnd.currentPlayer.getIndexOfFirstFigure());
             }
             int expected = 3;
             assertEquals(expected, backEnd.getNumberOfAllowedTries());
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenOneFigureOnField_whenCalculateTries_thanReturnOne(int playerIndex) {
             setCurrentPlayer(playerIndex);
             for (int i = backEnd.currentPlayer.getIndexOfFirstFigure();
@@ -1338,7 +1379,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureInBase_whenMoveOutOfBase_thenFigureOnStartField(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.moveOutOfBase(backEnd.figures[backEnd.currentPlayer.getIndexOfFirstFigure()]);
@@ -1358,7 +1401,9 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenFigureOnStartField_whenMoveOutOfBase_thenFigureInBase(int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 6;
@@ -1406,31 +1451,34 @@ public class BackEndTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenRandomNumberIsNotSix_whenSetNewCurrentPlayer_thenCurrentPlayerChanged(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 5;
             backEnd.setNewCurrentPlayerIfNecessary();
             int expectedPlayerIndex = (playerIndex + 1) % 4;
-            assertEquals(expectedPlayerIndex, backEnd.currentPlayerIndex);
+            assertEquals(expectedPlayerIndex, backEnd.currentPlayer.getPlayerIndex());
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, 1, 2, 3})
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+        })
         void givenRandomNumberIsSix_whenSetNewCurrentPlayer_thenCurrentPlayerNotChanged(
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 6;
             backEnd.setNewCurrentPlayerIfNecessary();
-            assertEquals(playerIndex, backEnd.currentPlayerIndex);
+            assertEquals(playerIndex, backEnd.currentPlayer.getPlayerIndex());
         }
     }
 
     // Method for easier setting of the current player
     private void setCurrentPlayer(int playerIndex) {
         if (playerIndex >= 0 && playerIndex < 4) {
-            backEnd.currentPlayerIndex = playerIndex;
             backEnd.currentPlayer = backEnd.players[playerIndex];
 
         } else {
@@ -1440,7 +1488,7 @@ public class BackEndTest {
 
     // Method to get the figure after of the current player
     private int getFigureAfterOfCurrentPlayer() {
-        return (backEnd.currentPlayerIndex + 1) * 4;
+        return (backEnd.currentPlayer.getPlayerIndex() + 1) * 4;
     }
 
     private void placeFigureOnField(Figure figure, int value) {
@@ -1457,7 +1505,7 @@ public class BackEndTest {
         figure.setProgress(progress);
     }
 
-    private void placeFigureInHouse(Figure figure, int value) {
+    private void placeFigureInHouseDeprecated(Figure figure, int value) {
         assert value >= figure.color * 4 && value <= figure.color * 4 + 3
                 : String.format(
                         "Value must be in range [%d; %d], but was %d",
@@ -1465,5 +1513,13 @@ public class BackEndTest {
 
         figure.setInHouse();
         figure.setField(value, 0);
+    }
+
+    private void placeFigureInHouse(Figure figure, int value) {
+        assert value >= 0 && value <= 3
+                : String.format("Value must be in range [0; 3], but was %d", value);
+
+        figure.setInHouse();
+        figure.setField(figure.color * 4 + value, 0);
     }
 }

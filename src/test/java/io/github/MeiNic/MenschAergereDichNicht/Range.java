@@ -14,10 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.MeiNic.MenschAergereDichNicht.figure;
+package io.github.MeiNic.MenschAergereDichNicht;
 
-public enum FigureState {
-    IN_BASE,
-    ON_FIELD,
-    IN_HOUSE,
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Range {
+    int lower();
+
+    int upper();
 }

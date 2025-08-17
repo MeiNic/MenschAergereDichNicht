@@ -29,6 +29,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Info logging statements not visible on light-mode terminals
   (reported by [@guemax] in [#119])
+* Crash when a player wins (reported by [@guemax] in [#143])
+* Multiple windows being opened when a player wins (reported by [@guemax] in [#145])
 
 ## [v2.0.0] - 2025-05-10
 
@@ -111,6 +113,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [@TastingComb]: https://github.com/TastingComb
 [@MeiNic]: https://github.com/MeiNic
 
+[#145]: https://github.com/MeiNic/MenschAergereDichNicht/pull/145
+[#143]: https://github.com/MeiNic/MenschAergereDichNicht/pull/143
 [#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
 [#100]: https://github.com/MeiNic/MenschAergereDichNicht/pull/100
 [#95]: https://github.com/MeiNic/MenschAergereDichNicht/pull/95

@@ -16,7 +16,6 @@
 
 package io.github.MeiNic.MenschAergereDichNicht.figure;
 
-import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.FINISHED;
 import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_BASE;
 import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.IN_HOUSE;
 import static io.github.MeiNic.MenschAergereDichNicht.figure.FigureState.ON_FIELD;
@@ -82,7 +81,6 @@ public class Figure {
                                     + " State: "
                                     + this.state);
             }
-            case FINISHED -> LOGGER.error("Tried to replace finished Figure");
         }
     }
 
@@ -131,11 +129,6 @@ public class Figure {
         state = IN_HOUSE;
     }
 
-    public void setFinished() {
-        progress = 0;
-        state = FINISHED;
-    }
-
     public FigureState getState() {
         return state;
     }
@@ -150,13 +143,5 @@ public class Figure {
 
     public boolean isInHouse() {
         return IN_HOUSE == state;
-    }
-
-    public boolean isFinished() {
-        return FINISHED == state;
-    }
-
-    public boolean isMovable() {
-        return ON_FIELD == state || IN_HOUSE == state;
     }
 }
