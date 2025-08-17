@@ -57,7 +57,8 @@ public class WinWindow {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         LOGGER.info("Closing game.");
-                        frame.setVisible(false);
+                        frame.dispose();
+                        System.exit(0);
                     }
 
                     @Override

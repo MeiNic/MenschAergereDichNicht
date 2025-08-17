@@ -41,3 +41,7 @@ buildNumber.properties
 
 # Generated html code coverage report
 htmlReport
+
+# Intellij IDEA
+.idea/*
+*.iml
