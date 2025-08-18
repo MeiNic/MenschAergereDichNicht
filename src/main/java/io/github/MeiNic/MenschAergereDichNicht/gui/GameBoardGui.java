@@ -25,11 +25,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class GameBoardGui {
 
     private final JLabel[] figures;
+    private final List<JLabel> figuresList;
     private final JLabel[] houses;
     private final JLabel[] bases;
     private final JLabel[] fields;
@@ -130,6 +133,8 @@ public class GameBoardGui {
             figures[i].addMouseListener(new MyMouseListener());
             frame.add(figures[i]);
         }
+        figuresList = Arrays.asList(figures);
+
         for (int i = 0; i < houses.length; i++) {
             int x = HOUSE_POSITIONS_X[i];
             int y = HOUSE_POSITIONS_Y[i];
@@ -429,12 +434,9 @@ public class GameBoardGui {
 
     private class MyMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
-            int clickedFigureIndex = -1;
-            for (int i = 0; i < figures.length && clickedFigureIndex == -1; i++) {
-                if (e.getSource() == figures[i]) {
-                    clickedFigureIndex = i;
-                }
-            }
+            JLabel clickedLabel = (JLabel) e.getSource();
+            int clickedFigureIndex = figuresList.indexOf(clickedLabel);
+
             LOGGER.info("Clicked Figure " + clickedFigureIndex);
             if (clickedFigureIndex == -1) {
                 LOGGER.info("Figure movement aborted - no figure clicked");
