@@ -127,7 +127,8 @@ public class BackEnd {
                 i < currentPlayer.getIndexOfLastFigure();
                 i++) {
             Figure figure = figures[i];
-            boolean isMovable = !Arrays.asList(finishedFigures).contains(figure);
+            boolean isMovable =
+                    !(Arrays.asList(finishedFigures).contains(figure) || figure.isInBase());
             if (isMovable) {
                 figure.enablePlacement();
             }
