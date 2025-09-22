@@ -93,7 +93,12 @@ public class GameBoardGui {
     private final ImageTextPanel rulesButton;
     private final JLabel noSix;
     private final ImageTextPanel nextPlayer;
+    private final JLabel botsMoveAdvice;
+    private final ImageTextPanel botsMoveButton;
     private final BackEnd backend;
+
+    private final JPanel noSixPanel;
+    private final JPanel botsMovePanel;
 
     private enum Prompt {
         ROLL_DICE,
@@ -185,6 +190,8 @@ public class GameBoardGui {
         rulesButton = new ImageTextPanel("button-idle", "rules");
         noSix = new JLabel();
         nextPlayer = new ImageTextPanel("button-idle", "next player");
+        botsMoveAdvice = new JLabel();
+        botsMoveButton = new ImageTextPanel("button-idle", "let bots move");
 
         // Set text
         userAdvice.setText(
@@ -198,14 +205,17 @@ public class GameBoardGui {
         noSix.setText(
                 "<html> <body> You didn't get a six. Press this button to <br> move on to the next"
                         + " player </body> </html>");
+        botsMoveAdvice.setText("<html> <body> </body> Click the button to let the bots make their move. </html>");
 
         // Set bounds
         userAdvice.setBounds(930, 22, 450, 64);
         rollDice.setBounds(930, 80, 75, 75);
         rulesAdvice.setBounds(930, 790, 260, 32);
         rulesButton.setBounds(930, 830, 100, 32);
-        noSix.setBounds(930, 22, 450, 32);
-        nextPlayer.setBounds(930, 80, 100, 32);
+        noSix.setBounds(0, 0, 450, 32);
+        nextPlayer.setBounds(0, 58, 140, 32);
+        botsMoveAdvice.setBounds(0, 0, 450, 32);
+        botsMoveButton.setBounds(0, 58, 160, 32);
 
         // Add listeners
         rollDice.addMouseListener(
@@ -254,6 +264,39 @@ public class GameBoardGui {
                     }
                 });
 
+        botsMoveButton.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        buttonActionMouseKey();
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        botsMoveButton.setImage("button-hovered");
+                        frame.repaint();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        botsMoveButton.setImage("button-idle");
+                        frame.repaint();
+                    }
+                });
+
+        // Initialize Panels
+        noSixPanel = new JPanel();
+        noSixPanel.setLayout(null);
+        noSixPanel.setBounds(930, 22, 450, 120);
+        noSixPanel.add(noSix);
+        noSixPanel.add(nextPlayer);
+
+        botsMovePanel = new JPanel();
+        botsMovePanel.setLayout(null);
+        botsMovePanel.setBounds(930, 22, 450, 120);
+        botsMovePanel.add(botsMoveAdvice);
+        botsMovePanel.add(botsMoveButton);
+
         replaceFigures();
         // Add UI Elements
         frame.add(gameBoardBackground);
@@ -285,7 +328,6 @@ public class GameBoardGui {
 
     protected void prepareNextMove() {
         backend.disablePlacementForAllFigures();
-
         removePrompt();
         replaceFigures();
         if (shouldDisplayWinWindow()) {
@@ -410,15 +452,19 @@ public class GameBoardGui {
                     setPromptValues();
                 } else {
                     frame.remove(userAdvice);
-                    frame.add(noSix);
-                    frame.add(nextPlayer);
+                    frame.add(noSixPanel);
+                    frame.revalidate();
+//                    frame.add(noSix);
+//                    frame.add(nextPlayer);
                     promptState = Prompt.NEXT_PLAYER;
                     frame.repaint();
                 }
             }
-            case NEXT_PLAYER -> {
-                frame.remove(noSix);
-                frame.remove(nextPlayer);
+            case NO_MOVES_AVAILABLE -> {
+                frame.remove(noSixPanel);
+                frame.revalidate();
+//                frame.remove(noSix);
+//                frame.remove(nextPlayer);
                 promptState = Prompt.DEFAULT;
                 frame.add(userAdvice);
                 frame.repaint();
