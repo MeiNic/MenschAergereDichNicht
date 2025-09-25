@@ -112,7 +112,7 @@ public class GameBoardGui {
 
     protected JFrame frame;
 
-    private StateMashine stateMashine;
+    private final StateMashine stateMashine;
 
     public GameBoardGui(BackEnd backendInput) {
         this.backend = backendInput;
@@ -394,30 +394,12 @@ public class GameBoardGui {
         backend.disablePlacementForAllFigures();
         frame.revalidate();
         replaceFigures();
-        executeNextMove();
+        backend.setNewCurrentPlayerIfNecessary();
     }
 
     private void displayWinWindow() {
         new WinWindow(backend.getNameOfWinner().get());
         frame.setVisible(false);
-    }
-
-    protected void executeNextMove() {
-        backend.setNewCurrentPlayerIfNecessary();
-        switch (backend.getPlayerStateOfCurrentPlayer()) {
-            case 0 -> setActivePlayer();
-            case 1 -> {
-                setBotAdvice();
-                backend.botMove();
-                replaceFigures();
-                if (backend.getNameOfWinner().isPresent()) {
-                    displayWinWindow();
-                    return;
-                }
-                executeNextMove();
-            }
-            default -> executeNextMove();
-        }
     }
 
     protected void replaceFigures() {
@@ -454,39 +436,6 @@ public class GameBoardGui {
             case 6 -> result = new JLabel(Resources.loadImageIcon("dice-6"));
             default -> result = new JLabel(Resources.loadImageIcon("dice-unknown"));
         }
-    }
-
-    protected void setActivePlayer() {
-        frame.add(rollDice);
-        rollDiceAdvice.setText(
-                "<html> <body> It's "
-                        + backend.getNameOfCurrentPlayer()
-                        + "s turn, click this <br> "
-                        + "button to roll the dice </body> </html>");
-        frame.remove(result);
-        frame.repaint();
-    }
-
-    void setPromptValues() {
-        // move to other jlabel
-        rollDiceAdvice.setText("It's " + backend.getNameOfCurrentPlayer() + "s turn");
-        moveFigureAdvice2.setText(
-                "<html> <body> Choose the figure you want to move! </body> </html>");
-        moveFigureAdvice2.setBounds(930, 160, 350, 32);
-        frame.add(moveFigureAdvice2);
-    }
-
-    private void removePrompt() {
-        frame.remove(moveFigureAdvice2);
-    }
-
-    private void setBotAdvice() {
-        frame.remove(rollDice);
-        rollDiceAdvice.setText(
-                "The bots are moving... Please wait, it will be the next players turn in a few"
-                        + " seconds!");
-        result.setText("");
-        frame.repaint();
     }
 
     private void openRules() {
