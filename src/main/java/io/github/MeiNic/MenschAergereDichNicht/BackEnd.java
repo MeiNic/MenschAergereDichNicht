@@ -26,6 +26,8 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Bot;
 import io.github.MeiNic.MenschAergereDichNicht.player.Dummy;
 import io.github.MeiNic.MenschAergereDichNicht.player.Human;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
+import io.github.MeiNic.MenschAergereDichNicht.stateMashine.Event;
+import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMashine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -38,9 +40,13 @@ public class BackEnd {
     protected final Player[] players;
     protected Player currentPlayer;
 
+    public StateMashine stateMashine;
+
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
+        stateMashine = new StateMashine();
+
         figures = new Figure[16];
         players = new Player[4];
 
@@ -409,10 +415,18 @@ public class BackEnd {
     }
 
     public void setNewCurrentPlayerIfNecessary() {
+        LOGGER.debug(
+                "Ins setCurrentPlayerIfNecessary Current state: " + stateMashine.getCurrentState());
         if (6 == randomNumber) {
+            stateMashine.handleEvent(Event.MOVED_PIECE);
             return;
         }
         currentPlayer = players[(currentPlayer.getPlayerIndex() + 1) % 4];
+        switch (getPlayerStateOfCurrentPlayer()) {
+            case 0 -> stateMashine.handleEvent(Event.TURN_COMPLETED_ENTER_PLAYER);
+            case 1 -> stateMashine.handleEvent(Event.TURN_COMPLETED_ENTER_BOT);
+            default -> setNewCurrentPlayerIfNecessary();
+        }
     }
 
     protected boolean generateRandomNumber() {

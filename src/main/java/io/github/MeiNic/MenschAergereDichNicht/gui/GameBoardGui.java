@@ -108,14 +108,6 @@ public class GameBoardGui {
     private final JPanel noSixPanel;
     private final JPanel botsMovePanel;
 
-    private enum Prompt {
-        ROLL_DICE,
-        NEXT_PLAYER,
-        DEFAULT
-    }
-
-    private Prompt promptState = Prompt.DEFAULT;
-
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     protected JFrame frame;
@@ -338,12 +330,10 @@ public class GameBoardGui {
         replaceFigures();
         // Add UI Elements
         frame.add(gameBoardBackground);
-        frame.add(rollDice);
-        frame.add(rollDiceAdvice);
         frame.add(rulesAdvice);
         frame.add(rulesButton);
+        changeUserAdvice();
 
-        promptState = Prompt.ROLL_DICE;
         // Display UI
         frame.setTitle("game field");
         frame.setSize(1300, 945);
@@ -400,19 +390,11 @@ public class GameBoardGui {
         frame.repaint();
     }
 
-    protected void prepareNextMove() {
+    protected void afterHumanmoveLivecycle() {
         backend.disablePlacementForAllFigures();
-        removePrompt();
+        frame.revalidate();
         replaceFigures();
-        if (shouldDisplayWinWindow()) {
-            displayWinWindow();
-            return;
-        }
         executeNextMove();
-    }
-
-    private boolean shouldDisplayWinWindow() {
-        return backend.getNameOfWinner().isPresent();
     }
 
     private void displayWinWindow() {
@@ -428,7 +410,7 @@ public class GameBoardGui {
                 setBotAdvice();
                 backend.botMove();
                 replaceFigures();
-                if (shouldDisplayWinWindow()) {
+                if (backend.getNameOfWinner().isPresent()) {
                     displayWinWindow();
                     return;
                 }
@@ -472,9 +454,6 @@ public class GameBoardGui {
             case 6 -> result = new JLabel(Resources.loadImageIcon("dice-6"));
             default -> result = new JLabel(Resources.loadImageIcon("dice-unknown"));
         }
-        result.setBounds(930, 80, 75, 75);
-        frame.add(result);
-        frame.repaint();
     }
 
     protected void setActivePlayer() {
@@ -503,7 +482,6 @@ public class GameBoardGui {
 
     private void setBotAdvice() {
         frame.remove(rollDice);
-        promptState = Prompt.DEFAULT;
         rollDiceAdvice.setText(
                 "The bots are moving... Please wait, it will be the next players turn in a few"
                         + " seconds!");
@@ -517,39 +495,31 @@ public class GameBoardGui {
     }
 
     protected void buttonActionMouseKey() {
+        LOGGER.debug("Current state:" + stateMashine.getCurrentState());
         switch (stateMashine.getCurrentState()) {
             case WAITING_TO_ROLL_DICE -> {
-                LOGGER.debug("Current state:" + stateMashine.getCurrentState());
-                frame.remove(rollDice);
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
                     LOGGER.debug("Human can move their figures");
                     stateMashine.handleEvent(Event.ROLL_DICE_CORRECT);
                     displayResult(backend.randomNumber);
-                    promptState = Prompt.DEFAULT;
-                    setPromptValues();
                 } else {
+                    LOGGER.debug("Human can't move their figures");
                     stateMashine.handleEvent(Event.ROLL_DICE_INCORRECT);
-                    frame.remove(rollDiceAdvice);
-                    frame.add(noSixPanel);
-                    frame.revalidate();
-                    //                    frame.add(noSix);
-                    //                    frame.add(nextPlayer);
-                    promptState = Prompt.NEXT_PLAYER;
-                    frame.repaint();
                 }
             }
-            case NO_MOVES_AVAILABLE -> {
-                frame.remove(noSixPanel);
-                frame.revalidate();
-                //                frame.remove(noSix);
-                //                frame.remove(nextPlayer);
-                promptState = Prompt.DEFAULT;
-                frame.add(rollDiceAdvice);
-                frame.repaint();
-                executeNextMove();
+            case NO_MOVES_AVAILABLE -> backend.setNewCurrentPlayerIfNecessary();
+            case BOTS_TURN ->  {
+                backend.botMove();
+                replaceFigures();
+                if (backend.getNameOfWinner().isPresent()) {
+                    displayWinWindow();
+                    return;
+                }
+                backend.setNewCurrentPlayerIfNecessary();
             }
         }
+        changeUserAdvice();
     }
 
     private class MyMouseListener extends MouseAdapter {
@@ -580,7 +550,7 @@ public class GameBoardGui {
                 LOGGER.info(
                         "Figure movement aborted - Wrong figure moved (Moving figure to base...)");
                 stateMashine.handleEvent(Event.MOVED_WRONG_PIECE);
-                prepareNextMove();
+                afterHumanmoveLivecycle();
                 return;
             }
             if (clickedFigure.isInBase()) {
@@ -588,7 +558,7 @@ public class GameBoardGui {
             } else {
                 backend.moveFigure(clickedFigureIndex);
             }
-            prepareNextMove();
+            afterHumanmoveLivecycle();
         }
     }
 }
