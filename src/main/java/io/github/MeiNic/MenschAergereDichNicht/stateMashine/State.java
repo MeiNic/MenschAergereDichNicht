@@ -5,4 +5,5 @@ public enum State {
     NO_MOVES_AVAILABLE,
     MOVING_PIECE,
     MOVED_WRONG_PIECE,
+    BOTS_TURN,
 }
