@@ -1,4 +1,4 @@
-package io.github.MeiNic.MenschAergereDichNicht.stateMashine;
+package io.github.MeiNic.MenschAergereDichNicht.stateMachine;
 
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
@@ -20,10 +20,10 @@ public class StateMachine {
         transitions.put(State.WAITING_TO_ROLL_DICE, new EnumMap<>(Event.class));
         transitions
                 .get(State.WAITING_TO_ROLL_DICE)
-                .put(Event.ROLL_DICE_CORRECT, State.MOVING_PIECE);
+                .put(Event.ROLL_DICE_CAN_MOVE, State.MOVING_PIECE);
         transitions
                 .get(State.WAITING_TO_ROLL_DICE)
-                .put(Event.ROLL_DICE_INCORRECT, State.NO_MOVES_AVAILABLE);
+                .put(Event.ROLL_DICE_CANNOT_MOVE, State.NO_MOVES_AVAILABLE);
 
         transitions.put(State.NO_MOVES_AVAILABLE, new EnumMap<>(Event.class));
         transitions

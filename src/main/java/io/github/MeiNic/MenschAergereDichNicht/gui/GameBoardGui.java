@@ -20,9 +20,9 @@ import io.github.MeiNic.MenschAergereDichNicht.BackEnd;
 import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
 import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
-import io.github.MeiNic.MenschAergereDichNicht.stateMashine.Event;
-import io.github.MeiNic.MenschAergereDichNicht.stateMashine.State;
-import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMachine;
+import io.github.MeiNic.MenschAergereDichNicht.stateMachine.Event;
+import io.github.MeiNic.MenschAergereDichNicht.stateMachine.State;
+import io.github.MeiNic.MenschAergereDichNicht.stateMachine.StateMachine;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -357,6 +357,11 @@ public class GameBoardGui {
     }
 
     protected void changeUserAdvice() {
+        //Check if the game is over
+        if (backend.getNameOfWinner().isPresent()) {
+            displayWinWindow();
+            return;
+        }
         frame.remove(rollDicePanel);
         frame.remove(moveFigurePanel);
         frame.remove(noSixPanel);
@@ -457,20 +462,16 @@ public class GameBoardGui {
             case WAITING_TO_ROLL_DICE -> {
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
-                    stateMachine.handleEvent(Event.ROLL_DICE_CORRECT);
+                    stateMachine.handleEvent(Event.ROLL_DICE_CAN_MOVE);
                     displayResult(backend.randomNumber);
                 } else {
-                    stateMachine.handleEvent(Event.ROLL_DICE_INCORRECT);
+                    stateMachine.handleEvent(Event.ROLL_DICE_CANNOT_MOVE);
                 }
             }
             case NO_MOVES_AVAILABLE -> backend.setNewCurrentPlayerIfNecessary();
             case BOTS_TURN -> {
                 backend.botMove();
                 replaceFigures();
-                if (backend.getNameOfWinner().isPresent()) {
-                    displayWinWindow();
-                    return;
-                }
                 backend.setNewCurrentPlayerIfNecessary();
             }
         }
@@ -501,10 +502,6 @@ public class GameBoardGui {
                 return;
             }
             if (!clickedFigure.isPlaceable()) {
-                //                backend.moveToBase(clickedFigureIndex);
-                //                LOGGER.info(
-                //                        "Figure movement aborted - Wrong figure moved (Moving
-                // figure to base...)");
                 stateMachine.handleEvent(Event.MOVED_WRONG_PIECE);
                 changeUserAdvice();
                 return;
