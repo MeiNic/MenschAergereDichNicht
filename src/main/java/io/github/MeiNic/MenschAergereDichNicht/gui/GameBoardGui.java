@@ -357,7 +357,7 @@ public class GameBoardGui {
     }
 
     protected void changeUserAdvice() {
-        //Check if the game is over
+        // Check if the game is over
         if (backend.getNameOfWinner().isPresent()) {
             displayWinWindow();
             return;
