@@ -453,16 +453,13 @@ public class GameBoardGui {
     }
 
     protected void buttonActionMouseKey() {
-        LOGGER.debug("Current state:" + stateMashine.getCurrentState());
         switch (stateMashine.getCurrentState()) {
             case WAITING_TO_ROLL_DICE -> {
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
-                    LOGGER.debug("Human can move their figures");
                     stateMashine.handleEvent(Event.ROLL_DICE_CORRECT);
                     displayResult(backend.randomNumber);
                 } else {
-                    LOGGER.debug("Human can't move their figures");
                     stateMashine.handleEvent(Event.ROLL_DICE_INCORRECT);
                 }
             }

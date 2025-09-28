@@ -415,8 +415,6 @@ public class BackEnd {
     }
 
     public void setNewCurrentPlayerIfNecessary() {
-        LOGGER.debug(
-                "Ins setCurrentPlayerIfNecessary Current state: " + stateMashine.getCurrentState());
         if (6 == randomNumber) {
             return;
         }

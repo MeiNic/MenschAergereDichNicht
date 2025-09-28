@@ -65,42 +65,12 @@ public class StateMashine {
     }
 
     public void handleEvent(Event event) {
-        // Stacktrace-Analyse, um den Aufrufer und dessen Aufrufer zu ermitteln
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        if (stackTrace.length > 3) {
-            StackTraceElement caller = stackTrace[2];
-            StackTraceElement callersCaller = stackTrace[3];
-            LOGGER.debug(
-                    "handleEvent aufgerufen von: "
-                            + caller.getClassName()
-                            + "."
-                            + caller.getMethodName()
-                            + " (Zeile "
-                            + caller.getLineNumber()
-                            + ") <- aufgerufen von: "
-                            + callersCaller.getClassName()
-                            + "."
-                            + callersCaller.getMethodName()
-                            + " (Zeile "
-                            + callersCaller.getLineNumber()
-                            + ")");
-        } else if (stackTrace.length > 2) {
-            StackTraceElement caller = stackTrace[2];
-            LOGGER.debug(
-                    "handleEvent aufgerufen von: "
-                            + caller.getClassName()
-                            + "."
-                            + caller.getMethodName()
-                            + " (Zeile "
-                            + caller.getLineNumber()
-                            + ")");
-        }
         Map<Event, State> stateTransitions = transitions.get(currentState);
         if (stateTransitions != null && stateTransitions.containsKey(event)) {
             currentState = stateTransitions.get(event);
         } else {
             throw new IllegalStateException("Invalid event " + event + " in state " + currentState);
         }
-        LOGGER.debug("Transitioned to state: " + currentState + " on event: " + event);
+        LOGGER.info("Transitioned to state: " + currentState + " on event: " + event);
     }
 }
