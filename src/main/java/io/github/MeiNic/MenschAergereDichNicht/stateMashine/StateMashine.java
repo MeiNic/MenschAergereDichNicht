@@ -31,11 +31,11 @@ public class StateMashine {
                 .put(Event.TURN_COMPLETED_ENTER_PLAYER, State.WAITING_TO_ROLL_DICE);
         transitions
                 .get(State.NO_MOVES_AVAILABLE)
-                .put(Event.TURN_COMPLETED_ENTER_BOT, State.WAITING_TO_ROLL_DICE);
+                .put(Event.TURN_COMPLETED_ENTER_BOT, State.BOTS_TURN);
 
         transitions.put(State.MOVING_PIECE, new EnumMap<>(Event.class));
         transitions.get(State.MOVING_PIECE).put(Event.MOVED_PIECE, State.WAITING_TO_ROLL_DICE);
-        transitions.get(State.MOVING_PIECE).put(Event.MOVED_WRONG_PIECE, State.MOVING_PIECE);
+        transitions.get(State.MOVING_PIECE).put(Event.MOVED_WRONG_PIECE, State.MOVED_WRONG_PIECE);
         transitions
                 .get(State.MOVING_PIECE)
                 .put(Event.TURN_COMPLETED_ENTER_PLAYER, State.WAITING_TO_ROLL_DICE);
@@ -46,6 +46,12 @@ public class StateMashine {
         transitions
                 .get(State.MOVED_WRONG_PIECE)
                 .put(Event.MOVED_WRONG_PIECE, State.MOVED_WRONG_PIECE);
+        transitions
+                .get(State.MOVED_WRONG_PIECE)
+                .put(Event.TURN_COMPLETED_ENTER_BOT, State.BOTS_TURN);
+        transitions
+                .get(State.MOVED_WRONG_PIECE)
+                .put(Event.TURN_COMPLETED_ENTER_PLAYER, State.WAITING_TO_ROLL_DICE);
 
         transitions.put(State.BOTS_TURN, new EnumMap<>(Event.class));
         transitions
@@ -59,9 +65,26 @@ public class StateMashine {
     }
 
     public void handleEvent(Event event) {
-        // Stacktrace-Analyse, um den Aufrufer zu ermitteln
+        // Stacktrace-Analyse, um den Aufrufer und dessen Aufrufer zu ermitteln
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        if (stackTrace.length > 2) {
+        if (stackTrace.length > 3) {
+            StackTraceElement caller = stackTrace[2];
+            StackTraceElement callersCaller = stackTrace[3];
+            LOGGER.debug(
+                    "handleEvent aufgerufen von: "
+                            + caller.getClassName()
+                            + "."
+                            + caller.getMethodName()
+                            + " (Zeile "
+                            + caller.getLineNumber()
+                            + ") <- aufgerufen von: "
+                            + callersCaller.getClassName()
+                            + "."
+                            + callersCaller.getMethodName()
+                            + " (Zeile "
+                            + callersCaller.getLineNumber()
+                            + ")");
+        } else if (stackTrace.length > 2) {
             StackTraceElement caller = stackTrace[2];
             LOGGER.debug(
                     "handleEvent aufgerufen von: "

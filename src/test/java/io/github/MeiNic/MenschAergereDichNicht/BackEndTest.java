@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
 import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
+import io.github.MeiNic.MenschAergereDichNicht.stateMashine.Event;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -1321,6 +1322,7 @@ public class BackEndTest {
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 5;
+            backEnd.stateMashine.handleEvent(Event.ROLL_DICE_INCORRECT);
             backEnd.setNewCurrentPlayerIfNecessary();
             int expectedPlayerIndex = (playerIndex + 1) % 4;
             assertEquals(expectedPlayerIndex, backEnd.currentPlayer.getPlayerIndex());
@@ -1334,6 +1336,7 @@ public class BackEndTest {
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 6;
+            backEnd.stateMashine.handleEvent(Event.ROLL_DICE_CORRECT);
             backEnd.setNewCurrentPlayerIfNecessary();
             assertEquals(playerIndex, backEnd.currentPlayer.getPlayerIndex());
         }

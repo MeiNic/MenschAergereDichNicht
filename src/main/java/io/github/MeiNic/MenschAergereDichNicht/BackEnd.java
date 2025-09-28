@@ -418,7 +418,6 @@ public class BackEnd {
         LOGGER.debug(
                 "Ins setCurrentPlayerIfNecessary Current state: " + stateMashine.getCurrentState());
         if (6 == randomNumber) {
-            stateMashine.handleEvent(Event.MOVED_PIECE);
             return;
         }
         currentPlayer = players[(currentPlayer.getPlayerIndex() + 1) % 4];
