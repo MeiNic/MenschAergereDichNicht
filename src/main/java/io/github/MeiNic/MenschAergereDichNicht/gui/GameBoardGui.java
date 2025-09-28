@@ -396,7 +396,7 @@ public class GameBoardGui {
     }
 
     protected void afterHumanmoveLivecycle() {
-        if (backend.randomNumber == 6){
+        if (backend.randomNumber == 6) {
             stateMashine.handleEvent(Event.MOVED_PIECE);
         }
         backend.disablePlacementForAllFigures();
