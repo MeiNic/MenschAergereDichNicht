@@ -1322,7 +1322,7 @@ public class BackEndTest {
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 5;
-            backEnd.stateMashine.handleEvent(Event.ROLL_DICE_INCORRECT);
+            backEnd.stateMachine.handleEvent(Event.ROLL_DICE_INCORRECT);
             backEnd.setNewCurrentPlayerIfNecessary();
             int expectedPlayerIndex = (playerIndex + 1) % 4;
             assertEquals(expectedPlayerIndex, backEnd.currentPlayer.getPlayerIndex());
@@ -1336,7 +1336,7 @@ public class BackEndTest {
                 int playerIndex) {
             setCurrentPlayer(playerIndex);
             backEnd.randomNumber = 6;
-            backEnd.stateMashine.handleEvent(Event.ROLL_DICE_CORRECT);
+            backEnd.stateMachine.handleEvent(Event.ROLL_DICE_CORRECT);
             backEnd.setNewCurrentPlayerIfNecessary();
             assertEquals(playerIndex, backEnd.currentPlayer.getPlayerIndex());
         }

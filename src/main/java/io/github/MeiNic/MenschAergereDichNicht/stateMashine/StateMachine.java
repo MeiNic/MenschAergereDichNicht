@@ -5,12 +5,12 @@ import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class StateMashine {
+public class StateMachine {
     private State currentState;
     private Map<State, Map<Event, State>> transitions;
     private static final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
-    public StateMashine() {
+    public StateMachine() {
         this.currentState = State.WAITING_TO_ROLL_DICE;
         this.transitions = new EnumMap<>(State.class);
         initializeTransitions();

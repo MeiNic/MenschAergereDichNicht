@@ -22,7 +22,7 @@ import io.github.MeiNic.MenschAergereDichNicht.logger.Logger;
 import io.github.MeiNic.MenschAergereDichNicht.logger.LoggerFactory;
 import io.github.MeiNic.MenschAergereDichNicht.stateMashine.Event;
 import io.github.MeiNic.MenschAergereDichNicht.stateMashine.State;
-import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMashine;
+import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMachine;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -112,11 +112,11 @@ public class GameBoardGui {
 
     protected JFrame frame;
 
-    private final StateMashine stateMashine;
+    private final StateMachine stateMachine;
 
     public GameBoardGui(BackEnd backendInput) {
         this.backend = backendInput;
-        this.stateMashine = backendInput.stateMashine;
+        this.stateMachine = backendInput.stateMachine;
         frame = new JFrame();
 
         figures = new JLabel[16];
@@ -362,7 +362,7 @@ public class GameBoardGui {
         frame.remove(noSixPanel);
         frame.remove(botsMovePanel);
         frame.remove(wrongFigureMoved);
-        switch (stateMashine.getCurrentState()) {
+        switch (stateMachine.getCurrentState()) {
             case WAITING_TO_ROLL_DICE -> {
                 rollDiceAdvice.setText(
                         "<html> <body> It's "
@@ -397,7 +397,7 @@ public class GameBoardGui {
 
     protected void afterHumanmoveLivecycle() {
         if (backend.randomNumber == 6) {
-            stateMashine.handleEvent(Event.MOVED_PIECE);
+            stateMachine.handleEvent(Event.MOVED_PIECE);
         }
         backend.disablePlacementForAllFigures();
         frame.revalidate();
@@ -453,14 +453,14 @@ public class GameBoardGui {
     }
 
     protected void buttonActionMouseKey() {
-        switch (stateMashine.getCurrentState()) {
+        switch (stateMachine.getCurrentState()) {
             case WAITING_TO_ROLL_DICE -> {
                 boolean humanCanMoveTheirFigures = backend.playerMove();
                 if (humanCanMoveTheirFigures) {
-                    stateMashine.handleEvent(Event.ROLL_DICE_CORRECT);
+                    stateMachine.handleEvent(Event.ROLL_DICE_CORRECT);
                     displayResult(backend.randomNumber);
                 } else {
-                    stateMashine.handleEvent(Event.ROLL_DICE_INCORRECT);
+                    stateMachine.handleEvent(Event.ROLL_DICE_INCORRECT);
                 }
             }
             case NO_MOVES_AVAILABLE -> backend.setNewCurrentPlayerIfNecessary();
@@ -479,8 +479,8 @@ public class GameBoardGui {
 
     private class MyMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
-            if (stateMashine.getCurrentState() != State.MOVING_PIECE
-                    && stateMashine.getCurrentState() != State.MOVED_WRONG_PIECE) {
+            if (stateMachine.getCurrentState() != State.MOVING_PIECE
+                    && stateMachine.getCurrentState() != State.MOVED_WRONG_PIECE) {
                 LOGGER.info("Figure movement aborted - not in correct state");
                 return;
             }
@@ -505,7 +505,7 @@ public class GameBoardGui {
                 //                LOGGER.info(
                 //                        "Figure movement aborted - Wrong figure moved (Moving
                 // figure to base...)");
-                stateMashine.handleEvent(Event.MOVED_WRONG_PIECE);
+                stateMachine.handleEvent(Event.MOVED_WRONG_PIECE);
                 changeUserAdvice();
                 return;
             }

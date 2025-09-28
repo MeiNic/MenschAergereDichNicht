@@ -27,7 +27,7 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Dummy;
 import io.github.MeiNic.MenschAergereDichNicht.player.Human;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 import io.github.MeiNic.MenschAergereDichNicht.stateMashine.Event;
-import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMashine;
+import io.github.MeiNic.MenschAergereDichNicht.stateMashine.StateMachine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -40,12 +40,12 @@ public class BackEnd {
     protected final Player[] players;
     protected Player currentPlayer;
 
-    public StateMashine stateMashine;
+    public StateMachine stateMachine;
 
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
-        stateMashine = new StateMashine();
+        stateMachine = new StateMachine();
 
         figures = new Figure[16];
         players = new Player[4];
@@ -420,8 +420,8 @@ public class BackEnd {
         }
         currentPlayer = players[(currentPlayer.getPlayerIndex() + 1) % 4];
         switch (getPlayerStateOfCurrentPlayer()) {
-            case 0 -> stateMashine.handleEvent(Event.TURN_COMPLETED_ENTER_PLAYER);
-            case 1 -> stateMashine.handleEvent(Event.TURN_COMPLETED_ENTER_BOT);
+            case 0 -> stateMachine.handleEvent(Event.TURN_COMPLETED_ENTER_PLAYER);
+            case 1 -> stateMachine.handleEvent(Event.TURN_COMPLETED_ENTER_BOT);
             default -> setNewCurrentPlayerIfNecessary();
         }
     }
