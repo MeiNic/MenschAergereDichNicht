@@ -26,6 +26,8 @@ import io.github.MeiNic.MenschAergereDichNicht.player.Bot;
 import io.github.MeiNic.MenschAergereDichNicht.player.Dummy;
 import io.github.MeiNic.MenschAergereDichNicht.player.Human;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
+import io.github.MeiNic.MenschAergereDichNicht.stateMachine.Event;
+import io.github.MeiNic.MenschAergereDichNicht.stateMachine.StateMachine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -38,9 +40,13 @@ public class BackEnd {
     protected final Player[] players;
     protected Player currentPlayer;
 
+    public StateMachine stateMachine;
+
     final Logger LOGGER = LoggerFactory.getLoggerInstance();
 
     public BackEnd(String[] names, int numberOfHumanPlayers, boolean fillWithBots) {
+        stateMachine = new StateMachine();
+
         figures = new Figure[16];
         players = new Player[4];
 
@@ -413,6 +419,11 @@ public class BackEnd {
             return;
         }
         currentPlayer = players[(currentPlayer.getPlayerIndex() + 1) % 4];
+        switch (getPlayerStateOfCurrentPlayer()) {
+            case 0 -> stateMachine.handleEvent(Event.TURN_COMPLETED_ENTER_PLAYER);
+            case 1 -> stateMachine.handleEvent(Event.TURN_COMPLETED_ENTER_BOT);
+            default -> setNewCurrentPlayerIfNecessary();
+        }
     }
 
     protected boolean generateRandomNumber() {
