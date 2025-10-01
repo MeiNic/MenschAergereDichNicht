@@ -34,6 +34,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   [#145])
 * Figure being moved to base before dice has been rolled (reported by [@guemax]
   in [#149])
+* Figure being able to move out of house regardless of random number (reported by [@guemax] in [#148])
+* Close button doesn't exit the program in a terminal (reported by [@guemax] in [#150])
 
 ### Removed
 
@@ -121,7 +123,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [@MeiNic]: https://github.com/MeiNic
 
 [#158]: https://github.com/MeiNic/MenschAergereDichNicht/issues/158
+[#150]: https://github.com/MeiNic/MenschAergereDichNicht/issues/150
 [#149]: https://github.com/MeiNic/MenschAergereDichNicht/issues/149
+[#148]: https://github.com/MeiNic/MenschAergereDichNicht/issues/148
 [#145]: https://github.com/MeiNic/MenschAergereDichNicht/pull/145
 [#143]: https://github.com/MeiNic/MenschAergereDichNicht/pull/143
 [#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
