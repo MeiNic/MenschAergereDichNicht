@@ -16,24 +16,21 @@
 
 # Changelog
 
-All notable changes to *Mensch ärgere Dich nicht* will be documented
-in this file.
+All notable changes to *Mensch ärgere Dich nicht* will be documented in this
+file.
 
-The format is based on [Keep a
-Changelog](https://keepachangelog.com/en/1.1.0/), and this project
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic
+Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ### Fixed
 
-* Info logging statements not visible on light-mode terminals
-  (reported by [@guemax] in [#119])
+* Info logging statements not visible on light-mode terminals (reported by [@guemax] in [#119])
 * Crash when a player wins (reported by [@guemax] in [#143])
-* Multiple windows being opened when a player wins (reported by [@guemax] in
-  [#145])
-* Figure being moved to base before dice has been rolled (reported by [@guemax]
-  in [#149])
+* Multiple windows being opened when a player wins (reported by [@guemax] in [#145])
+* Figure being moved to base before dice has been rolled (reported by [@guemax] in [#149])
 * Figure being able to move out of house regardless of random number (reported by [@guemax] in [#148])
 * Close button doesn't exit the program in a terminal (reported by [@guemax] in [#150])
 
@@ -53,21 +50,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-* Not being able to use single player mode (reported by [@MeiNic] in
-  [#66])
-* Finished figures aren't recognized as being in house (reported by
-  [@MeiNic] in [#73])
+* Not being able to use single player mode (reported by [@MeiNic] in [#66])
+* Finished figures aren't recognized as being in house (reported by [@MeiNic] in [#73])
 * Finished figures can be moved (reported by [@MeiNic] in [#73])
-* Figures "overflowing" the maximum field number (reported by
-  [@MeiNic] in [#73])
+* Figures "overflowing" the maximum field number (reported by [@MeiNic] in [#73])
 * Typo (reported by [@guemax] in [#88])
 * Typo (reported by [@MeiNic] in [#94])
-* Figures in house jumping over other figures (reported by [@MeiNic]
-  in [#95])
-* Player being able to knock own figure on first field (reported by
-  [@MeiNic] in [#95])
-* Crash caused by wrong resource paths (reported by [@MeiNic] in
-  [#100])
+* Figures in house jumping over other figures (reported by [@MeiNic] in [#95])
+* Player being able to knock own figure on first field (reported by [@MeiNic] in [#95])
+* Crash caused by wrong resource paths (reported by [@MeiNic] in [#100])
 
 ### New Contributors
 
@@ -94,21 +85,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Dice never yielding a six (reported by [@TastingComb] in [#4])
 * Endless loop when moving a figure (reported by [@MeiNic] in [#14])
-* Being able to move a figure you don't even own (reported by
-  [@MeiNic] in [#21])
-* Winner sometimes not being displayed (reported by [@guemax] in
-  [#24])
-* Figures in house jumping over other figures (reported by [@MeiNic]
-  in [#31])
+* Being able to move a figure you don't even own (reported by [@MeiNic] in [#21])
+* Winner sometimes not being displayed (reported by [@guemax] in [#24])
+* Figures in house jumping over other figures (reported by [@MeiNic] in [#31])
 * Figures not going into the house (reported by [@MeiNic] in [#31])
 * Crash caused by wrong index (reported by [@MeiNic] in [#33])
 * Wrong hint being displayed (reported by [@MeiNic] in [#34])
-* User input always being reset in landingpage (reported by [@MeiNic]
-  in [#36])
-* Being forced to beat another figure with a not-owned one (reported
-  by [@MeiNic] in [#37])
-* Figure on first field cannot be knocked (reported by [@MeiNic] in
-  [#41])
+* User input always being reset in landingpage (reported by [@MeiNic] in [#36])
+* Being forced to beat another figure with a not-owned one (reported by [@MeiNic] in [#37])
+* Figure on first field cannot be knocked (reported by [@MeiNic] in [#41])
 * Grammar (reported by [@TastingComb] in [#55])
 
 ### New Contributors
