@@ -27,12 +27,12 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-* Info logging statements not visible on light-mode terminals ([#118], [#119])
 * Crash when a player wins ([#143], [#151])
-* Multiple windows being opened when a player wins ([#145], [#151])
-* Figure being moved to base before dice has been rolled ([#149], [#160])
 * Figure being able to move out of house regardless of random number ([#148], [#157])
+* Figure being moved to base before dice has been rolled ([#149], [#160])
+* Multiple windows being opened when a player wins ([#145], [#151])
 * Close button doesn't exit the program in a terminal ([#150], [#156])
+* Info logging statements not visible on light-mode terminals ([#118], [#119])
 
 ### Removed
 
@@ -42,23 +42,22 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-* Button to show rules during game
+* Allow showing rules during game
 
 ### Changed
 
-* Artwork (thank you [@guefra]! See [#57], [#84], [#85], [#87])
+* Artwork (thank you [@guefra]! See [#57], [#80], [#84], [#85], [#87])
 
 ### Fixed
 
-* Not being able to use single player mode ([#66])
-* Finished figures aren't recognized as being in house ([#73])
-* Finished figures can be moved ([#73])
-* Figures "overflowing" the maximum field number ([#73])
-* Typo ([#88])
-* Typo ([#94])
-* Figures in house jumping over other figures ([#95])
-* Player being able to knock own figure on first field ([#95])
 * Crash caused by wrong resource paths ([#101])
+* Not being able to use single player mode ([#66])
+* Player being able to knock own figure on first field ([#95])
+* Finished figures aren't recognized as being in house ([#73])
+* Figures "overflowing" the maximum field number ([#73])
+* Figures in house jumping over other figures ([#95])
+* Finished figures can be moved ([#73])
+* Grammar ([#88], [#94])
 
 ### New Contributors
 
@@ -69,31 +68,29 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 * Figure movement
-* Consistent look and feel across systems
-* Current player hint
-* Options for naming and coloring players
-* Player movement
-* Game loop
+* Human players
+* Bot players
 * Display winner
-* Display hints during game
-* Default player names
-* Bot movement
 * Overview of rules
+* Display hints during game
+* Consistent look and feel across systems
+* Default player names
+* Options for naming and coloring players
 * Simple logging
 
 ### Fixed
 
-* Dice never yielding a six ([#4])
+* Crash caused by wrong index ([#33])
 * Endless loop when moving a figure ([#14])
 * Being able to move a figure you don't even own ([#21])
-* Winner sometimes not being displayed ([#24])
-* Figures in house jumping over other figures ([#31])
-* Figures not going into the house ([#31])
-* Crash caused by wrong index ([#33])
-* Wrong hint being displayed ([#34])
-* User input always being reset in landingpage ([#36])
+* Dice never yielding a six ([#4])
 * Being forced to beat another figure with a not-owned one ([#37])
 * Figure on first field cannot be knocked ([#41])
+* Winner sometimes not being displayed ([#24])
+* Figures not going into the house ([#31])
+* Figures in house jumping over other figures ([#31])
+* User input always being reset in landingpage ([#36])
+* Wrong hint being displayed ([#34])
 * Grammar ([#55])
 
 ### New Contributors
