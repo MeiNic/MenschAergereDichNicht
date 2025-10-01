@@ -30,7 +30,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Info logging statements not visible on light-mode terminals
   (reported by [@guemax] in [#119])
 * Crash when a player wins (reported by [@guemax] in [#143])
-* Multiple windows being opened when a player wins (reported by [@guemax] in [#145])
+* Multiple windows being opened when a player wins (reported by [@guemax] in
+  [#145])
+* Figure being moved to base before dice has been rolled (reported by [@guemax]
+  in [#149])
+
+### Removed
+
+* Punishment for moving wrong figure (reported by [@MeiNic] in [#158])
 
 ## [v2.0.0] - 2025-05-10
 
@@ -113,6 +120,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [@TastingComb]: https://github.com/TastingComb
 [@MeiNic]: https://github.com/MeiNic
 
+[#158]: https://github.com/MeiNic/MenschAergereDichNicht/issues/158
+[#149]: https://github.com/MeiNic/MenschAergereDichNicht/issues/149
 [#145]: https://github.com/MeiNic/MenschAergereDichNicht/pull/145
 [#143]: https://github.com/MeiNic/MenschAergereDichNicht/pull/143
 [#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
