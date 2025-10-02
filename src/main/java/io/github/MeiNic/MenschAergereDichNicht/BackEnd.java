@@ -95,7 +95,10 @@ public class BackEnd {
         if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()) {
             Figure figure = figures[figureOnStartfield.get()];
             int goalField = figure.getField() + randomNumber;
-            while (figureOnField(goalField).isPresent() && figures[figureOnField(goalField).get()].getOwner().equals(currentPlayer.getName())) {
+            while (figureOnField(goalField).isPresent()
+                    && figures[figureOnField(goalField).get()]
+                            .getOwner()
+                            .equals(currentPlayer.getName())) {
                 figure = figures[figureOnField(goalField).get()];
             }
             figure.enablePlacement();
