@@ -97,9 +97,10 @@ public class BackEnd {
             Optional<Figure> figure = Optional.ofNullable(figures[figureOnStartfield.get()]);
             do {
                 figure.get().enablePlacement();
-                figure = figureOnField(figure.get().getField() + randomNumber)
-                        .map(index -> figures[index])
-                        .or(Optional::empty);
+                figure =
+                        figureOnField(figure.get().getField() + randomNumber)
+                                .map(index -> figures[index])
+                                .or(Optional::empty);
             } while (figure.isPresent() && figure.get().getOwner().equals(currentPlayer.getName()));
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
             for (int i = currentPlayer.getIndexOfFirstFigure();
