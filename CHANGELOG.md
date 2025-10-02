@@ -31,7 +31,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 * Figure being able to move out of house regardless of random number ([#148], [#157])
 * Figure being moved to base before dice has been rolled ([#149], [#160])
 * Multiple windows being opened when a player wins ([#145], [#151])
-* Figure on startfield must be moved ([#144], [#165])
+* Being forced to move figure blocked by own figure ([#144], [#165])
 * Close button doesn't exit the program in a terminal ([#150], [#156])
 * Info logging statements not visible on light-mode terminals ([#118], [#119])
 
