@@ -100,6 +100,7 @@ public class BackEnd {
                             .getOwner()
                             .equals(currentPlayer.getName())) {
                 figure = figures[figureOnField(goalField).get()];
+                goalField = figure.getField() + randomNumber;
             }
             figure.enablePlacement();
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
