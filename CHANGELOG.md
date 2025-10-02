@@ -16,56 +16,48 @@
 
 # Changelog
 
-All notable changes to *Mensch ärgere Dich nicht* will be documented
-in this file.
+All notable changes to *Mensch ärgere Dich nicht* will be documented in this
+file.
 
-The format is based on [Keep a
-Changelog](https://keepachangelog.com/en/1.1.0/), and this project
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic
+Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ### Fixed
 
-* Info logging statements not visible on light-mode terminals
-  (reported by [@guemax] in [#119])
-* Crash when a player wins (reported by [@guemax] in [#143])
-* Multiple windows being opened when a player wins (reported by [@guemax] in
-  [#145])
-* Figure being moved to base before dice has been rolled (reported by [@guemax]
-  in [#149])
+* Crash when a player wins ([#143], [#151])
+* Figure being able to move out of house regardless of random number ([#148], [#157])
+* Figure being moved to base before dice has been rolled ([#149], [#160])
+* Multiple windows being opened when a player wins ([#145], [#151])
+* Close button doesn't exit the program in a terminal ([#150], [#156])
+* Info logging statements not visible on light-mode terminals ([#118], [#119])
 
 ### Removed
 
-* Punishment for moving wrong figure (reported by [@MeiNic] in [#158])
+* Punishment for moving wrong figure ([#158], [#160])
 
 ## [v2.0.0] - 2025-05-10
 
 ### Added
 
-* Button to show rules during game
+* Allow showing rules during game
 
 ### Changed
 
-* Artwork (thank you [@guefra]!)
+* Artwork (thank you [@guefra]! See [#57], [#80], [#84], [#85], [#87])
 
 ### Fixed
 
-* Not being able to use single player mode (reported by [@MeiNic] in
-  [#66])
-* Finished figures aren't recognized as being in house (reported by
-  [@MeiNic] in [#73])
-* Finished figures can be moved (reported by [@MeiNic] in [#73])
-* Figures "overflowing" the maximum field number (reported by
-  [@MeiNic] in [#73])
-* Typo (reported by [@guemax] in [#88])
-* Typo (reported by [@MeiNic] in [#94])
-* Figures in house jumping over other figures (reported by [@MeiNic]
-  in [#95])
-* Player being able to knock own figure on first field (reported by
-  [@MeiNic] in [#95])
-* Crash caused by wrong resource paths (reported by [@MeiNic] in
-  [#100])
+* Crash caused by wrong resource paths ([#101])
+* Not being able to use single player mode ([#66])
+* Player being able to knock own figure on first field ([#95])
+* Finished figures aren't recognized as being in house ([#73])
+* Figures "overflowing" the maximum field number ([#73])
+* Figures in house jumping over other figures ([#95])
+* Finished figures can be moved ([#73])
+* Grammar ([#88], [#94])
 
 ### New Contributors
 
@@ -76,38 +68,30 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 * Figure movement
-* Consistent look and feel across systems
-* Current player hint
-* Options for naming and coloring players
-* Player movement
-* Game loop
+* Human players
+* Bot players
 * Display winner
-* Display hints during game
-* Default player names
-* Bot movement
 * Overview of rules
+* Display hints during game
+* Consistent look and feel across systems
+* Default player names
+* Options for naming and coloring players
 * Simple logging
 
 ### Fixed
 
-* Dice never yielding a six (reported by [@TastingComb] in [#4])
-* Endless loop when moving a figure (reported by [@MeiNic] in [#14])
-* Being able to move a figure you don't even own (reported by
-  [@MeiNic] in [#21])
-* Winner sometimes not being displayed (reported by [@guemax] in
-  [#24])
-* Figures in house jumping over other figures (reported by [@MeiNic]
-  in [#31])
-* Figures not going into the house (reported by [@MeiNic] in [#31])
-* Crash caused by wrong index (reported by [@MeiNic] in [#33])
-* Wrong hint being displayed (reported by [@MeiNic] in [#34])
-* User input always being reset in landingpage (reported by [@MeiNic]
-  in [#36])
-* Being forced to beat another figure with a not-owned one (reported
-  by [@MeiNic] in [#37])
-* Figure on first field cannot be knocked (reported by [@MeiNic] in
-  [#41])
-* Grammar (reported by [@TastingComb] in [#55])
+* Crash caused by wrong index ([#33])
+* Endless loop when moving a figure ([#14])
+* Being able to move a figure you don't even own ([#21])
+* Dice never yielding a six ([#4])
+* Being forced to beat another figure with a not-owned one ([#37])
+* Figure on first field cannot be knocked ([#41])
+* Winner sometimes not being displayed ([#24])
+* Figures not going into the house ([#31])
+* Figures in house jumping over other figures ([#31])
+* User input always being reset in landingpage ([#36])
+* Wrong hint being displayed ([#34])
+* Grammar ([#55])
 
 ### New Contributors
 
@@ -120,18 +104,30 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [@TastingComb]: https://github.com/TastingComb
 [@MeiNic]: https://github.com/MeiNic
 
-[#158]: https://github.com/MeiNic/MenschAergereDichNicht/issues/158
-[#149]: https://github.com/MeiNic/MenschAergereDichNicht/issues/149
+[#160]: https://github.com/MeiNic/MenschAergereDichNicht/pull/160
+[#158]: https://github.com/MeiNic/MenschAergereDichNicht/pull/158
+[#157]: https://github.com/MeiNic/MenschAergereDichNicht/pull/157
+[#156]: https://github.com/MeiNic/MenschAergereDichNicht/pull/156
+[#151]: https://github.com/MeiNic/MenschAergereDichNicht/pull/151
+[#150]: https://github.com/MeiNic/MenschAergereDichNicht/pull/150
+[#149]: https://github.com/MeiNic/MenschAergereDichNicht/pull/149
+[#148]: https://github.com/MeiNic/MenschAergereDichNicht/pull/148
 [#145]: https://github.com/MeiNic/MenschAergereDichNicht/pull/145
 [#143]: https://github.com/MeiNic/MenschAergereDichNicht/pull/143
 [#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
+[#118]: https://github.com/MeiNic/MenschAergereDichNicht/pull/118
+[#101]: https://github.com/MeiNic/MenschAergereDichNicht/pull/101
 [#100]: https://github.com/MeiNic/MenschAergereDichNicht/pull/100
 [#95]: https://github.com/MeiNic/MenschAergereDichNicht/pull/95
 [#94]: https://github.com/MeiNic/MenschAergereDichNicht/pull/94
 [#88]: https://github.com/MeiNic/MenschAergereDichNicht/pull/88
+[#87]: https://github.com/MeiNic/MenschAergereDichNicht/pull/87
+[#85]: https://github.com/MeiNic/MenschAergereDichNicht/pull/85
+[#84]: https://github.com/MeiNic/MenschAergereDichNicht/pull/84
 [#80]: https://github.com/MeiNic/MenschAergereDichNicht/pull/80
 [#73]: https://github.com/MeiNic/MenschAergereDichNicht/pull/73
 [#66]: https://github.com/MeiNic/MenschAergereDichNicht/pull/66
+[#57]: https://github.com/MeiNic/MenschAergereDichNicht/pull/57
 [#55]: https://github.com/MeiNic/MenschAergereDichNicht/pull/55
 [#41]: https://github.com/MeiNic/MenschAergereDichNicht/pull/41
 [#37]: https://github.com/MeiNic/MenschAergereDichNicht/pull/37
