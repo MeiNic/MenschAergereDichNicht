@@ -94,9 +94,7 @@ public class BackEnd {
             Figure figure = figureOnStartfield.get();
             int goalField = figure.getField() + randomNumber;
             while (figureOnField(goalField).isPresent()
-                    && figureOnField(goalField).get()
-                            .getOwner()
-                            .equals(currentPlayer.getName())) {
+                    && figureOnField(goalField).get().getOwner().equals(currentPlayer.getName())) {
                 figure = figureOnField(goalField).get();
                 goalField = figure.getField() + randomNumber;
             }
@@ -160,38 +158,67 @@ public class BackEnd {
             return;
         }
 
-        // cache a much used value, make the code look cleaner
-        Optional<Figure> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
-        int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
-        int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
+        Optional<Figure> figureThatMustBeMoved = getFigureThatMustBeMoved();
+        if (figureThatMustBeMoved.isPresent()) {
+            moveFigure(figureThatMustBeMoved.get());
+            return;
+        }
 
-        // LOGGER.info("Bot " + currentPlayer.getName() + " rolled a " + randomNumber);
+        Optional<Figure> figureThatShouldBeMoved = getFigureThatShouldBeMoved();
+        if (figureThatShouldBeMoved.isPresent()) {
+            moveFigure(figureThatShouldBeMoved.get());
+            return;
+        }
+    }
+
+    protected Optional<Figure> getFigureThatMustBeMoved() {
+        Figure[] playerFigures = new Figure[4];
+        for (int i = currentPlayer.getIndexOfFirstFigure();
+                i < currentPlayer.getIndexOfLastFigure();
+                i++) {
+            playerFigures[i - currentPlayer.getIndexOfFirstFigure()] = figures[i];
+        }
+
         if (!baseOfCurrentPlayerIsEmpty()) {
-            if (figureOnStartfield.isPresent()
-                    && figureOnStartfield.get().getOwner().equals(currentPlayer.getName())) {
-                moveFigure(figureOnStartfield.get());
-                return;
-            } else if (randomNumber == 6) {
-                for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-                    if (figures[i].isInBase()) {
-                        moveFigure(figures[i]);
-                        return;
+            Optional<Figure> figureOnStartField =
+                    figureOnField(currentPlayer.getIndexOfStartField());
+            if (figureOnStartField.isPresent()
+                    && figureOnStartField.get().getOwner().equals(currentPlayer.getName())) {
+                return Optional.of(figureOnStartField.get());
+            }
+            if (randomNumber == 6) {
+                for (Figure figure : playerFigures) {
+                    if (figure.isInBase()) {
+                        return Optional.of(figure);
                     }
                 }
             }
         }
-        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (beatIsPossible(figures[i])) {
-                moveFigure(figures[i]);
-                return;
+
+        for (Figure figure : playerFigures) {
+            if (beatIsPossible(figure)) {
+                return Optional.of(figure);
             }
         }
-        for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (moveSensible(figures[i])) {
-                moveFigure(figures[i]);
-                return;
+
+        return Optional.empty();
+    }
+
+    protected Optional<Figure> getFigureThatShouldBeMoved() {
+        Figure[] playerFigures = new Figure[4];
+        for (int i = currentPlayer.getIndexOfFirstFigure();
+                i < currentPlayer.getIndexOfLastFigure();
+                i++) {
+            playerFigures[i - currentPlayer.getIndexOfFirstFigure()] = figures[i];
+        }
+
+        for (Figure figure : playerFigures) {
+            if (moveSensible(figure)) {
+                return Optional.of(figure);
             }
         }
+
+        return Optional.empty();
     }
 
     // move the given figure by the given number

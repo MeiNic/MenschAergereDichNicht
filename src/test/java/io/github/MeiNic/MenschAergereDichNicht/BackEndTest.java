@@ -22,6 +22,7 @@ import io.github.MeiNic.MenschAergereDichNicht.figure.Figure;
 import io.github.MeiNic.MenschAergereDichNicht.figure.FigureState;
 import io.github.MeiNic.MenschAergereDichNicht.player.Player;
 import io.github.MeiNic.MenschAergereDichNicht.stateMachine.Event;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -259,10 +260,38 @@ public class BackEndTest {
     }
 
     @Nested
-    class moveOnFieldTest {
+    class getFigureThatMustBeMovedTest {
         @BeforeEach
         void setUp() {
-            backEnd = new BackEnd(new String[] {"orange", "blue", "green", "red"}, 4, false);
+            backEnd = new BackEnd(new String[] {"orange", "green", "blue", "red"}, 4, true);
+        }
+        ;
+
+        @ParameterizedTest
+        @PermutationSource({
+            @Range(lower = 0, upper = 3),
+            @Range(lower = 1, upper = 6),
+            @Range(lower = 1, upper = 3),
+        })
+        void ownFigureOnStartFieldMustBeMoved(
+                int playerIndex, int randomNumber, int numberOfFiguresInBase) {
+            Player player = backEnd.players[playerIndex];
+            Figure ownFigure = backEnd.figures[player.getIndexOfLastFigure() - 1];
+
+            for (int i = 0; i < 4 - numberOfFiguresInBase - 1; i++) {
+                Figure ownIthFigure = backEnd.figures[player.getIndexOfFirstFigure() + i];
+                placeFigureInHouse(ownIthFigure, i);
+            }
+
+            placeFigureOnField(ownFigure, player.getIndexOfStartField());
+
+            backEnd.currentPlayer = player;
+            backEnd.randomNumber = randomNumber;
+            Optional<Figure> figureThatMustBeMoved = backEnd.getFigureThatMustBeMoved();
+
+            assertAll(
+                    () -> assertTrue(figureThatMustBeMoved.isPresent()),
+                    () -> assertEquals(ownFigure, figureThatMustBeMoved.get()));
         }
 
         @ParameterizedTest
