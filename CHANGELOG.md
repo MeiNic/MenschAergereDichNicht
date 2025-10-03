@@ -31,6 +31,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 * Figure being able to move out of house regardless of random number ([#148], [#157])
 * Figure being moved to base before dice has been rolled ([#149], [#160])
 * Multiple windows being opened when a player wins ([#145], [#151])
+* Being forced to move figure blocked by own figure ([#144], [#165])
 * Close button doesn't exit the program in a terminal ([#150], [#156])
 * Info logging statements not visible on light-mode terminals ([#118], [#119])
 
@@ -104,6 +105,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 [@TastingComb]: https://github.com/TastingComb
 [@MeiNic]: https://github.com/MeiNic
 
+[#165]: https://github.com/MeiNic/MenschAergereDichNicht/pull/165
 [#160]: https://github.com/MeiNic/MenschAergereDichNicht/pull/160
 [#158]: https://github.com/MeiNic/MenschAergereDichNicht/pull/158
 [#157]: https://github.com/MeiNic/MenschAergereDichNicht/pull/157
@@ -113,6 +115,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 [#149]: https://github.com/MeiNic/MenschAergereDichNicht/pull/149
 [#148]: https://github.com/MeiNic/MenschAergereDichNicht/pull/148
 [#145]: https://github.com/MeiNic/MenschAergereDichNicht/pull/145
+[#144]: https://github.com/MeiNic/MenschAergereDichNicht/pull/144
 [#143]: https://github.com/MeiNic/MenschAergereDichNicht/pull/143
 [#119]: https://github.com/MeiNic/MenschAergereDichNicht/pull/119
 [#118]: https://github.com/MeiNic/MenschAergereDichNicht/pull/118

@@ -93,7 +93,16 @@ public class BackEnd {
                                 .equals(currentPlayer.getName());
 
         if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()) {
-            figures[figureOnStartfield.get()].enablePlacement();
+            Figure figure = figures[figureOnStartfield.get()];
+            int goalField = figure.getField() + randomNumber;
+            while (figureOnField(goalField).isPresent()
+                    && figures[figureOnField(goalField).get()]
+                            .getOwner()
+                            .equals(currentPlayer.getName())) {
+                figure = figures[figureOnField(goalField).get()];
+                goalField = figure.getField() + randomNumber;
+            }
+            figure.enablePlacement();
         } else if (!baseOfCurrentPlayerIsEmpty() && randomNumber == 6) {
             for (int i = currentPlayer.getIndexOfFirstFigure();
                     i < currentPlayer.getIndexOfLastFigure();
