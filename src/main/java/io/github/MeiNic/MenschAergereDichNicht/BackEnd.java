@@ -85,21 +85,19 @@ public class BackEnd {
         }
 
         // cache a much used value, make the code look cleaner
-        Optional<Integer> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
+        Optional<Figure> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         boolean ownFigureOnStartfield =
                 figureOnStartfield.isPresent()
-                        && figures[figureOnStartfield.get()]
-                                .getOwner()
-                                .equals(currentPlayer.getName());
+                        && figureOnStartfield.get().getOwner().equals(currentPlayer.getName());
 
         if (ownFigureOnStartfield && !baseOfCurrentPlayerIsEmpty()) {
-            Figure figure = figures[figureOnStartfield.get()];
+            Figure figure = figureOnStartfield.get();
             int goalField = figure.getField() + randomNumber;
             while (figureOnField(goalField).isPresent()
-                    && figures[figureOnField(goalField).get()]
+                    && figureOnField(goalField).get()
                             .getOwner()
                             .equals(currentPlayer.getName())) {
-                figure = figures[figureOnField(goalField).get()];
+                figure = figureOnField(goalField).get();
                 goalField = figure.getField() + randomNumber;
             }
             figure.enablePlacement();
@@ -163,22 +161,20 @@ public class BackEnd {
         }
 
         // cache a much used value, make the code look cleaner
-        Optional<Integer> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
+        Optional<Figure> figureOnStartfield = figureOnField(currentPlayer.getIndexOfStartField());
         int indexOfFirstFigure = currentPlayer.getIndexOfFirstFigure();
         int indexOfLastFigure = currentPlayer.getIndexOfLastFigure();
 
         // LOGGER.info("Bot " + currentPlayer.getName() + " rolled a " + randomNumber);
         if (!baseOfCurrentPlayerIsEmpty()) {
             if (figureOnStartfield.isPresent()
-                    && figures[figureOnStartfield.get()]
-                            .getOwner()
-                            .equals(currentPlayer.getName())) {
+                    && figureOnStartfield.get().getOwner().equals(currentPlayer.getName())) {
                 moveFigure(figureOnStartfield.get());
                 return;
             } else if (randomNumber == 6) {
                 for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
                     if (figures[i].isInBase()) {
-                        moveFigure(i);
+                        moveFigure(figures[i]);
                         return;
                     }
                 }
@@ -186,32 +182,30 @@ public class BackEnd {
         }
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
             if (beatIsPossible(figures[i])) {
-                moveFigure(i);
+                moveFigure(figures[i]);
                 return;
             }
         }
         for (int i = indexOfFirstFigure; i < indexOfLastFigure; i++) {
-            if (moveSensible(i)) {
-                moveFigure(i);
+            if (moveSensible(figures[i])) {
+                moveFigure(figures[i]);
                 return;
             }
         }
     }
 
     // move the given figure by the given number
-    public void moveFigure(int figureNumber) {
-        switch (figures[figureNumber].getState()) {
-            case IN_HOUSE -> moveInHouse(figureNumber);
+    public void moveFigure(Figure figure) {
+        switch (figure.getState()) {
+            case IN_HOUSE -> moveInHouse(figure);
             case IN_BASE -> {
-                if (randomNumber == 6) moveOutOfBase(figureNumber);
+                if (randomNumber == 6) moveOutOfBase(figure);
             }
-            case ON_FIELD -> moveOnField(figureNumber);
+            case ON_FIELD -> moveOnField(figure);
         }
     }
 
-    protected void moveOnField(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
-
+    protected void moveOnField(Figure figureToBeMoved) {
         // store the old and new field-number in local variables
         int numberNew = figureToBeMoved.getField() + randomNumber;
 
@@ -229,9 +223,7 @@ public class BackEnd {
             } else {
                 // move the figure, and move the figure before on the field
                 // to the base
-                if (!figures[figureOnField(numberNew).get()]
-                        .getOwner()
-                        .equals(figureToBeMoved.getOwner())) {
+                if (!figureOnField(numberNew).get().getOwner().equals(figureToBeMoved.getOwner())) {
                     moveToBase(figureOnField(numberNew).get());
                     figureToBeMoved.setField(numberNew, randomNumber);
                 } else {
@@ -255,9 +247,7 @@ public class BackEnd {
     }
 
     // move figure in the house by the given value
-    protected void moveInHouse(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
-
+    protected void moveInHouse(Figure figureToBeMoved) {
         int newField = figureToBeMoved.getField() + randomNumber;
         int maxField = figureToBeMoved.color * 4 + 4;
 
@@ -301,23 +291,21 @@ public class BackEnd {
             return false;
         }
 
-        Figure otherFigure = figures[figureOnField(newField).get()];
+        Figure otherFigure = figureOnField(newField).get();
         return !thisFigure.getOwner().equals(otherFigure.getOwner());
     }
 
-    protected boolean moveSensible(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
-
-        switch (figureToBeMoved.getState()) {
+    protected boolean moveSensible(Figure figure) {
+        switch (figure.getState()) {
             case IN_HOUSE -> {
-                int newField = figureToBeMoved.getField() + randomNumber;
-                int maxField = figureToBeMoved.color * 4 + 4;
+                int newField = figure.getField() + randomNumber;
+                int maxField = figure.color * 4 + 4;
                 return maxField > newField;
             }
             case ON_FIELD -> {
-                int color = figureToBeMoved.color;
+                int color = figure.color;
                 for (int i = color * 4; i < (color + 1) * 4; i++) {
-                    if (figureToBeMoved.getProgress() < figures[i].getProgress()) return false;
+                    if (figure.getProgress() < figures[i].getProgress()) return false;
                 }
                 return true;
             }
@@ -328,10 +316,9 @@ public class BackEnd {
     }
 
     // move the given figure to the base
-    public void moveToBase(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
-        figureToBeMoved.setInBase();
-        figureToBeMoved.setField(figureNumber, randomNumber);
+    public void moveToBase(Figure figure) {
+        figure.setInBase();
+        figure.setField(figure.getIndex(), randomNumber);
     }
 
     public Optional<String> getNameOfWinner() {
@@ -352,31 +339,31 @@ public class BackEnd {
         ArrayList<Figure> finishedFigures = new ArrayList<>();
 
         for (int i = lastHouseFieldIndex; i >= firstHouseFieldIndex; i--) {
-            Optional<Integer> figureIndex = figureOnHouseField(i);
-            if (!figureIndex.isPresent()) {
+            Optional<Figure> figure = figureOnHouseField(i);
+            if (!figure.isPresent()) {
                 break;
             }
-            finishedFigures.add(figures[figureIndex.get()]);
+            finishedFigures.add(figure.get());
         }
 
         return finishedFigures.toArray(new Figure[] {});
     }
 
     // check which figure is on the normal field
-    protected Optional<Integer> figureOnField(int fieldNumber) {
+    protected Optional<Figure> figureOnField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber && figures[i].isOnField()) {
-                return Optional.of(i);
+                return Optional.of(figures[i]);
             }
         }
         return Optional.empty();
     }
 
     // check which figure is on the house field
-    protected Optional<Integer> figureOnHouseField(int fieldNumber) {
+    protected Optional<Figure> figureOnHouseField(int fieldNumber) {
         for (int i = 0; i < figures.length; i++) {
             if (figures[i].getField() == fieldNumber && (figures[i].isInHouse())) {
-                return Optional.of(i);
+                return Optional.of(figures[i]);
             }
         }
         return Optional.empty();
@@ -411,10 +398,9 @@ public class BackEnd {
     }
 
     // move a figure out of base
-    public void moveOutOfBase(int figureNumber) {
-        Figure figureToBeMoved = figures[figureNumber];
+    public void moveOutOfBase(Figure figureToBeMoved) {
         int firstField = 10 * figureToBeMoved.color;
-        Optional<Integer> figureOnFirstField = figureOnField(firstField);
+        Optional<Figure> figureOnFirstField = figureOnField(firstField);
 
         if (figureOnFirstField.isPresent()) {
             moveToBase(figureOnFirstField.get());
