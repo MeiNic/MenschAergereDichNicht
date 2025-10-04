@@ -30,7 +30,7 @@ Environment to be installed on your computer.  We might provide native
 executables in the future.
 
 Go to the [latest
-release](https://github.com/MeiNic/MenschAergereDichNicht/releases/tag/latest)
+release](https://github.com/MeiNic/MenschAergereDichNicht/releases/latest)
 of *Mensch ärgere Dich nicht* and download the `.jar` file at the
 bottom of the page.  Open a terminal in the same directory as the
 downloaded file and run:
