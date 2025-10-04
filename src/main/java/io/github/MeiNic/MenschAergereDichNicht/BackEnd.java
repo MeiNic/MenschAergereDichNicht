@@ -172,12 +172,11 @@ public class BackEnd {
     }
 
     protected Optional<Figure> getFigureThatMustBeMoved() {
-        Figure[] playerFigures = new Figure[4];
-        for (int i = currentPlayer.getIndexOfFirstFigure();
-                i < currentPlayer.getIndexOfLastFigure();
-                i++) {
-            playerFigures[i - currentPlayer.getIndexOfFirstFigure()] = figures[i];
-        }
+        Figure[] playerFigures =
+                Arrays.copyOfRange(
+                        figures,
+                        currentPlayer.getIndexOfFirstFigure(),
+                        currentPlayer.getIndexOfLastFigure());
 
         if (!baseOfCurrentPlayerIsEmpty()) {
             Optional<Figure> figureOnStartField =
@@ -205,12 +204,11 @@ public class BackEnd {
     }
 
     protected Optional<Figure> getFigureThatShouldBeMoved() {
-        Figure[] playerFigures = new Figure[4];
-        for (int i = currentPlayer.getIndexOfFirstFigure();
-                i < currentPlayer.getIndexOfLastFigure();
-                i++) {
-            playerFigures[i - currentPlayer.getIndexOfFirstFigure()] = figures[i];
-        }
+        Figure[] playerFigures =
+                Arrays.copyOfRange(
+                        figures,
+                        currentPlayer.getIndexOfFirstFigure(),
+                        currentPlayer.getIndexOfLastFigure());
 
         outer:
         for (Figure figure : playerFigures) {
