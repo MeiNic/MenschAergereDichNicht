@@ -27,6 +27,7 @@ public class Figure {
     private boolean placeable;
     private FigureState state;
     private int field;
+    private int index;
     public final int color;
     public final String owner;
     private int progress;
@@ -36,6 +37,7 @@ public class Figure {
         state = IN_BASE;
         placeable = false;
         field = fieldNew;
+        index = fieldNew;
         color = colorNew;
         this.owner = owner;
         progress = 0;
@@ -43,6 +45,10 @@ public class Figure {
 
     public int getField() {
         return this.field;
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 
     public void setField(int newField, int randomNumber) {
